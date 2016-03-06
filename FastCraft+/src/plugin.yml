@@ -1,0 +1,14 @@
+name: FastCraft
+author: Kepler_
+version: 0.1
+
+description: Improved crafting in Minecraft.
+
+main: co.kepler.fastcraftplus.FastCraft
+
+commands:
+  fastcraft:
+    description: FastCraft commands.
+    usage: /fastcraft
+    aliases:
+      -fc
