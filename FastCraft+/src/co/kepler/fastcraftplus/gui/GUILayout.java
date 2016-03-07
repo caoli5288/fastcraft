@@ -8,14 +8,14 @@ import org.bukkit.inventory.Inventory;
 /**
  * Holds buttons and their locations.
  */
-public class GuiLayout {
-	private final Map<Integer, GuiButton> buttons;
+public class GUILayout {
+	private final Map<Integer, GUIButton> buttons;
 	
 	/**
 	 * Create a new InvButtonLayout.
 	 */
-	public GuiLayout() {
-		buttons = new HashMap<Integer, GuiButton>();
+	public GUILayout() {
+		buttons = new HashMap<Integer, GUIButton>();
 	}
 	
 	/**
@@ -23,7 +23,7 @@ public class GuiLayout {
 	 * @param slot The inventory slot to get the button from.
 	 * @return Returns the button in the specified inventory slot.
 	 */
-	public GuiButton getButton(int slot) {
+	public GUIButton getButton(int slot) {
 		return buttons.get(slot);
 	}
 	
@@ -33,7 +33,7 @@ public class GuiLayout {
 	 * @param col The column to get the button from.
 	 * @return Returns the button in the specified row and column.
 	 */
-	public GuiButton getButton(int row, int col) {
+	public GUIButton getButton(int row, int col) {
 		return getButton(getSlot(row, col));
 	}
 	
@@ -43,7 +43,7 @@ public class GuiLayout {
 	 * @param row The row of the button.
 	 * @param col The column of the button.
 	 */
-	public void setButton(GuiButton button, int row, int col) {
+	public void setButton(GUIButton button, int row, int col) {
 		buttons.put(getSlot(row, col), button);
 	}
 	

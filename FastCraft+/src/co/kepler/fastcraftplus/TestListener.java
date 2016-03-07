@@ -4,14 +4,14 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import co.kepler.fastcraftplus.gui.Gui;
-import co.kepler.fastcraftplus.gui.GuiButton;
-import co.kepler.fastcraftplus.gui.GuiButtonClickEvent;
-import co.kepler.fastcraftplus.gui.GuiLayout;
+import co.kepler.fastcraftplus.gui.GUI;
+import co.kepler.fastcraftplus.gui.GUIButton;
+import co.kepler.fastcraftplus.gui.GUILayout;
 
 public class TestListener implements Listener {
 
@@ -22,18 +22,22 @@ public class TestListener implements Listener {
 		buttonItemMeta.setDisplayName("THIS IS BUTTON");
 		buttonItem.setItemMeta(buttonItemMeta);
 		
-		GuiButton starButton = new GuiButton(buttonItem);
+		GUIButton starButton = new GUIButton(buttonItem) {
+			@Override
+			public void onClick(GUI gui, InventoryClickEvent invEvent) {
+				onButtonClick(gui, invEvent);
+			}
+		};
 		
-		GuiLayout layout = new GuiLayout();
+		GUILayout layout = new GUILayout();
 		layout.setButton(starButton, 3, 3);
 		
-		Gui gui = new Gui("TEST", 5);
+		GUI gui = new GUI("TEST", 5);
 		gui.setButtonLayout(layout);
 		gui.show(e.getPlayer());
 	}
 	
-	@EventHandler
-	public void onButtonClick(GuiButtonClickEvent e) {
-		Bukkit.broadcastMessage("Button pressed!");
+	public void onButtonClick(GUI gui, InventoryClickEvent invEvent) {
+		Bukkit.broadcastMessage("Clicked!");
 	}
 }

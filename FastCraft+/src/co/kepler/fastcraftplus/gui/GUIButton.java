@@ -1,15 +1,16 @@
 package co.kepler.fastcraftplus.gui;
 
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
-public class GuiButton {
+public abstract class GUIButton {
 	private ItemStack item;
 	
 	/**
 	 * Create a new InvButton.
 	 * @param item The item that represents the button.
 	 */
-	public GuiButton(ItemStack item) {
+	public GUIButton(ItemStack item) {
 		this.item = item;
 	}
 	
@@ -20,4 +21,11 @@ public class GuiButton {
 	public ItemStack getItem() {
 		return item;
 	}
+	
+	/**
+	 * Called when the button is clicked.
+	 * @param gui The GUI in which the button was clicked.
+	 * @param invEvent The inventory event triggered by the click.
+	 */
+	public abstract void onClick(GUI gui, InventoryClickEvent invEvent);
 }
