@@ -1,5 +1,8 @@
 package co.kepler.fastcraftplus.gui;
 
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.ItemStack;
+
 /**
  * A GUI layout that is organized into pages.
  */
@@ -13,14 +16,14 @@ public class GUIPagedLayout extends GUILayout {
 	 * Create a new paged GUI layout.
 	 * @param navPosition
 	 */
-	public GUIPagedLayout(NavPosition navPosition) {
-		super();
+	public GUIPagedLayout(GUI gui, NavPosition navPosition) {
+		super(gui);
 		this.navPosition = navPosition;
 	}
 	
 	@Override
-	public void setButton(int slot, GUIButton button) {
-		super.setButton(slot, button);
+	public void setPendingButton(int slot, GUIButton button) {
+		super.setPendingButton(slot, button);
 		if (button == null) {
 			maxSlotIndex = 0;
 			for (Integer i : buttons.keySet()) {
@@ -78,7 +81,7 @@ public class GUIPagedLayout extends GUILayout {
 	 * @param gui The GUI being checked.
 	 * @return Returns the number of buttons shown on each page of the GUI.
 	 */
-	public int getButtonsPerPage(GUI gui) {
+	public int getButtonsPerPage() {
 		return getButtonsPerPage(gui.getRowCount());
 	}
 	
@@ -87,12 +90,28 @@ public class GUIPagedLayout extends GUILayout {
 	 * @param gui The GUI being checked.
 	 * @return Returns the number of pages.
 	 */
-	public int getPageCount(GUI gui) {
-		return maxSlotIndex / getButtonsPerPage(gui) + 1;
+	public int getPageCount() {
+		return maxSlotIndex / getButtonsPerPage() + 1;
+	}
+	
+	/**
+	 * Get the current page.
+	 * @return Returns the current page.
+	 */
+	public int getPage() {
+		return page;
+	}
+	
+	/**
+	 * Set the current page.
+	 * @param page Which page to go to.
+	 */
+	public void setPage(int page) {
+		assert 0 <= page && page < getPageCount();
 	}
 	
 	@Override
-	public GUIButton getButton(int slot, GUI gui) {
+	public GUIButton getButton(int slot) {
 		int[] rawSlotPos = getSlotPos(slot);
 		int guiRowCount = gui.getRowCount();
 		slot += getButtonsPerPage(guiRowCount) * page;
@@ -100,19 +119,19 @@ public class GUIPagedLayout extends GUILayout {
 		switch (navPosition) {
 		default:
 		case NONE:
-			return super.getButton(slot, gui);
+			return super.getButton(slot);
 		case TOP:
 			if (rawSlotPos[0] == 0) {
 				// If the row is the top row
 				return navButtons[rawSlotPos[1]];
 			}
-			return getButton(slot - 9, gui);
+			return getButton(slot - 9);
 		case BOTTOM:
 			if (rawSlotPos[0] == guiRowCount - 1) {
 				// If the row is the bottom row
 				return navButtons[rawSlotPos[1]];
 			}
-			return getButton(slot, gui);
+			return getButton(slot);
 		}
 	}
 	
@@ -128,5 +147,28 @@ public class GUIPagedLayout extends GUILayout {
 		
 		/** The navigation buttons will be shown at the bottom of the GUI. */
 		BOTTOM,
+	}
+	
+	public class GUIButtonNextPage extends GUIButton {
+		public GUIButtonNextPage(ItemStack item) {
+			super(item);
+		}
+
+		@Override
+		public boolean isVisible(GUILayout layout) {
+			if (layout instanceof GUIPagedLayout) {
+				GUIPagedLayout pagedLayout = (GUIPagedLayout) layout;
+				return pagedLayout.getPage() < pagedLayout.getPageCount() - 1;
+			}
+			return true;
+		}
+
+		@Override
+		public void onClick(GUILayout layout, InventoryClickEvent invEvent) {
+			if (layout instanceof GUIPagedLayout) {
+				GUIPagedLayout pagedLayout = (GUIPagedLayout) layout;
+				pagedLayout.setPage(pagedLayout.getPage() + 1);
+			}
+		}
 	}
 }

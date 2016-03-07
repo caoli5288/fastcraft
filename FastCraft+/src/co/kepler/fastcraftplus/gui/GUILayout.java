@@ -9,13 +9,18 @@ import org.bukkit.inventory.Inventory;
  * Holds buttons and their locations.
  */
 public class GUILayout {
-	protected final Map<Integer, GUIButton> buttons;
+	protected final Map<Integer, GUIButton> pendingButtons;
+	protected Map<Integer, GUIButton> buttons;
+	protected final GUI gui;
 	
 	/**
 	 * Create a new InvButtonLayout.
 	 */
-	public GUILayout() {
+	public GUILayout(GUI gui) {
+		pendingButtons = new HashMap<Integer, GUIButton>();
 		buttons = new HashMap<Integer, GUIButton>();
+		this.gui = gui;
+		gui.setLayout(this);
 	}
 	
 	/**
@@ -23,7 +28,7 @@ public class GUILayout {
 	 * @param slot The inventory slot to get the button from.
 	 * @return Returns the button in the specified inventory slot.
 	 */
-	public GUIButton getButton(int slot, GUI gui) {
+	public GUIButton getButton(int slot) {
 		assert slot >= 0;
 		return buttons.get(slot);
 	}
@@ -34,53 +39,80 @@ public class GUILayout {
 	 * @param col The column to get the button from.
 	 * @return Returns the button in the specified row and column.
 	 */
-	public GUIButton getButton(int row, int col, GUI gui) {
-		return getButton(getSlot(row, col), gui);
+	public GUIButton getButton(int row, int col) {
+		return getButton(getSlot(row, col));
+	}
+	
+	/**
+	 * Get the button in the specified inventory slot.
+	 * This button is not yet active in the GUI.
+	 * @param slot The inventory slot to get the button from.
+	 * @return Returns the button in the specified inventory slot.
+	 */
+	public GUIButton getPendingButton(int slot) {
+		assert slot >= 0;
+		return pendingButtons.get(slot);
+	}
+	
+	/**
+	 * Get the button in the specified row and column.
+	 * This button is not yet active in the GUI.
+	 * @param row The row to get the button from.
+	 * @param col The column to get the button from.
+	 * @return Returns the button in the specified row and column.
+	 */
+	public GUIButton getPendingButton(int row, int col) {
+		return getPendingButton(getSlot(row, col));
 	}
 	
 	/**
 	 * Adds a button to the layout at a given row and column.
+	 * This button will not yet be active in the GUI.
 	 * @param button The button to add.
 	 * @param slot The slot index of the button.
 	 */
-	public void setButton(int slot, GUIButton button) {
+	public void setPendingButton(int slot, GUIButton button) {
 		assert slot >= 0;
 		if (button == null) {
-			buttons.remove(slot);
+			pendingButtons.remove(slot);
 		} else {
-			buttons.put(slot, button);
+			pendingButtons.put(slot, button);
 		}
 	}
 	
 	/**
 	 * Adds a button to the layout at a given row and column.
+	 * This button will not yet be active in the GUI.
 	 * @param button The button to add.
 	 * @param row The row of the button.
 	 * @param col The column of the button.
 	 */
-	public void setButton(int row, int col, GUIButton button) {
-		setButton(getSlot(row, col), button);
+	public void setPendingButton(int row, int col, GUIButton button) {
+		setPendingButton(getSlot(row, col), button);
 	}
 	
 	/**
 	 * Removes a button from the layout at a given row and column.
+	 * The button will not yet be active in the GUI.
 	 * @param row The row to remove the button from.
 	 * @param col The column to remove the button from.
 	 */
-	public void removeButton(int row, int col) {
-		setButton(row, col, null);
+	public void removePendingButton(int row, int col) {
+		setPendingButton(row, col, null);
 	}
 	
 	/**
 	 * Apply the button layout to an inventory.
 	 * @param inv The inventory to apply the layout to.
 	 */
-	public void apply(Inventory inv) {
+	public void updateGUI() {
+		buttons = new HashMap<Integer, GUIButton>(pendingButtons);
+		Inventory inv = gui.getInventory();
 		inv.clear();
 		int invSize = inv.getSize();
 		for (int i : buttons.keySet()) {
 			GUIButton button = buttons.get(i);
-			if (i >= invSize || !button.isVisible()) continue;
+			if (i >= invSize || !button.isVisible(this)) continue;
 			inv.setItem(i, buttons.get(i).getItem());
 		}
 	}

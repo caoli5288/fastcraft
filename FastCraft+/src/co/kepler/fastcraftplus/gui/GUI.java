@@ -24,8 +24,8 @@ public class GUI implements InventoryHolder {
 	private static Set<GUI> guis = new HashSet<GUI>();
 	private static boolean listenersRegistered = false;
 	
+	private GUILayout layout = null;
 	private Inventory inv;
-	private GUILayout buttonLayout = null;
 
 	/**
 	 * Create a new inventory GUI.
@@ -51,15 +51,6 @@ public class GUI implements InventoryHolder {
 	 */
 	public GUI(TextComponent title, int height) {
 		this(title.toLegacyText(), height);
-	}
-
-	/**
-	 * Set the button layout of the GUI.
-	 * @param buttonLayout The button layout to set.
-	 */
-	public void setButtonLayout(GUILayout buttonLayout) {
-		this.buttonLayout = buttonLayout;
-		buttonLayout.apply(inv);
 	}
 
 	/**
@@ -107,6 +98,14 @@ public class GUI implements InventoryHolder {
 	}
 	
 	/**
+	 * Set the layout of the GUI.
+	 * @param layout
+	 */
+	public void setLayout(GUILayout layout) {
+		this.layout = layout;
+	}
+	
+	/**
 	 * Get the GUI that holds the given inventory.
 	 * @param inv The inventory to get the GUI of.
 	 * @return Returns the GUI that holds the given inventory, or null if there is none.
@@ -122,7 +121,7 @@ public class GUI implements InventoryHolder {
 	/**
 	 * Handles all inventory events, and forwards button presses.
 	 */
-	public class Listener implements org.bukkit.event.Listener {
+	public static class Listener implements org.bukkit.event.Listener {
 		/**
 		 * Handles inventory clicks on the server.
 		 * @param e The inventory click event.
@@ -136,9 +135,9 @@ public class GUI implements InventoryHolder {
 				// If the GUI was clicked...
 				e.setCancelled(true);
 				
-				GUIButton button = buttonLayout.getButton(e.getSlot(), gui);
-				if (button != null && button.isVisible()) {
-					button.onClick(gui, e);
+				GUIButton button = gui.layout.getButton(e.getSlot());
+				if (button != null) {
+					button.onClick(gui.layout, e);
 				}
 			} else {
 				switch (e.getClick()) {

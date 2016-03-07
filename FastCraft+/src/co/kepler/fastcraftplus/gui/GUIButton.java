@@ -8,7 +8,6 @@ import org.bukkit.inventory.ItemStack;
  */
 public abstract class GUIButton {
 	private ItemStack item;
-	private boolean visible;
 	
 	/**
 	 * Create a new GUIButton.
@@ -16,16 +15,6 @@ public abstract class GUIButton {
 	 */
 	public GUIButton(ItemStack item) {
 		this.item = item;
-	}
-	
-	/**
-	 * Create a new GUIButton
-	 * @param item The item that represents the button.
-	 * @param visible Whether the button is visible.
-	 */
-	public GUIButton(ItemStack item, boolean visible) {
-		this(item);
-		this.visible = visible;
 	}
 	
 	/**
@@ -40,22 +29,12 @@ public abstract class GUIButton {
 	 * See if this button is visible in the GUI.
 	 * @return Returns true if the button is visible in the GUI.
 	 */
-	public boolean isVisible() {
-		return visible;
-	}
-	
-	/**
-	 * Set the visibility of the button in the GUI.
-	 * @param visible Whether the button is visible or not in the GUI.
-	 */
-	public void setVisible(boolean visible) {
-		this.visible = visible;
-	}
+	public abstract boolean isVisible(GUILayout layout);
 	
 	/**
 	 * Called when the button is clicked.
 	 * @param gui The GUI in which the button was clicked.
 	 * @param invEvent The inventory event triggered by the click.
 	 */
-	public abstract void onClick(GUI gui, InventoryClickEvent invEvent);
+	public abstract void onClick(GUILayout layout, InventoryClickEvent invEvent);
 }
