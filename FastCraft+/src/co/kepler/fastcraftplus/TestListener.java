@@ -20,50 +20,50 @@ import co.kepler.fastcraftplus.gui.GUILayout;
 
 public class TestListener implements Listener {
 
-	public TestListener() {
-		ItemStack banner = new ItemStack(Material.BANNER);
-		List<Recipe> recipes = Bukkit.getRecipesFor(banner);
-		
-		for (Recipe r : recipes) {
-			System.out.println("---------------- " + r);
-			if (r instanceof ShapedRecipe) {
-				ShapedRecipe sr = (ShapedRecipe) r;
-				System.out.println(sr.getIngredientMap());
-				for (Character c : sr.getIngredientMap().keySet()) {
-					System.out.println(c + ": " + sr.getIngredientMap().get(c));
-				}
-			} else if (r instanceof ShapelessRecipe) {
-				ShapelessRecipe sr = (ShapelessRecipe) r;
-				System.out.println(sr.getIngredientList());
-			}
-		}
-	}
-	
-	@EventHandler
-	public void onPlayerChat(AsyncPlayerChatEvent e) {
-		GUI gui = new GUI("TEST", 5);
-		
-		ItemStack buttonItem = new ItemStack(Material.NETHER_STAR);
-		ItemMeta buttonItemMeta = buttonItem.getItemMeta();
-		buttonItemMeta.setDisplayName("THIS IS BUTTON");
-		buttonItem.setItemMeta(buttonItemMeta);
-		
-		GUIButton starButton = new GUIButton(buttonItem) {
-			@Override
-			public void onClick(GUILayout layout, InventoryClickEvent invEvent) {
-				Bukkit.broadcastMessage("Clicked!");
-			}
-			
-			@Override
-			public boolean isVisible(GUILayout layout) {
-				return true;
-			}
-		};
-		
-		GUILayout layout = new GUILayout(gui);
-		layout.setPendingButton(3, 3, starButton);
-		layout.updateGUI();
-		
-		gui.show(e.getPlayer());
-	}
+    public TestListener() {
+        ItemStack banner = new ItemStack(Material.BANNER);
+        List<Recipe> recipes = Bukkit.getRecipesFor(banner);
+
+        for (Recipe r : recipes) {
+            System.out.println("---------------- " + r);
+            if (r instanceof ShapedRecipe) {
+                ShapedRecipe sr = (ShapedRecipe) r;
+                System.out.println(sr.getIngredientMap());
+                for (Character c : sr.getIngredientMap().keySet()) {
+                    System.out.println(c + ": " + sr.getIngredientMap().get(c));
+                }
+            } else if (r instanceof ShapelessRecipe) {
+                ShapelessRecipe sr = (ShapelessRecipe) r;
+                System.out.println(sr.getIngredientList());
+            }
+        }
+    }
+
+    @EventHandler
+    public void onPlayerChat(AsyncPlayerChatEvent e) {
+        GUI gui = new GUI("TEST", 5);
+
+        ItemStack buttonItem = new ItemStack(Material.NETHER_STAR);
+        ItemMeta buttonItemMeta = buttonItem.getItemMeta();
+        buttonItemMeta.setDisplayName("THIS IS BUTTON");
+        buttonItem.setItemMeta(buttonItemMeta);
+
+        GUIButton starButton = new GUIButton(buttonItem) {
+            @Override
+            public void onClick(GUILayout layout, InventoryClickEvent invEvent) {
+                Bukkit.broadcastMessage("Clicked!");
+            }
+
+            @Override
+            public boolean isVisible(GUILayout layout) {
+                return true;
+            }
+        };
+
+        GUILayout layout = new GUILayout(gui);
+        layout.setPendingButton(3, 3, starButton);
+        layout.updateGUI();
+
+        gui.show(e.getPlayer());
+    }
 }
