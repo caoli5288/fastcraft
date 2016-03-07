@@ -17,10 +17,9 @@ public class GUILayout {
 	 * Create a new InvButtonLayout.
 	 */
 	public GUILayout(GUI gui) {
-		pendingButtons = new HashMap<Integer, GUIButton>();
-		buttons = new HashMap<Integer, GUIButton>();
+		pendingButtons = new HashMap<>();
+		buttons = new HashMap<>();
 		this.gui = gui;
-		gui.setLayout(this);
 	}
 	
 	/**
@@ -90,7 +89,16 @@ public class GUILayout {
 	public void setPendingButton(int row, int col, GUIButton button) {
 		setPendingButton(getSlot(row, col), button);
 	}
-	
+
+	/**
+	 * Removes a button from the layout at a given row and column.
+	 * The button will not yet be active in the GUI.
+	 * @param slot The slot index of the button to remove.
+	 */
+	public void removePendingButton(int slot) {
+		setPendingButton(slot, null);
+	}
+
 	/**
 	 * Removes a button from the layout at a given row and column.
 	 * The button will not yet be active in the GUI.
@@ -102,17 +110,26 @@ public class GUILayout {
 	}
 	
 	/**
-	 * Apply the button layout to an inventory.
-	 * @param inv The inventory to apply the layout to.
+	 * Update the layout's GUI.
 	 */
 	public void updateGUI() {
-		buttons = new HashMap<Integer, GUIButton>(pendingButtons);
-		Inventory inv = gui.getInventory();
+		updateGUI(this);
+	}
+
+	/**
+	 * Update the given GUI with the layout.
+	 * @param layout The layout to update the GUI with.
+     */
+	protected static void updateGUI(GUILayout layout) {
+		layout.buttons = new HashMap<>(layout.pendingButtons);
+		Map<Integer, GUIButton> buttons = layout.buttons;
+		layout.gui.setLayout(layout);
+		Inventory inv = layout.gui.getInventory();
 		inv.clear();
 		int invSize = inv.getSize();
 		for (int i : buttons.keySet()) {
 			GUIButton button = buttons.get(i);
-			if (i >= invSize || !button.isVisible(this)) continue;
+			if (i >= invSize || !button.isVisible(layout)) continue;
 			inv.setItem(i, buttons.get(i).getItem());
 		}
 	}

@@ -14,7 +14,7 @@ public class GUIPagedLayout extends GUILayout {
 	
 	/**
 	 * Create a new paged GUI layout.
-	 * @param navPosition
+	 * @param navPosition The position of the navigation bar.
 	 */
 	public GUIPagedLayout(GUI gui, NavPosition navPosition) {
 		super(gui);
@@ -62,7 +62,7 @@ public class GUIPagedLayout extends GUILayout {
 	
 	/**
 	 * Get the number of buttons shown on each page of the GUI.
-	 * @param gui The GUI being checked.
+	 * @param guiRows The number of rows in the GUI.
 	 * @return Returns the number of buttons shown on each page of the GUI.
 	 */
 	public int getButtonsPerPage(int guiRows) {
@@ -78,7 +78,6 @@ public class GUIPagedLayout extends GUILayout {
 	
 	/**
 	 * Get the number of buttons shown on each page of the GUI.
-	 * @param gui The GUI being checked.
 	 * @return Returns the number of buttons shown on each page of the GUI.
 	 */
 	public int getButtonsPerPage() {
@@ -87,7 +86,6 @@ public class GUIPagedLayout extends GUILayout {
 	
 	/**
 	 * Get the number of pages.
-	 * @param gui The GUI being checked.
 	 * @return Returns the number of pages.
 	 */
 	public int getPageCount() {
@@ -138,7 +136,7 @@ public class GUIPagedLayout extends GUILayout {
 	/**
 	 * The position of the navigation buttons in the GUI.
 	 */
-	public static enum NavPosition {
+	public enum NavPosition {
 		/** The navigation buttons will not be shown. */
 		NONE,
 		
@@ -148,8 +146,31 @@ public class GUIPagedLayout extends GUILayout {
 		/** The navigation buttons will be shown at the bottom of the GUI. */
 		BOTTOM,
 	}
-	
-	public class GUIButtonNextPage extends GUIButton {
+
+	public static class GUIButtonPrevPage extends GUIButton {
+		public GUIButtonPrevPage(ItemStack item) {
+			super(item);
+		}
+
+		@Override
+		public boolean isVisible(GUILayout layout) {
+			if (layout instanceof GUIPagedLayout) {
+				GUIPagedLayout pagedLayout = (GUIPagedLayout) layout;
+				return pagedLayout.getPage() > 0;
+			}
+			return true;
+		}
+
+		@Override
+		public void onClick(GUILayout layout, InventoryClickEvent invEvent) {
+			if (layout instanceof GUIPagedLayout) {
+				GUIPagedLayout pagedLayout = (GUIPagedLayout) layout;
+				pagedLayout.setPage(pagedLayout.getPage() - 1);
+			}
+		}
+	}
+
+	public static class GUIButtonNextPage extends GUIButton {
 		public GUIButtonNextPage(ItemStack item) {
 			super(item);
 		}
