@@ -30,7 +30,7 @@ public class TestListener implements Listener {
 		};
 		
 		GUILayout layout = new GUILayout();
-		layout.setButton(starButton, 3, 3);
+		layout.setButton(3, 3, starButton);
 		
 		GUI gui = new GUI("TEST", 5);
 		gui.setButtonLayout(layout);

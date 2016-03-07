@@ -18,7 +18,7 @@ import net.md_5.bungee.api.chat.TextComponent;
 
 /**
  * An inventory GUI.
- * GUI.disposeAll() must be executed when the plugin is disabled.
+ * GUI.disposeAll() must be executed when the plugin is disabled to avoid item duplication.
  */
 public class GUI implements InventoryHolder {
 	private static Set<GUI> guis = new HashSet<GUI>();
@@ -82,7 +82,6 @@ public class GUI implements InventoryHolder {
 		}
 
 		guis.remove(this);
-		//Bukkit.getPluginManager().
 	}
 
 	/**
@@ -100,6 +99,14 @@ public class GUI implements InventoryHolder {
 	}
 	
 	/**
+	 * Gets the number of rows in the GUI.
+	 * @return Returns the number of rows in the GUI.
+	 */
+	public int getRowCount() {
+		return inv.getSize() / 9;
+	}
+	
+	/**
 	 * Get the GUI that holds the given inventory.
 	 * @param inv The inventory to get the GUI of.
 	 * @return Returns the GUI that holds the given inventory, or null if there is none.
@@ -112,6 +119,9 @@ public class GUI implements InventoryHolder {
 		return null;
 	}
 
+	/**
+	 * Handles all inventory events, and forwards button presses.
+	 */
 	public class Listener implements org.bukkit.event.Listener {
 		/**
 		 * Handles inventory clicks on the server.
@@ -126,8 +136,8 @@ public class GUI implements InventoryHolder {
 				// If the GUI was clicked...
 				e.setCancelled(true);
 				
-				GUIButton button = buttonLayout.getButton(e.getSlot());
-				if (button != null) {
+				GUIButton button = buttonLayout.getButton(e.getSlot(), gui);
+				if (button != null && button.isVisible()) {
 					button.onClick(gui, e);
 				}
 			} else {
@@ -135,6 +145,7 @@ public class GUI implements InventoryHolder {
 				case SHIFT_LEFT:
 				case SHIFT_RIGHT:
 				case UNKNOWN:
+					// Cancel shift clicks to stop items from being put into the GUI.
 					e.setCancelled(true);
 				default:
 				}
