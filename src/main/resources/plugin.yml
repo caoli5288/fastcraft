@@ -1,6 +1,6 @@
-name: FastCraft
+name: "FastCraftPlus"
 author: Kepler_
-version: 0.1
+version: ${project.version}
 
 description: Improved crafting in Minecraft.
 
