@@ -3,6 +3,7 @@ package co.kepler.fastcraftplus.gui;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.bukkit.DyeColor;
 import org.bukkit.inventory.Inventory;
 
 /**
@@ -122,15 +123,16 @@ public class GUILayout {
      */
     protected static void updateGUI(GUILayout layout) {
         layout.buttons = new HashMap<>(layout.pendingButtons);
-        Map<Integer, GUIButton> buttons = layout.buttons;
+        Map<Integer, GUIButton> buttons = layout.buttons; // TODO Correct?
         layout.gui.setLayout(layout);
+
         Inventory inv = layout.gui.getInventory();
         inv.clear();
         int invSize = inv.getSize();
-        for (int i : buttons.keySet()) {
-            GUIButton button = buttons.get(i);
-            if (i >= invSize || !button.isVisible(layout)) continue;
-            inv.setItem(i, buttons.get(i).getItem());
+        for (int i = 0; i < invSize; i++) {
+            GUIButton button = layout.getButton(i);
+            if (button == null || !button.isVisible(layout)) continue;
+            inv.setItem(i, button.getItem());
         }
     }
 

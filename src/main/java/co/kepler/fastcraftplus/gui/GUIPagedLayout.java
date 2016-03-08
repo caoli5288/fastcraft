@@ -1,6 +1,7 @@
 package co.kepler.fastcraftplus.gui;
 
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 /**
@@ -106,6 +107,7 @@ public class GUIPagedLayout extends GUILayout {
      */
     public void setPage(int page) {
         assert 0 <= page && page < getPageCount();
+        this.page = page;
     }
 
     @Override
@@ -123,13 +125,13 @@ public class GUIPagedLayout extends GUILayout {
                     // If the row is the top row
                     return navButtons[rawSlotPos[1]];
                 }
-                return getButton(slot - 9);
+                return super.getButton(slot - 9);
             case BOTTOM:
                 if (rawSlotPos[0] == guiRowCount - 1) {
                     // If the row is the bottom row
                     return navButtons[rawSlotPos[1]];
                 }
-                return getButton(slot);
+                return super.getButton(slot);
         }
     }
 
@@ -166,6 +168,7 @@ public class GUIPagedLayout extends GUILayout {
             if (layout instanceof GUIPagedLayout) {
                 GUIPagedLayout pagedLayout = (GUIPagedLayout) layout;
                 pagedLayout.setPage(pagedLayout.getPage() - 1);
+                pagedLayout.updateGUI();
             }
         }
     }
@@ -189,6 +192,7 @@ public class GUIPagedLayout extends GUILayout {
             if (layout instanceof GUIPagedLayout) {
                 GUIPagedLayout pagedLayout = (GUIPagedLayout) layout;
                 pagedLayout.setPage(pagedLayout.getPage() + 1);
+                pagedLayout.updateGUI();
             }
         }
     }

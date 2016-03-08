@@ -1,5 +1,6 @@
 package co.kepler.fastcraftplus.gui;
 
+import org.bukkit.Sound;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -27,9 +28,18 @@ public abstract class GUIButton {
 
     /**
      * See if this button is visible in the GUI.
-     * @return Returns true if the button is visible in the GUI.
+     * @return Returns true if the button should be visible in the GUI.
      */
-    public abstract boolean isVisible(GUILayout layout);
+    public boolean isVisible(GUILayout layout) {
+        return true;
+    }
+
+    /**
+     * Get the sound to be played when the button is clicked
+     */
+    public Sound getClickSound() {
+        return Sound.UI_BUTTON_CLICK;
+    }
 
     /**
      * Called when the button is clicked.

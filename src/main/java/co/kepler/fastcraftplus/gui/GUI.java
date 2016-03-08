@@ -4,11 +4,14 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.event.inventory.InventoryEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.InventoryView;
@@ -104,8 +107,22 @@ public class GUI implements InventoryHolder {
 	public void setLayout(GUILayout layout) {
 		this.layout = layout;
 	}
-	
-	/**
+
+    /**
+     * Get the layout of the GUI.
+     * @return Returns the GUI's layout.
+     */
+    public GUILayout getLayout() {
+        return this.layout;
+    }
+
+    /**
+     * Will be called when a player closes the inventory.
+     * @param closedBy The player who closed the inventory.
+     */
+    public void onClose(HumanEntity closedBy) {}
+
+    /**
 	 * Get the GUI that holds the given inventory.
 	 * @param inv The inventory to get the GUI of.
 	 * @return Returns the GUI that holds the given inventory, or null if there is none.
@@ -122,10 +139,7 @@ public class GUI implements InventoryHolder {
 	 * Handles all inventory events, and forwards button presses.
 	 */
 	public static class Listener implements org.bukkit.event.Listener {
-		/**
-		 * Handles inventory clicks on the server.
-		 * @param e The inventory click event.
-		 */
+
 		@EventHandler(priority=EventPriority.LOWEST)
 		public void onInventoryClick(InventoryClickEvent e) {
 			GUI gui = GUI.getGUI(e.getInventory());
@@ -136,7 +150,11 @@ public class GUI implements InventoryHolder {
 				e.setCancelled(true);
 				
 				GUIButton button = gui.layout.getButton(e.getSlot());
-				if (button != null) {
+				if (button != null && button.isVisible(gui.layout)) {
+                    if (e.getWhoClicked() instanceof Player) {
+                        Player player = (Player) e.getWhoClicked();
+                        player.playSound(player.getLocation(), button.getClickSound(), 1, 1);
+                    }
 					button.onClick(gui.layout, e);
 				}
 			} else {
@@ -150,12 +168,7 @@ public class GUI implements InventoryHolder {
 				}
 			}
 		}
-		
-		/**
-		 * Handles inventory drags on the server.
-		 * Cancels the event if items are dragged into the GUI.
-		 * @param e The inventory drag event.
-		 */
+
 		@EventHandler(priority=EventPriority.LOWEST)
 		public void onInventoryDrag(InventoryDragEvent e) {
 			GUI gui = GUI.getGUI(e.getInventory());
@@ -170,5 +183,13 @@ public class GUI implements InventoryHolder {
 				}
 			}
 		}
-	}
+
+        @EventHandler(priority=EventPriority.LOWEST)
+        public void onInventoryClose(InventoryCloseEvent e) {
+            GUI gui = getGUI(e.getInventory());
+            if (gui != null) {
+                gui.onClose(e.getPlayer());
+            }
+        }
+    }
 }

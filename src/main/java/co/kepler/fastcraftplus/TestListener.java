@@ -2,6 +2,7 @@ package co.kepler.fastcraftplus;
 
 import java.util.List;
 
+import co.kepler.fastcraftplus.gui.GUIPagedLayout;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
@@ -23,25 +24,11 @@ public class TestListener implements Listener {
     public TestListener() {
         ItemStack banner = new ItemStack(Material.BANNER);
         List<Recipe> recipes = Bukkit.getRecipesFor(banner);
-
-        for (Recipe r : recipes) {
-            System.out.println("---------------- " + r);
-            if (r instanceof ShapedRecipe) {
-                ShapedRecipe sr = (ShapedRecipe) r;
-                System.out.println(sr.getIngredientMap());
-                for (Character c : sr.getIngredientMap().keySet()) {
-                    System.out.println(c + ": " + sr.getIngredientMap().get(c));
-                }
-            } else if (r instanceof ShapelessRecipe) {
-                ShapelessRecipe sr = (ShapelessRecipe) r;
-                System.out.println(sr.getIngredientList());
-            }
-        }
     }
 
     @EventHandler
     public void onPlayerChat(AsyncPlayerChatEvent e) {
-        GUI gui = new GUI("TEST", 5);
+        GUI gui = new GUI("TEST", 6);
 
         ItemStack buttonItem = new ItemStack(Material.NETHER_STAR);
         ItemMeta buttonItemMeta = buttonItem.getItemMeta();
@@ -60,8 +47,23 @@ public class TestListener implements Listener {
             }
         };
 
-        GUILayout layout = new GUILayout(gui);
-        layout.setPendingButton(3, 3, starButton);
+        ItemStack prevItem = new ItemStack(Material.FEATHER);
+        ItemMeta prevItemMeta = prevItem.getItemMeta();
+        prevItemMeta.setDisplayName("PREV PAGE");
+        prevItem.setItemMeta(prevItemMeta);
+
+        ItemStack nextItem = new ItemStack(Material.FEATHER);
+        ItemMeta nextItemMeta = prevItem.getItemMeta();
+        prevItemMeta.setDisplayName("NEXT PAGE");
+        prevItem.setItemMeta(prevItemMeta);
+
+        GUIPagedLayout layout = new GUIPagedLayout(gui, GUIPagedLayout.NavPosition.BOTTOM);
+        for (int i = 0; i < 20; i++) {
+            layout.setPendingButton(i, i % 9, starButton);
+        }
+        layout.setNavButton(0, new GUIPagedLayout.GUIButtonPrevPage(prevItem));
+        layout.setNavButton(8, new GUIPagedLayout.GUIButtonNextPage(nextItem));
+
         layout.updateGUI();
 
         gui.show(e.getPlayer());
