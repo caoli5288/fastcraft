@@ -9,16 +9,20 @@ import org.bukkit.inventory.ItemStack;
 public class GUIPagedLayout extends GUILayout {
     private NavPosition navPosition;
     private GUIButton[] navButtons = new GUIButton[9];
+    private int navBuffer;
     private int page = 0;
     private int maxSlotIndex = 0;
 
     /**
      * Create a new paged GUI layout.
      * @param navPosition The position of the navigation bar.
+     * @param navBuffer The number of empty rows between the navigation bar and the GUI's buttons.
      */
-    public GUIPagedLayout(GUI gui, NavPosition navPosition) {
+    public GUIPagedLayout(GUI gui, NavPosition navPosition, int navBuffer) {
         super(gui);
+        assert navBuffer >= 0;
         this.navPosition = navPosition;
+        this.navBuffer = navBuffer;
     }
 
     @Override
@@ -62,6 +66,22 @@ public class GUIPagedLayout extends GUILayout {
     }
 
     /**
+     * Get the number of empty rows between the navigation bar and the GUI's buttons.
+     * @return Returns the number of empty rows between the navigation bar and the GUI's buttons.
+     */
+    public int getNavBuffer() {
+        return navBuffer;
+    }
+
+    /**
+     * Set the number of empty rows between the navigation bar and the GUI's buttons.
+     * @param navBuffer The number of empty rows between the navigation bar and the GUI's buttons.
+     */
+    public void setNavBuffer(int navBuffer) {
+        this.navBuffer = navBuffer;
+    }
+
+    /**
      * Get the number of buttons shown on each page of the GUI.
      * @param guiRows The number of rows in the GUI.
      * @return Returns the number of buttons shown on each page of the GUI.
@@ -73,7 +93,7 @@ public class GUIPagedLayout extends GUILayout {
                 return guiRows * 9;
             case TOP:
             case BOTTOM:
-                return (guiRows - 1) * 9;
+                return (guiRows - 1 - navBuffer) * 9;
         }
     }
 
@@ -124,12 +144,18 @@ public class GUIPagedLayout extends GUILayout {
                 if (rawSlotPos[0] == 0) {
                     // If the row is the top row
                     return navButtons[rawSlotPos[1]];
+                } else if (rawSlotPos[0] <= navBuffer) {
+                    // If the row is in the navigation buffer
+                    return null;
                 }
                 return super.getButton(slot - 9);
             case BOTTOM:
                 if (rawSlotPos[0] == guiRowCount - 1) {
                     // If the row is the bottom row
                     return navButtons[rawSlotPos[1]];
+                } else if (rawSlotPos[0] >= guiRowCount - 1 - navBuffer) {
+                    // If the row is in the navigation buffer
+                    return null;
                 }
                 return super.getButton(slot);
         }

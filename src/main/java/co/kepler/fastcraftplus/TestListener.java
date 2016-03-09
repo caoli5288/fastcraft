@@ -41,7 +41,7 @@ public class TestListener implements Listener {
         nextItemMeta.setDisplayName("§cNEXT PAGE");
         nextItem.setItemMeta(nextItemMeta);
 
-        GUIPagedLayout layout = new GUIPagedLayout(gui, GUIPagedLayout.NavPosition.BOTTOM);
+        GUIPagedLayout layout = new GUIPagedLayout(gui, GUIPagedLayout.NavPosition.BOTTOM, 1);
         for (int i = 0; i < 22; i++) {
             ItemStack buttonItem = new ItemStack(Material.NETHER_STAR);
             ItemMeta buttonItemMeta = buttonItem.getItemMeta();
