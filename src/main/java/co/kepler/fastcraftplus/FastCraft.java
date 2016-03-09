@@ -1,10 +1,9 @@
 package co.kepler.fastcraftplus;
 
+import co.kepler.fastcraftplus.gui.GUI;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import co.kepler.fastcraftplus.gui.GUI;
 
 public class FastCraft extends JavaPlugin implements Listener {
     private static FastCraft instance;

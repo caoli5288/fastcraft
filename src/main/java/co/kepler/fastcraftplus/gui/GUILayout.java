@@ -1,10 +1,9 @@
 package co.kepler.fastcraftplus.gui;
 
+import org.bukkit.inventory.Inventory;
+
 import java.util.HashMap;
 import java.util.Map;
-
-import org.bukkit.DyeColor;
-import org.bukkit.inventory.Inventory;
 
 /**
  * Holds buttons and their locations.
@@ -122,10 +121,11 @@ public class GUILayout {
      * @param layout The layout to update the GUI with.
      */
     protected static void updateGUI(GUILayout layout) {
+        // Make the pending buttons active, and update the GUI's layout.
         layout.buttons = new HashMap<>(layout.pendingButtons);
-        Map<Integer, GUIButton> buttons = layout.buttons; // TODO Correct?
         layout.gui.setLayout(layout);
 
+        // Clear the inventory, and add the GUI's buttons to the inventory.
         Inventory inv = layout.gui.getInventory();
         inv.clear();
         int invSize = inv.getSize();

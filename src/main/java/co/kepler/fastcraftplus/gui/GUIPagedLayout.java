@@ -1,7 +1,6 @@
 package co.kepler.fastcraftplus.gui;
 
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 /**
@@ -25,6 +24,7 @@ public class GUIPagedLayout extends GUILayout {
     @Override
     public void setPendingButton(int slot, GUIButton button) {
         super.setPendingButton(slot, button);
+        // Keep track of the index of the last button, so the last page can be known.
         if (button == null) {
             maxSlotIndex = 0;
             for (Integer i : buttons.keySet()) {
@@ -73,7 +73,7 @@ public class GUIPagedLayout extends GUILayout {
                 return guiRows * 9;
             case TOP:
             case BOTTOM:
-                return guiRows * 9 - 1;
+                return (guiRows - 1) * 9;
         }
     }
 
@@ -156,20 +156,19 @@ public class GUIPagedLayout extends GUILayout {
 
         @Override
         public boolean isVisible(GUILayout layout) {
-            if (layout instanceof GUIPagedLayout) {
-                GUIPagedLayout pagedLayout = (GUIPagedLayout) layout;
-                return pagedLayout.getPage() > 0;
-            }
-            return true;
+            // Will be visible if the current page is not the first page.
+            assert layout instanceof GUIPagedLayout;
+            GUIPagedLayout pagedLayout = (GUIPagedLayout) layout;
+            return pagedLayout.getPage() > 0;
         }
 
         @Override
         public void onClick(GUILayout layout, InventoryClickEvent invEvent) {
-            if (layout instanceof GUIPagedLayout) {
-                GUIPagedLayout pagedLayout = (GUIPagedLayout) layout;
-                pagedLayout.setPage(pagedLayout.getPage() - 1);
-                pagedLayout.updateGUI();
-            }
+            // Go to the previous page when clicked.
+            assert layout instanceof GUIPagedLayout;
+            GUIPagedLayout pagedLayout = (GUIPagedLayout) layout;
+            pagedLayout.setPage(pagedLayout.getPage() - 1);
+            pagedLayout.updateGUI();
         }
     }
 
@@ -180,20 +179,19 @@ public class GUIPagedLayout extends GUILayout {
 
         @Override
         public boolean isVisible(GUILayout layout) {
-            if (layout instanceof GUIPagedLayout) {
-                GUIPagedLayout pagedLayout = (GUIPagedLayout) layout;
-                return pagedLayout.getPage() < pagedLayout.getPageCount() - 1;
-            }
-            return true;
+            // Will be visible if the current page is not the last page.
+            assert layout instanceof GUIPagedLayout;
+            GUIPagedLayout pagedLayout = (GUIPagedLayout) layout;
+            return pagedLayout.getPage() < pagedLayout.getPageCount() - 1;
         }
 
         @Override
         public void onClick(GUILayout layout, InventoryClickEvent invEvent) {
-            if (layout instanceof GUIPagedLayout) {
-                GUIPagedLayout pagedLayout = (GUIPagedLayout) layout;
-                pagedLayout.setPage(pagedLayout.getPage() + 1);
-                pagedLayout.updateGUI();
-            }
+            // Go to the next page when clicked.
+            assert layout instanceof GUIPagedLayout;
+            GUIPagedLayout pagedLayout = (GUIPagedLayout) layout;
+            pagedLayout.setPage(pagedLayout.getPage() + 1);
+            pagedLayout.updateGUI();
         }
     }
 }

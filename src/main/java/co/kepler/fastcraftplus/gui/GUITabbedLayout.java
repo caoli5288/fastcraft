@@ -94,10 +94,10 @@ public class GUITabbedLayout extends GUILayout {
 
         @Override
         public void onClick(GUILayout layout, InventoryClickEvent invEvent) {
-            if (layout instanceof GUITabbedLayout) {
-                GUITabbedLayout tabbedLayout = (GUITabbedLayout) layout;
-                tabbedLayout.setTabIndex(tabPage);
-            }
+            // Change the current tab when clicked.
+            assert layout instanceof GUITabbedLayout;
+            GUITabbedLayout tabbedLayout = (GUITabbedLayout) layout;
+            tabbedLayout.setTabIndex(tabPage);
         }
     }
 }

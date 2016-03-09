@@ -1,8 +1,7 @@
 package co.kepler.fastcraftplus.gui;
 
-import java.util.HashSet;
-import java.util.Set;
-
+import co.kepler.fastcraftplus.FastCraft;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
@@ -11,13 +10,12 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
-import org.bukkit.event.inventory.InventoryEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.InventoryView;
 
-import co.kepler.fastcraftplus.FastCraft;
-import net.md_5.bungee.api.chat.TextComponent;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * An inventory GUI.
@@ -148,9 +146,11 @@ public class GUI implements InventoryHolder {
 			if (e.getInventory() == e.getClickedInventory()) {
 				// If the GUI was clicked...
 				e.setCancelled(true);
-				
+
+				// See if a button was clicked, and if it's visible, process the click.
 				GUIButton button = gui.layout.getButton(e.getSlot());
 				if (button != null && button.isVisible(gui.layout)) {
+                    // Play the button's click sound, and call the button's onClick() method.
                     if (e.getWhoClicked() instanceof Player) {
                         Player player = (Player) e.getWhoClicked();
                         player.playSound(player.getLocation(), button.getClickSound(), 1, 1);
@@ -158,11 +158,11 @@ public class GUI implements InventoryHolder {
 					button.onClick(gui.layout, e);
 				}
 			} else {
+                // Cancel shift clicks to stop items from being put into the GUI.
 				switch (e.getClick()) {
 				case SHIFT_LEFT:
 				case SHIFT_RIGHT:
 				case UNKNOWN:
-					// Cancel shift clicks to stop items from being put into the GUI.
 					e.setCancelled(true);
 				default:
 				}
