@@ -12,7 +12,8 @@ public class GUIButton {
     private ButtonClickAction clickAction = null;
 
     /**
-     * Create a new GUIButton.
+     * Create a new GUIButton from an ItemStack.
+     *
      * @param item The item that represents the button.
      */
     public GUIButton(ItemStack item) {
@@ -20,7 +21,18 @@ public class GUIButton {
     }
 
     /**
+     * Create a new GUIButton that copies another.
+     *
+     * @param copy The button that this new button will be based off of.
+     */
+    public GUIButton(GUIButton copy) {
+        item = new ItemStack(copy.item);
+        clickAction = copy.clickAction;
+    }
+
+    /**
      * Get the item that represents this button.
+     *
      * @return Returns the item that represents this button.
      */
     public ItemStack getItem() {
@@ -29,6 +41,7 @@ public class GUIButton {
 
     /**
      * See if this button is visible in the GUI.
+     *
      * @return Returns true if the button should be visible in the GUI.
      */
     public boolean isVisible(GUILayout layout) {
@@ -44,7 +57,8 @@ public class GUIButton {
 
     /**
      * Called when the button is clicked.
-     * @param layout The layout in which the button was clicked.
+     *
+     * @param layout   The layout in which the button was clicked.
      * @param invEvent The inventory event triggered by the click.
      */
     public void onClick(GUILayout layout, InventoryClickEvent invEvent) {
@@ -54,6 +68,7 @@ public class GUIButton {
 
     /**
      * Set the action to be run on a button click. (Lambda friendly)
+     *
      * @param clickAction The click action to be run when the button is clicked.
      */
     public void setClickAction(ButtonClickAction clickAction) {
@@ -73,6 +88,7 @@ public class GUIButton {
     public class ButtonClickInfo {
         public final GUILayout layout;
         public final InventoryClickEvent invEvent;
+
         public ButtonClickInfo(GUILayout layout, InventoryClickEvent invEvent) {
             this.layout = layout;
             this.invEvent = invEvent;

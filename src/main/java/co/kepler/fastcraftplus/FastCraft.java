@@ -8,6 +8,15 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class FastCraft extends JavaPlugin implements Listener {
     private static FastCraft instance;
 
+    /**
+     * Get an instance of FastCraft.
+     *
+     * @return Returns an instance of FastCraft.
+     */
+    public static FastCraft getInstance() {
+        return instance;
+    }
+
     @Override
     public void onEnable() {
         instance = this;
@@ -18,13 +27,5 @@ public class FastCraft extends JavaPlugin implements Listener {
     @Override
     public void onDisable() {
         GUI.disposeAll();
-    }
-
-    /**
-     * Get an instance of FastCraft.
-     * @return Returns an instance of FastCraft.
-     */
-    public static FastCraft getInstance() {
-        return instance;
     }
 }

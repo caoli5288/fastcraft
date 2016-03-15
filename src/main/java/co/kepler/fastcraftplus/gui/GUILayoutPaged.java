@@ -1,18 +1,15 @@
 package co.kepler.fastcraftplus.gui;
 
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.inventory.ItemStack;
-
 /**
  * A GUI layout that is organized into pages.
  */
-public class GUIPagedLayout extends GUILayout {
+public class GUILayoutPaged extends GUILayout {
     private int page = 0;
     private int maxSlotIndex = 0;
 
     @Override
-    public void setPendingButton(int slot, GUIButton button) {
-        super.setPendingButton(slot, button);
+    public void setButton(int slot, GUIButton button) {
+        super.setButton(slot, button);
         // Keep track of the index of the last button, so the last page can be known.
         if (button == null) {
             maxSlotIndex = 0;
@@ -26,6 +23,7 @@ public class GUIPagedLayout extends GUILayout {
 
     /**
      * Get the number of buttons shown on each page of the GUI.
+     *
      * @return Returns the number of buttons shown on each page of the GUI.
      */
     public int getButtonsPerPage() {
@@ -34,6 +32,7 @@ public class GUIPagedLayout extends GUILayout {
 
     /**
      * Get the number of pages.
+     *
      * @return Returns the number of pages.
      */
     public int getPageCount() {
@@ -42,6 +41,7 @@ public class GUIPagedLayout extends GUILayout {
 
     /**
      * Get the current page.
+     *
      * @return Returns the current page.
      */
     public int getPage() {
@@ -50,6 +50,7 @@ public class GUIPagedLayout extends GUILayout {
 
     /**
      * Set the current page.
+     *
      * @param page Which page to go to.
      */
     public void setPage(int page) {

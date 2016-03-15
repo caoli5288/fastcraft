@@ -1,25 +1,21 @@
 package co.kepler.fastcraftplus.gui;
 
-import javax.naming.OperationNotSupportedException;
-
 /**
  * A GUI layout that contains two other GUI layouts, one shown above the other.
  */
-public class GUIMultiLayout extends GUILayout {
-    private static final String BUTTON_METHOD_ERR =
-            "Pending buttons should be accessed/modified with the MultiLayout's sub-layouts";
-
+public class GUILayoutMulti extends GUILayout {
     private int topHeight;
     private GUILayout topLayout;
     private GUILayout bottomLayout;
 
     /**
-     * Create a new GUIMultiLayout.
-     * @param topLayout The top GUI layout.
-     * @param bottomLayout The bottom GUI layout.
+     * Create a new GUILayoutMulti.
+     *
+     * @param topLayout       The top GUI layout.
+     * @param bottomLayout    The bottom GUI layout.
      * @param topLayoutHeight The height of the top layout.
      */
-    public GUIMultiLayout(GUILayout topLayout, GUILayout bottomLayout, int topLayoutHeight) {
+    public GUILayoutMulti(GUILayout topLayout, GUILayout bottomLayout, int topLayoutHeight) {
         this.topLayout = topLayout;
         this.bottomLayout = bottomLayout;
 
@@ -34,6 +30,7 @@ public class GUIMultiLayout extends GUILayout {
 
     /**
      * Get the top GUI layout.
+     *
      * @return Returns the top GUI layout.
      */
     public GUILayout getTopLayout() {
@@ -42,6 +39,7 @@ public class GUIMultiLayout extends GUILayout {
 
     /**
      * Set the top GUI layout.
+     *
      * @param layout The layout to set as the top GUI layout.
      */
     public void setTopLayout(GUILayout layout) {
@@ -51,6 +49,7 @@ public class GUIMultiLayout extends GUILayout {
 
     /**
      * Get the height of the top layout.
+     *
      * @return Returns the height of the top layout.
      */
     public int getTopLayoutHeight() {
@@ -58,7 +57,19 @@ public class GUIMultiLayout extends GUILayout {
     }
 
     /**
+     * Set the height of the top layout.
+     *
+     * @param topHeight The new height of the top layout.
+     */
+    public void setTopLayoutHeight(int topHeight) {
+        assert topHeight >= 0 : "Height (" + topHeight + ") must not be negative";
+        this.topHeight = topHeight;
+        updateLayoutHeights();
+    }
+
+    /**
      * Get the bottom GUI layout.
+     *
      * @return Returns the bottom GUI layout.
      */
     public GUILayout getBottomLayout() {
@@ -67,6 +78,7 @@ public class GUIMultiLayout extends GUILayout {
 
     /**
      * Set the bottom GUI layout.
+     *
      * @param layout The layout to set as the bottom GUI layout.
      */
     public void setBottomLayout(GUILayout layout) {
@@ -76,20 +88,11 @@ public class GUIMultiLayout extends GUILayout {
 
     /**
      * Get the height of the bottom layout.
+     *
      * @return Returns the height of the bottom layout.
      */
     public int getBottomLayoutHeight() {
         return getHeight() - topHeight;
-    }
-
-    /**
-     * Set the height of the top layout.
-     * @param topHeight The new height of the top layout.
-     */
-    public void setTopLayoutHeight(int topHeight) {
-        assert topHeight >= 0 : "Height (" + topHeight + ") must not be negative";
-        this.topHeight = topHeight;
-        updateLayoutHeights();
     }
 
     /**
@@ -100,25 +103,45 @@ public class GUIMultiLayout extends GUILayout {
         bottomLayout.setHeight(getBottomLayoutHeight());
     }
 
-    @Override
-    public GUIButton getButton(int slot) {
+    /**
+     * Get the layout this slot is pointing to, and the slot within the layout.
+     *
+     * @param slot The slot to get the layout.
+     * @return Returns the layout this slot is a part of, and the slot within the layout.
+     */
+    public LayoutSlot getLayoutSlot(int slot) {
         int[] rowCol = getSlotPos(slot);
         if (rowCol[0] < topHeight) {
             // If top layout, get button from top layout.
-            return topLayout.getButton(slot);
+            return new LayoutSlot(topLayout, slot);
         } else {
             // If bottom layout, get button from bottom layout.
-            return bottomLayout.getButton(rowCol[0] - topHeight, rowCol[1]);
+            return new LayoutSlot(bottomLayout, getSlot(rowCol[0] - topHeight, rowCol[1]));
         }
     }
 
     @Override
-    public GUIButton getPendingButton(int slot) throws UnsupportedOperationException {
-        throw new UnsupportedOperationException(BUTTON_METHOD_ERR);
+    public GUIButton getButton(int slot) {
+        LayoutSlot ls = getLayoutSlot(slot);
+        return ls.layout.getButton(ls.slot);
     }
 
     @Override
-    public void setPendingButton(int slot, GUIButton button) {
-        throw new UnsupportedOperationException(BUTTON_METHOD_ERR);
+    public void setButton(int slot, GUIButton button) {
+        LayoutSlot ls = getLayoutSlot(slot);
+        ls.layout.setButton(ls.slot, button);
+    }
+
+    /**
+     * Contains a layout, and a slot within the layout.
+     */
+    public static class LayoutSlot {
+        public final GUILayout layout;
+        public final int slot;
+
+        public LayoutSlot(GUILayout layout, int slot) {
+            this.layout = layout;
+            this.slot = slot;
+        }
     }
 }

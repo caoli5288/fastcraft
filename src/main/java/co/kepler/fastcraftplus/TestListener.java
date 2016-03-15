@@ -1,19 +1,13 @@
 package co.kepler.fastcraftplus;
 
-import co.kepler.fastcraftplus.craftgui.FastCraftGUI;
-import co.kepler.fastcraftplus.gui.GUI;
-import co.kepler.fastcraftplus.gui.GUIButton;
-import co.kepler.fastcraftplus.gui.GUILayout;
-import co.kepler.fastcraftplus.gui.GUIPagedLayout;
+import co.kepler.fastcraftplus.craftgui.GUIFastCraft;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.List;
 
@@ -29,7 +23,8 @@ public class TestListener implements Listener {
 
     @EventHandler
     public void onPlayerChat(AsyncPlayerChatEvent e) {
-        FastCraftGUI fcGUI = new FastCraftGUI(e.getPlayer());
-        fcGUI.show(e.getPlayer());
+        GUIFastCraft fcGUI = new GUIFastCraft(e.getPlayer());
+        fcGUI.show();
+
     }
 }

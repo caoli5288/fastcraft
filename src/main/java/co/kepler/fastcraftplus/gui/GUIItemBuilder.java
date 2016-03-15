@@ -21,6 +21,7 @@ public class GUIItemBuilder {
 
     /**
      * Create an item builder based off of an ItemStack.
+     *
      * @param base The ItemStack to build off of.
      */
     public GUIItemBuilder(ItemStack base) {
@@ -30,6 +31,7 @@ public class GUIItemBuilder {
 
     /**
      * Create an item builder from a Material.
+     *
      * @param material The Material to create the builder from.
      */
     public GUIItemBuilder(Material material) {
@@ -38,6 +40,7 @@ public class GUIItemBuilder {
 
     /**
      * Create an item builder from MaterialData.
+     *
      * @param materialData The MaterialData to create the builder from.
      */
     public GUIItemBuilder(MaterialData materialData) {
@@ -46,6 +49,7 @@ public class GUIItemBuilder {
 
     /**
      * Build an instance of ItemStack.
+     *
      * @return Returns an instance of ItemStack.
      */
     public ItemStack build() {
@@ -77,6 +81,7 @@ public class GUIItemBuilder {
 
     /**
      * Set the display name of the item.
+     *
      * @param displayName The display name of the item.
      * @return Returns this builder, so methods can be chained.
      */
@@ -87,6 +92,7 @@ public class GUIItemBuilder {
 
     /**
      * Set the lore of the item.
+     *
      * @param lore The lore of the item.
      * @return Returns this builder, so methods can be chained.
      */
@@ -97,6 +103,7 @@ public class GUIItemBuilder {
 
     /**
      * Adds an enchantment, and hides the enchantments on the item.
+     *
      * @param glowing Whether the item should be glowing.
      * @return Returns this builder, so methods can be chained.
      */
@@ -107,6 +114,7 @@ public class GUIItemBuilder {
 
     /**
      * Hide an item's info. (Attributes, enchants, etc.)
+     *
      * @param hideInfo Whether the info should be hidden.
      * @return Returns this builder, so methods can be chained.
      */
