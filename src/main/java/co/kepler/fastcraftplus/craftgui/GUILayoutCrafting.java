@@ -68,11 +68,4 @@ public class GUILayoutCrafting extends GUILayoutMulti {
     public void showLayout(CraftingTab tab) {
         setTopLayout(getLayoutTab(tab));
     }
-
-    /**
-     * The tabs in the crafting gui's layout.
-     */
-    public enum CraftingTab {
-        CRAFTING, ARMOR, REPAIR, FIREWORKS
-    }
 }

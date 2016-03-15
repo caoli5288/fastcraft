@@ -17,7 +17,7 @@ public class GUIItemBuilder {
     private final ItemMeta meta;
 
     private boolean glowing = false;
-    private boolean hideInfo = true;
+    private boolean hideInfo = false;
 
     /**
      * Create an item builder based off of an ItemStack.
@@ -25,8 +25,8 @@ public class GUIItemBuilder {
      * @param base The ItemStack to build off of.
      */
     public GUIItemBuilder(ItemStack base) {
-        this.base = base;
-        this.meta = base.getItemMeta();
+        this.base = new ItemStack(base);
+        this.meta = this.base.getItemMeta();
     }
 
     /**
@@ -66,11 +66,11 @@ public class GUIItemBuilder {
         }
         if (glowing) {
             // Only add an enchantment if one does not already exist.
-            if (base.getEnchantments().isEmpty()) {
-                base.addEnchantment(Enchantment.LURE, 0);
+            if (meta.getEnchants().isEmpty()) {
+                meta.addEnchant(Enchantment.KNOCKBACK, 1, true);
             }
 
-            // Only hide the info if hideInfo is false;
+            // Only hide the info if hideInfo is false
             if (!hideInfo) {
                 meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
             }
@@ -115,11 +115,11 @@ public class GUIItemBuilder {
     /**
      * Hide an item's info. (Attributes, enchants, etc.)
      *
-     * @param hideInfo Whether the info should be hidden.
+     * @param hide Whether the info should be hidden.
      * @return Returns this builder, so methods can be chained.
      */
-    public GUIItemBuilder setInfoVisibility(boolean hideInfo) {
-        this.hideInfo = hideInfo;
+    public GUIItemBuilder setHideInfo(boolean hide) {
+        this.hideInfo = hide;
         return this;
     }
 }

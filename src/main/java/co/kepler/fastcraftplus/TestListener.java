@@ -1,6 +1,8 @@
 package co.kepler.fastcraftplus;
 
 import co.kepler.fastcraftplus.craftgui.GUIFastCraft;
+import co.kepler.fastcraftplus.gui.GUIButtonGlowing;
+import co.kepler.fastcraftplus.gui.GUIItemBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
@@ -26,5 +28,9 @@ public class TestListener implements Listener {
         GUIFastCraft fcGUI = new GUIFastCraft(e.getPlayer());
         fcGUI.show();
 
+
+        GUIButtonGlowing button = new GUIButtonGlowing(new ItemStack(Material.FEATHER));
+        button.setGlowing(true);
+        e.getPlayer().getInventory().addItem(new ItemStack(button.getItem()));
     }
 }

@@ -1,14 +1,10 @@
 package co.kepler.fastcraftplus.craftgui;
 
-import co.kepler.fastcraftplus.gui.GUI;
-import co.kepler.fastcraftplus.gui.GUIButton;
-import co.kepler.fastcraftplus.gui.GUIItemBuilder;
-import co.kepler.fastcraftplus.gui.GUILayout;
+import co.kepler.fastcraftplus.gui.*;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 /**
  * The FastCraft crafting GUI.
@@ -16,8 +12,17 @@ import org.bukkit.inventory.ItemStack;
 public class GUIFastCraft extends GUI {
     private static final ChatColor BUTTON_NAME_COLOR = ChatColor.GREEN;
 
-    private final GUILayoutCrafting fastCraftLayout;
+    private final GUILayoutCrafting craftLayout;
     private final Player player;
+
+    private final GUIButton btnPagePrev;
+    private final GUIButton btnPageNext;
+    private final GUIButton btnMultiCraft;
+    private final GUIButton btnWorkbench;
+    private final GUIButtonGlowing btnTabCrafting;
+    private final GUIButtonGlowing btnTabArmor;
+    private final GUIButtonGlowing btnTabRepair;
+    private final GUIButtonGlowing btnTabFireworks;
 
     /**
      * Create a new instance of a FastCraft GUI.
@@ -29,46 +34,56 @@ public class GUIFastCraft extends GUI {
 
         this.player = player;
 
-        fastCraftLayout = new GUILayoutCrafting();
-        setLayout(fastCraftLayout);
+        craftLayout = new GUILayoutCrafting();
+        setLayout(craftLayout);
 
-        // Create button items
-        ItemStack btnMainItem = new GUIItemBuilder(Material.CHEST)
-                .setDisplayName(BUTTON_NAME_COLOR + "Crafting")
-                .build();
+        // Create buttons TODO Localize
+        GUILayout navbar = craftLayout.getLayoutNavbar();
 
-        ItemStack btnArmorItem = new GUIItemBuilder(Material.LEATHER_CHESTPLATE)
-                .setDisplayName(BUTTON_NAME_COLOR + "Dyed Armor")
-                .build();
+        btnPagePrev = new GUIButton(new GUIItemBuilder(Material.ARROW)
+                .setDisplayName(BUTTON_NAME_COLOR + "Previous Page")
+                .setHideInfo(true).build());
+        btnPagePrev.setClickAction(info -> btnPagePrevClick(info));
+        navbar.setButton(0, btnPagePrev);
 
-        ItemStack btnRepairItem = new GUIItemBuilder(Material.IRON_PICKAXE)
-                .setDisplayName(BUTTON_NAME_COLOR + "Repair Items")
-                .build();
+        btnPageNext = new GUIButton(new GUIItemBuilder(Material.ARROW)
+                .setDisplayName(BUTTON_NAME_COLOR + "Next Page")
+                .setHideInfo(true).build());
+        btnPageNext.setClickAction(info -> btnPageNextClick(info));
+        navbar.setButton(8, btnPageNext);
 
-        ItemStack btnFireworksItem = new GUIItemBuilder(Material.FIREWORK)
-                .setDisplayName(BUTTON_NAME_COLOR + "Fireworks")
-                .build();
+        btnMultiCraft = new GUIButton(new GUIItemBuilder(Material.ANVIL)
+                .setLore("Craft Amount").build());
+        btnMultiCraft.setClickAction(info -> btnMultiCraftClick(info));
+        navbar.setButton(6, btnMultiCraft);
 
-        // Create buttons
-        GUILayout navbar = fastCraftLayout.getLayoutNavbar();
+        btnWorkbench = new GUIButton(new GUIItemBuilder(Material.WORKBENCH)
+                .setLore("Open Crafting Grid").build());
+        btnWorkbench.setClickAction(info -> btnWorkbenchClick(info));
+        navbar.setButton(7, btnWorkbench);
 
-        GUIButton btnMain = new GUIButton(btnMainItem);
-        btnMain.setClickAction(clickAction -> System.out.println("btnMain clicked!"));
-        navbar.setButton(1, btnMain);
+        btnTabCrafting = new GUIButtonGlowing(new GUIItemBuilder(Material.STICK)
+                .setDisplayName(BUTTON_NAME_COLOR + "Crafting").build());
+        btnTabCrafting.setClickAction(info -> btnTabCraftingClick(info));
+        btnTabCrafting.setGlowing(true);
+        navbar.setButton(1, btnTabCrafting);
 
-        GUIButton btnArmor = new GUIButton(btnArmorItem);
-        btnMain.setClickAction(clickAction -> System.out.println("btnArmor clicked!"));
-        navbar.setButton(2, btnArmor);
+        btnTabArmor = new GUIButtonGlowing(new GUIItemBuilder(Material.LEATHER_CHESTPLATE)
+                .setDisplayName(BUTTON_NAME_COLOR + "Dyed Armor").build());
+        btnTabArmor.setClickAction(info -> btnTabArmorClick(info));
+        navbar.setButton(2, btnTabArmor);
 
-        GUIButton btnRepair = new GUIButton(btnRepairItem);
-        btnRepair.setClickAction(clickAction -> System.out.println("btnRepair clicked!"));
-        navbar.setButton(3, btnRepair);
+        btnTabRepair = new GUIButtonGlowing(new GUIItemBuilder(Material.IRON_PICKAXE)
+                .setDisplayName(BUTTON_NAME_COLOR + "Repair Items").build());
+        btnTabRepair.setClickAction(info -> btnTabRepairClick(info));
+        navbar.setButton(3, btnTabRepair);
 
-        GUIButton btnFireworks = new GUIButton(btnFireworksItem);
-        btnFireworks.setClickAction(clickAction -> System.out.println("btnFireworks clicked!"));
-        navbar.setButton(4, btnFireworks);
+        btnTabFireworks = new GUIButtonGlowing(new GUIItemBuilder(Material.FIREWORK)
+                .setDisplayName(BUTTON_NAME_COLOR + "Fireworks").build());
+        btnTabFireworks.setClickAction(info -> btnTabFireworksClick(info));
+        navbar.setButton(4, btnTabFireworks);
 
-        System.out.println(fastCraftLayout.getLayoutTab(GUILayoutCrafting.CraftingTab.CRAFTING).getButton(0));
+
 
         // Update the GUI's layout
         updateLayout();
@@ -93,5 +108,48 @@ public class GUIFastCraft extends GUI {
         if (getInventory().getViewers().isEmpty()) {
             dispose();
         }
+    }
+
+    private void showTab(CraftingTab tab) {
+        btnTabCrafting.setGlowing(tab == CraftingTab.CRAFTING);
+        btnTabArmor.setGlowing(tab == CraftingTab.ARMOR);
+        btnTabRepair.setGlowing(tab == CraftingTab.REPAIR);
+        btnTabFireworks.setGlowing(tab == CraftingTab.FIREWORKS);
+
+        craftLayout.showLayout(tab);
+        updateLayout();
+    }
+
+
+    private void btnPagePrevClick(GUIButton.ButtonClickInfo info) {
+        System.out.println("A");
+    }
+
+    private void btnPageNextClick(GUIButton.ButtonClickInfo info) {
+        System.out.println("B");
+    }
+
+    private void btnMultiCraftClick(GUIButton.ButtonClickInfo info) {
+
+    }
+
+    private void btnWorkbenchClick(GUIButton.ButtonClickInfo info) {
+        player.openWorkbench(null, false);
+    }
+
+    private void btnTabCraftingClick(GUIButton.ButtonClickInfo info) {
+        showTab(CraftingTab.CRAFTING);
+    }
+
+    private void btnTabArmorClick(GUIButton.ButtonClickInfo info) {
+        showTab(CraftingTab.ARMOR);
+    }
+
+    private void btnTabRepairClick(GUIButton.ButtonClickInfo info) {
+        showTab(CraftingTab.REPAIR);
+    }
+
+    private void btnTabFireworksClick(GUIButton.ButtonClickInfo info) {
+        showTab(CraftingTab.FIREWORKS);
     }
 }

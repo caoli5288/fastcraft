@@ -9,6 +9,7 @@ import org.bukkit.inventory.ItemStack;
  */
 public class GUIButton {
     private ItemStack item;
+    private boolean visible = true;
     private ButtonClickAction clickAction = null;
 
     /**
@@ -26,7 +27,7 @@ public class GUIButton {
      * @param copy The button that this new button will be based off of.
      */
     public GUIButton(GUIButton copy) {
-        item = new ItemStack(copy.item);
+        item = new ItemStack(copy.getItem());
         clickAction = copy.clickAction;
     }
 
@@ -45,7 +46,16 @@ public class GUIButton {
      * @return Returns true if the button should be visible in the GUI.
      */
     public boolean isVisible(GUILayout layout) {
-        return true;
+        return visible;
+    }
+
+    /**
+     * Set the visibility of the button.
+     *
+     * @param visible Returns true if the button is visible.
+     */
+    public void setVisible(boolean visible) {
+        this.visible = visible;
     }
 
     /**

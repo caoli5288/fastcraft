@@ -14,10 +14,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.InventoryView;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * An inventory GUI.
@@ -68,8 +65,9 @@ public class GUI implements InventoryHolder {
      */
     public static void disposeAll() {
         for (GUI gui : guis) {
-            gui.dispose();
+            gui.dispose(false);
         }
+        guis.clear();
     }
 
     /**
@@ -101,12 +99,21 @@ public class GUI implements InventoryHolder {
      * Close the GUI, and remove it from the server.
      */
     public void dispose() {
+        dispose(true);
+    }
+
+    /**
+     * Close the GUI.
+     * @param removeFromGuis Whether the GUI should be removed from the server.
+     */
+    private void dispose(boolean removeFromGuis) {
         // Close the GUI for all viewers.
         while (!inv.getViewers().isEmpty()) {
             inv.getViewers().get(0).closeInventory();
         }
-
-        guis.remove(this);
+        if (removeFromGuis) {
+            guis.remove(this);
+        }
     }
 
     @Override
