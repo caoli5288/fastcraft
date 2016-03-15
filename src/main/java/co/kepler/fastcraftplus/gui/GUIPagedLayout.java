@@ -7,23 +7,8 @@ import org.bukkit.inventory.ItemStack;
  * A GUI layout that is organized into pages.
  */
 public class GUIPagedLayout extends GUILayout {
-    private NavPosition navPosition;
-    private GUIButton[] navButtons = new GUIButton[9];
-    private int navBuffer;
     private int page = 0;
     private int maxSlotIndex = 0;
-
-    /**
-     * Create a new paged GUI layout.
-     * @param navPosition The position of the navigation bar.
-     * @param navBuffer The number of empty rows between the navigation bar and the GUI's buttons.
-     */
-    public GUIPagedLayout(GUI gui, NavPosition navPosition, int navBuffer) {
-        super(gui);
-        assert navBuffer >= 0;
-        this.navPosition = navPosition;
-        this.navBuffer = navBuffer;
-    }
 
     @Override
     public void setPendingButton(int slot, GUIButton button) {
@@ -40,69 +25,11 @@ public class GUIPagedLayout extends GUILayout {
     }
 
     /**
-     * Set a button in the navigation bar.
-     * @param col The column in the navigation bar to add the button to.
-     * @param button The button to add to the navigation bar.
-     */
-    public void setNavButton(int col, GUIButton button) {
-        assert 0 <= col && col < navButtons.length;
-        navButtons[col] = button;
-    }
-
-    /**
-     * Remove a button from the navigation bar.
-     * @param col The column of the button to remove.
-     */
-    public void removeNavButton(int col) {
-        setNavButton(col, null);
-    }
-
-    /**
-     * Get the position of the navigation bar.
-     * @return Returns the position of the navigation bar.
-     */
-    public NavPosition getNavPosition() {
-        return navPosition;
-    }
-
-    /**
-     * Get the number of empty rows between the navigation bar and the GUI's buttons.
-     * @return Returns the number of empty rows between the navigation bar and the GUI's buttons.
-     */
-    public int getNavBuffer() {
-        return navBuffer;
-    }
-
-    /**
-     * Set the number of empty rows between the navigation bar and the GUI's buttons.
-     * @param navBuffer The number of empty rows between the navigation bar and the GUI's buttons.
-     */
-    public void setNavBuffer(int navBuffer) {
-        this.navBuffer = navBuffer;
-    }
-
-    /**
-     * Get the number of buttons shown on each page of the GUI.
-     * @param guiRows The number of rows in the GUI.
-     * @return Returns the number of buttons shown on each page of the GUI.
-     */
-    public int getButtonsPerPage(int guiRows) {
-        switch (navPosition) {
-            default:
-            case NONE:
-                return guiRows * 9;
-            case TOP:
-            case BOTTOM:
-                return (guiRows - 1 - navBuffer) * 9;
-        }
-    }
-
-    /**
      * Get the number of buttons shown on each page of the GUI.
      * @return Returns the number of buttons shown on each page of the GUI.
      */
     public int getButtonsPerPage() {
-        return getButtonsPerPage(gui.getRowCount());
+        return 9 * getHeight();
     }
 
     /**
@@ -126,98 +53,15 @@ public class GUIPagedLayout extends GUILayout {
      * @param page Which page to go to.
      */
     public void setPage(int page) {
-        assert 0 <= page && page < getPageCount();
+        if (page < 0) page = 0;
+        if (page > getPageCount()) page = getPageCount() - 1;
         this.page = page;
     }
 
     @Override
     public GUIButton getButton(int slot) {
         int[] rawSlotPos = getSlotPos(slot);
-        int guiRowCount = gui.getRowCount();
-        slot += getButtonsPerPage(guiRowCount) * page;
-
-        switch (navPosition) {
-            default:
-            case NONE:
-                return super.getButton(slot);
-            case TOP:
-                if (rawSlotPos[0] == 0) {
-                    // If the row is the top row
-                    return navButtons[rawSlotPos[1]];
-                } else if (rawSlotPos[0] <= navBuffer) {
-                    // If the row is in the navigation buffer
-                    return null;
-                }
-                return super.getButton(slot - 9);
-            case BOTTOM:
-                if (rawSlotPos[0] == guiRowCount - 1) {
-                    // If the row is the bottom row
-                    return navButtons[rawSlotPos[1]];
-                } else if (rawSlotPos[0] >= guiRowCount - 1 - navBuffer) {
-                    // If the row is in the navigation buffer
-                    return null;
-                }
-                return super.getButton(slot);
-        }
-    }
-
-    /**
-     * The position of the navigation buttons in the GUI.
-     */
-    public enum NavPosition {
-        /** The navigation buttons will not be shown. */
-        NONE,
-
-        /** The navigation buttons will be shown at the top of the GUI. */
-        TOP,
-
-        /** The navigation buttons will be shown at the bottom of the GUI. */
-        BOTTOM,
-    }
-
-    public static class GUIButtonPrevPage extends GUIButton {
-        public GUIButtonPrevPage(ItemStack item) {
-            super(item);
-        }
-
-        @Override
-        public boolean isVisible(GUILayout layout) {
-            // Will be visible if the current page is not the first page.
-            assert layout instanceof GUIPagedLayout;
-            GUIPagedLayout pagedLayout = (GUIPagedLayout) layout;
-            return pagedLayout.getPage() > 0;
-        }
-
-        @Override
-        public void onClick(GUILayout layout, InventoryClickEvent invEvent) {
-            // Go to the previous page when clicked.
-            assert layout instanceof GUIPagedLayout;
-            GUIPagedLayout pagedLayout = (GUIPagedLayout) layout;
-            pagedLayout.setPage(pagedLayout.getPage() - 1);
-            pagedLayout.updateGUI();
-        }
-    }
-
-    public static class GUIButtonNextPage extends GUIButton {
-        public GUIButtonNextPage(ItemStack item) {
-            super(item);
-        }
-
-        @Override
-        public boolean isVisible(GUILayout layout) {
-            // Will be visible if the current page is not the last page.
-            assert layout instanceof GUIPagedLayout;
-            GUIPagedLayout pagedLayout = (GUIPagedLayout) layout;
-            return pagedLayout.getPage() < pagedLayout.getPageCount() - 1;
-        }
-
-        @Override
-        public void onClick(GUILayout layout, InventoryClickEvent invEvent) {
-            // Go to the next page when clicked.
-            assert layout instanceof GUIPagedLayout;
-            GUIPagedLayout pagedLayout = (GUIPagedLayout) layout;
-            pagedLayout.setPage(pagedLayout.getPage() + 1);
-            pagedLayout.updateGUI();
-        }
+        slot += getButtonsPerPage() * page;
+        return super.getButton(slot);
     }
 }

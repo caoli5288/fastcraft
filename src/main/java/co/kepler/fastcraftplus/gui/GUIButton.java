@@ -7,8 +7,9 @@ import org.bukkit.inventory.ItemStack;
 /**
  * A button for the GUI that players can interact with.
  */
-public abstract class GUIButton {
+public class GUIButton {
     private ItemStack item;
+    private ButtonClickAction clickAction = null;
 
     /**
      * Create a new GUIButton.
@@ -46,5 +47,35 @@ public abstract class GUIButton {
      * @param layout The layout in which the button was clicked.
      * @param invEvent The inventory event triggered by the click.
      */
-    public abstract void onClick(GUILayout layout, InventoryClickEvent invEvent);
+    public void onClick(GUILayout layout, InventoryClickEvent invEvent) {
+        if (clickAction == null) return;
+        clickAction.onClick(new ButtonClickInfo(layout, invEvent));
+    }
+
+    /**
+     * Set the action to be run on a button click. (Lambda friendly)
+     * @param clickAction The click action to be run when the button is clicked.
+     */
+    public void setClickAction(ButtonClickAction clickAction) {
+        this.clickAction = clickAction;
+    }
+
+    /**
+     * Contains code to be run when a button is clicked.
+     */
+    public interface ButtonClickAction {
+        void onClick(ButtonClickInfo clickInfo);
+    }
+
+    /**
+     * Info about a button click that can be used in the ButtonClickAction.
+     */
+    public class ButtonClickInfo {
+        public final GUILayout layout;
+        public final InventoryClickEvent invEvent;
+        public ButtonClickInfo(GUILayout layout, InventoryClickEvent invEvent) {
+            this.layout = layout;
+            this.invEvent = invEvent;
+        }
+    }
 }

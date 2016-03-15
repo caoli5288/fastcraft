@@ -11,15 +11,15 @@ import java.util.Map;
 public class GUILayout {
     protected final Map<Integer, GUIButton> pendingButtons;
     protected Map<Integer, GUIButton> buttons;
-    protected final GUI gui;
+
+    private int height;
 
     /**
      * Create a new InvButtonLayout.
      */
-    public GUILayout(GUI gui) {
+    public GUILayout() {
         pendingButtons = new HashMap<>();
         buttons = new HashMap<>();
-        this.gui = gui;
     }
 
     /**
@@ -28,7 +28,7 @@ public class GUILayout {
      * @return Returns the button in the specified inventory slot.
      */
     public GUIButton getButton(int slot) {
-        assert slot >= 0;
+        assert slot >= 0 : "Slot (" + slot + ") must not be negative";
         return buttons.get(slot);
     }
 
@@ -49,7 +49,7 @@ public class GUILayout {
      * @return Returns the button in the specified inventory slot.
      */
     public GUIButton getPendingButton(int slot) {
-        assert slot >= 0;
+        assert slot >= 0 : "Slot (" + slot + ") must not be negative";
         return pendingButtons.get(slot);
     }
 
@@ -71,7 +71,7 @@ public class GUILayout {
      * @param slot The slot index of the button.
      */
     public void setPendingButton(int slot, GUIButton button) {
-        assert slot >= 0;
+        assert slot >= 0 : "Slot (" + slot + ") must not be negative";
         if (button == null) {
             pendingButtons.remove(slot);
         } else {
@@ -110,30 +110,26 @@ public class GUILayout {
     }
 
     /**
-     * Update the layout's GUI.
+     * Get the number of rows in the layout.
+     * @return Returns the height of the layout.
      */
-    public void updateGUI() {
-        updateGUI(this);
+    public int getHeight() {
+        return height;
     }
 
     /**
-     * Update the given GUI with the layout.
-     * @param layout The layout to update the GUI with.
+     * Set the number of rows in the layout.
+     * @param height The height of the layout.
      */
-    protected static void updateGUI(GUILayout layout) {
-        // Make the pending buttons active, and update the GUI's layout.
-        layout.buttons = new HashMap<>(layout.pendingButtons);
-        layout.gui.setLayout(layout);
+    public void setHeight(int height) {
+        this.height = height;
+    }
 
-        // Clear the inventory, and add the GUI's buttons to the inventory.
-        Inventory inv = layout.gui.getInventory();
-        inv.clear();
-        int invSize = inv.getSize();
-        for (int i = 0; i < invSize; i++) {
-            GUIButton button = layout.getButton(i);
-            if (button == null || !button.isVisible(layout)) continue;
-            inv.setItem(i, button.getItem());
-        }
+    /**
+     * Change all pending buttons to active buttons.
+     */
+    public void activateButtons() {
+        buttons = new HashMap<>(pendingButtons);
     }
 
     /**
@@ -143,7 +139,8 @@ public class GUILayout {
      * @return Returns the inventory slot index of the row and column.
      */
     public static int getSlot(int row, int col) {
-        assert 0 <= row && row < 9 && 0 <= col;
+        assert row >= 0 : "Row (" + row + ") must not be negative";
+        assert 0 <= col && col < 9 : "Column (" + col + ") must be from 0 to 8";
         return row * 9 + col;
     }
 

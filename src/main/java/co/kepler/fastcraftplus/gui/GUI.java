@@ -14,6 +14,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.InventoryView;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -24,7 +25,9 @@ import java.util.Set;
 public class GUI implements InventoryHolder {
 	private static Set<GUI> guis = new HashSet<>();
 	private static boolean listenersRegistered = false;
-	
+
+	private final int height;
+
 	private GUILayout layout = null;
 	private Inventory inv;
 
@@ -34,7 +37,8 @@ public class GUI implements InventoryHolder {
 	 * @param height The height of the GUI.
 	 */
 	public GUI(String title, int height) {
-		assert height >= 1 && height <= 6;
+		assert height >= 1 && height <= 6 : "Height (" + height + ") must be from 1 to 6";
+		this.height = height;
 		inv = Bukkit.createInventory(this, height * 9, title);
 		guis.add(this);
 		
@@ -104,7 +108,25 @@ public class GUI implements InventoryHolder {
 	 */
 	public void setLayout(GUILayout layout) {
 		this.layout = layout;
+		layout.setHeight(height);
 	}
+
+    /**
+     * Update the GUI's layout.
+     */
+    public void updateLayout() {
+        // Make the pending buttons active.
+        layout.activateButtons();
+
+        // Clear the inventory, and add the GUI's buttons to the inventory.
+        inv.clear();
+        int invSize = inv.getSize();
+        for (int i = 0; i < invSize; i++) {
+            GUIButton button = layout.getButton(i);
+            if (button == null || !button.isVisible(layout)) continue;
+            inv.setItem(i, button.getItem());
+        }
+    }
 
     /**
      * Get the layout of the GUI.
@@ -112,6 +134,14 @@ public class GUI implements InventoryHolder {
      */
     public GUILayout getLayout() {
         return this.layout;
+    }
+
+    /**
+     * Get the height in the GUI.
+     * @return Returns the number of rows in the GUI.
+     */
+    public int getHeight() {
+        return height;
     }
 
     /**
