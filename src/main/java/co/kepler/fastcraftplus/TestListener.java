@@ -2,7 +2,6 @@ package co.kepler.fastcraftplus;
 
 import co.kepler.fastcraftplus.craftgui.GUIFastCraft;
 import co.kepler.fastcraftplus.gui.GUIButtonGlowing;
-import co.kepler.fastcraftplus.gui.GUIItemBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
@@ -28,6 +27,8 @@ public class TestListener implements Listener {
 
     @EventHandler
     public void onPlayerChat(AsyncPlayerChatEvent e) {
+        e.getPlayer().getInventory().getContents()[5] = new ItemStack(Material.APPLE, 42);
+
         GUIFastCraft fcGUI = new GUIFastCraft(e.getPlayer(), null);
         fcGUI.show();
 

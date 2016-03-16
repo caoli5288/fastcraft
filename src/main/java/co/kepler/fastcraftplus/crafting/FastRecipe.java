@@ -1,9 +1,6 @@
 package co.kepler.fastcraftplus.crafting;
 
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.Recipe;
-import org.bukkit.inventory.ShapedRecipe;
-import org.bukkit.inventory.ShapelessRecipe;
+import org.bukkit.inventory.*;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -49,5 +46,49 @@ public class FastRecipe {
                     byproducts.add(i.toItemStack(ingredients.get(i)));
             }
         }
+    }
+
+    /**
+     * Create a recipe from ingredients, a result, and byproducts.
+     *
+     * @param ingredients The ingredients used to craft this recipe.
+     * @param result      The result of this recipe.
+     * @param byproducts  The byproducts of this recipe.
+     */
+    public FastRecipe(Map<Ingredient, Integer> ingredients, ItemStack result, Set<ItemStack> byproducts) {
+        this.ingredients = ingredients;
+        this.result = result;
+        this.byproducts = byproducts;
+    }
+
+    /**
+     * Get the result of the recipe.
+     *
+     * @return The item crafted by this recipe.
+     */
+    public ItemStack getResult() {
+        return result;
+    }
+
+    /**
+     * Remove ingredients from an inventory.
+     * @param inv The inventory to remove the ingredients from.
+     * @return Returns true if the inventory had the necessary ingredients.
+     */
+    public boolean removeIngredients(Inventory inv) {
+        Set<Ingredient> strictData = new HashSet<>();
+        Set<Ingredient> anyData = new HashSet<>();
+
+        // Sort ingredients into two sets.
+        for (Ingredient i : ingredients.keySet()) {
+            (i.anyData() ? anyData : strictData).add(i);
+        }
+
+        // Check ingredients with strict data.
+        for (Ingredient i : strictData) {
+
+        }
+
+        return true; // TODO
     }
 }

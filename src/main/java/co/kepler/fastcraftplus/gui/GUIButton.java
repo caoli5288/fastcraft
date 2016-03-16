@@ -96,8 +96,8 @@ public class GUIButton {
      * Info about a button click that can be used in the ButtonClickAction.
      */
     public class ButtonClick {
-        GUIButton button;
         public final InventoryClickEvent event;
+        GUIButton button;
 
         public ButtonClick(GUIButton button, InventoryClickEvent event) {
             this.button = button;

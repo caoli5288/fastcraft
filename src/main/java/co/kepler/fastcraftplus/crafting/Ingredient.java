@@ -2,9 +2,13 @@ package co.kepler.fastcraftplus.crafting;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.material.MaterialData;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * An ingredient to an item recipe.
@@ -17,11 +21,38 @@ public class Ingredient {
 
     /**
      * Create an ingredient from an item.
+     *
      * @param item The item to create an ingredient from.
      */
     public Ingredient(ItemStack item) {
         material = item.getData();
         meta = item.hasItemMeta() ? item.getItemMeta() : null;
+    }
+
+    /**
+     * Get a Map of ingredients, with the map's values being the number of the ingredient.
+     *
+     * @param items The items to convert to ingredients.
+     * @return Returns a Map of ingredients and amounts.
+     */
+    public static Map<Ingredient, Integer> fromItems(ItemStack... items) {
+        Map<Ingredient, Integer> result = new HashMap<>();
+        for (ItemStack is : items) {
+            if (is == null || is.getType() == Material.AIR) continue;
+            Ingredient i = new Ingredient(is);
+            result.put(i, result.getOrDefault(i, 0) + 1);
+        }
+        return result;
+    }
+
+    /**
+     * See if any data can be used for this ingredient.
+     *
+     * @return Returns true if any data can be used.
+     */
+    @SuppressWarnings("deprecation")
+    public boolean anyData() {
+        return material.getData() == ANY_DATA;
     }
 
     @Override
@@ -35,7 +66,21 @@ public class Ingredient {
     }
 
     /**
+     * See if an ItemStack matches this ingredient.
+     *
+     * @param is The ItemStack to compare.
+     * @return Returns true if the ItemStack can be used as this ingredient.
+     */
+    @SuppressWarnings("deprecation")
+    public boolean matchesItem(ItemStack is) {
+        if (material.getItemType() != is.getType()) return false;
+        if (!anyData() && material.getData() != is.getData().getData()) return false;
+        return Bukkit.getItemFactory().equals(meta, is.getItemMeta());
+    }
+
+    /**
      * Get the material type of this ingredient.
+     *
      * @return Returns the material type of this item.
      */
     public Material getMaterial() {
@@ -44,6 +89,7 @@ public class Ingredient {
 
     /**
      * Create an ItemStack from this ingredient.
+     *
      * @param amount The number of items in the ItemStack.
      * @return Returns a new ItemStack.
      */
@@ -54,13 +100,17 @@ public class Ingredient {
     }
 
     /**
-     * See if an item equals this ingredient.
-     * @param item The ItemStack to compare.
-     * @return Returns true if the item equals this ingredient.
+     * Remove this ingredient from an inventory.
+     *
+     * @param inv The inventory to remove the ingredient from.
+     * @param amount The number of ingredients to remove.
+     * @return Returns true if the ingredient was successfully removed.
      */
-    public boolean matchesItem(ItemStack item) {
-        if (material.getItemType() != item.getType()) return false;
-        if (material.getData() != ANY_DATA && material.getData() != item.getData().getData()) return false;
-        return Bukkit.getItemFactory().equals(meta, item.getItemMeta());
+    public boolean removeFromInventory(Inventory inv, int amount) {
+        for (int i = inv.getSize(); i >= 0; i++) {
+            ItemStack is = inv.getItem(i);
+            //inv.get
+        }
+        return true; // TODO
     }
 }

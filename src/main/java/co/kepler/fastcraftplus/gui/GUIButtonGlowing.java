@@ -1,6 +1,5 @@
 package co.kepler.fastcraftplus.gui;
 
-import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 
 /**

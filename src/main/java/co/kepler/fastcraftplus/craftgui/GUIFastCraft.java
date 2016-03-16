@@ -87,7 +87,6 @@ public class GUIFastCraft extends GUI {
         navbar.setButton(4, btnTabFireworks);
 
 
-
         // Update the GUI's layout
         updateLayout();
     }
