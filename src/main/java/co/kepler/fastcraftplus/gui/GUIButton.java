@@ -73,7 +73,7 @@ public class GUIButton {
      */
     public void onClick(GUILayout layout, InventoryClickEvent invEvent) {
         if (clickAction == null) return;
-        clickAction.onClick(new ButtonClickInfo(layout, invEvent));
+        clickAction.onClick(new ButtonClick(this, invEvent));
     }
 
     /**
@@ -89,19 +89,19 @@ public class GUIButton {
      * Contains code to be run when a button is clicked.
      */
     public interface ButtonClickAction {
-        void onClick(ButtonClickInfo clickInfo);
+        void onClick(ButtonClick clickInfo);
     }
 
     /**
      * Info about a button click that can be used in the ButtonClickAction.
      */
-    public class ButtonClickInfo {
-        public final GUILayout layout;
-        public final InventoryClickEvent invEvent;
+    public class ButtonClick {
+        GUIButton button;
+        public final InventoryClickEvent event;
 
-        public ButtonClickInfo(GUILayout layout, InventoryClickEvent invEvent) {
-            this.layout = layout;
-            this.invEvent = invEvent;
+        public ButtonClick(GUIButton button, InventoryClickEvent event) {
+            this.button = button;
+            this.event = event;
         }
     }
 }

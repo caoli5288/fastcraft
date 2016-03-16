@@ -2,6 +2,7 @@ package co.kepler.fastcraftplus.craftgui;
 
 import co.kepler.fastcraftplus.gui.*;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
@@ -14,6 +15,7 @@ public class GUIFastCraft extends GUI {
 
     private final GUILayoutCrafting craftLayout;
     private final Player player;
+    private final Location location;
 
     private final GUIButton btnPagePrev;
     private final GUIButton btnPageNext;
@@ -29,10 +31,11 @@ public class GUIFastCraft extends GUI {
      *
      * @param player The player who will be shown this GUI.
      */
-    public GUIFastCraft(Player player) {
+    public GUIFastCraft(Player player, Location location) {
         super("FastCraft", 6); // TODO Localize
 
         this.player = player;
+        this.location = location;
 
         craftLayout = new GUILayoutCrafting();
         setLayout(craftLayout);
@@ -121,35 +124,35 @@ public class GUIFastCraft extends GUI {
     }
 
 
-    private void btnPagePrevClick(GUIButton.ButtonClickInfo info) {
+    private void btnPagePrevClick(GUIButton.ButtonClick info) {
         System.out.println("A");
     }
 
-    private void btnPageNextClick(GUIButton.ButtonClickInfo info) {
+    private void btnPageNextClick(GUIButton.ButtonClick info) {
         System.out.println("B");
     }
 
-    private void btnMultiCraftClick(GUIButton.ButtonClickInfo info) {
+    private void btnMultiCraftClick(GUIButton.ButtonClick info) {
 
     }
 
-    private void btnWorkbenchClick(GUIButton.ButtonClickInfo info) {
-        player.openWorkbench(null, false);
+    private void btnWorkbenchClick(GUIButton.ButtonClick info) {
+        player.openWorkbench(location, true); // TODO Don't force
     }
 
-    private void btnTabCraftingClick(GUIButton.ButtonClickInfo info) {
+    private void btnTabCraftingClick(GUIButton.ButtonClick info) {
         showTab(CraftingTab.CRAFTING);
     }
 
-    private void btnTabArmorClick(GUIButton.ButtonClickInfo info) {
+    private void btnTabArmorClick(GUIButton.ButtonClick info) {
         showTab(CraftingTab.ARMOR);
     }
 
-    private void btnTabRepairClick(GUIButton.ButtonClickInfo info) {
+    private void btnTabRepairClick(GUIButton.ButtonClick info) {
         showTab(CraftingTab.REPAIR);
     }
 
-    private void btnTabFireworksClick(GUIButton.ButtonClickInfo info) {
+    private void btnTabFireworksClick(GUIButton.ButtonClick info) {
         showTab(CraftingTab.FIREWORKS);
     }
 }
