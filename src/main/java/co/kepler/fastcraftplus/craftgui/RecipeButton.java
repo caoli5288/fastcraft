@@ -3,15 +3,27 @@ package co.kepler.fastcraftplus.craftgui;
 import co.kepler.fastcraftplus.crafting.FastRecipe;
 import co.kepler.fastcraftplus.gui.GUIButton;
 import co.kepler.fastcraftplus.gui.GUILayout;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * A button that will encapsulate a crafting recipe.
  */
 public class RecipeButton extends GUIButton {
+    private static Set<ClickType> ignoreClicks = new HashSet<ClickType>(Arrays.asList(
+            ClickType.CREATIVE,     ClickType.DOUBLE_CLICK,
+            ClickType.MIDDLE,       ClickType.NUMBER_KEY,
+            ClickType.UNKNOWN,      ClickType.WINDOW_BORDER_LEFT,
+            ClickType.WINDOW_BORDER_RIGHT
+    ));
+
     FastRecipe recipe;
     private GUIFastCraft gui;
 
@@ -64,23 +76,14 @@ public class RecipeButton extends GUIButton {
      * @param invEvent The inventory event triggered by the click.
      */
     @Override
-    public void onClick(GUILayout layout, InventoryClickEvent invEvent) {
+    public boolean onClick(GUILayout layout, InventoryClickEvent invEvent) {
+        if (ignoreClicks.contains(invEvent.getClick())) return false;
         if (!recipe.canCraft(gui.getPlayer(), true)) {
             gui.updateLayout();
-            return;
+            return false;
         }
 
         switch (invEvent.getClick()) {
-            case LEFT:
-            case SHIFT_LEFT:
-            case RIGHT:
-            case SHIFT_RIGHT:
-                // Add to inventory. Drop rest on ground if not enough space.
-                Inventory inv = gui.getPlayer().getInventory();
-                for (ItemStack is : inv.addItem(recipe.getResults()).values()) {
-                    invEvent.getView().setItem(InventoryView.OUTSIDE, is);
-                }
-                break;
             case DROP:
             case CONTROL_DROP:
                 // Drop items on the ground.
@@ -89,10 +92,16 @@ public class RecipeButton extends GUIButton {
                 }
                 break;
             default:
+                // Add to inventory. Drop rest on ground if not enough space.
+                Inventory inv = gui.getPlayer().getInventory();
+                for (ItemStack is : inv.addItem(recipe.getResults()).values()) {
+                    invEvent.getView().setItem(InventoryView.OUTSIDE, is);
+                }
                 break;
         }
 
         gui.updateLayout();
+        return true;
     }
 
 

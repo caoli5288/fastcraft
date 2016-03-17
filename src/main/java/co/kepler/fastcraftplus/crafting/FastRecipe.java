@@ -68,9 +68,7 @@ public class FastRecipe {
         results = new ItemStack[byproducts.length + 1];
 
         results[0] = result;
-        for (int i = 0; i < byproducts.length; i++) {
-            results[i + 1] = byproducts[i];
-        }
+        System.arraycopy(byproducts, 0, results, 1, byproducts.length);
     }
 
     /**
@@ -137,7 +135,6 @@ public class FastRecipe {
         }
         boolean result = removeIngredients(contents);
         if (result && remove) {
-            System.out.println("REMOVED");
             player.getInventory().setContents(contents);
         }
         return result;

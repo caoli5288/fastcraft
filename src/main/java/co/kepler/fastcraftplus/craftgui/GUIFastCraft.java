@@ -147,35 +147,40 @@ public class GUIFastCraft extends GUI {
     }
 
 
-    private void btnPagePrevClick(GUIButton.ButtonClick info) {
-        // TODO
+    private boolean btnPagePrevClick(GUIButton.ButtonClick info) {
+        return false; // TODO
     }
 
-    private void btnPageNextClick(GUIButton.ButtonClick info) {
-        // TODO
+    private boolean btnPageNextClick(GUIButton.ButtonClick info) {
+        return false; // TODO
     }
 
-    private void btnMultiCraftClick(GUIButton.ButtonClick info) {
-
+    private boolean btnMultiCraftClick(GUIButton.ButtonClick info) {
+        return false; // TODO
     }
 
-    private void btnWorkbenchClick(GUIButton.ButtonClick info) {
+    private boolean btnWorkbenchClick(GUIButton.ButtonClick info) {
         player.openWorkbench(location, true); // TODO Don't force
+        return true;
     }
 
-    private void btnTabCraftingClick(GUIButton.ButtonClick info) {
+    private boolean btnTabCraftingClick(GUIButton.ButtonClick info) {
         showTab(CraftingTab.CRAFTING);
+        return true;
     }
 
-    private void btnTabArmorClick(GUIButton.ButtonClick info) {
+    private boolean btnTabArmorClick(GUIButton.ButtonClick info) {
         showTab(CraftingTab.ARMOR);
+        return true;
     }
 
-    private void btnTabRepairClick(GUIButton.ButtonClick info) {
+    private boolean btnTabRepairClick(GUIButton.ButtonClick info) {
         showTab(CraftingTab.REPAIR);
+        return true;
     }
 
-    private void btnTabFireworksClick(GUIButton.ButtonClick info) {
+    private boolean btnTabFireworksClick(GUIButton.ButtonClick info) {
         showTab(CraftingTab.FIREWORKS);
+        return true;
     }
 }

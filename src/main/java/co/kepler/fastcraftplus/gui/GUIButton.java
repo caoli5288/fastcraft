@@ -71,9 +71,9 @@ public class GUIButton {
      * @param layout   The layout in which the button was clicked.
      * @param invEvent The inventory event triggered by the click.
      */
-    public void onClick(GUILayout layout, InventoryClickEvent invEvent) {
-        if (clickAction == null) return;
-        clickAction.onClick(new ButtonClick(this, invEvent));
+    public boolean onClick(GUILayout layout, InventoryClickEvent invEvent) {
+        if (clickAction == null) return false;
+        return clickAction.onClick(new ButtonClick(this, invEvent));
     }
 
     /**
@@ -89,7 +89,12 @@ public class GUIButton {
      * Contains code to be run when a button is clicked.
      */
     public interface ButtonClickAction {
-        void onClick(ButtonClick clickInfo);
+        /**
+         * Called when the button is clicked in the GUI.
+         * @param clickInfo The information about the button click.
+         * @return Return true if the button's click noise should be played.
+         */
+        boolean onClick(ButtonClick clickInfo);
     }
 
     /**
