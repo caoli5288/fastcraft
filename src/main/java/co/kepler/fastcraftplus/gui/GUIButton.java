@@ -45,7 +45,7 @@ public class GUIButton {
      *
      * @return Returns true if the button should be visible in the GUI.
      */
-    public boolean isVisible(GUILayout layout) {
+    public boolean isVisible() {
         return visible;
     }
 

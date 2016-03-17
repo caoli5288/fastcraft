@@ -32,7 +32,7 @@ public class GUIFastCraft extends GUI {
      * @param player The player who will be shown this GUI.
      */
     public GUIFastCraft(Player player, Location location) {
-        super("FastCraft", 6); // TODO Localize
+        super("FastCraft+", 6); // TODO Localize
 
         this.player = player;
         this.location = location;
@@ -112,6 +112,20 @@ public class GUIFastCraft extends GUI {
         }
     }
 
+    /**
+     * Get the player being shown this GUI.
+     *
+     * @return Returns the player being shown this gui.
+     */
+    public Player getPlayer() {
+        return player;
+    }
+
+    /**
+     * Show a tab in the GUI.
+     *
+     * @param tab The tab to show.
+     */
     private void showTab(CraftingTab tab) {
         btnTabCrafting.setGlowing(tab == CraftingTab.CRAFTING);
         btnTabArmor.setGlowing(tab == CraftingTab.ARMOR);

@@ -1,11 +1,12 @@
 package co.kepler.fastcraftplus.crafting;
 
-import org.bukkit.inventory.*;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.Recipe;
+import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.inventory.ShapelessRecipe;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Holds the ingredients and result of a recipe.
@@ -13,12 +14,11 @@ import java.util.Set;
 public class FastRecipe {
     private Map<Ingredient, Integer> ingredients;
     private ItemStack result;
-    private Set<ItemStack> byproducts;
+    private ItemStack[] results;
 
     public FastRecipe(Recipe recipe) {
         ingredients = new HashMap<>();
         result = recipe.getResult();
-        byproducts = new HashSet<>();
 
         // Get ingredients from recipe
         if (recipe instanceof ShapedRecipe) {
@@ -38,6 +38,7 @@ public class FastRecipe {
         }
 
         // List the recipe's byproducts.
+        List<ItemStack> byproducts = new ArrayList<>();
         for (Ingredient i : ingredients.keySet()) {
             switch (i.getMaterial()) {
                 case LAVA_BUCKET:
@@ -45,6 +46,11 @@ public class FastRecipe {
                 case WATER_BUCKET:
                     byproducts.add(i.toItemStack(ingredients.get(i)));
             }
+        }
+        results = new ItemStack[byproducts.size() + 1];
+        results[0] = result;
+        for (int i = 0; i < byproducts.size(); i++) {
+            results[i + 1] = byproducts.get(i);
         }
     }
 
@@ -55,10 +61,15 @@ public class FastRecipe {
      * @param result      The result of this recipe.
      * @param byproducts  The byproducts of this recipe.
      */
-    public FastRecipe(Map<Ingredient, Integer> ingredients, ItemStack result, Set<ItemStack> byproducts) {
+    public FastRecipe(Map<Ingredient, Integer> ingredients, ItemStack result, ItemStack... byproducts) {
         this.ingredients = ingredients;
         this.result = result;
-        this.byproducts = byproducts;
+        results = new ItemStack[byproducts.length + 1];
+
+        results[0] = result;
+        for (int i = 0; i < byproducts.length; i++) {
+            results[i + 1] = byproducts[i];
+        }
     }
 
     /**
@@ -71,24 +82,58 @@ public class FastRecipe {
     }
 
     /**
+     * Gets all the results of this recipe, including byproducts
+     * like empty buckets from recipes that require filled buckets.
+     *
+     * @return Return the results of this recipe.
+     */
+    public ItemStack[] getResults() {
+        return results;
+    }
+
+    /**
      * Remove ingredients from an inventory.
-     * @param inv The inventory to remove the ingredients from.
+     *
+     * @param items The items to remove the ingredients from.
      * @return Returns true if the inventory had the necessary ingredients.
      */
-    public boolean removeIngredients(Inventory inv) {
-        Set<Ingredient> strictData = new HashSet<>();
-        Set<Ingredient> anyData = new HashSet<>();
+    public boolean removeIngredients(ItemStack[] items) {
+        LinkedList<Ingredient> toRemove = new LinkedList<Ingredient>();
 
-        // Sort ingredients into two sets.
+        // Add ingredients. Those that can use any data go at the end.
         for (Ingredient i : ingredients.keySet()) {
-            (i.anyData() ? anyData : strictData).add(i);
+            if (i.anyData()) {
+                toRemove.addLast(i);
+            } else {
+                toRemove.addFirst(i);
+            }
         }
 
-        // Check ingredients with strict data.
-        for (Ingredient i : strictData) {
-
+        // Remove ingredients.
+        for (Ingredient i : toRemove) {
+            if (!i.removeIngredients(items, ingredients.get(i))) {
+                // If unable to remove all of this ingredient
+                return false;
+            }
         }
 
-        return true; // TODO
+        return true;
+    }
+
+    /**
+     * See if a player has this recipe's ingredients, and optionally, remove them
+     * from the player's inventory if all ingredients are present.
+     *
+     * @param player The player whose inventory will have ingredients removed.
+     * @param remove Whether ingredients should be removed if all exist in the player's inventory.
+     * @return Returns true if the ingredients were removed from the player's inventory.
+     */
+    public boolean canCraft(Player player, boolean remove) {
+        ItemStack[] contents = player.getInventory().getStorageContents();
+        boolean result = removeIngredients(contents);
+        if (result && remove) {
+            player.getInventory().setStorageContents(contents);
+        }
+        return result;
     }
 }

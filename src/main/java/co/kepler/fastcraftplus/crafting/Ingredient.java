@@ -2,7 +2,6 @@ package co.kepler.fastcraftplus.crafting;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.material.MaterialData;
@@ -73,6 +72,7 @@ public class Ingredient {
      */
     @SuppressWarnings("deprecation")
     public boolean matchesItem(ItemStack is) {
+        if (is == null) return false;
         if (material.getItemType() != is.getType()) return false;
         if (!anyData() && material.getData() != is.getData().getData()) return false;
         return Bukkit.getItemFactory().equals(meta, is.getItemMeta());
@@ -102,15 +102,22 @@ public class Ingredient {
     /**
      * Remove this ingredient from an inventory.
      *
-     * @param inv The inventory to remove the ingredient from.
+     * @param items  The items to remove the ingredients from.
      * @param amount The number of ingredients to remove.
-     * @return Returns true if the ingredient was successfully removed.
+     * @return Returns true if the ingredients were all removed.
      */
-    public boolean removeFromInventory(Inventory inv, int amount) {
-        for (int i = inv.getSize(); i >= 0; i++) {
-            ItemStack is = inv.getItem(i);
-            //inv.get
+    public boolean removeIngredients(ItemStack[] items, int amount) {
+        for (int i = items.length; i >= 0 && amount > 0; i--) {
+            ItemStack is = items[i];
+            if (!matchesItem(is)) continue;
+            if (amount >= is.getAmount()) {
+                amount -= is.getAmount();
+                items[i] = null;
+            } else {
+                items[i].setAmount(items[i].getAmount() - amount);
+                amount = 0;
+            }
         }
-        return true; // TODO
+        return amount == 0;
     }
 }

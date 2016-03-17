@@ -144,7 +144,7 @@ public class GUI implements InventoryHolder {
         int invSize = inv.getSize();
         for (int i = 0; i < invSize; i++) {
             GUIButton button = layout.getButton(i);
-            if (button == null || !button.isVisible(layout)) continue;
+            if (button == null || !button.isVisible()) continue;
             inv.setItem(i, button.getItem());
             buttons.put(i, new GUIButton(button));
         }
@@ -202,7 +202,7 @@ public class GUI implements InventoryHolder {
 
                 // See if a button was clicked, and if it's visible, process the click.
                 GUIButton button = gui.layout.getButton(e.getSlot());
-                if (button != null && button.isVisible(gui.layout)) {
+                if (button != null && button.isVisible()) {
                     // Play the button's click sound, and call the button's onClick() method.
                     if (e.getWhoClicked() instanceof Player) {
                         Player player = (Player) e.getWhoClicked();
