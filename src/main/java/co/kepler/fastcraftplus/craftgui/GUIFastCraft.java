@@ -1,11 +1,15 @@
 package co.kepler.fastcraftplus.craftgui;
 
+import co.kepler.fastcraftplus.crafting.FastRecipe;
 import co.kepler.fastcraftplus.gui.*;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.Recipe;
 
 /**
  * The FastCraft crafting GUI.
@@ -87,6 +91,12 @@ public class GUIFastCraft extends GUI {
         navbar.setButton(4, btnTabFireworks);
 
 
+        // TODO Remove test:
+        Recipe goldBlockRecipe = Bukkit.getRecipesFor(new ItemStack(Material.GOLD_BLOCK)).get(0);
+        RecipeButton recipeButton = new RecipeButton(this, new FastRecipe(goldBlockRecipe));
+        craftLayout.setButton(2, 2, recipeButton);
+
+
         // Update the GUI's layout
         updateLayout();
     }
@@ -138,11 +148,11 @@ public class GUIFastCraft extends GUI {
 
 
     private void btnPagePrevClick(GUIButton.ButtonClick info) {
-        System.out.println("A");
+        // TODO
     }
 
     private void btnPageNextClick(GUIButton.ButtonClick info) {
-        System.out.println("B");
+        // TODO
     }
 
     private void btnMultiCraftClick(GUIButton.ButtonClick info) {

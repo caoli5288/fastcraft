@@ -6,11 +6,9 @@ import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.Recipe;
-import org.bukkit.inventory.ShapedRecipe;
-import org.bukkit.inventory.ShapelessRecipe;
+import org.bukkit.inventory.*;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -25,18 +23,9 @@ public class TestListener implements Listener {
 
     @EventHandler
     public void onPlayerChat(AsyncPlayerChatEvent e) {
+        e.getPlayer().getInventory().setItem(0, new ItemStack(Material.GOLD_INGOT, 64));
+
         GUIFastCraft fcGUI = new GUIFastCraft(e.getPlayer(), null);
         fcGUI.show();
-
-        Recipe r = Bukkit.getRecipesFor(new ItemStack(Material.STICK)).get(0);
-        if (r instanceof ShapedRecipe) {
-            for (ItemStack is : ((ShapedRecipe) r).getIngredientMap().values()) {
-                System.out.println(is.getData());
-            }
-        } else if (r instanceof ShapelessRecipe) {
-            for (ItemStack is : ((ShapelessRecipe) r).getIngredientList()) {
-                System.out.println(is.getData());
-            }
-        }
     }
 }

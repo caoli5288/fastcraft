@@ -65,7 +65,10 @@ public class RecipeButton extends GUIButton {
      */
     @Override
     public void onClick(GUILayout layout, InventoryClickEvent invEvent) {
-        if (!recipe.canCraft(gui.getPlayer(), true)) return;
+        if (!recipe.canCraft(gui.getPlayer(), true)) {
+            gui.updateLayout();
+            return;
+        }
 
         switch (invEvent.getClick()) {
             case LEFT:
@@ -89,6 +92,7 @@ public class RecipeButton extends GUIButton {
                 break;
         }
 
+        gui.updateLayout();
     }
 
 

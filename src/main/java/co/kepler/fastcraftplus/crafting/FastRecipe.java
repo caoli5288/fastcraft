@@ -1,5 +1,6 @@
 package co.kepler.fastcraftplus.crafting;
 
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
@@ -97,7 +98,7 @@ public class FastRecipe {
      * @param items The items to remove the ingredients from.
      * @return Returns true if the inventory had the necessary ingredients.
      */
-    public boolean removeIngredients(ItemStack[] items) {
+    private boolean removeIngredients(ItemStack[] items) {
         LinkedList<Ingredient> toRemove = new LinkedList<Ingredient>();
 
         // Add ingredients. Those that can use any data go at the end.
@@ -129,10 +130,15 @@ public class FastRecipe {
      * @return Returns true if the ingredients were removed from the player's inventory.
      */
     public boolean canCraft(Player player, boolean remove) {
-        ItemStack[] contents = player.getInventory().getStorageContents();
+        ItemStack[] contents = player.getInventory().getContents();
+        for (int i = 0; i < contents.length; i++) {
+            if (contents[i] == null) continue;
+            contents[i] = contents[i].clone();
+        }
         boolean result = removeIngredients(contents);
         if (result && remove) {
-            player.getInventory().setStorageContents(contents);
+            System.out.println("REMOVED");
+            player.getInventory().setContents(contents);
         }
         return result;
     }

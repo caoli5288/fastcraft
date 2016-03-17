@@ -107,7 +107,7 @@ public class Ingredient {
      * @return Returns true if the ingredients were all removed.
      */
     public boolean removeIngredients(ItemStack[] items, int amount) {
-        for (int i = items.length; i >= 0 && amount > 0; i--) {
+        for (int i = items.length - 1; i >= 0 && amount > 0; i--) {
             ItemStack is = items[i];
             if (!matchesItem(is)) continue;
             if (amount >= is.getAmount()) {
