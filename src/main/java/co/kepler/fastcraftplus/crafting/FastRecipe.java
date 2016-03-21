@@ -1,6 +1,5 @@
 package co.kepler.fastcraftplus.crafting;
 
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
@@ -18,6 +17,8 @@ public class FastRecipe {
     private ItemStack[] results;
 
     public FastRecipe(Recipe recipe) {
+        assert canBeFastRecipe(recipe) : "Recipe must be a shaped or shapeless recipe";
+
         ingredients = new HashMap<>();
         result = recipe.getResult();
 
@@ -26,7 +27,9 @@ public class FastRecipe {
             ShapedRecipe r = (ShapedRecipe) recipe;
             for (String str : r.getShape()) {
                 for (char c : str.toCharArray()) {
-                    Ingredient i = new Ingredient(r.getIngredientMap().get(c));
+                    ItemStack is = r.getIngredientMap().get(c);
+                    if (is == null) continue;
+                    Ingredient i = new Ingredient(is);
                     ingredients.put(i, ingredients.getOrDefault(i, 0) + 1);
                 }
             }
@@ -71,6 +74,10 @@ public class FastRecipe {
         System.arraycopy(byproducts, 0, results, 1, byproducts.length);
     }
 
+    public static boolean canBeFastRecipe(Recipe recipe) {
+        return (recipe != null) && (recipe instanceof ShapedRecipe || recipe instanceof ShapelessRecipe);
+    }
+
     /**
      * Get the result of the recipe.
      *
@@ -97,7 +104,7 @@ public class FastRecipe {
      * @return Returns true if the inventory had the necessary ingredients.
      */
     private boolean removeIngredients(ItemStack[] items) {
-        LinkedList<Ingredient> toRemove = new LinkedList<Ingredient>();
+        LinkedList<Ingredient> toRemove = new LinkedList<>();
 
         // Add ingredients. Those that can use any data go at the end.
         for (Ingredient i : ingredients.keySet()) {

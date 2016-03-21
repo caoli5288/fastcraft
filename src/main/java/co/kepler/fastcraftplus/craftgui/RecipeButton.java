@@ -17,10 +17,10 @@ import java.util.Set;
  * A button that will encapsulate a crafting recipe.
  */
 public class RecipeButton extends GUIButton {
-    private static Set<ClickType> ignoreClicks = new HashSet<ClickType>(Arrays.asList(
-            ClickType.CREATIVE,     ClickType.DOUBLE_CLICK,
-            ClickType.MIDDLE,       ClickType.NUMBER_KEY,
-            ClickType.UNKNOWN,      ClickType.WINDOW_BORDER_LEFT,
+    private static Set<ClickType> ignoreClicks = new HashSet<>(Arrays.asList(
+            ClickType.CREATIVE, ClickType.DOUBLE_CLICK,
+            ClickType.MIDDLE, ClickType.NUMBER_KEY,
+            ClickType.UNKNOWN, ClickType.WINDOW_BORDER_LEFT,
             ClickType.WINDOW_BORDER_RIGHT
     ));
 

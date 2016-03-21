@@ -72,8 +72,7 @@ public class GUIButton {
      * @param invEvent The inventory event triggered by the click.
      */
     public boolean onClick(GUILayout layout, InventoryClickEvent invEvent) {
-        if (clickAction == null) return false;
-        return clickAction.onClick(new ButtonClick(this, invEvent));
+        return clickAction != null && clickAction.onClick(new ButtonClick(this, invEvent));
     }
 
     /**
@@ -91,6 +90,7 @@ public class GUIButton {
     public interface ButtonClickAction {
         /**
          * Called when the button is clicked in the GUI.
+         *
          * @param clickInfo The information about the button click.
          * @return Return true if the button's click noise should be played.
          */
