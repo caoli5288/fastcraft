@@ -18,10 +18,8 @@ import java.util.Set;
  */
 public class RecipeButton extends GUIButton {
     private static Set<ClickType> ignoreClicks = new HashSet<>(Arrays.asList(
-            ClickType.CREATIVE, ClickType.DOUBLE_CLICK,
-            ClickType.MIDDLE, ClickType.NUMBER_KEY,
-            ClickType.UNKNOWN, ClickType.WINDOW_BORDER_LEFT,
-            ClickType.WINDOW_BORDER_RIGHT
+            ClickType.CREATIVE, ClickType.DOUBLE_CLICK, ClickType.MIDDLE, ClickType.NUMBER_KEY,
+            ClickType.UNKNOWN, ClickType.WINDOW_BORDER_LEFT, ClickType.WINDOW_BORDER_RIGHT
     ));
 
     FastRecipe recipe;

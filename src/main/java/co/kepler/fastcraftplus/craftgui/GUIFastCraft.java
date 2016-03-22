@@ -30,6 +30,7 @@ public class GUIFastCraft extends GUI {
     private final GUIButtonGlowing btnTabRepair;
     private final GUIButtonGlowing btnTabFireworks;
 
+
     /**
      * Create a new instance of a FastCraft GUI.
      *

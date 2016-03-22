@@ -108,6 +108,13 @@ public class GUILayout {
     }
 
     /**
+     * Remove all buttons from the layout.
+     */
+    public void clearButtons() {
+        buttons.clear();
+    }
+
+    /**
      * Get the number of rows in the layout.
      *
      * @return Returns the height of the layout.

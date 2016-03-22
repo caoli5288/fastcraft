@@ -3,6 +3,10 @@ package co.kepler.fastcraftplus.craftgui;
 import co.kepler.fastcraftplus.gui.GUILayout;
 import co.kepler.fastcraftplus.gui.GUILayoutMulti;
 import co.kepler.fastcraftplus.gui.GUILayoutPaged;
+import org.bukkit.inventory.Recipe;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * The button layout for the FastCraft GUI.
@@ -14,8 +18,11 @@ public class GUILayoutCrafting extends GUILayoutMulti {
     private final GUILayoutPaged layoutRepair;
     private final GUILayoutPaged layoutFireworks;
 
+    private final Set<Recipe> activeRecipes;
+
     public GUILayoutCrafting() {
         super(new GUILayoutPaged(), new GUILayout(), 0);
+        activeRecipes = new HashSet<>();
 
         // Initialize layout pages
         layoutNavbar = getBottomLayout();
