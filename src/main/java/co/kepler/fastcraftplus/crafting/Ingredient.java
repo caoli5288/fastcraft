@@ -54,30 +54,6 @@ public class Ingredient {
         return material.getData() == ANY_DATA;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || !(o instanceof Ingredient)) {
-            return false;
-        }
-        Ingredient ing = (Ingredient) o;
-        if (!material.equals(ing.material)) return false;
-        return Bukkit.getItemFactory().equals(meta, ing.meta);
-    }
-
-    /**
-     * See if an ItemStack matches this ingredient.
-     *
-     * @param is The ItemStack to compare.
-     * @return Returns true if the ItemStack can be used as this ingredient.
-     */
-    @SuppressWarnings("deprecation")
-    public boolean matchesItem(ItemStack is) {
-        if (is == null) return false;
-        if (material.getItemType() != is.getType()) return false;
-        if (!anyData() && material.getData() != is.getData().getData()) return false;
-        return Bukkit.getItemFactory().equals(meta, is.getItemMeta());
-    }
-
     /**
      * Get the material type of this ingredient.
      *
@@ -119,5 +95,34 @@ public class Ingredient {
             }
         }
         return amount == 0;
+    }
+
+    /**
+     * See if an ItemStack matches this ingredient.
+     *
+     * @param is The ItemStack to compare.
+     * @return Returns true if the ItemStack can be used as this ingredient.
+     */
+    @SuppressWarnings("deprecation")
+    public boolean matchesItem(ItemStack is) {
+        if (is == null) return false;
+        if (material.getItemType() != is.getType()) return false;
+        if (!anyData() && material.getData() != is.getData().getData()) return false;
+        return Bukkit.getItemFactory().equals(meta, is.getItemMeta());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || !(o instanceof Ingredient)) return false;
+
+        Ingredient ing = (Ingredient) o;
+        if (!material.equals(ing.material)) return false;
+        return Bukkit.getItemFactory().equals(meta, ing.meta);
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = material.hashCode();
+        return 31 * hash + (meta == null ? 0 : meta.hashCode());
     }
 }

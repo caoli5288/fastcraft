@@ -146,4 +146,22 @@ public class FastRecipe {
         }
         return result;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) return true;
+        if (o == null || !(o instanceof FastRecipe)) return false;
+
+        FastRecipe r = (FastRecipe) o;
+        if (!result.equals(r.result)) return false;
+        if (!Arrays.equals(results, r.results)) return false;
+        return ingredients.equals(r.ingredients);
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = ingredients.hashCode();
+        hash = 31 * hash + result.hashCode();
+        return 31 * hash + Arrays.hashCode(results);
+    }
 }

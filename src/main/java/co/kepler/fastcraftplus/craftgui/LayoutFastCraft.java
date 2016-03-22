@@ -1,8 +1,8 @@
 package co.kepler.fastcraftplus.craftgui;
 
-import co.kepler.fastcraftplus.gui.LayoutPaged;
 import co.kepler.fastcraftplus.gui.Layout;
 import co.kepler.fastcraftplus.gui.LayoutMulti;
+import co.kepler.fastcraftplus.gui.LayoutPaged;
 import org.bukkit.inventory.Recipe;
 
 import java.util.HashSet;
@@ -12,24 +12,26 @@ import java.util.Set;
  * The button layout for the FastCraft GUI.
  */
 public class LayoutFastCraft extends LayoutMulti {
-    private final Layout layoutNavbar;
-    private final LayoutPaged layoutCrafting;
-    private final LayoutPaged layoutArmor;
-    private final LayoutPaged layoutRepair;
-    private final LayoutPaged layoutFireworks;
-
+    private final GUIFastCraft gui;
     private final Set<Recipe> activeRecipes;
 
-    public LayoutFastCraft() {
-        super(new LayoutPaged(), new Layout(), 0);
+    private final Layout layoutNavbar;
+    private final LayoutRecipesBasic layoutCraftingBasic;
+    private final LayoutRecipesArmor layoutCraftingArmor;
+    private final LayoutRecipesRepair layoutCraftingRepair;
+    private final LayoutRecipesFireworks layoutCraftingFireworks;
+
+    public LayoutFastCraft(GUIFastCraft gui) {
+        super(new LayoutRecipesBasic(gui), new Layout(), 0);
+        this.gui = gui;
         activeRecipes = new HashSet<>();
 
         // Initialize layout pages
         layoutNavbar = getBottomLayout();
-        layoutCrafting = (LayoutPaged) getTopLayout();
-        layoutArmor = new LayoutPaged();
-        layoutRepair = new LayoutPaged();
-        layoutFireworks = new LayoutPaged();
+        layoutCraftingBasic = (LayoutRecipesBasic) getTopLayout();
+        layoutCraftingArmor = new LayoutRecipesArmor(gui);
+        layoutCraftingRepair = new LayoutRecipesRepair(gui);
+        layoutCraftingFireworks = new LayoutRecipesFireworks(gui);
     }
 
     @Override
@@ -52,16 +54,16 @@ public class LayoutFastCraft extends LayoutMulti {
      *
      * @return Returns a layout tab.
      */
-    public LayoutPaged getLayoutTab(CraftingTab tab) {
+    public LayoutRecipes getLayoutTab(CraftingTab tab) {
         switch (tab) {
             case CRAFTING:
-                return layoutCrafting;
+                return layoutCraftingBasic;
             case ARMOR:
-                return layoutArmor;
+                return layoutCraftingArmor;
             case REPAIR:
-                return layoutRepair;
+                return layoutCraftingRepair;
             case FIREWORKS:
-                return layoutFireworks;
+                return layoutCraftingFireworks;
             default:
                 return null;
         }
@@ -73,6 +75,8 @@ public class LayoutFastCraft extends LayoutMulti {
      * @param tab The layout tab to show.
      */
     public void showLayout(CraftingTab tab) {
-        setTopLayout(getLayoutTab(tab));
+        LayoutRecipes layout = getLayoutTab(tab);
+        setTopLayout(layout);
+        layout.updateRecipes();
     }
 }

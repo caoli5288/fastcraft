@@ -42,7 +42,7 @@ public class GUIFastCraft extends GUI {
         this.player = player;
         this.location = location;
 
-        craftLayout = new LayoutFastCraft();
+        craftLayout = new LayoutFastCraft(this);
         setLayout(craftLayout);
 
         // Create buttons TODO Localize
@@ -76,7 +76,7 @@ public class GUIFastCraft extends GUI {
         btnTabCrafting.setGlowing(true);
         navbar.setButton(1, btnTabCrafting);
 
-        btnTabArmor = new GUIButtonGlowing(new GUIItemBuilder(Material.LEATHER_CHESTPLATE)
+        btnTabArmor = new GUIButtonGlowing(new GUIItemBuilder(Material.LEATHER_CHESTPLATE) // TODO Color chestplate
                 .setDisplayName(BUTTON_NAME_COLOR + "Dyed Armor").build());
         btnTabArmor.setClickAction(info -> btnTabArmorClick(info));
         navbar.setButton(2, btnTabArmor);
@@ -90,13 +90,6 @@ public class GUIFastCraft extends GUI {
                 .setDisplayName(BUTTON_NAME_COLOR + "Fireworks").build());
         btnTabFireworks.setClickAction(info -> btnTabFireworksClick(info));
         navbar.setButton(4, btnTabFireworks);
-
-
-        // TODO Remove test:
-        Recipe goldBlockRecipe = Bukkit.getRecipesFor(new ItemStack(Material.GOLD_BLOCK)).get(0);
-        GUIButtonRecipe recipeButton = new GUIButtonRecipe(this, new FastRecipe(goldBlockRecipe));
-        craftLayout.setButton(2, 2, recipeButton);
-
 
         // Update the GUI's layout
         updateLayout();
