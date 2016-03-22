@@ -3,19 +3,19 @@ package co.kepler.fastcraftplus.gui;
 /**
  * A GUI layout that contains two other GUI layouts, one shown above the other.
  */
-public class GUILayoutMulti extends GUILayout {
+public class LayoutMulti extends Layout {
     private int topHeight;
-    private GUILayout topLayout;
-    private GUILayout bottomLayout;
+    private Layout topLayout;
+    private Layout bottomLayout;
 
     /**
-     * Create a new GUILayoutMulti.
+     * Create a new LayoutMulti.
      *
      * @param topLayout       The top GUI layout.
      * @param bottomLayout    The bottom GUI layout.
      * @param topLayoutHeight The height of the top layout.
      */
-    public GUILayoutMulti(GUILayout topLayout, GUILayout bottomLayout, int topLayoutHeight) {
+    public LayoutMulti(Layout topLayout, Layout bottomLayout, int topLayoutHeight) {
         this.topLayout = topLayout;
         this.bottomLayout = bottomLayout;
 
@@ -33,7 +33,7 @@ public class GUILayoutMulti extends GUILayout {
      *
      * @return Returns the top GUI layout.
      */
-    public GUILayout getTopLayout() {
+    public Layout getTopLayout() {
         return topLayout;
     }
 
@@ -42,7 +42,7 @@ public class GUILayoutMulti extends GUILayout {
      *
      * @param layout The layout to set as the top GUI layout.
      */
-    public void setTopLayout(GUILayout layout) {
+    public void setTopLayout(Layout layout) {
         topLayout = layout;
         updateLayoutHeights();
     }
@@ -72,7 +72,7 @@ public class GUILayoutMulti extends GUILayout {
      *
      * @return Returns the bottom GUI layout.
      */
-    public GUILayout getBottomLayout() {
+    public Layout getBottomLayout() {
         return bottomLayout;
     }
 
@@ -81,7 +81,7 @@ public class GUILayoutMulti extends GUILayout {
      *
      * @param layout The layout to set as the bottom GUI layout.
      */
-    public void setBottomLayout(GUILayout layout) {
+    public void setBottomLayout(Layout layout) {
         bottomLayout = layout;
         updateLayoutHeights();
     }
@@ -136,10 +136,10 @@ public class GUILayoutMulti extends GUILayout {
      * Contains a layout, and a slot within the layout.
      */
     public static class LayoutSlot {
-        public final GUILayout layout;
+        public final Layout layout;
         public final int slot;
 
-        public LayoutSlot(GUILayout layout, int slot) {
+        public LayoutSlot(Layout layout, int slot) {
             this.layout = layout;
             this.slot = slot;
         }

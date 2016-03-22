@@ -2,7 +2,7 @@ package co.kepler.fastcraftplus.craftgui;
 
 import co.kepler.fastcraftplus.crafting.FastRecipe;
 import co.kepler.fastcraftplus.gui.GUIButton;
-import co.kepler.fastcraftplus.gui.GUILayout;
+import co.kepler.fastcraftplus.gui.Layout;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
@@ -16,7 +16,7 @@ import java.util.Set;
 /**
  * A button that will encapsulate a crafting recipe.
  */
-public class RecipeButton extends GUIButton {
+public class GUIButtonRecipe extends GUIButton {
     private static Set<ClickType> ignoreClicks = new HashSet<>(Arrays.asList(
             ClickType.CREATIVE, ClickType.DOUBLE_CLICK, ClickType.MIDDLE, ClickType.NUMBER_KEY,
             ClickType.UNKNOWN, ClickType.WINDOW_BORDER_LEFT, ClickType.WINDOW_BORDER_RIGHT
@@ -31,7 +31,7 @@ public class RecipeButton extends GUIButton {
      * @param gui    The FastCraft GUI that this button is contained in.
      * @param recipe The recipe that this button will craft.
      */
-    public RecipeButton(GUIFastCraft gui, FastRecipe recipe) {
+    public GUIButtonRecipe(GUIFastCraft gui, FastRecipe recipe) {
         super(recipe.getResult());
         this.gui = gui;
         this.recipe = recipe;
@@ -74,7 +74,7 @@ public class RecipeButton extends GUIButton {
      * @param invEvent The inventory event triggered by the click.
      */
     @Override
-    public boolean onClick(GUILayout layout, InventoryClickEvent invEvent) {
+    public boolean onClick(Layout layout, InventoryClickEvent invEvent) {
         if (ignoreClicks.contains(invEvent.getClick())) return false;
         if (!recipe.canCraft(gui.getPlayer(), true)) {
             gui.updateLayout();

@@ -1,8 +1,8 @@
 package co.kepler.fastcraftplus.craftgui;
 
-import co.kepler.fastcraftplus.gui.GUILayout;
-import co.kepler.fastcraftplus.gui.GUILayoutMulti;
-import co.kepler.fastcraftplus.gui.GUILayoutPaged;
+import co.kepler.fastcraftplus.gui.LayoutPaged;
+import co.kepler.fastcraftplus.gui.Layout;
+import co.kepler.fastcraftplus.gui.LayoutMulti;
 import org.bukkit.inventory.Recipe;
 
 import java.util.HashSet;
@@ -11,25 +11,25 @@ import java.util.Set;
 /**
  * The button layout for the FastCraft GUI.
  */
-public class GUILayoutCrafting extends GUILayoutMulti {
-    private final GUILayout layoutNavbar;
-    private final GUILayoutPaged layoutCrafting;
-    private final GUILayoutPaged layoutArmor;
-    private final GUILayoutPaged layoutRepair;
-    private final GUILayoutPaged layoutFireworks;
+public class LayoutFastCraft extends LayoutMulti {
+    private final Layout layoutNavbar;
+    private final LayoutPaged layoutCrafting;
+    private final LayoutPaged layoutArmor;
+    private final LayoutPaged layoutRepair;
+    private final LayoutPaged layoutFireworks;
 
     private final Set<Recipe> activeRecipes;
 
-    public GUILayoutCrafting() {
-        super(new GUILayoutPaged(), new GUILayout(), 0);
+    public LayoutFastCraft() {
+        super(new LayoutPaged(), new Layout(), 0);
         activeRecipes = new HashSet<>();
 
         // Initialize layout pages
         layoutNavbar = getBottomLayout();
-        layoutCrafting = (GUILayoutPaged) getTopLayout();
-        layoutArmor = new GUILayoutPaged();
-        layoutRepair = new GUILayoutPaged();
-        layoutFireworks = new GUILayoutPaged();
+        layoutCrafting = (LayoutPaged) getTopLayout();
+        layoutArmor = new LayoutPaged();
+        layoutRepair = new LayoutPaged();
+        layoutFireworks = new LayoutPaged();
     }
 
     @Override
@@ -43,7 +43,7 @@ public class GUILayoutCrafting extends GUILayoutMulti {
      *
      * @return Returns the navbar layout.
      */
-    public GUILayout getLayoutNavbar() {
+    public Layout getLayoutNavbar() {
         return layoutNavbar;
     }
 
@@ -52,7 +52,7 @@ public class GUILayoutCrafting extends GUILayoutMulti {
      *
      * @return Returns a layout tab.
      */
-    public GUILayoutPaged getLayoutTab(CraftingTab tab) {
+    public LayoutPaged getLayoutTab(CraftingTab tab) {
         switch (tab) {
             case CRAFTING:
                 return layoutCrafting;

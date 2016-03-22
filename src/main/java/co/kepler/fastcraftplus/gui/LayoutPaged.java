@@ -3,7 +3,7 @@ package co.kepler.fastcraftplus.gui;
 /**
  * A GUI layout that is organized into pages.
  */
-public class GUILayoutPaged extends GUILayout {
+public class LayoutPaged extends Layout {
     private int page = 0;
     private int maxSlotIndex = 0;
 

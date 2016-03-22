@@ -17,7 +17,7 @@ import org.bukkit.inventory.Recipe;
 public class GUIFastCraft extends GUI {
     private static final ChatColor BUTTON_NAME_COLOR = ChatColor.GREEN;
 
-    private final GUILayoutCrafting craftLayout;
+    private final LayoutFastCraft craftLayout;
     private final Player player;
     private final Location location;
 
@@ -42,11 +42,11 @@ public class GUIFastCraft extends GUI {
         this.player = player;
         this.location = location;
 
-        craftLayout = new GUILayoutCrafting();
+        craftLayout = new LayoutFastCraft();
         setLayout(craftLayout);
 
         // Create buttons TODO Localize
-        GUILayout navbar = craftLayout.getLayoutNavbar();
+        Layout navbar = craftLayout.getLayoutNavbar();
 
         btnPagePrev = new GUIButton(new GUIItemBuilder(Material.ARROW)
                 .setDisplayName(BUTTON_NAME_COLOR + "Previous Page")
@@ -94,7 +94,7 @@ public class GUIFastCraft extends GUI {
 
         // TODO Remove test:
         Recipe goldBlockRecipe = Bukkit.getRecipesFor(new ItemStack(Material.GOLD_BLOCK)).get(0);
-        RecipeButton recipeButton = new RecipeButton(this, new FastRecipe(goldBlockRecipe));
+        GUIButtonRecipe recipeButton = new GUIButtonRecipe(this, new FastRecipe(goldBlockRecipe));
         craftLayout.setButton(2, 2, recipeButton);
 
 

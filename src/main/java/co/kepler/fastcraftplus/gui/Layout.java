@@ -6,14 +6,14 @@ import java.util.Map;
 /**
  * Holds buttons and their locations.
  */
-public class GUILayout {
+public class Layout {
     protected Map<Integer, GUIButton> buttons;
     private int height;
 
     /**
      * Create a new InvButtonLayout.
      */
-    public GUILayout() {
+    public Layout() {
         buttons = new HashMap<>();
     }
 

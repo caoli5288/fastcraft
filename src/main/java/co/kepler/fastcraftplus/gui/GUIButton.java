@@ -71,7 +71,7 @@ public class GUIButton {
      * @param layout   The layout in which the button was clicked.
      * @param invEvent The inventory event triggered by the click.
      */
-    public boolean onClick(GUILayout layout, InventoryClickEvent invEvent) {
+    public boolean onClick(Layout layout, InventoryClickEvent invEvent) {
         return clickAction != null && clickAction.onClick(new ButtonClick(this, invEvent));
     }
 

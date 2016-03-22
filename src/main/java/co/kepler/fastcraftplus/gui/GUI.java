@@ -30,7 +30,7 @@ public class GUI implements InventoryHolder {
     private final int height;
     private final Map<Integer, GUIButton> buttons;
 
-    private GUILayout layout = null;
+    private Layout layout = null;
     private Inventory inv;
 
     /**
@@ -155,7 +155,7 @@ public class GUI implements InventoryHolder {
      *
      * @return Returns the GUI's layout.
      */
-    public GUILayout getLayout() {
+    public Layout getLayout() {
         return this.layout;
     }
 
@@ -164,7 +164,7 @@ public class GUI implements InventoryHolder {
      *
      * @param layout the layout to set.
      */
-    public void setLayout(GUILayout layout) {
+    public void setLayout(Layout layout) {
         this.layout = layout;
         layout.setHeight(height);
     }
