@@ -1,6 +1,6 @@
 package co.kepler.fastcraftplus.craftgui;
 
-import co.kepler.fastcraftplus.crafting.FastRecipe;
+import co.kepler.fastcraftplus.FastCraft;
 import co.kepler.fastcraftplus.gui.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -8,14 +8,26 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.Recipe;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.event.inventory.InventoryPickupItemEvent;
+import org.bukkit.event.player.PlayerPickupItemEvent;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * The FastCraft crafting GUI.
  */
 public class GUIFastCraft extends GUI {
     private static final ChatColor BUTTON_NAME_COLOR = ChatColor.GREEN;
+
+    private static Map<UUID, GUIFastCraft> guis;
+    private static boolean listenersRegistered = false;
 
     private final LayoutFastCraft craftLayout;
     private final Player player;
@@ -93,6 +105,13 @@ public class GUIFastCraft extends GUI {
 
         // Update the GUI's layout
         updateLayout();
+
+        // Register listeners if necessary
+        if (!listenersRegistered) {
+            Bukkit.getPluginManager().registerEvents(new GUIListener(), FastCraft.getInstance());
+            guis = new HashMap<>();
+        }
+        guis.put(player.getUniqueId(), this);
     }
 
     @Override
@@ -114,6 +133,12 @@ public class GUIFastCraft extends GUI {
         if (getInventory().getViewers().isEmpty()) {
             dispose();
         }
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+        guis.remove(player.getUniqueId());
     }
 
     /**
@@ -176,5 +201,48 @@ public class GUIFastCraft extends GUI {
     private boolean btnTabFireworksClick(GUIButton.ButtonClick info) {
         showTab(CraftingTab.FIREWORKS);
         return true;
+    }
+
+    private void inventoryChange() {
+        craftLayout.getCurRecipesLayout().updateRecipes();
+        updateLayout();
+    }
+
+    public static class GUIListener implements Listener {
+        @EventHandler(priority = EventPriority.MONITOR)
+        public void onInventoryClick(InventoryClickEvent e) {
+            if (!e.isCancelled()) invChange(e.getWhoClicked());
+        }
+
+        @EventHandler(priority = EventPriority.MONITOR)
+        public void onInventoryDrag(InventoryDragEvent e) {
+            if (!e.isCancelled()) invChange(e.getWhoClicked());
+        }
+
+        @EventHandler(priority = EventPriority.MONITOR)
+        public void onInventoryPickup(InventoryPickupItemEvent e) {
+            if (e.isCancelled()) return;
+            for (HumanEntity he : e.getInventory().getViewers()) {
+                invChange(he);
+            }
+        }
+
+        @EventHandler(priority = EventPriority.MONITOR)
+        public void onPlayerPickupItem(PlayerPickupItemEvent e) {
+            if (!e.isCancelled()) invChange(e.getPlayer());
+        }
+
+        /**
+         * Notify GUI's that the inventory has changed.
+         *
+         * @param player The player whose inventory was changed.
+         */
+        private void invChange(HumanEntity player) {
+            GUIFastCraft gui = guis.get(player.getUniqueId());
+            if (gui != null) {
+                FastCraft fc = FastCraft.getInstance();
+                Bukkit.getScheduler().scheduleSyncDelayedTask(fc, () -> gui.inventoryChange(), 1L);
+            }
+        }
     }
 }

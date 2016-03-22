@@ -11,7 +11,7 @@ import java.util.*;
 /**
  * Holds the ingredients and result of a recipe.
  */
-public class FastRecipe {
+public class FastRecipe implements Comparable<FastRecipe> {
     private Map<Ingredient, Integer> ingredients;
     private ItemStack result;
     private ItemStack[] results;
@@ -145,6 +145,18 @@ public class FastRecipe {
             player.getInventory().setContents(contents);
         }
         return result;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public int compareTo(FastRecipe compareTo) {
+        int i = result.getTypeId() - compareTo.result.getTypeId();
+        if (i != 0) return i;
+
+        i = result.getData().getData() - compareTo.result.getData().getData();
+        if (i != 0) return i;
+
+        return result.getAmount() - compareTo.result.getAmount();
     }
 
     @Override

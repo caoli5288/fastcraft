@@ -8,6 +8,7 @@ import org.bukkit.inventory.Recipe;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -76,6 +77,7 @@ public class RecipeUtil {
                 if (!FastRecipe.canBeFastRecipe(recipe)) continue;
                 recipes.add(new FastRecipe(recipe));
             }
+            Collections.sort(recipes);
         } catch (IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }

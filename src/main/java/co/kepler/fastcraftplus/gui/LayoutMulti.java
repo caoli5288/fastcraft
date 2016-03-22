@@ -99,8 +99,8 @@ public class LayoutMulti extends Layout {
      * Set the heights of the top and bottom layouts.
      */
     private void updateLayoutHeights() {
-        topLayout.setHeight(topHeight);
-        bottomLayout.setHeight(getBottomLayoutHeight());
+        if (topLayout != null) topLayout.setHeight(topHeight);
+        if (bottomLayout != null) bottomLayout.setHeight(getBottomLayoutHeight());
     }
 
     /**

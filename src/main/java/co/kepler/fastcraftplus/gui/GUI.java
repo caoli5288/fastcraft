@@ -7,6 +7,7 @@ import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
@@ -48,7 +49,7 @@ public class GUI implements InventoryHolder {
 
         // Register the GUI listeners if they aren't already.
         if (!listenersRegistered) {
-            Bukkit.getPluginManager().registerEvents(new Listener(), FastCraft.getInstance());
+            Bukkit.getPluginManager().registerEvents(new GUIListener(), FastCraft.getInstance());
             listenersRegistered = true;
         }
     }
@@ -76,11 +77,11 @@ public class GUI implements InventoryHolder {
     /**
      * Get the GUI that holds the given inventory.
      *
-     * @param inv The inventory to get the GUI of.
+     * @param view The inventory to get the GUI of.
      * @return Returns the GUI that holds the given inventory, or null if there is none.
      */
-    public static GUI getGUI(Inventory inv) {
-        InventoryHolder holder = inv.getHolder();
+    public static GUI getGUI(InventoryView view) {
+        InventoryHolder holder = view.getTopInventory().getHolder();
         if (holder instanceof GUI && guis.contains(holder)) {
             return (GUI) holder;
         }
@@ -148,6 +149,11 @@ public class GUI implements InventoryHolder {
             inv.setItem(i, button.getItem());
             buttons.put(i, new GUIButton(button));
         }
+        for (HumanEntity e : inv.getViewers()) {
+            if (e instanceof Player) {
+                ((Player) e).updateInventory();
+            }
+        }
     }
 
     /**
@@ -184,16 +190,17 @@ public class GUI implements InventoryHolder {
      * @param closedBy The player who closed the inventory.
      */
     public void onClose(HumanEntity closedBy) {
+
     }
 
     /**
      * Handles all inventory events, and forwards button presses.
      */
-    public static class Listener implements org.bukkit.event.Listener {
+    public static class GUIListener implements Listener {
 
         @EventHandler(priority = EventPriority.LOWEST)
         public void onInventoryClick(InventoryClickEvent e) {
-            GUI gui = GUI.getGUI(e.getInventory());
+            GUI gui = GUI.getGUI(e.getView());
             if (e.isCancelled() || gui == null) return;
 
             if (e.getInventory() == e.getClickedInventory()) {
@@ -223,7 +230,7 @@ public class GUI implements InventoryHolder {
 
         @EventHandler(priority = EventPriority.LOWEST)
         public void onInventoryDrag(InventoryDragEvent e) {
-            GUI gui = GUI.getGUI(e.getInventory());
+            GUI gui = GUI.getGUI(e.getView());
             if (e.isCancelled() || gui == null) return;
 
             // Cancel if dragged into GUI.
@@ -238,7 +245,7 @@ public class GUI implements InventoryHolder {
 
         @EventHandler(priority = EventPriority.LOWEST)
         public void onInventoryClose(InventoryCloseEvent e) {
-            GUI gui = getGUI(e.getInventory());
+            GUI gui = getGUI(e.getView());
             if (gui != null) {
                 gui.onClose(e.getPlayer());
             }

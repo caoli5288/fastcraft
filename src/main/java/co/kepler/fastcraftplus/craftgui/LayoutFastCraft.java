@@ -2,18 +2,12 @@ package co.kepler.fastcraftplus.craftgui;
 
 import co.kepler.fastcraftplus.gui.Layout;
 import co.kepler.fastcraftplus.gui.LayoutMulti;
-import co.kepler.fastcraftplus.gui.LayoutPaged;
-import org.bukkit.inventory.Recipe;
-
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * The button layout for the FastCraft GUI.
  */
 public class LayoutFastCraft extends LayoutMulti {
     private final GUIFastCraft gui;
-    private final Set<Recipe> activeRecipes;
 
     private final Layout layoutNavbar;
     private final LayoutRecipesBasic layoutCraftingBasic;
@@ -22,16 +16,18 @@ public class LayoutFastCraft extends LayoutMulti {
     private final LayoutRecipesFireworks layoutCraftingFireworks;
 
     public LayoutFastCraft(GUIFastCraft gui) {
-        super(new LayoutRecipesBasic(gui), new Layout(), 0);
+        super(null, new Layout(), 0);
         this.gui = gui;
-        activeRecipes = new HashSet<>();
 
         // Initialize layout pages
         layoutNavbar = getBottomLayout();
-        layoutCraftingBasic = (LayoutRecipesBasic) getTopLayout();
+        layoutCraftingBasic = new LayoutRecipesBasic(gui);
         layoutCraftingArmor = new LayoutRecipesArmor(gui);
         layoutCraftingRepair = new LayoutRecipesRepair(gui);
         layoutCraftingFireworks = new LayoutRecipesFireworks(gui);
+
+        // Show a layout
+        showLayout(CraftingTab.CRAFTING);
     }
 
     @Override
@@ -67,6 +63,15 @@ public class LayoutFastCraft extends LayoutMulti {
             default:
                 return null;
         }
+    }
+
+    /**
+     * Get the current recipes layout.
+     *
+     * @return Returns the current recipes layout.
+     */
+    public LayoutRecipes getCurRecipesLayout() {
+        return (LayoutRecipes) getTopLayout();
     }
 
     /**
