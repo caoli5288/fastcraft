@@ -1,5 +1,6 @@
 package co.kepler.fastcraftplus.crafting;
 
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
@@ -48,7 +49,7 @@ public class FastRecipe implements Comparable<FastRecipe> {
                 case LAVA_BUCKET:
                 case MILK_BUCKET:
                 case WATER_BUCKET:
-                    byproducts.add(i.toItemStack(ingredients.get(i)));
+                    byproducts.add(new ItemStack(Material.BUCKET, ingredients.get(i)));
             }
         }
         results = new ItemStack[byproducts.size() + 1];
@@ -124,6 +125,16 @@ public class FastRecipe implements Comparable<FastRecipe> {
         }
 
         return true;
+    }
+
+    /**
+     * Get this recipe's ingredients.
+     *
+     * @return Returns a map of this recipe's ingredients, with the key being the
+     * ingredient, and the value being the amount of the ingredient.
+     */
+    public Map<Ingredient, Integer> getIngredients() {
+        return ingredients;
     }
 
     /**

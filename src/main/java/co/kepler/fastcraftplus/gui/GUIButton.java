@@ -13,6 +13,12 @@ public class GUIButton {
     private ButtonClickAction clickAction = null;
 
     /**
+     * Create a new GUIButton with a null ItemStack
+     */
+    protected GUIButton() {
+    }
+
+    /**
      * Create a new GUIButton from an ItemStack.
      *
      * @param item The item that represents the button.
@@ -38,6 +44,13 @@ public class GUIButton {
      */
     public ItemStack getItem() {
         return item;
+    }
+
+    /**
+     * Set the item that represents this button.
+     */
+    protected void setItem(ItemStack item) {
+        this.item = item;
     }
 
     /**

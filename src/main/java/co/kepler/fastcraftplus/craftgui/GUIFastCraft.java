@@ -64,44 +64,48 @@ public class GUIFastCraft extends GUI {
                 .setDisplayName(BUTTON_NAME_COLOR + "Previous Page")
                 .setHideInfo(true).build());
         btnPagePrev.setClickAction(info -> btnPagePrevClick(info));
-        navbar.setButton(0, btnPagePrev);
+        navbar.setButton(1, 0, btnPagePrev);
 
         btnPageNext = new GUIButton(new GUIItemBuilder(Material.ARROW)
                 .setDisplayName(BUTTON_NAME_COLOR + "Next Page")
                 .setHideInfo(true).build());
         btnPageNext.setClickAction(info -> btnPageNextClick(info));
-        navbar.setButton(8, btnPageNext);
+        navbar.setButton(1, 8, btnPageNext);
 
         btnMultiCraft = new GUIButton(new GUIItemBuilder(Material.ANVIL)
-                .setLore("Craft Amount").build());
+                .setDisplayName(BUTTON_NAME_COLOR + "Craft Amount").build());
         btnMultiCraft.setClickAction(info -> btnMultiCraftClick(info));
-        navbar.setButton(6, btnMultiCraft);
+        navbar.setButton(1, 6, btnMultiCraft);
 
         btnWorkbench = new GUIButton(new GUIItemBuilder(Material.WORKBENCH)
-                .setLore("Open Crafting Grid").build());
+                .setDisplayName(BUTTON_NAME_COLOR + "Open Crafting Grid").build());
         btnWorkbench.setClickAction(info -> btnWorkbenchClick(info));
-        navbar.setButton(7, btnWorkbench);
+        navbar.setButton(1, 7, btnWorkbench);
 
         btnTabCrafting = new GUIButtonGlowing(new GUIItemBuilder(Material.STICK)
-                .setDisplayName(BUTTON_NAME_COLOR + "Crafting").build());
+                .setDisplayName(BUTTON_NAME_COLOR + "Crafting")
+                .setHideInfo(true).build());
         btnTabCrafting.setClickAction(info -> btnTabCraftingClick(info));
         btnTabCrafting.setGlowing(true);
-        navbar.setButton(1, btnTabCrafting);
+        navbar.setButton(1, 1, btnTabCrafting);
 
         btnTabArmor = new GUIButtonGlowing(new GUIItemBuilder(Material.LEATHER_CHESTPLATE) // TODO Color chestplate
-                .setDisplayName(BUTTON_NAME_COLOR + "Dyed Armor").build());
+                .setDisplayName(BUTTON_NAME_COLOR + "Dyed Armor")
+                .setHideInfo(true).build());
         btnTabArmor.setClickAction(info -> btnTabArmorClick(info));
-        navbar.setButton(2, btnTabArmor);
+        navbar.setButton(1, 2, btnTabArmor);
 
         btnTabRepair = new GUIButtonGlowing(new GUIItemBuilder(Material.IRON_PICKAXE)
-                .setDisplayName(BUTTON_NAME_COLOR + "Repair Items").build());
+                .setDisplayName(BUTTON_NAME_COLOR + "Repair Items")
+                .setHideInfo(true).build());
         btnTabRepair.setClickAction(info -> btnTabRepairClick(info));
-        navbar.setButton(3, btnTabRepair);
+        navbar.setButton(1, 3, btnTabRepair);
 
         btnTabFireworks = new GUIButtonGlowing(new GUIItemBuilder(Material.FIREWORK)
-                .setDisplayName(BUTTON_NAME_COLOR + "Fireworks").build());
+                .setDisplayName(BUTTON_NAME_COLOR + "Fireworks")
+                .setHideInfo(true).build());
         btnTabFireworks.setClickAction(info -> btnTabFireworksClick(info));
-        navbar.setButton(4, btnTabFireworks);
+        navbar.setButton(1, 4, btnTabFireworks);
 
         // Update the GUI's layout
         updateLayout();
@@ -141,6 +145,15 @@ public class GUIFastCraft extends GUI {
         guis.remove(player.getUniqueId());
     }
 
+    @Override
+    public void updateLayout() {
+        LayoutRecipes curRecipesLayout = craftLayout.getCurRecipesLayout();
+        curRecipesLayout.updateRecipes();
+        btnPagePrev.setVisible(!curRecipesLayout.isPageFirst());
+        btnPageNext.setVisible(!curRecipesLayout.isPageLast());
+        super.updateLayout();
+    }
+
     /**
      * Get the player being shown this GUI.
      *
@@ -167,11 +180,15 @@ public class GUIFastCraft extends GUI {
 
 
     private boolean btnPagePrevClick(GUIButton.ButtonClick info) {
-        return false; // TODO
+        craftLayout.getCurRecipesLayout().prevPage();
+        updateLayout();
+        return true;
     }
 
     private boolean btnPageNextClick(GUIButton.ButtonClick info) {
-        return false; // TODO
+        craftLayout.getCurRecipesLayout().nextPage();
+        updateLayout();
+        return true;
     }
 
     private boolean btnMultiCraftClick(GUIButton.ButtonClick info) {
@@ -204,7 +221,6 @@ public class GUIFastCraft extends GUI {
     }
 
     private void inventoryChange() {
-        craftLayout.getCurRecipesLayout().updateRecipes();
         updateLayout();
     }
 

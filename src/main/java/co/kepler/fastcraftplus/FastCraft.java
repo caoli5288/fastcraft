@@ -1,6 +1,5 @@
 package co.kepler.fastcraftplus;
 
-import co.kepler.fastcraftplus.crafting.RecipeUtil;
 import co.kepler.fastcraftplus.gui.GUI;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
@@ -33,8 +32,6 @@ public class FastCraft extends JavaPlugin implements Listener {
         instance = this;
 
         Bukkit.getPluginManager().registerEvents(new TestListener(), this);
-
-        RecipeUtil.init();
     }
 
     @Override

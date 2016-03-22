@@ -55,8 +55,30 @@ public class LayoutPaged extends Layout {
      */
     public void setPage(int page) {
         if (page < 0) page = 0;
-        if (page > getPageCount()) page = getPageCount() - 1;
+        if (page > getPageCount() - 1) page = getPageCount() - 1;
         this.page = page;
+    }
+
+    /**
+     * Go to the previous page.
+     */
+    public void prevPage() {
+        setPage(page - 1);
+    }
+
+    /**
+     * Go to the next page.
+     */
+    public void nextPage() {
+        setPage(page + 1);
+    }
+
+    public boolean isPageFirst() {
+        return page == 0;
+    }
+
+    public boolean isPageLast() {
+        return page == getPageCount() - 1;
     }
 
     @Override

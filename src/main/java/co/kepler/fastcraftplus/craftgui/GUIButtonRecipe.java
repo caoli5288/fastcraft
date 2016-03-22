@@ -1,17 +1,18 @@
 package co.kepler.fastcraftplus.craftgui;
 
 import co.kepler.fastcraftplus.crafting.FastRecipe;
+import co.kepler.fastcraftplus.crafting.Ingredient;
 import co.kepler.fastcraftplus.gui.GUIButton;
 import co.kepler.fastcraftplus.gui.Layout;
+import org.bukkit.ChatColor;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * A button that will encapsulate a crafting recipe.
@@ -32,9 +33,33 @@ public class GUIButtonRecipe extends GUIButton {
      * @param recipe The recipe that this button will craft.
      */
     public GUIButtonRecipe(GUIFastCraft gui, FastRecipe recipe) {
-        super(recipe.getResult());
+        super();
         this.gui = gui;
         this.recipe = recipe;
+
+        // Add the ingredients to the lore of the item
+        ItemStack item = recipe.getResult().clone();
+        ItemMeta meta = item.getItemMeta();
+        LinkedList<String> lore = new LinkedList<>();
+        Map<Ingredient, Integer> ingredients = recipe.getIngredients();
+
+        // Add ingredients and amounts to the lore
+        lore.addFirst(ChatColor.GREEN + "Ingredients:");
+        for (Ingredient i : ingredients.keySet()) {
+            // Format: #x Ingredient
+            lore.addLast(ChatColor.GREEN + " " + ingredients.get(i) + "x " + i.getName());
+        }
+
+        // If the item has a lore alread, add a space between the ingredients and the existing lore
+        if (meta.getLore() != null && !meta.getLore().isEmpty()) {
+            lore.addFirst("");
+            lore.addAll(0, meta.getLore());
+        }
+        meta.setLore(lore);
+        item.setItemMeta(meta);
+
+        // Set the item
+        setItem(item);
     }
 
     /**

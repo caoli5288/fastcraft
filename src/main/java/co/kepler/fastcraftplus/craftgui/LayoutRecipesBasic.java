@@ -13,6 +13,6 @@ public class LayoutRecipesBasic extends LayoutRecipes {
 
     @Override
     public void updateRecipes() {
-        addRecipes(RecipeUtil.getRecipes());
+        addRecipes(RecipeUtil.getInstance().getRecipes());
     }
 }

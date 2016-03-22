@@ -7,6 +7,8 @@ import co.kepler.fastcraftplus.gui.LayoutMulti;
  * The button layout for the FastCraft GUI.
  */
 public class LayoutFastCraft extends LayoutMulti {
+    private static final int NAV_BUFFER = 1;
+
     private final GUIFastCraft gui;
 
     private final Layout layoutNavbar;
@@ -33,7 +35,7 @@ public class LayoutFastCraft extends LayoutMulti {
     @Override
     public void setHeight(int height) {
         super.setHeight(height);
-        setTopLayoutHeight(height - 1);
+        setTopLayoutHeight(height - 2);
     }
 
     /**
