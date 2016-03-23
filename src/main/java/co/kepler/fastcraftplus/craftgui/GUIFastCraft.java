@@ -12,7 +12,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockBurnEvent;
-import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
@@ -317,12 +316,6 @@ public class GUIFastCraft extends GUI {
 
         @EventHandler(priority = EventPriority.HIGHEST)
         public void onBlockBurn(BlockBurnEvent e) {
-            if (e.isCancelled()) return;
-            blockRemoved(e.getBlock());
-        }
-
-        @EventHandler(priority = EventPriority.HIGHEST)
-        public void onBlockExplode(BlockExplodeEvent e) {
             if (e.isCancelled()) return;
             blockRemoved(e.getBlock());
         }

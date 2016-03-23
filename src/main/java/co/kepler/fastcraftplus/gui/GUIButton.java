@@ -8,6 +8,8 @@ import org.bukkit.inventory.ItemStack;
  * A button for the GUI that players can interact with.
  */
 public class GUIButton {
+    private static Sound DEFAULT_CLICK_SOUND = null;
+
     private ItemStack item;
     private boolean visible = true;
     private ButtonClickAction clickAction = null;
@@ -75,7 +77,16 @@ public class GUIButton {
      * Get the sound to be played when the button is clicked
      */
     public Sound getClickSound() {
-        return Sound.UI_BUTTON_CLICK;
+        if (DEFAULT_CLICK_SOUND == null) {
+            try {
+                // 1.9
+                DEFAULT_CLICK_SOUND = Sound.valueOf("UI_BUTTON_CLICK");
+            } catch (IllegalArgumentException e) {
+                // 1.8 and before
+                DEFAULT_CLICK_SOUND = Sound.valueOf("CLICK");
+            }
+        }
+        return DEFAULT_CLICK_SOUND;
     }
 
     /**
