@@ -73,10 +73,20 @@ public class LayoutPaged extends Layout {
         setPage(page + 1);
     }
 
+    /**
+     * See if the current page is the first page.
+     *
+     * @return Returns true if the current page is the first page.
+     */
     public boolean isPageFirst() {
         return page == 0;
     }
 
+    /**
+     * See if the current page is the last page.
+     *
+     * @return Returns true if the current page is the last page.
+     */
     public boolean isPageLast() {
         return page == getPageCount() - 1;
     }

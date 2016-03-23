@@ -1,7 +1,6 @@
 package co.kepler.fastcraftplus.gui;
 
 import co.kepler.fastcraftplus.FastCraft;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
@@ -52,16 +51,6 @@ public class GUI implements InventoryHolder {
             Bukkit.getPluginManager().registerEvents(new GUIListener(), FastCraft.getInstance());
             listenersRegistered = true;
         }
-    }
-
-    /**
-     * Create a new inventory GUI.
-     *
-     * @param title  The title of the GUI.
-     * @param height The height of the GUI.
-     */
-    public GUI(TextComponent title, int height) {
-        this(title.toLegacyText(), height);
     }
 
     /**
@@ -138,6 +127,7 @@ public class GUI implements InventoryHolder {
     /**
      * Update the GUI's layout.
      */
+    @SuppressWarnings("deprecation")
     public void updateLayout() {
         // Clear the inventory, get all its buttons.
         inv.clear();
@@ -197,13 +187,12 @@ public class GUI implements InventoryHolder {
      * Handles all inventory events, and forwards button presses.
      */
     public static class GUIListener implements Listener {
-
         @EventHandler(priority = EventPriority.LOWEST)
         public void onInventoryClick(InventoryClickEvent e) {
             GUI gui = GUI.getGUI(e.getView());
             if (e.isCancelled() || gui == null) return;
 
-            if (e.getInventory() == e.getClickedInventory()) {
+            if (e.getRawSlot() < e.getInventory().getSize()) {
                 // If the GUI was clicked...
                 e.setCancelled(true);
 

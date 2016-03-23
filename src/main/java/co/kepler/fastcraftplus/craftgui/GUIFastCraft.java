@@ -2,32 +2,37 @@ package co.kepler.fastcraftplus.craftgui;
 
 import co.kepler.fastcraftplus.FastCraft;
 import co.kepler.fastcraftplus.gui.*;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
+import org.bukkit.block.Block;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockBurnEvent;
+import org.bukkit.event.block.BlockExplodeEvent;
+import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryPickupItemEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * The FastCraft crafting GUI.
  */
 public class GUIFastCraft extends GUI {
     private static final ChatColor BUTTON_NAME_COLOR = ChatColor.GREEN;
+    private static final String NOT_YET_IMPLEMENTED = ChatColor.RED + "Not Yet Implemented";
 
-    private static Map<UUID, GUIFastCraft> guis;
-    private static boolean listenersRegistered = false;
+    private static Map<Object, GUIFastCraft> guis; // <Location or UUID, GUIFastCraft>
 
     private final LayoutFastCraft craftLayout;
     private final Player player;
@@ -35,13 +40,13 @@ public class GUIFastCraft extends GUI {
 
     private final GUIButton btnPagePrev;
     private final GUIButton btnPageNext;
-    private final GUIButton btnMultiCraft;
+    private final GUIButton btnRefresh;
+    private final GUIButton btnCraftingMultiplier;
     private final GUIButton btnWorkbench;
     private final GUIButtonGlowing btnTabCrafting;
     private final GUIButtonGlowing btnTabArmor;
     private final GUIButtonGlowing btnTabRepair;
     private final GUIButtonGlowing btnTabFireworks;
-
 
     /**
      * Create a new instance of a FastCraft GUI.
@@ -60,62 +65,87 @@ public class GUIFastCraft extends GUI {
         // Create buttons TODO Localize
         Layout navbar = craftLayout.getLayoutNavbar();
 
+        // Create Previous Page button
         btnPagePrev = new GUIButton(new GUIItemBuilder(Material.ARROW)
                 .setDisplayName(BUTTON_NAME_COLOR + "Previous Page")
                 .setHideInfo(true).build());
-        btnPagePrev.setClickAction(info -> btnPagePrevClick(info));
+        btnPagePrev.setClickAction(this::btnPagePrevClick);
         navbar.setButton(1, 0, btnPagePrev);
 
+        // Create Next Page button
         btnPageNext = new GUIButton(new GUIItemBuilder(Material.ARROW)
                 .setDisplayName(BUTTON_NAME_COLOR + "Next Page")
                 .setHideInfo(true).build());
-        btnPageNext.setClickAction(info -> btnPageNextClick(info));
+        btnPageNext.setClickAction(this::btnPageNextClick);
         navbar.setButton(1, 8, btnPageNext);
 
-        btnMultiCraft = new GUIButton(new GUIItemBuilder(Material.ANVIL)
-                .setDisplayName(BUTTON_NAME_COLOR + "Craft Amount").build());
-        btnMultiCraft.setClickAction(info -> btnMultiCraftClick(info));
-        navbar.setButton(1, 6, btnMultiCraft);
+        // Create Refresh button
+        btnRefresh = new GUIButton(new GUIItemBuilder(Material.NETHER_STAR)
+                .setDisplayName(BUTTON_NAME_COLOR + "Refresh")
+                .setHideInfo(true).build());
+        btnRefresh.setClickAction(this::btnRefreshClick);
+        navbar.setButton(1, 5, btnRefresh);
 
+        // Create Crafting Multiplier button
+        btnCraftingMultiplier = new GUIButton(new GUIItemBuilder(Material.ANVIL)
+                .setDisplayName(BUTTON_NAME_COLOR + "Crafting Multiplier")
+                .setLore(NOT_YET_IMPLEMENTED).build());
+        btnCraftingMultiplier.setClickAction(this::btnCraftingMultiplierClick);
+        navbar.setButton(1, 7, btnCraftingMultiplier);
+
+        // Create Workbench button
         btnWorkbench = new GUIButton(new GUIItemBuilder(Material.WORKBENCH)
                 .setDisplayName(BUTTON_NAME_COLOR + "Open Crafting Grid").build());
-        btnWorkbench.setClickAction(info -> btnWorkbenchClick(info));
-        navbar.setButton(1, 7, btnWorkbench);
+        btnWorkbench.setClickAction(this::btnWorkbenchClick);
+        navbar.setButton(1, 6, btnWorkbench);
 
+        // Create Crafting button
         btnTabCrafting = new GUIButtonGlowing(new GUIItemBuilder(Material.STICK)
                 .setDisplayName(BUTTON_NAME_COLOR + "Crafting")
                 .setHideInfo(true).build());
-        btnTabCrafting.setClickAction(info -> btnTabCraftingClick(info));
+        btnTabCrafting.setClickAction(this::btnTabCraftingClick);
         btnTabCrafting.setGlowing(true);
         navbar.setButton(1, 1, btnTabCrafting);
 
-        btnTabArmor = new GUIButtonGlowing(new GUIItemBuilder(Material.LEATHER_CHESTPLATE) // TODO Color chestplate
+        // Create armor button
+        ItemStack coloredChestplate = new GUIItemBuilder(Material.LEATHER_CHESTPLATE)
                 .setDisplayName(BUTTON_NAME_COLOR + "Dyed Armor")
-                .setHideInfo(true).build());
-        btnTabArmor.setClickAction(info -> btnTabArmorClick(info));
+                .setLore(NOT_YET_IMPLEMENTED)
+                .setHideInfo(true).build();
+        LeatherArmorMeta chestplateMeta = (LeatherArmorMeta) coloredChestplate.getItemMeta();
+        chestplateMeta.setColor(Color.fromRGB(0x4C72C5));
+        coloredChestplate.setItemMeta(chestplateMeta);
+        btnTabArmor = new GUIButtonGlowing(coloredChestplate);
+        btnTabArmor.setClickAction(this::btnTabArmorClick);
         navbar.setButton(1, 2, btnTabArmor);
 
-        btnTabRepair = new GUIButtonGlowing(new GUIItemBuilder(Material.IRON_PICKAXE)
-                .setDisplayName(BUTTON_NAME_COLOR + "Repair Items")
-                .setHideInfo(true).build());
-        btnTabRepair.setClickAction(info -> btnTabRepairClick(info));
-        navbar.setButton(1, 3, btnTabRepair);
-
+        // Create Fireworks button
         btnTabFireworks = new GUIButtonGlowing(new GUIItemBuilder(Material.FIREWORK)
                 .setDisplayName(BUTTON_NAME_COLOR + "Fireworks")
+                .setLore(NOT_YET_IMPLEMENTED)
                 .setHideInfo(true).build());
-        btnTabFireworks.setClickAction(info -> btnTabFireworksClick(info));
-        navbar.setButton(1, 4, btnTabFireworks);
+        btnTabFireworks.setClickAction(this::btnTabFireworksClick);
+        navbar.setButton(1, 3, btnTabFireworks);
+
+        // Create Repair button
+        btnTabRepair = new GUIButtonGlowing(new GUIItemBuilder(Material.IRON_PICKAXE)
+                .setDisplayName(BUTTON_NAME_COLOR + "Repair Items")
+                .setLore(NOT_YET_IMPLEMENTED)
+                .setHideInfo(true).build());
+        btnTabRepair.setClickAction(this::btnTabRepairClick);
+        // navbar.setButton(1, 4, btnTabRepair);
 
         // Update the GUI's layout
         updateLayout();
 
-        // Register listeners if necessary
-        if (!listenersRegistered) {
-            Bukkit.getPluginManager().registerEvents(new GUIListener(), FastCraft.getInstance());
-            guis = new HashMap<>();
-        }
+        // Add to guis
         guis.put(player.getUniqueId(), this);
+        guis.put(location, this);
+    }
+
+    public static void init() {
+        Bukkit.getPluginManager().registerEvents(new GUIListener(), FastCraft.getInstance());
+        guis = new HashMap<>();
     }
 
     @Override
@@ -143,6 +173,7 @@ public class GUIFastCraft extends GUI {
     public void dispose() {
         super.dispose();
         guis.remove(player.getUniqueId());
+        guis.remove(location);
     }
 
     @Override
@@ -191,7 +222,13 @@ public class GUIFastCraft extends GUI {
         return true;
     }
 
-    private boolean btnMultiCraftClick(GUIButton.ButtonClick info) {
+    private boolean btnRefreshClick(GUIButton.ButtonClick info) {
+        craftLayout.getCurRecipesLayout().clearButtons();
+        updateLayout();
+        return true;
+    }
+
+    private boolean btnCraftingMultiplierClick(GUIButton.ButtonClick info) {
         return false; // TODO
     }
 
@@ -257,7 +294,52 @@ public class GUIFastCraft extends GUI {
             GUIFastCraft gui = guis.get(player.getUniqueId());
             if (gui != null) {
                 FastCraft fc = FastCraft.getInstance();
-                Bukkit.getScheduler().scheduleSyncDelayedTask(fc, () -> gui.inventoryChange(), 1L);
+                Bukkit.getScheduler().scheduleSyncDelayedTask(fc, gui::inventoryChange, 1L);
+            }
+        }
+
+        @EventHandler(priority = EventPriority.HIGHEST)
+        public void onPlayerInteract(PlayerInteractEvent e) {
+            if (e.isCancelled()) return;
+            if (e.getAction() != Action.RIGHT_CLICK_BLOCK) return;
+            if (e.getClickedBlock().getType() != Material.WORKBENCH) return;
+
+            // Cancel the interaction, and show the FastCraft GUI.
+            e.setCancelled(true);
+            new GUIFastCraft(e.getPlayer(), e.getClickedBlock().getLocation()).show();
+        }
+
+        @EventHandler(priority = EventPriority.HIGHEST)
+        public void onBlockBreak(BlockBreakEvent e) {
+            if (e.isCancelled()) return;
+            blockRemoved(e.getBlock());
+        }
+
+        @EventHandler(priority = EventPriority.HIGHEST)
+        public void onBlockBurn(BlockBurnEvent e) {
+            if (e.isCancelled()) return;
+            blockRemoved(e.getBlock());
+        }
+
+        @EventHandler(priority = EventPriority.HIGHEST)
+        public void onBlockExplode(BlockExplodeEvent e) {
+            if (e.isCancelled()) return;
+            blockRemoved(e.getBlock());
+        }
+
+        @EventHandler(priority = EventPriority.HIGHEST)
+        public void onEntityExplode(EntityExplodeEvent e) {
+            if (e.isCancelled()) return;
+            for (Block b : e.blockList()) {
+                blockRemoved(b);
+            }
+        }
+
+        private void blockRemoved(Block b) {
+            if (b.getType() != Material.WORKBENCH) return;
+            GUIFastCraft gui = guis.get(b.getLocation());
+            if (gui != null) {
+                gui.dispose();
             }
         }
     }

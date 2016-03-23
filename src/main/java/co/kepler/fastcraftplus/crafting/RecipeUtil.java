@@ -17,8 +17,8 @@ import java.util.List;
  */
 public class RecipeUtil {
     private static final String[] IGNORE_RECIPES = new String[]{
-            "RecipeArmorDye", "RecipeBookClone", "RecipeMapClone",
-            "RecipeMapExtend", "RecipeFireworks", "RecipeRepair"
+            "RecipeArmorDye", "RecipeBookClone", "RecipeMapClone", "RecipeMapExtend",
+            "RecipeFireworks", "RecipeRepair", "RecipesBanner"
     };
 
     private static RecipeUtil instance;
@@ -93,6 +93,10 @@ public class RecipeUtil {
     private boolean ignoreRecipe(Object iRecipe) {
         for (Class c : ignoreRecipeClasses) {
             if (c.isInstance(iRecipe)) {
+                // If this class should be ignored
+                return true;
+            } else if (c.equals(iRecipe.getClass().getEnclosingClass())) {
+                // If the enclosing class should be ignored
                 return true;
             }
         }

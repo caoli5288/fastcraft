@@ -1,7 +1,7 @@
 package co.kepler.fastcraftplus;
 
+import co.kepler.fastcraftplus.craftgui.GUIFastCraft;
 import co.kepler.fastcraftplus.gui.GUI;
-import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -31,7 +31,7 @@ public class FastCraft extends JavaPlugin implements Listener {
     public void onEnable() {
         instance = this;
 
-        Bukkit.getPluginManager().registerEvents(new TestListener(), this);
+        GUIFastCraft.init();
     }
 
     @Override
