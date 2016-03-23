@@ -151,11 +151,13 @@ public class FastRecipe implements Comparable<FastRecipe> {
             if (contents[i] == null) continue;
             contents[i] = contents[i].clone();
         }
-        boolean result = removeIngredients(contents);
-        if (result && remove) {
+
+        boolean allRemoved = removeIngredients(contents);
+        if (allRemoved && remove) {
             player.getInventory().setContents(contents);
+            RecipeUtil.getInstance().awardAchievement(player, result);
         }
-        return result;
+        return allRemoved;
     }
 
     @Override

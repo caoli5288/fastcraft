@@ -2,7 +2,10 @@ package co.kepler.fastcraftplus.crafting;
 
 import co.kepler.fastcraftplus.FastCraft;
 import com.google.common.collect.Iterators;
+import org.bukkit.Achievement;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 
@@ -11,6 +14,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Utility methods for recipes.
@@ -30,6 +34,8 @@ public class RecipeUtil {
     private List<Class> ignoreRecipeClasses;
     private Method methodAsNMSCopy;
     private Method methodNMSGetName;
+
+    private Map<Material, Achievement> craftingAchievements;
 
     /**
      * Create a new instance of RecipeUtil
@@ -62,6 +68,15 @@ public class RecipeUtil {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        craftingAchievements.put(Material.WORKBENCH, Achievement.BUILD_WORKBENCH);
+        craftingAchievements.put(Material.WOOD_PICKAXE, Achievement.BUILD_PICKAXE);
+        craftingAchievements.put(Material.FURNACE, Achievement.BUILD_FURNACE);
+        craftingAchievements.put(Material.WOOD_HOE, Achievement.BUILD_HOE);
+        craftingAchievements.put(Material.BREAD, Achievement.MAKE_BREAD);
+        craftingAchievements.put(Material.CAKE, Achievement.BAKE_CAKE);
+        craftingAchievements.put(Material.STONE_PICKAXE, Achievement.BUILD_BETTER_PICKAXE);
+        craftingAchievements.put(Material.WOOD_SWORD, Achievement.BUILD_SWORD);
     }
 
     /**
@@ -143,5 +158,20 @@ public class RecipeUtil {
         }
         new Exception("getItemName() can't find name").printStackTrace(); // TODO Remove
         return "ERROR";
+    }
+
+    /**
+     * Award a player an achievement for crafting an item.
+     *
+     * @param player      The player to award the achievement to.
+     * @param craftedItem The item the player crafted.
+     */
+    public void awardAchievement(Player player, ItemStack craftedItem) {
+        Achievement a = craftingAchievements.get(craftedItem.getType());
+        if (a == null) return;
+        if (player.hasAchievement(a)) return;
+        if (a.getParent() == null || player.hasAchievement(a.getParent())) {
+            player.awardAchievement(a);
+        }
     }
 }
