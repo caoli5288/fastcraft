@@ -11,10 +11,7 @@ import org.bukkit.inventory.Recipe;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Utility methods for recipes.
@@ -69,6 +66,7 @@ public class RecipeUtil {
             e.printStackTrace();
         }
 
+        craftingAchievements = new HashMap<>();
         craftingAchievements.put(Material.WORKBENCH, Achievement.BUILD_WORKBENCH);
         craftingAchievements.put(Material.WOOD_PICKAXE, Achievement.BUILD_PICKAXE);
         craftingAchievements.put(Material.FURNACE, Achievement.BUILD_FURNACE);
