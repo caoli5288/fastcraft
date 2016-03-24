@@ -51,6 +51,7 @@ public class GUIFastCraft extends GUI {
      *
      * @param player The player who will be shown this GUI.
      */
+    @SuppressWarnings("all")
     public GUIFastCraft(Player player, Location location) {
         super("FastCraft+", 6); // TODO Localize
 
@@ -60,10 +61,7 @@ public class GUIFastCraft extends GUI {
         craftLayout = new LayoutFastCraft(this);
         setLayout(craftLayout);
 
-        // Create buttons TODO Localize
-        Layout navbar = craftLayout.getLayoutNavbar();
-
-        // Create Previous Page button
+        // Create Previous Page button // TODO Localize
         btnPagePrev = new GUIButton(new GUIItemBuilder(Material.ARROW)
                 .setDisplayName(BUTTON_NAME_COLOR + "Previous Page")
                 .setHideInfo(true).build());
@@ -72,7 +70,6 @@ public class GUIFastCraft extends GUI {
                 return btnPagePrevClick(info);
             }
         });
-        navbar.setButton(1, 0, btnPagePrev);
 
         // Create Next Page button
         btnPageNext = new GUIButton(new GUIItemBuilder(Material.ARROW)
@@ -83,7 +80,6 @@ public class GUIFastCraft extends GUI {
                 return btnPageNextClick(info);
             }
         });
-        navbar.setButton(1, 8, btnPageNext);
 
         // Create Refresh button
         btnRefresh = new GUIButton(new GUIItemBuilder(Material.NETHER_STAR)
@@ -94,7 +90,6 @@ public class GUIFastCraft extends GUI {
                 return btnRefreshClick(info);
             }
         });
-        navbar.setButton(1, 5, btnRefresh);
 
         // Create Crafting Multiplier button
         btnCraftingMultiplier = new GUIButton(new GUIItemBuilder(Material.ANVIL)
@@ -105,7 +100,6 @@ public class GUIFastCraft extends GUI {
                 return btnCraftingMultiplierClick(info);
             }
         });
-        navbar.setButton(1, 7, btnCraftingMultiplier);
 
         // Create Workbench button
         btnWorkbench = new GUIButton(new GUIItemBuilder(Material.WORKBENCH)
@@ -115,7 +109,6 @@ public class GUIFastCraft extends GUI {
                 return btnWorkbenchClick(info);
             }
         });
-        navbar.setButton(1, 6, btnWorkbench);
 
         // Create Crafting button
         btnTabCrafting = new GUIButtonGlowing(new GUIItemBuilder(Material.STICK)
@@ -127,7 +120,6 @@ public class GUIFastCraft extends GUI {
             }
         });
         btnTabCrafting.setGlowing(true);
-        navbar.setButton(1, 1, btnTabCrafting);
 
         // Create armor button
         ItemStack coloredChestplate = new GUIItemBuilder(Material.LEATHER_CHESTPLATE)
@@ -143,7 +135,6 @@ public class GUIFastCraft extends GUI {
                 return btnTabArmorClick(info);
             }
         });
-        navbar.setButton(1, 2, btnTabArmor);
 
         // Create Fireworks button
         btnTabFireworks = new GUIButtonGlowing(new GUIItemBuilder(Material.FIREWORK)
@@ -155,7 +146,22 @@ public class GUIFastCraft extends GUI {
                 return btnTabFireworksClick(info);
             }
         });
-        navbar.setButton(1, 3, btnTabFireworks);
+
+        // Add buttons to the navbar
+        Layout navbar = craftLayout.getLayoutNavbar();
+        navbar.setButton(1, 0, btnPagePrev);
+        navbar.setButton(1, 8, btnPageNext);
+        if (FastCraft.isPremium()) {
+            navbar.setButton(1, 1, btnTabCrafting);
+            navbar.setButton(1, 2, btnTabArmor);
+            navbar.setButton(1, 3, btnTabFireworks);
+            navbar.setButton(1, 7, btnCraftingMultiplier);
+            navbar.setButton(1, 6, btnWorkbench);
+            navbar.setButton(1, 5, btnRefresh);
+        } else {
+            navbar.setButton(1, 4, btnWorkbench);
+            navbar.setButton(1, 5, btnRefresh);
+        }
 
         // Update the GUI's layout
         updateLayout();
