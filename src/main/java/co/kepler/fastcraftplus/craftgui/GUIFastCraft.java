@@ -44,7 +44,6 @@ public class GUIFastCraft extends GUI {
     private final GUIButton btnWorkbench;
     private final GUIButtonGlowing btnTabCrafting;
     private final GUIButtonGlowing btnTabArmor;
-    private final GUIButtonGlowing btnTabRepair;
     private final GUIButtonGlowing btnTabFireworks;
 
     /**
@@ -68,41 +67,65 @@ public class GUIFastCraft extends GUI {
         btnPagePrev = new GUIButton(new GUIItemBuilder(Material.ARROW)
                 .setDisplayName(BUTTON_NAME_COLOR + "Previous Page")
                 .setHideInfo(true).build());
-        btnPagePrev.setClickAction(this::btnPagePrevClick);
+        btnPagePrev.setClickAction(new GUIButton.ClickAction() {
+            public boolean onClick(GUIButton.Click info) {
+                return btnPagePrevClick(info);
+            }
+        });
         navbar.setButton(1, 0, btnPagePrev);
 
         // Create Next Page button
         btnPageNext = new GUIButton(new GUIItemBuilder(Material.ARROW)
                 .setDisplayName(BUTTON_NAME_COLOR + "Next Page")
                 .setHideInfo(true).build());
-        btnPageNext.setClickAction(this::btnPageNextClick);
+        btnPageNext.setClickAction(new GUIButton.ClickAction() {
+            public boolean onClick(GUIButton.Click info) {
+                return btnPageNextClick(info);
+            }
+        });
         navbar.setButton(1, 8, btnPageNext);
 
         // Create Refresh button
         btnRefresh = new GUIButton(new GUIItemBuilder(Material.NETHER_STAR)
                 .setDisplayName(BUTTON_NAME_COLOR + "Refresh")
                 .setHideInfo(true).build());
-        btnRefresh.setClickAction(this::btnRefreshClick);
+        btnRefresh.setClickAction(new GUIButton.ClickAction() {
+            public boolean onClick(GUIButton.Click info) {
+                return btnRefreshClick(info);
+            }
+        });
         navbar.setButton(1, 5, btnRefresh);
 
         // Create Crafting Multiplier button
         btnCraftingMultiplier = new GUIButton(new GUIItemBuilder(Material.ANVIL)
                 .setDisplayName(BUTTON_NAME_COLOR + "Crafting Multiplier")
                 .setLore(NOT_YET_IMPLEMENTED).build());
-        btnCraftingMultiplier.setClickAction(this::btnCraftingMultiplierClick);
+        btnCraftingMultiplier.setClickAction(new GUIButton.ClickAction() {
+            public boolean onClick(GUIButton.Click info) {
+                return btnCraftingMultiplierClick(info);
+            }
+        });
         navbar.setButton(1, 7, btnCraftingMultiplier);
 
         // Create Workbench button
         btnWorkbench = new GUIButton(new GUIItemBuilder(Material.WORKBENCH)
                 .setDisplayName(BUTTON_NAME_COLOR + "Open Crafting Grid").build());
-        btnWorkbench.setClickAction(this::btnWorkbenchClick);
+        btnWorkbench.setClickAction(new GUIButton.ClickAction() {
+            public boolean onClick(GUIButton.Click info) {
+                return btnWorkbenchClick(info);
+            }
+        });
         navbar.setButton(1, 6, btnWorkbench);
 
         // Create Crafting button
         btnTabCrafting = new GUIButtonGlowing(new GUIItemBuilder(Material.STICK)
                 .setDisplayName(BUTTON_NAME_COLOR + "Crafting")
                 .setHideInfo(true).build());
-        btnTabCrafting.setClickAction(this::btnTabCraftingClick);
+        btnTabCrafting.setClickAction(new GUIButton.ClickAction() {
+            public boolean onClick(GUIButton.Click info) {
+                return btnTabCraftingClick(info);
+            }
+        });
         btnTabCrafting.setGlowing(true);
         navbar.setButton(1, 1, btnTabCrafting);
 
@@ -115,7 +138,11 @@ public class GUIFastCraft extends GUI {
         chestplateMeta.setColor(Color.fromRGB(0x4C72C5));
         coloredChestplate.setItemMeta(chestplateMeta);
         btnTabArmor = new GUIButtonGlowing(coloredChestplate);
-        btnTabArmor.setClickAction(this::btnTabArmorClick);
+        btnTabArmor.setClickAction(new GUIButton.ClickAction() {
+            public boolean onClick(GUIButton.Click info) {
+                return btnTabArmorClick(info);
+            }
+        });
         navbar.setButton(1, 2, btnTabArmor);
 
         // Create Fireworks button
@@ -123,16 +150,12 @@ public class GUIFastCraft extends GUI {
                 .setDisplayName(BUTTON_NAME_COLOR + "Fireworks")
                 .setLore(NOT_YET_IMPLEMENTED)
                 .setHideInfo(true).build());
-        btnTabFireworks.setClickAction(this::btnTabFireworksClick);
+        btnTabFireworks.setClickAction(new GUIButton.ClickAction() {
+            public boolean onClick(GUIButton.Click info) {
+                return btnTabFireworksClick(info);
+            }
+        });
         navbar.setButton(1, 3, btnTabFireworks);
-
-        // Create Repair button
-        btnTabRepair = new GUIButtonGlowing(new GUIItemBuilder(Material.IRON_PICKAXE)
-                .setDisplayName(BUTTON_NAME_COLOR + "Repair Items")
-                .setLore(NOT_YET_IMPLEMENTED)
-                .setHideInfo(true).build());
-        btnTabRepair.setClickAction(this::btnTabRepairClick);
-        // navbar.setButton(1, 4, btnTabRepair);
 
         // Update the GUI's layout
         updateLayout();
@@ -201,7 +224,6 @@ public class GUIFastCraft extends GUI {
     private void showTab(CraftingTab tab) {
         btnTabCrafting.setGlowing(tab == CraftingTab.CRAFTING);
         btnTabArmor.setGlowing(tab == CraftingTab.ARMOR);
-        btnTabRepair.setGlowing(tab == CraftingTab.REPAIR);
         btnTabFireworks.setGlowing(tab == CraftingTab.FIREWORKS);
 
         craftLayout.showLayout(tab);
@@ -209,49 +231,44 @@ public class GUIFastCraft extends GUI {
     }
 
 
-    private boolean btnPagePrevClick(GUIButton.ButtonClick info) {
+    private boolean btnPagePrevClick(GUIButton.Click info) {
         craftLayout.getCurRecipesLayout().prevPage();
         updateLayout();
         return true;
     }
 
-    private boolean btnPageNextClick(GUIButton.ButtonClick info) {
+    private boolean btnPageNextClick(GUIButton.Click info) {
         craftLayout.getCurRecipesLayout().nextPage();
         updateLayout();
         return true;
     }
 
-    private boolean btnRefreshClick(GUIButton.ButtonClick info) {
+    private boolean btnRefreshClick(GUIButton.Click info) {
         craftLayout.getCurRecipesLayout().clearButtons();
         updateLayout();
         return true;
     }
 
-    private boolean btnCraftingMultiplierClick(GUIButton.ButtonClick info) {
+    private boolean btnCraftingMultiplierClick(GUIButton.Click info) {
         return false; // TODO
     }
 
-    private boolean btnWorkbenchClick(GUIButton.ButtonClick info) {
+    private boolean btnWorkbenchClick(GUIButton.Click info) {
         player.openWorkbench(location, true); // TODO Don't force
         return true;
     }
 
-    private boolean btnTabCraftingClick(GUIButton.ButtonClick info) {
+    private boolean btnTabCraftingClick(GUIButton.Click info) {
         showTab(CraftingTab.CRAFTING);
         return true;
     }
 
-    private boolean btnTabArmorClick(GUIButton.ButtonClick info) {
+    private boolean btnTabArmorClick(GUIButton.Click info) {
         showTab(CraftingTab.ARMOR);
         return true;
     }
 
-    private boolean btnTabRepairClick(GUIButton.ButtonClick info) {
-        showTab(CraftingTab.REPAIR);
-        return true;
-    }
-
-    private boolean btnTabFireworksClick(GUIButton.ButtonClick info) {
+    private boolean btnTabFireworksClick(GUIButton.Click info) {
         showTab(CraftingTab.FIREWORKS);
         return true;
     }
@@ -290,10 +307,14 @@ public class GUIFastCraft extends GUI {
          * @param player The player whose inventory was changed.
          */
         private void invChange(HumanEntity player) {
-            GUIFastCraft gui = guis.get(player.getUniqueId());
+            final GUIFastCraft gui = guis.get(player.getUniqueId());
             if (gui != null) {
                 FastCraft fc = FastCraft.getInstance();
-                Bukkit.getScheduler().scheduleSyncDelayedTask(fc, gui::inventoryChange, 1L);
+                Bukkit.getScheduler().scheduleSyncDelayedTask(fc, new Runnable() {
+                    public void run() {
+                        gui.inventoryChange();
+                    }
+                }, 1L);
             }
         }
 

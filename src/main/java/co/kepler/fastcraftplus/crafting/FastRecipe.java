@@ -31,14 +31,16 @@ public class FastRecipe implements Comparable<FastRecipe> {
                     ItemStack is = r.getIngredientMap().get(c);
                     if (is == null) continue;
                     Ingredient i = new Ingredient(is);
-                    ingredients.put(i, ingredients.getOrDefault(i, 0) + 1);
+                    Integer old = ingredients.get(i);
+                    ingredients.put(i, (old == null ? 0 : old) + 1);
                 }
             }
         } else if (recipe instanceof ShapelessRecipe) {
             ShapelessRecipe r = (ShapelessRecipe) recipe;
             for (ItemStack is : r.getIngredientList()) {
                 Ingredient i = new Ingredient(is);
-                ingredients.put(i, ingredients.getOrDefault(i, 0) + 1);
+                Integer old = ingredients.get(i);
+                ingredients.put(i, (old == null ? 0 : old) + 1);
             }
         }
 

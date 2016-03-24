@@ -41,7 +41,8 @@ public class Ingredient {
         for (ItemStack is : items) {
             if (is == null || is.getType() == Material.AIR) continue;
             Ingredient i = new Ingredient(is);
-            result.put(i, result.getOrDefault(i, 0) + 1);
+            Integer old = result.get(i);
+            result.put(i, (old == null ? 0 : old) + 1);
         }
         return result;
     }

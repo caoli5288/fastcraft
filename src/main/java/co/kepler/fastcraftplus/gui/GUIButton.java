@@ -12,7 +12,7 @@ public class GUIButton {
 
     private ItemStack item;
     private boolean visible = true;
-    private ButtonClickAction clickAction = null;
+    private ClickAction clickAction = null;
 
     /**
      * Create a new GUIButton with a null ItemStack
@@ -96,7 +96,7 @@ public class GUIButton {
      * @param invEvent The inventory event triggered by the click.
      */
     public boolean onClick(Layout layout, InventoryClickEvent invEvent) {
-        return clickAction != null && clickAction.onClick(new ButtonClick(this, invEvent));
+        return clickAction != null && clickAction.onClick(new Click(this, invEvent));
     }
 
     /**
@@ -104,31 +104,31 @@ public class GUIButton {
      *
      * @param clickAction The click action to be run when the button is clicked.
      */
-    public void setClickAction(ButtonClickAction clickAction) {
+    public void setClickAction(ClickAction clickAction) {
         this.clickAction = clickAction;
     }
 
     /**
      * Contains code to be run when a button is clicked.
      */
-    public interface ButtonClickAction {
+    public interface ClickAction {
         /**
          * Called when the button is clicked in the GUI.
          *
          * @param clickInfo The information about the button click.
          * @return Return true if the button's click noise should be played.
          */
-        boolean onClick(ButtonClick clickInfo);
+        boolean onClick(Click clickInfo);
     }
 
     /**
-     * Info about a button click that can be used in the ButtonClickAction.
+     * Info about a button click that can be used in the ClickAction.
      */
-    public class ButtonClick {
+    public class Click {
         public final InventoryClickEvent event;
         GUIButton button;
 
-        public ButtonClick(GUIButton button, InventoryClickEvent event) {
+        public Click(GUIButton button, InventoryClickEvent event) {
             this.button = button;
             this.event = event;
         }

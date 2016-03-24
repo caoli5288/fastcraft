@@ -68,7 +68,7 @@ public class GUIButtonRecipe extends GUIButton {
      * @param clickAction The click action to be run when the button is clicked.
      */
     @Override
-    public void setClickAction(ButtonClickAction clickAction) {
+    public void setClickAction(ClickAction clickAction) {
         throw new UnsupportedOperationException();
     }
 
