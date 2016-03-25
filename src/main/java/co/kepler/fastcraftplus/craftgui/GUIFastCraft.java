@@ -123,8 +123,8 @@ public class GUIFastCraft extends GUI {
 
         // Create Crafting button
         btnTabCrafting = new GUIButtonGlowing(new GUIItemBuilder(Material.STICK)
-                .setDisplayName(FastCraft.lang().gui.toolbar.craftBasic.title())
-                .setLore(FastCraft.lang().gui.toolbar.craftBasic.description())
+                .setDisplayName(FastCraft.lang().gui.toolbar.craftItems.title())
+                .setLore(FastCraft.lang().gui.toolbar.craftItems.description())
                 .setHideInfo(true).build());
         btnTabCrafting.setClickAction(new GUIButton.ClickAction() {
             public boolean onClick(GUIButton.Click info) {

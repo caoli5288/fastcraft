@@ -22,10 +22,10 @@ gui:
       description: # Variables: prev, total, cur
       - '&bGo to page %next%/%total%'
 
-    craft-basic:
+    craft-items:
       title: '&aCraft Items'
       description:
-      - '&bCraft basic items'
+      - '&bCraft items'
 
     craft-armor:
       title: '&aCraft Dyed Armor'

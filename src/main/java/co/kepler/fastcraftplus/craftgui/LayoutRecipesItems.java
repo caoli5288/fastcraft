@@ -3,11 +3,11 @@ package co.kepler.fastcraftplus.craftgui;
 import co.kepler.fastcraftplus.crafting.RecipeUtil;
 
 /**
- * A recipes layout that shows basic crafting recipes.
+ * A recipes layout that shows item crafting recipes.
  */
-public class LayoutRecipesBasic extends LayoutRecipes {
+public class LayoutRecipesItems extends LayoutRecipes {
 
-    public LayoutRecipesBasic(GUIFastCraft gui) {
+    public LayoutRecipesItems(GUIFastCraft gui) {
         super(gui);
     }
 

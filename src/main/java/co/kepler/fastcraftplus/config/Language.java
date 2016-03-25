@@ -22,13 +22,11 @@ import java.util.logging.Level;
 public class Language {
     private static final String NOT_FOUND = ChatColor.RED + "[Lang: %key%]";
     private static final String NOT_FOUND_KEY = "key";
-
-    private YamlConfiguration lang;
-    private Map<Material, ItemNames> itemNames;
-
     public final GUI gui = new GUI();
     public final Commands commands = new Commands();
     public final Items items = new Items();
+    private YamlConfiguration lang;
+    private Map<Material, ItemNames> itemNames;
 
     /**
      * Create an instance of Language
@@ -137,10 +135,15 @@ public class Language {
         public final Ingredients ingredients = new Ingredients();
         public final Toolbar toolbar = new Toolbar();
 
-        public String title() { return get("gui.title"); }
+        public String title() {
+            return get("gui.title");
+        }
 
         public class Ingredients {
-            public String label() { return get("gui.ingredients.label"); }
+            public String label() {
+                return get("gui.ingredients.label");
+            }
+
             public String item(int amount, String item) {
                 return get("gui.ingredients.item", "amount", s(amount), "item", item);
             }
@@ -151,7 +154,7 @@ public class Language {
 
             public final PagePrev pagePrev = new PagePrev();
             public final PageNext pageNext = new PageNext();
-            public final CraftBasic craftBasic = new CraftBasic();
+            public final CraftItems craftItems = new CraftItems();
             public final CraftArmor craftArmor = new CraftArmor();
             public final CraftFireworks craftFireworks = new CraftFireworks();
             public final Refresh refresh = new Refresh();
@@ -159,49 +162,83 @@ public class Language {
             public final Workbench workbench = new Workbench();
 
             public class PagePrev {
-                public String title() { return get(tb + "page-prev.title"); }
+                public String title() {
+                    return get(tb + "page-prev.title");
+                }
+
                 public List<String> description(int prev, int total, int cur) {
                     return getList(tb + "page-prev.description", "prev", s(prev), "total", s(total), "cur", s(cur));
                 }
             }
 
             public class PageNext {
-                public String title() { return get(tb + "page-next.title"); }
+                public String title() {
+                    return get(tb + "page-next.title");
+                }
+
                 public List<String> description(int prev, int total, int cur) {
                     return getList(tb + "page-next.description", "next", s(prev), "total", s(total), "cur", s(cur));
                 }
             }
 
-            public class CraftBasic {
-                public String title() { return get(tb + "craft-basic.title"); }
-                public List<String> description() { return getList(tb + "craft-basic.description"); }
+            public class CraftItems {
+                public String title() {
+                    return get(tb + "craft-items.title");
+                }
+
+                public List<String> description() {
+                    return getList(tb + "craft-items.description");
+                }
             }
 
             public class CraftArmor {
-                public String title() { return get(tb + "craft-armor.title"); }
-                public List<String> description() { return getList(tb + "craft-armor.description"); }
+                public String title() {
+                    return get(tb + "craft-armor.title");
+                }
+
+                public List<String> description() {
+                    return getList(tb + "craft-armor.description");
+                }
             }
 
             public class CraftFireworks {
-                public String title() { return get(tb + "craft-fireworks.title"); }
-                public List<String> description() { return getList(tb + "craft-fireworks.description"); }
+                public String title() {
+                    return get(tb + "craft-fireworks.title");
+                }
+
+                public List<String> description() {
+                    return getList(tb + "craft-fireworks.description");
+                }
             }
 
             public class Refresh {
-                public String title() { return get(tb + "refresh.title"); }
-                public List<String> description() { return getList(tb + "refresh.description"); }
+                public String title() {
+                    return get(tb + "refresh.title");
+                }
+
+                public List<String> description() {
+                    return getList(tb + "refresh.description");
+                }
             }
 
             public class Multiplier {
-                public String title(int mult) { return get(tb + "multiplier.title", "mult", s(mult)); }
+                public String title(int mult) {
+                    return get(tb + "multiplier.title", "mult", s(mult));
+                }
+
                 public List<String> description(int mult) {
                     return getList(tb + "refresh.description", "mult", s(mult));
                 }
             }
 
             public class Workbench {
-                public String title() { return get(tb + "workbench.title"); }
-                public List<String> description() { return getList(tb + "workbench.description"); }
+                public String title() {
+                    return get(tb + "workbench.title");
+                }
+
+                public List<String> description() {
+                    return getList(tb + "workbench.description");
+                }
             }
         }
     }

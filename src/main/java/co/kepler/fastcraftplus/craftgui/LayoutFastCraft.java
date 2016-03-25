@@ -12,7 +12,7 @@ public class LayoutFastCraft extends LayoutMulti {
     private final GUIFastCraft gui;
 
     private final Layout layoutNavbar;
-    private final LayoutRecipesBasic layoutCraftingBasic;
+    private final LayoutRecipesItems layoutCraftingItems;
     private final LayoutRecipesArmor layoutCraftingArmor;
     private final LayoutRecipesFireworks layoutCraftingFireworks;
 
@@ -22,7 +22,7 @@ public class LayoutFastCraft extends LayoutMulti {
 
         // Initialize layout pages
         layoutNavbar = getBottomLayout();
-        layoutCraftingBasic = new LayoutRecipesBasic(gui);
+        layoutCraftingItems = new LayoutRecipesItems(gui);
         layoutCraftingArmor = new LayoutRecipesArmor(gui);
         layoutCraftingFireworks = new LayoutRecipesFireworks(gui);
 
@@ -53,7 +53,7 @@ public class LayoutFastCraft extends LayoutMulti {
     public LayoutRecipes getLayoutTab(CraftingTab tab) {
         switch (tab) {
             case CRAFTING:
-                return layoutCraftingBasic;
+                return layoutCraftingItems;
             case ARMOR:
                 return layoutCraftingArmor;
             case FIREWORKS:
