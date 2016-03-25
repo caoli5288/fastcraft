@@ -1,7 +1,7 @@
 package co.kepler.fastcraftplus.craftgui;
 
+import co.kepler.fastcraftplus.api.gui.LayoutPaged;
 import co.kepler.fastcraftplus.crafting.FastRecipe;
-import co.kepler.fastcraftplus.gui.LayoutPaged;
 
 import java.util.HashSet;
 import java.util.List;

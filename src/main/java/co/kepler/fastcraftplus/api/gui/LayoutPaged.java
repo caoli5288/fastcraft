@@ -1,4 +1,4 @@
-package co.kepler.fastcraftplus.gui;
+package co.kepler.fastcraftplus.api.gui;
 
 /**
  * A GUI layout that is organized into pages.

@@ -1,4 +1,4 @@
-package co.kepler.fastcraftplus.gui;
+package co.kepler.fastcraftplus.api.gui;
 
 import co.kepler.fastcraftplus.FastCraft;
 import org.bukkit.Bukkit;

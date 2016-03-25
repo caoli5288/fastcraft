@@ -1,4 +1,4 @@
-package co.kepler.fastcraftplus.gui;
+package co.kepler.fastcraftplus.api.gui;
 
 /**
  * A GUI layout that contains two other GUI layouts, one shown above the other.

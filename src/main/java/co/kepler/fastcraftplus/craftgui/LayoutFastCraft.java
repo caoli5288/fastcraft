@@ -1,7 +1,7 @@
 package co.kepler.fastcraftplus.craftgui;
 
-import co.kepler.fastcraftplus.gui.Layout;
-import co.kepler.fastcraftplus.gui.LayoutMulti;
+import co.kepler.fastcraftplus.api.gui.Layout;
+import co.kepler.fastcraftplus.api.gui.LayoutMulti;
 
 /**
  * The button layout for the FastCraft GUI.
