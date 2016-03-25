@@ -1,10 +1,10 @@
 package co.kepler.fastcraftplus.craftgui;
 
+import co.kepler.fastcraftplus.FastCraft;
 import co.kepler.fastcraftplus.crafting.FastRecipe;
 import co.kepler.fastcraftplus.crafting.Ingredient;
 import co.kepler.fastcraftplus.gui.GUIButton;
 import co.kepler.fastcraftplus.gui.Layout;
-import org.bukkit.ChatColor;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
@@ -44,10 +44,10 @@ public class GUIButtonRecipe extends GUIButton {
         Map<Ingredient, Integer> ingredients = recipe.getIngredients();
 
         // Add ingredients and amounts to the lore
-        lore.addFirst(ChatColor.GREEN + "Ingredients:");
+        lore.addFirst(FastCraft.lang().gui.ingredients.label());
         for (Ingredient i : ingredients.keySet()) {
             // Format: #x Ingredient
-            lore.addLast(ChatColor.GREEN + " " + ingredients.get(i) + "x " + i.getName());
+            lore.addLast(FastCraft.lang().gui.ingredients.item(ingredients.get(i), i.getName()));
         }
 
         // If the item has a lore alread, add a space between the ingredients and the existing lore

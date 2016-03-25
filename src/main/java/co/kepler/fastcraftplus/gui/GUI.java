@@ -192,7 +192,7 @@ public class GUI implements InventoryHolder {
             GUI gui = GUI.getGUI(e.getView());
             if (e.isCancelled() || gui == null) return;
 
-            if (e.getRawSlot() < e.getInventory().getSize()) {
+            if (0 <= e.getRawSlot() && e.getRawSlot() < e.getInventory().getSize()) {
                 // If the GUI was clicked...
                 e.setCancelled(true);
 

@@ -147,9 +147,13 @@ public class RecipeUtil {
             if (displayName != null) return displayName;
         }
 
+        // Try to get the item's name from lang
+        String name = FastCraft.lang().items.name(item);
+        if (name != null) return name;
+
         try {
             Object nmsItem = methodAsNMSCopy.invoke(null, item);
-            String name = (String) methodNMSGetName.invoke(nmsItem);
+            name = (String) methodNMSGetName.invoke(nmsItem);
             if (name != null) return name;
         } catch (IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();

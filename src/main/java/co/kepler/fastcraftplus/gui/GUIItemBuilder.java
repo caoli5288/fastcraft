@@ -8,6 +8,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.material.MaterialData;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Allows for easy creation of items to be used as GUI buttons.
@@ -98,6 +99,17 @@ public class GUIItemBuilder {
      */
     public GUIItemBuilder setLore(String... lore) {
         meta.setLore(Arrays.asList(lore));
+        return this;
+    }
+
+    /**
+     * Set the lore of the item.
+     *
+     * @param lore The lore of the item.
+     * @return Returns this builder, so methods can be chained.
+     */
+    public GUIItemBuilder setLore(List<String> lore) {
+        meta.setLore(lore);
         return this;
     }
 

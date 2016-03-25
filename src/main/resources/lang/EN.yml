@@ -1,0 +1,63 @@
+gui:
+  title: 'FastCraft+'
+
+  ingredients:
+    label: '&aIngredients:'
+    item: '&a %amount%x %item%' # Variables: amount, item
+
+  toolbar:
+    page-prev:
+      title: '&aPrevious Page'
+      description: # Variables: prev, total, cur
+      - '&bGo to page %prev%/%total$'
+
+    page-next:
+      title: '&aNext Page'
+      description: # Variables: prev, total, cur
+      - '&bGo to page %next%/%total%'
+
+    craft-basic:
+      title: '&aCraft Items'
+      description:
+      - '&bCraft basic items'
+
+    craft-armor:
+      title: '&aCraft Dyed Armor'
+      description:
+      - '&bCraft dyed leather armor'
+
+    craft-fireworks:
+      title: '&aCraft Fireworks'
+      description:
+      - '&bCraft firework rockets and stars'
+
+    refresh:
+      title: '&aRefresh'
+      description:
+      - '&bRe-sort items'
+
+    multiplier:
+      title: '&aCrafting Multiplier (%mult%x)' # Variables: mult
+      description: # Variables: mult
+      - '&bCraft more than once at a time'
+
+    workbench:
+      title: '&aCrafting Grid'
+      description:
+      - '&bOpen a 3x3 crafting grid'
+
+commands: # Not yet implemented
+
+# The localized names of items.
+# d: Default item name.
+# number: Name for specific item data.
+items:
+#  'minecraft:diamond': 'Diamond'
+#  'minecraft:planks':
+#    d: 'Wood Planks'
+#    0: 'Oak Wood Planks'
+#    1: 'Spruce Wood Planks'
+#    2: 'Birch Wood Planks'
+#    3: 'Jungle Wood Planks'
+#    4: 'Acacia Wood Planks'
+#    5: 'Dark Oak Wood Planks'

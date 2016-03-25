@@ -1,5 +1,6 @@
 package co.kepler.fastcraftplus;
 
+import co.kepler.fastcraftplus.config.Language;
 import co.kepler.fastcraftplus.craftgui.GUIFastCraft;
 import co.kepler.fastcraftplus.gui.GUI;
 import org.bukkit.event.Listener;
@@ -10,6 +11,8 @@ import java.util.logging.Level;
 public class FastCraft extends JavaPlugin implements Listener {
     private static FastCraft instance;
 
+    private Language lang;
+
     /**
      * Get an instance of FastCraft.
      *
@@ -17,6 +20,15 @@ public class FastCraft extends JavaPlugin implements Listener {
      */
     public static FastCraft getInstance() {
         return instance;
+    }
+
+    /**
+     * Get the plugin's language configuration.
+     *
+     * @return Return the plugin's language configuration.
+     */
+    public static Language lang() {
+        return instance.lang;
     }
 
     /**
@@ -50,6 +62,8 @@ public class FastCraft extends JavaPlugin implements Listener {
     @Override
     public void onEnable() {
         instance = this;
+
+        lang = new Language("EN"); // TODO Language from config
 
         GUIFastCraft.init();
     }
