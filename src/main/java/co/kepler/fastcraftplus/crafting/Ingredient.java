@@ -1,9 +1,7 @@
 package co.kepler.fastcraftplus.crafting;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.material.MaterialData;
 
 import java.util.HashMap;
@@ -16,7 +14,6 @@ public class Ingredient {
     private static final byte ANY_DATA = -1;
 
     private final MaterialData material;
-    private final ItemMeta meta;
     private final String name;
 
     /**
@@ -26,7 +23,6 @@ public class Ingredient {
      */
     public Ingredient(ItemStack item) {
         material = item.getData();
-        meta = item.hasItemMeta() ? item.getItemMeta() : null;
         name = RecipeUtil.getInstance().getItemName(item);
     }
 
@@ -82,9 +78,7 @@ public class Ingredient {
      * @return Returns a new ItemStack.
      */
     public ItemStack toItemStack(int amount) {
-        ItemStack result = material.toItemStack(amount);
-        result.setItemMeta(meta);
-        return result;
+        return material.toItemStack(amount);
     }
 
     /**
@@ -110,31 +104,29 @@ public class Ingredient {
     }
 
     /**
-     * See if an ItemStack matches this ingredient.
+     * See if an ItemStack matches this ingredient. Will not match items with
+     * metadata, so custom, possibly valuable, items aren't used accidentally.
      *
      * @param is The ItemStack to compare.
      * @return Returns true if the ItemStack can be used as this ingredient.
      */
     @SuppressWarnings("deprecation")
     public boolean matchesItem(ItemStack is) {
-        if (is == null) return false;
-        if (material.getItemType() != is.getType()) return false;
-        if (!anyData() && material.getData() != is.getData().getData()) return false;
-        return Bukkit.getItemFactory().equals(meta, is.getItemMeta());
+        if (is == null || is.hasItemMeta()) return false;
+        MaterialData md = is.getData();
+        if (material.getItemType() != md.getItemType()) return false;
+        if (material.getData() == ANY_DATA || md.getData() == ANY_DATA) return true;
+        return material.getData() == md.getData();
     }
 
     @Override
     public boolean equals(Object o) {
         if (o == null || !(o instanceof Ingredient)) return false;
-
-        Ingredient ing = (Ingredient) o;
-        if (!material.equals(ing.material)) return false;
-        return Bukkit.getItemFactory().equals(meta, ing.meta);
+        return material.equals(((Ingredient) o).material);
     }
 
     @Override
     public int hashCode() {
-        int hash = material.hashCode();
-        return 31 * hash + (meta == null ? 0 : meta.hashCode());
+        return material.hashCode();
     }
 }
