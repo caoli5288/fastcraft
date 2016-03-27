@@ -1,0 +1,58 @@
+# This config adds custom recipes into the game.
+#
+# ------------------------------------ Details ------------------------------------
+#
+# Item format:
+#   An item contains a type, data, and metadata. Data and metadata are optional:
+#     [type, data, metadata]  or  [type, data]  or  [type]
+#
+#   If an item amount is required:
+#     [amount, [type, data, metadata]]  or  [amount, [type, data]]  or  [amount, [type]]
+#
+#   An ingredient's data can be ANY if the ingredient doesn't require a specific data.
+#
+#   Examples:
+#     Charcoal with custom name: ['minecraft:coal', 1, '{display:{Name:"Dirty Coal"}}']
+#     Planks of any wood type:   ['minecraft:planks', ANY]
+#     Three sticks:              [3, ['minecraft:stick']]
+#
+# Recipe types:
+#   shaped:
+#     ingredients: A list of characters associated with different items.
+#     recipe: Use characters defined in ingredients to create the recipe shape. If
+#             a character appears here that is not defined, then it will be empty.
+#     result: The item (with an amount) that will be crafted from this recipe.
+#
+#   shapeless:
+#     ingredients: The items (with amounts) that are required for this recipe.
+#     result: The item (with an amount) that will be crafted from this recipe.
+#
+#   furnace:
+#     exp: The experience gained by using this furnace recipe.
+#     input: The item put into the furnace.
+#     result: The item made by the furnace.
+#
+# -------------------------------- Example Recipes --------------------------------
+#
+# ThickSword:
+#   type: shaped
+#   ingredients:
+#     p: ['minecraft:planks', ANY]
+#     d: ['minecraft:diamond_block']
+#   recipe:
+#   - ' d '
+#   - ' d '
+#   - ' p '
+#   result: [1, ['minecraft:diamond_sword', 0, '{display:{Name:"Thick Sword"}}']]
+#
+# CharcoalBlock:
+#   type: shapeless
+#   ingredients:
+#     - [9, ['minecraft:coal', 1]]
+#   result: [1, ['minecraft:coal_block', 1, '{display:{Name:"Block of Charcoal"}}']]
+#
+# FireStick:
+#   type: furnace
+#   exp: 3
+#   input: ['minecraft:stick']
+#   result: ['minecraft:blaze_rod', 0, '{display:{Name:"Fire Stick"}}']
