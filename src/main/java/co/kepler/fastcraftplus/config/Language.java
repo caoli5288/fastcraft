@@ -38,7 +38,7 @@ public class Language {
         String resPath = "lang/" + language + ".yml";
         InputStream resStream = FastCraft.getInstance().getResource(resPath);
         if (resStream == null) {
-            FastCraft.log(Level.SEVERE, "Language file not found: '" + resPath + "'");
+            FastCraft.err("Language file not found: '" + resPath + "'");
             lang = new YamlConfiguration();
         } else {
             InputStreamReader reader = new InputStreamReader(resStream);
@@ -52,7 +52,7 @@ public class Language {
             for (String item : itemSection.getKeys(false)) {
                 Material itemType = Bukkit.getUnsafe().getMaterialFromInternalName(item);
                 if (itemType == null) {
-                    FastCraft.log(Level.SEVERE, "Unknown item type: '" + item + "'");
+                    FastCraft.err("Unknown item type: '" + item + "'");
                     continue;
                 }
                 ItemNames itemName;
@@ -74,7 +74,7 @@ public class Language {
                                 int num = Integer.parseInt(data);
                                 names.put(num, nameSection.getString(data));
                             } catch (NumberFormatException e) {
-                                FastCraft.log(Level.SEVERE, "Item data is not 'd' or a number: " + data);
+                                FastCraft.err("Item data is not 'd' or a number: " + data);
                             }
                         }
                     }

@@ -43,13 +43,12 @@ public class FastCraft extends JavaPlugin implements Listener {
     }
 
     /**
-     * Log a message to the console at a certain level.
+     * Log an error message to the console.
      *
-     * @param level The level at which the message should be logged.
-     * @param msg   The message to log.
+     * @param msg The message to log.
      */
-    public static void log(Level level, String msg) {
-        instance.getLogger().log(level, msg);
+    public static void err(String msg) {
+        instance.getLogger().log(Level.SEVERE, msg);
     }
 
     /**
