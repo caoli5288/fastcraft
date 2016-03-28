@@ -12,8 +12,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 
 import java.io.File;
-import java.util.*;
-import java.util.logging.Level;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Manages recipes from the recipes config file.
@@ -21,6 +23,10 @@ import java.util.logging.Level;
 public class Recipes {
     private static final Set<Recipe> loadedRecipes = new HashSet<>();
 
+    /**
+     * Unloads all previously loaded recipes, then load recipes from the recipes config.
+     * If the config does not exist, copy the resource to the plugin directory.
+     */
     public static void loadRecipes() {
         // Setup and load recipes config
         FastCraft fastcraft = FastCraft.getInstance();
@@ -42,16 +48,23 @@ public class Recipes {
                 Recipe newRecipe = getRecipe(recipes.getConfigurationSection(key));
                 Bukkit.addRecipe(newRecipe);
                 loadedRecipes.add(newRecipe);
-            } catch (Exception e) {
+            } catch (RecipeException e) {
                 FastCraft.err("Error loading recipe '" + key + "': " + e.getMessage());
             }
         }
     }
 
-    private static Recipe getRecipe(ConfigurationSection conf) throws Exception {
+    /**
+     * Get a recipe from a configuration section.
+     *
+     * @param conf The configuration section containing the recipe.
+     * @return Returns a furnace recipe.
+     * @throws RecipeException Thrown if the recipe is improperly configured.
+     */
+    private static Recipe getRecipe(ConfigurationSection conf) throws RecipeException {
         String type = conf.getString("type");
         if (type == null) {
-            throw new Exception("Recipe type cannot be null");
+            throw new RecipeException("Recipe type cannot be null");
         }
         switch (type.toLowerCase()) {
             case "shaped":
@@ -61,10 +74,17 @@ public class Recipes {
             case "furnace":
                 return getFurnaceRecipe(conf);
         }
-        throw new Exception("Invalid recipe type for : '" + type + "'");
+        throw new RecipeException("Invalid recipe type for : '" + type + "'");
     }
 
-    private static Recipe getShapedRecipe(ConfigurationSection conf) throws Exception {
+    /**
+     * Get a shaped recipe from a configuration section.
+     *
+     * @param conf The configuration section containing the recipe.
+     * @return Returns a furnace recipe.
+     * @throws RecipeException Thrown if the recipe is improperly configured.
+     */
+    private static Recipe getShapedRecipe(ConfigurationSection conf) throws RecipeException {
         // Create the recipe object
         ItemStack result = getAmountItem(conf.getStringList("result"));
         CustomShapedRecipe recipe = new CustomShapedRecipe(result);
@@ -73,7 +93,7 @@ public class Recipes {
         ConfigurationSection ingredients = conf.getConfigurationSection("ingredients");
         for (String key : ingredients.getKeys(false)) {
             if (key.length() != 1) {
-                throw new Exception("Invalid ingredient character: '" + key + "'");
+                throw new RecipeException("Invalid ingredient character: '" + key + "'");
             }
             recipe.setIngredient(key.charAt(0), getItem(ingredients.getStringList(key), 1));
         }
@@ -86,7 +106,14 @@ public class Recipes {
         return recipe;
     }
 
-    private static Recipe getShapelessRecipe(ConfigurationSection conf) throws Exception {
+    /**
+     * Get a shapeless recipe from a configuration section.
+     *
+     * @param conf The configuration section containing the recipe.
+     * @return Returns a furnace recipe.
+     * @throws RecipeException Thrown if the recipe is improperly configured.
+     */
+    private static Recipe getShapelessRecipe(ConfigurationSection conf) throws RecipeException {
         // Create the recipe object
         ItemStack result = getAmountItem(conf.getStringList("result"));
         CustomShapelessRecipe recipe = new CustomShapelessRecipe(result);
@@ -101,7 +128,14 @@ public class Recipes {
         return recipe;
     }
 
-    private static Recipe getFurnaceRecipe(ConfigurationSection conf) throws Exception {
+    /**
+     * Get a furnace recipe from a configuration section.
+     *
+     * @param conf The configuration section containing the recipe.
+     * @return Returns a furnace recipe.
+     * @throws RecipeException Thrown if the recipe is improperly configured.
+     */
+    private static Recipe getFurnaceRecipe(ConfigurationSection conf) throws RecipeException {
         // Create the recipe object
         ItemStack input = getItem(conf.getStringList("input"), 1);
         ItemStack result = getAmountItem(conf.getStringList("result"));
@@ -111,16 +145,25 @@ public class Recipes {
         return new CustomFurnaceRecipe(input, result, exp);
     }
 
-    private static ItemStack getItem(List<String> item, int amount) throws Exception {
+    /**
+     * Get an item
+     *
+     * @param item   The List of Strings, without an amount, representing the Item.
+     * @param amount The amount of items in the ItemStack.
+     * @return Returns an ItemStack.
+     * @throws RecipeException Thrown if the item is improperly configured.
+     */
+    @SuppressWarnings("deprecation")
+    private static ItemStack getItem(List<String> item, int amount) throws RecipeException {
         if (item.isEmpty() || item.size() > 3) {
-            throw new Exception("Item must have 1, 2, or 3 parameters");
+            throw new RecipeException("Item must have 1, 2, or 3 parameters");
         }
 
         // Get the item's material
         String typeStr = item.get(0);
         Material type = Bukkit.getUnsafe().getMaterialFromInternalName(typeStr);
         if (type == null) {
-            throw new Exception("Unknown material: '" + typeStr + "'");
+            throw new RecipeException("Unknown material: '" + typeStr + "'");
         }
 
         // Create the resulting item
@@ -136,7 +179,7 @@ public class Recipes {
                 try {
                     result.getData().setData(Byte.parseByte(dataStr));
                 } catch (NumberFormatException e) {
-                    throw new Exception("Invalid item data: '" + dataStr + "'");
+                    throw new RecipeException("Invalid item data: '" + dataStr + "'");
                 }
             }
         }
@@ -152,9 +195,16 @@ public class Recipes {
         return result;
     }
 
-    private static ItemStack getAmountItem(List<String> item) throws Exception {
+    /**
+     * Get an ItemStack with an amount from a List of Strings in the config.
+     *
+     * @param item The List of Strings, with an amount, representing the Item.
+     * @return Returns an ItemStack.
+     * @throws RecipeException Throws an exception if the item is improperly configured.
+     */
+    private static ItemStack getAmountItem(List<String> item) throws RecipeException {
         if (item.size() < 2) {
-            throw new Exception("Item with amount have at least two elements");
+            throw new RecipeException("Item with amount have at least two elements");
         }
 
         // Parse the item amount
@@ -163,11 +213,21 @@ public class Recipes {
         try {
             amount = Integer.parseInt(item.get(0));
         } catch (NumberFormatException e) {
-            throw new Exception("Invalid item amount: '" + amountStr + "'");
+            throw new RecipeException("Invalid item amount: '" + amountStr + "'");
         }
 
         // Create the item, and return it
         item.remove(0);
         return getItem(item, amount);
+    }
+
+    /**
+     * Used when loading recipes from the config. If a recipe is improperly configured,
+     * this exception will be thrown.
+     */
+    public static class RecipeException extends Exception {
+        public RecipeException(String msg) {
+            super(msg);
+        }
     }
 }
