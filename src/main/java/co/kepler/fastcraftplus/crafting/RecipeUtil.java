@@ -24,7 +24,7 @@ public class RecipeUtil {
 
     private static RecipeUtil instance;
 
-    private List<FastRecipe> recipes = new ArrayList<>();
+    private List<GUIRecipe> recipes = new ArrayList<>();
     private Object craftingManagerInstance;
     private Method methodGetRecipes;
     private Method methodToBukkitRecipe;
@@ -89,7 +89,7 @@ public class RecipeUtil {
         return instance;
     }
 
-    public List<FastRecipe> getRecipes() {
+    public List<GUIRecipe> getRecipes() {
         if (recipes == null || Iterators.size(Bukkit.recipeIterator()) != recipes.size()) {
             // If recipes is uninitialized, or if the recipes have changed.
             loadRecipes();
@@ -117,7 +117,7 @@ public class RecipeUtil {
     }
 
     /**
-     * Load the server's recipes as FastRecipe's
+     * Load the server's recipes as GUIRecipe's
      */
     private void loadRecipes() {
         try {
@@ -125,8 +125,8 @@ public class RecipeUtil {
             for (Object iRecipe : (List) methodGetRecipes.invoke(craftingManagerInstance)) {
                 if (ignoreRecipe(iRecipe)) continue;
                 Recipe recipe = (Recipe) methodToBukkitRecipe.invoke(iRecipe);
-                if (!FastRecipe.canBeFastRecipe(recipe)) continue;
-                recipes.add(new FastRecipe(recipe));
+                if (!GUIRecipe.canBeGUIRecipe(recipe)) continue;
+                recipes.add(new GUIRecipe(recipe));
             }
             Collections.sort(recipes);
         } catch (IllegalAccessException | InvocationTargetException e) {

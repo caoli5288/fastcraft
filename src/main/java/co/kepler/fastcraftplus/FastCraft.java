@@ -5,7 +5,10 @@ import co.kepler.fastcraftplus.config.Config;
 import co.kepler.fastcraftplus.config.Language;
 import co.kepler.fastcraftplus.config.Recipes;
 import co.kepler.fastcraftplus.craftgui.GUIFastCraft;
+import co.kepler.fastcraftplus.crafting.CraftingListener;
+import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.logging.Level;
@@ -15,22 +18,6 @@ public class FastCraft extends JavaPlugin implements Listener {
 
     private Config config;
     private Language lang;
-
-    @Override
-    public void onEnable() {
-        instance = this;
-
-        config = new Config();
-        lang = new Language(config.getLanguage());
-        Recipes.loadRecipes();
-
-        GUIFastCraft.init();
-    }
-
-    @Override
-    public void onDisable() {
-        GUI.disposeAll();
-    }
 
     /**
      * Get an instance of FastCraft.
@@ -75,5 +62,24 @@ public class FastCraft extends JavaPlugin implements Listener {
      */
     public static void logInfo(String msg) {
         instance.getLogger().info(msg);
+    }
+
+    @Override
+    public void onEnable() {
+        instance = this;
+
+        config = new Config();
+        lang = new Language(config.getLanguage());
+        Recipes.loadRecipes();
+
+        PluginManager pluginManager = Bukkit.getPluginManager();
+        pluginManager.registerEvents(new CraftingListener(), this);
+
+        GUIFastCraft.init();
+    }
+
+    @Override
+    public void onDisable() {
+        GUI.disposeAll();
     }
 }

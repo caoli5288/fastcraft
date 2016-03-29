@@ -58,6 +58,15 @@ public class Ingredient {
     }
 
     /**
+     * Get the material data of this ingredient.
+     *
+     * @return Returns the material data of this ingredient.
+     */
+    public MaterialData getMaterialData() {
+        return material.clone();
+    }
+
+    /**
      * Get the material type of this ingredient.
      *
      * @return Returns the material type of this item.
@@ -118,8 +127,8 @@ public class Ingredient {
     @SuppressWarnings("deprecation")
     public boolean matchesItem(ItemStack is) {
         if (is == null) return false;
-        if (material.getItemType() != is.getType()) return false;
-        if (!anyData() && material.getData() != is.getData().getData()) return false;
+        else if (material.getItemType() != is.getType()) return false;
+        else if (!anyData() && material.getData() != is.getData().getData()) return false;
         return Bukkit.getItemFactory().equals(meta, is.getItemMeta());
     }
 
@@ -128,8 +137,7 @@ public class Ingredient {
         if (o == null || !(o instanceof Ingredient)) return false;
 
         Ingredient ing = (Ingredient) o;
-        if (!material.equals(ing.material)) return false;
-        return Bukkit.getItemFactory().equals(meta, ing.meta);
+        return material.equals(ing.material) && Bukkit.getItemFactory().equals(meta, ing.meta);
     }
 
     @Override

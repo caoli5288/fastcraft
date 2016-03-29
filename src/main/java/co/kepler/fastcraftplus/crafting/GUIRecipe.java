@@ -12,13 +12,28 @@ import java.util.*;
 /**
  * Holds the ingredients and result of a recipe.
  */
-public class FastRecipe implements Comparable<FastRecipe> {
+public class GUIRecipe implements Comparable<GUIRecipe> {
     private Map<Ingredient, Integer> ingredients;
     private ItemStack result;
-    private ItemStack[] results;
 
-    public FastRecipe(Recipe recipe) {
-        assert canBeFastRecipe(recipe) : "Recipe must be a shaped or shapeless recipe";
+    /**
+     * Create a recipe from ingredients, a result, and byproducts.
+     *
+     * @param ingredients The ingredients used to craft this recipe.
+     * @param result      The result of this recipe.
+     */
+    public GUIRecipe(Map<Ingredient, Integer> ingredients, ItemStack result) {
+        this.ingredients = ingredients;
+        this.result = result;
+    }
+
+    /**
+     * Create a new GUIRecipe from an existing recipe.
+     *
+     * @param recipe The recipe this GUIRecipe will be based off.
+     */
+    public GUIRecipe(Recipe recipe) {
+        assert canBeGUIRecipe(recipe) : "Recipe must be a shaped or shapeless recipe";
 
         ingredients = new HashMap<>();
         result = recipe.getResult();
@@ -43,41 +58,15 @@ public class FastRecipe implements Comparable<FastRecipe> {
                 ingredients.put(i, (old == null ? 0 : old) + 1);
             }
         }
-
-        // List the recipe's byproducts.
-        List<ItemStack> byproducts = new ArrayList<>();
-        for (Ingredient i : ingredients.keySet()) {
-            switch (i.getMaterial()) {
-                case LAVA_BUCKET:
-                case MILK_BUCKET:
-                case WATER_BUCKET:
-                    byproducts.add(new ItemStack(Material.BUCKET, ingredients.get(i)));
-            }
-        }
-        results = new ItemStack[byproducts.size() + 1];
-        results[0] = result;
-        for (int i = 0; i < byproducts.size(); i++) {
-            results[i + 1] = byproducts.get(i);
-        }
     }
 
     /**
-     * Create a recipe from ingredients, a result, and byproducts.
+     * See if a recipe can be a GUIRecipe.
      *
-     * @param ingredients The ingredients used to craft this recipe.
-     * @param result      The result of this recipe.
-     * @param byproducts  The byproducts of this recipe.
+     * @param recipe The recipe to check.
+     * @return Return true if the recipe can be a GUI recipe.
      */
-    public FastRecipe(Map<Ingredient, Integer> ingredients, ItemStack result, ItemStack... byproducts) {
-        this.ingredients = ingredients;
-        this.result = result;
-        results = new ItemStack[byproducts.length + 1];
-
-        results[0] = result;
-        System.arraycopy(byproducts, 0, results, 1, byproducts.length);
-    }
-
-    public static boolean canBeFastRecipe(Recipe recipe) {
+    public static boolean canBeGUIRecipe(Recipe recipe) {
         return (recipe != null) && (recipe instanceof ShapedRecipe || recipe instanceof ShapelessRecipe);
     }
 
@@ -97,7 +86,31 @@ public class FastRecipe implements Comparable<FastRecipe> {
      * @return Return the results of this recipe.
      */
     public ItemStack[] getResults() {
+        List<ItemStack> byproducts = new ArrayList<>();
+        for (Ingredient i : ingredients.keySet()) {
+            switch (i.getMaterial()) {
+                case LAVA_BUCKET:
+                case MILK_BUCKET:
+                case WATER_BUCKET:
+                    byproducts.add(new ItemStack(Material.BUCKET, ingredients.get(i)));
+            }
+        }
+        ItemStack[] results = new ItemStack[byproducts.size() + 1];
+        results[0] = result.clone();
+        for (int i = 0; i < byproducts.size(); i++) {
+            results[i + 1] = byproducts.get(i);
+        }
         return results;
+    }
+
+    /**
+     * Get this recipe's ingredients.
+     *
+     * @return Returns a map of this recipe's ingredients, with the key being the
+     * ingredient, and the value being the amount of the ingredient.
+     */
+    public Map<Ingredient, Integer> getIngredients() {
+        return ingredients;
     }
 
     /**
@@ -106,7 +119,7 @@ public class FastRecipe implements Comparable<FastRecipe> {
      * @param items The items to remove the ingredients from.
      * @return Returns true if the inventory had the necessary ingredients.
      */
-    private boolean removeIngredients(ItemStack[] items) {
+    public boolean removeIngredients(ItemStack[] items) {
         LinkedList<Ingredient> toRemove = new LinkedList<>();
 
         // Add ingredients. Those that can use any data go at the end.
@@ -127,16 +140,6 @@ public class FastRecipe implements Comparable<FastRecipe> {
         }
 
         return true;
-    }
-
-    /**
-     * Get this recipe's ingredients.
-     *
-     * @return Returns a map of this recipe's ingredients, with the key being the
-     * ingredient, and the value being the amount of the ingredient.
-     */
-    public Map<Ingredient, Integer> getIngredients() {
-        return ingredients;
     }
 
     /**
@@ -164,7 +167,7 @@ public class FastRecipe implements Comparable<FastRecipe> {
 
     @Override
     @SuppressWarnings("deprecation")
-    public int compareTo(FastRecipe compareTo) {
+    public int compareTo(GUIRecipe compareTo) {
         int i = result.getTypeId() - compareTo.result.getTypeId();
         if (i != 0) return i;
 
@@ -177,18 +180,15 @@ public class FastRecipe implements Comparable<FastRecipe> {
     @Override
     public boolean equals(Object o) {
         if (o == this) return true;
-        if (o == null || !(o instanceof FastRecipe)) return false;
+        if (o == null || !(o instanceof GUIRecipe)) return false;
 
-        FastRecipe r = (FastRecipe) o;
-        if (!result.equals(r.result)) return false;
-        if (!Arrays.equals(results, r.results)) return false;
-        return ingredients.equals(r.ingredients);
+        GUIRecipe r = (GUIRecipe) o;
+        return result.equals(r.result) && ingredients.equals(r.ingredients);
     }
 
     @Override
     public int hashCode() {
         int hash = ingredients.hashCode();
-        hash = 31 * hash + result.hashCode();
-        return 31 * hash + Arrays.hashCode(results);
+        return 31 * hash + result.hashCode();
     }
 }

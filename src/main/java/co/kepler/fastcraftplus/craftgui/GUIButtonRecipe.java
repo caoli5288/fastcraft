@@ -3,7 +3,7 @@ package co.kepler.fastcraftplus.craftgui;
 import co.kepler.fastcraftplus.FastCraft;
 import co.kepler.fastcraftplus.api.gui.GUIButton;
 import co.kepler.fastcraftplus.api.gui.Layout;
-import co.kepler.fastcraftplus.crafting.FastRecipe;
+import co.kepler.fastcraftplus.crafting.GUIRecipe;
 import co.kepler.fastcraftplus.crafting.Ingredient;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -23,16 +23,16 @@ public class GUIButtonRecipe extends GUIButton {
             ClickType.UNKNOWN, ClickType.WINDOW_BORDER_LEFT, ClickType.WINDOW_BORDER_RIGHT
     ));
 
-    FastRecipe recipe;
+    GUIRecipe recipe;
     private GUIFastCraft gui;
 
     /**
-     * Create a new Recipe Button from a GUI and a FastRecipe.
+     * Create a new Recipe Button from a GUI and a GUIRecipe.
      *
      * @param gui    The FastCraft GUI that this button is contained in.
      * @param recipe The recipe that this button will craft.
      */
-    public GUIButtonRecipe(GUIFastCraft gui, FastRecipe recipe) {
+    public GUIButtonRecipe(GUIFastCraft gui, GUIRecipe recipe) {
         super();
         this.gui = gui;
         this.recipe = recipe;
