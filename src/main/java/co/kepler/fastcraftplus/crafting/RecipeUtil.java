@@ -222,7 +222,8 @@ public class RecipeUtil {
         } catch (IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
-        new Exception("getItemName() can't find name").printStackTrace(); // TODO Remove
+
+        new Exception("Can't find name of ItemStack: " + item).printStackTrace();
         return "ERROR";
     }
 

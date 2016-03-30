@@ -2,6 +2,7 @@ package co.kepler.fastcraftplus.craftgui;
 
 import co.kepler.fastcraftplus.FastCraft;
 import co.kepler.fastcraftplus.api.gui.*;
+import co.kepler.fastcraftplus.crafting.CraftingInvWrapper;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.HumanEntity;
@@ -16,9 +17,10 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryPickupItemEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.*;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 
 import java.util.HashMap;
@@ -31,11 +33,14 @@ public class GUIFastCraft extends GUI {
     private static final ChatColor BUTTON_NAME_COLOR = ChatColor.GREEN;
     private static final String NOT_YET_IMPLEMENTED = ChatColor.RED + "Not Yet Implemented";
 
-    private static Map<Object, GUIFastCraft> guis; // <Location or UUID, GUIFastCraft>
+    private static Map<Object, GUIFastCraft> guis = new HashMap<>(); // <Location or UUID, GUIFastCraft>
 
     private final LayoutFastCraft craftLayout;
     private final Player player;
     private final Location location;
+
+    private final CraftingInvWrapper craftingInventory;
+    private final InventoryView craftingInventoryView;
 
     private final GUIButton btnPagePrev;
     private final GUIButton btnPageNext;
@@ -52,16 +57,39 @@ public class GUIFastCraft extends GUI {
      * @param player The player who will be shown this GUI.
      */
     @SuppressWarnings("all")
-    public GUIFastCraft(Player player, Location location) {
-        super(FastCraft.lang().gui.title(), 6); // TODO Localize
+    public GUIFastCraft(final Player player, Location location) {
+        super(FastCraft.lang().gui.title(), 6);
 
         this.player = player;
         this.location = location;
 
+        craftingInventory = new CraftingInvWrapper(player);
+        craftingInventoryView = new InventoryView() {
+            @Override
+            public Inventory getTopInventory() {
+                return craftingInventory;
+            }
+
+            @Override
+            public Inventory getBottomInventory() {
+                return player.getInventory();
+            }
+
+            @Override
+            public HumanEntity getPlayer() {
+                return player;
+            }
+
+            @Override
+            public InventoryType getType() {
+                return craftingInventory.getType();
+            }
+        };
+
         craftLayout = new LayoutFastCraft(this);
         setLayout(craftLayout);
 
-        // Create Previous Page button // TODO Localize
+        // Create Previous Page button
         btnPagePrev = new GUIButton(new GUIItemBuilder(Material.ARROW)
                 .setDisplayName(FastCraft.lang().gui.toolbar.pagePrev.title())
                 .setLore(FastCraft.lang().gui.toolbar.pagePrev.description(
@@ -185,11 +213,6 @@ public class GUIFastCraft extends GUI {
         guis.put(location, this);
     }
 
-    public static void init() {
-        Bukkit.getPluginManager().registerEvents(new GUIListener(), FastCraft.getInstance());
-        guis = new HashMap<>();
-    }
-
     @Override
     public void show(Player... players) {
         assert players.length == 1 && players[0].equals(player) :
@@ -237,6 +260,27 @@ public class GUIFastCraft extends GUI {
     }
 
     /**
+     * Get this GUI's crafting inventory.
+     *
+     * @return Returns this GUI's crafting inventory.
+     */
+    public CraftingInventory getCraftingInventory(Recipe recipe, ItemStack[] matrix, ItemStack result) {
+        craftingInventory.setRecipe(recipe);
+        craftingInventory.setMatrix(matrix);
+        craftingInventory.setResult(result);
+        return craftingInventory;
+    }
+
+    /**
+     * Get this GUI's crafting inventory view.
+     *
+     * @return Returns this GUI's crafting inventory view.
+     */
+    public InventoryView getCraftingInventoryView() {
+        return craftingInventoryView;
+    }
+
+    /**
      * Show a tab in the GUI.
      *
      * @param tab The tab to show.
@@ -274,7 +318,7 @@ public class GUIFastCraft extends GUI {
     }
 
     private boolean btnWorkbenchClick(GUIButton.Click info) {
-        player.openWorkbench(location, true); // TODO Don't force
+        player.openWorkbench(location, false);
         return true;
     }
 

@@ -33,7 +33,7 @@
 # thick_sword:
 #   type: shaped
 #   ingredients:
-#     p: ['minecraft:planks', ANY]
+#     p: ['minecraft:planks', ANY, '{display:{Name:"Thick Stick"}}']
 #     d: ['minecraft:diamond_block']
 #   shape:
 #   - 'd'

@@ -32,7 +32,7 @@ public abstract class LayoutRecipes extends LayoutPaged {
     protected void addRecipes(List<GUIRecipe> recipes) {
         for (GUIRecipe r : recipes) {
             // If the button is already in the gui, or if it can't be crafted, continue.
-            if (activeRecipes.contains(r) || !r.canCraft(gui.getPlayer(), false)) continue;
+            if (activeRecipes.contains(r) || !r.canCraft(gui)) continue;
 
             // Create the button, and add it to the GUI.
             GUIButtonRecipe button = new GUIButtonRecipe(gui, r);

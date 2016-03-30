@@ -1,20 +1,26 @@
 package co.kepler.fastcraftplus.crafting;
 
+import co.kepler.fastcraftplus.craftgui.GUIFastCraft;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.Recipe;
-import org.bukkit.inventory.ShapedRecipe;
-import org.bukkit.inventory.ShapelessRecipe;
+import org.bukkit.event.Event;
+import org.bukkit.event.inventory.*;
+import org.bukkit.inventory.*;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Holds the ingredients and result of a recipe.
  */
 public class GUIRecipe implements Comparable<GUIRecipe> {
     private Map<Ingredient, Integer> ingredients;
+    private Recipe recipe;
     private ItemStack result;
+    private ItemStack[] matrix;
 
     /**
      * Create a recipe from ingredients, a result, and byproducts.
@@ -22,9 +28,11 @@ public class GUIRecipe implements Comparable<GUIRecipe> {
      * @param ingredients The ingredients used to craft this recipe.
      * @param result      The result of this recipe.
      */
-    public GUIRecipe(Map<Ingredient, Integer> ingredients, ItemStack result) {
+    public GUIRecipe(Map<Ingredient, Integer> ingredients, Recipe recipe, ItemStack result, ItemStack[] matrix) {
         this.ingredients = ingredients;
+        this.recipe = recipe;
         this.result = result;
+        this.matrix = matrix;
     }
 
     /**
@@ -36,26 +44,45 @@ public class GUIRecipe implements Comparable<GUIRecipe> {
         assert canBeGUIRecipe(recipe) : "Recipe must be a shaped or shapeless recipe";
 
         ingredients = new HashMap<>();
+        this.recipe = recipe;
         result = recipe.getResult();
 
         // Get ingredients from recipe
+        matrix = new ItemStack[9];
+        int matIndex = 0;
         if (recipe instanceof ShapedRecipe) {
             ShapedRecipe r = (ShapedRecipe) recipe;
             for (String str : r.getShape()) {
+                int matRow = 0;
                 for (char c : str.toCharArray()) {
+                    // Add ingredients to the ingredients map
                     ItemStack is = r.getIngredientMap().get(c);
                     if (is == null) continue;
                     Ingredient i = new Ingredient(is);
-                    Integer old = ingredients.get(i);
-                    ingredients.put(i, (old == null ? 0 : old) + 1);
+                    Integer amount = ingredients.get(i);
+                    ingredients.put(i, (amount == null ? 0 : amount) + 1);
+
+                    ItemStack matItem = is.clone();
+                    matItem.setAmount(1);
+                    matrix[matIndex + matRow] = matItem;
                 }
+                matIndex += 3;
             }
         } else if (recipe instanceof ShapelessRecipe) {
             ShapelessRecipe r = (ShapelessRecipe) recipe;
             for (ItemStack is : r.getIngredientList()) {
-                Ingredient i = new Ingredient(is);
-                Integer old = ingredients.get(i);
-                ingredients.put(i, (old == null ? 0 : old) + 1);
+                // Add ingredient to the ingredients map
+                Ingredient ingredient = new Ingredient(is);
+                Integer amount = ingredients.get(ingredient);
+                amount = (amount == null ? 0 : amount) + 1;
+                ingredients.put(ingredient, amount);
+
+                // Add items to the matrix
+                ItemStack matItem = is.clone();
+                matItem.setAmount(1);
+                for (int i = 0; i < amount; i++) {
+                    matrix[matIndex++] = matItem;
+                }
             }
         }
     }
@@ -80,27 +107,36 @@ public class GUIRecipe implements Comparable<GUIRecipe> {
     }
 
     /**
+     * Get the result from crafting this recipe in a crafting grid.
+     *
+     * @param gui The GUI containing this recipe.
+     * @return Returns the result from crafting this recipe in a crafting grid.
+     */
+    public ItemStack getCraftingResult(GUIFastCraft gui) {
+        CraftingInventory inv = gui.getCraftingInventory(recipe, matrix, result);
+        PrepareItemCraftEvent prepareEvent = new PrepareItemCraftEvent(inv, gui.getCraftingInventoryView(), false);
+        Bukkit.getPluginManager().callEvent(prepareEvent);
+        return prepareEvent.getInventory().getResult();
+    }
+
+    /**
      * Gets all the results of this recipe, including byproducts
      * like empty buckets from recipes that require filled buckets.
      *
-     * @return Return the results of this recipe.
+     * @param craftingResult The result from crafting in a crafting table.
+     * @param results        The list to populate with crafting results.
      */
-    public ItemStack[] getResults() {
-        List<ItemStack> byproducts = new ArrayList<>();
+    private void getResults(ItemStack craftingResult, List<ItemStack> results) {
+        results.clear();
+        results.add(craftingResult);
         for (Ingredient i : ingredients.keySet()) {
             switch (i.getMaterial()) {
                 case LAVA_BUCKET:
                 case MILK_BUCKET:
                 case WATER_BUCKET:
-                    byproducts.add(new ItemStack(Material.BUCKET, ingredients.get(i)));
+                    results.add(new ItemStack(Material.BUCKET, ingredients.get(i)));
             }
         }
-        ItemStack[] results = new ItemStack[byproducts.size() + 1];
-        results[0] = result.clone();
-        for (int i = 0; i < byproducts.size(); i++) {
-            results[i + 1] = byproducts.get(i);
-        }
-        return results;
     }
 
     /**
@@ -111,6 +147,19 @@ public class GUIRecipe implements Comparable<GUIRecipe> {
      */
     public Map<Ingredient, Integer> getIngredients() {
         return ingredients;
+    }
+
+    /**
+     * Get the matrix of items in a crafting grid for this recipe.
+     *
+     * @return Returns the recipe's matrix.
+     */
+    public ItemStack[] getMatrix() {
+        ItemStack[] copy = new ItemStack[matrix.length];
+        for (int i = 0; i < copy.length; i++) {
+            copy[i] = matrix[i] == null ? null : matrix[i].clone();
+        }
+        return copy;
     }
 
     /**
@@ -146,11 +195,16 @@ public class GUIRecipe implements Comparable<GUIRecipe> {
      * See if a player has this recipe's ingredients, and optionally, remove them
      * from the player's inventory if all ingredients are present.
      *
-     * @param player The player whose inventory will have ingredients removed.
-     * @param remove Whether ingredients should be removed if all exist in the player's inventory.
+     * @param gui   The GUI this recipe is being crafted in.
+     * @param craft Whether this recipe should be crafted if the player has all the ingredients.
      * @return Returns true if the ingredients were removed from the player's inventory.
      */
-    public boolean canCraft(Player player, boolean remove) {
+    public boolean canCraft(GUIFastCraft gui, boolean craft, List<ItemStack> results) {
+        Player player = gui.getPlayer();
+        ItemStack craftingResult = getCraftingResult(gui);
+        if (craftingResult == null || craftingResult.getType() == Material.AIR) return false;
+
+        // Clone the items in the player's inventory
         ItemStack[] contents = player.getInventory().getContents();
         for (int i = 0; i < contents.length; i++) {
             if (contents[i] == null) continue;
@@ -158,11 +212,31 @@ public class GUIRecipe implements Comparable<GUIRecipe> {
         }
 
         boolean allRemoved = removeIngredients(contents);
-        if (allRemoved && remove) {
+        if (allRemoved && craft) {
+            // Call crafting event. Cancel crafting if event is cancelled.
+            CraftItemEvent craftEvent = new CraftItemEvent(recipe, gui.getCraftingInventoryView(),
+                    InventoryType.SlotType.RESULT, 0, ClickType.LEFT, InventoryAction.PICKUP_ONE);
+            Bukkit.getPluginManager().callEvent(craftEvent);
+            if (craftEvent.isCancelled() || craftEvent.getResult() == Event.Result.DENY) return false;
+
+            // Update inventory to reflect removed items
             player.getInventory().setContents(contents);
-            RecipeUtil.getInstance().awardAchievement(player, result);
+            getResults(craftingResult, results);
+
+            // Award achievement
+            RecipeUtil.getInstance().awardAchievement(player, craftingResult);
         }
         return allRemoved;
+    }
+
+    /**
+     * See if a player has this recipe's ingredients, and optionally, remove them
+     * from the player's inventory if all ingredients are present.
+     *
+     * @param gui The GUI this recipe is being crafted in.
+     */
+    public boolean canCraft(GUIFastCraft gui) {
+        return canCraft(gui, false, null);
     }
 
     @Override

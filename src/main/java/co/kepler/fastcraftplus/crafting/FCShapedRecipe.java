@@ -62,8 +62,17 @@ public class FCShapedRecipe implements FCRecipe {
             recipe.setIngredient(key, ingredientsMap.get(key).getMaterialData());
         }
 
+        // Create matrix
+        ItemStack[] matrix = new ItemStack[9];
+        for (int row = 0; row < shapeArr.length; row++) {
+            char[] chars = shapeArr[row].toCharArray();
+            for (int col = 0; col < chars.length; col++) {
+                matrix[row * 3 + col] = ingredientsMap.get(chars[col]).toItemStack(1);
+            }
+        }
+
         // Create GUIRecipe
-        guiRecipe = new GUIRecipe(ingredients, result);
+        guiRecipe = new GUIRecipe(ingredients, recipe, result, matrix);
     }
 
     @Override
@@ -87,7 +96,8 @@ public class FCShapedRecipe implements FCRecipe {
         ItemStack[] matrixFlip = new ItemStack[matrix.length];
         for (int x = 0; x < 3; x++) {
             for (int y = 0; y < 3; y++) {
-                if (matrix[x + (y * 3)].getType() == Material.AIR) {
+                ItemStack curItem = matrix[x + (y * 3)];
+                if (curItem != null && curItem.getType() == Material.AIR) {
                     matrix[x + (y * 3)] = null;
                 }
                 matrixFlip[(2 - x) + (y * 3)] = matrix[x + (y * 3)];
@@ -114,12 +124,12 @@ public class FCShapedRecipe implements FCRecipe {
      */
     private boolean matchesMatrix(ItemStack[] matrix, int dx, int dy) {
         // Compare ingredients with items in the matrix
-        for (int row = 0; row < rows; row++) {
-            for (int col = 0; col < cols; col++) {
+        for (int row = 0; row < 3; row++) {
+            for (int col = 0; col < 3; col++) {
                 ItemStack item = matrix[row * 3 + col];
-                if (row < dy || col < dx || row > dy + rows || col > dx + cols) {
+                if (row < dy || col < dx || row >= dy + rows || col >= dx + cols) {
                     // If outside the current recipe
-                    if (item != null) return false;
+                    if (item != null && item.getType() != Material.AIR) return false;
                 } else {
                     // If inside the current recipe
                     Ingredient ingredient = ingredientGrid[row - dy][col - dx];

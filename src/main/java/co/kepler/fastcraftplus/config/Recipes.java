@@ -34,7 +34,7 @@ public class Recipes {
 
         // Remove loaded recipes
         for (FCRecipe fcRecipe : recipes) {
-            for (Iterator<Recipe> iter = Bukkit.recipeIterator(); iter.hasNext();) {
+            for (Iterator<Recipe> iter = Bukkit.recipeIterator(); iter.hasNext(); ) {
                 Recipe recipe = iter.next();
                 if (RecipeUtil.areEqual(recipe, fcRecipe.getRecipe())) {
                     iter.remove();

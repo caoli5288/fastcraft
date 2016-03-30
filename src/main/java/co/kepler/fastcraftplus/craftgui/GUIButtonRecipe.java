@@ -36,9 +36,12 @@ public class GUIButtonRecipe extends GUIButton {
         super();
         this.gui = gui;
         this.recipe = recipe;
+    }
 
+    @Override
+    public ItemStack getItem() {
         // Add the ingredients to the lore of the item
-        ItemStack item = recipe.getResult().clone();
+        ItemStack item = recipe.getCraftingResult(gui).clone();
         ItemMeta meta = item.getItemMeta();
         LinkedList<String> lore = new LinkedList<>();
         Map<Ingredient, Integer> ingredients = recipe.getIngredients();
@@ -58,8 +61,8 @@ public class GUIButtonRecipe extends GUIButton {
         meta.setLore(lore);
         item.setItemMeta(meta);
 
-        // Set the item
-        setItem(item);
+        // Return the item
+        return item;
     }
 
     /**
@@ -79,7 +82,7 @@ public class GUIButtonRecipe extends GUIButton {
      */
     @Override
     public boolean isVisible() {
-        return recipe.canCraft(gui.getPlayer(), false);
+        return recipe.canCraft(gui);
     }
 
     /**
@@ -101,7 +104,9 @@ public class GUIButtonRecipe extends GUIButton {
     @Override
     public boolean onClick(Layout layout, InventoryClickEvent invEvent) {
         if (ignoreClicks.contains(invEvent.getClick())) return false;
-        if (!recipe.canCraft(gui.getPlayer(), true)) {
+
+        List<ItemStack> results = new ArrayList<>();
+        if (!recipe.canCraft(gui, true, results)) {
             gui.updateLayout();
             return false;
         }
@@ -110,14 +115,15 @@ public class GUIButtonRecipe extends GUIButton {
             case DROP:
             case CONTROL_DROP:
                 // Drop items on the ground.
-                for (ItemStack is : recipe.getResults()) {
+                for (ItemStack is : results) {
                     invEvent.getView().setItem(InventoryView.OUTSIDE, is);
                 }
                 break;
             default:
                 // Add to inventory. Drop rest on ground if not enough space.
                 Inventory inv = gui.getPlayer().getInventory();
-                for (ItemStack is : inv.addItem(recipe.getResults()).values()) {
+                ItemStack[] resultsArr = new ItemStack[results.size()];
+                for (ItemStack is : inv.addItem(results.toArray(resultsArr)).values()) {
                     invEvent.getView().setItem(InventoryView.OUTSIDE, is);
                 }
                 break;

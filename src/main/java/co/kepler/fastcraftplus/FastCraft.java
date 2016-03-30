@@ -7,13 +7,12 @@ import co.kepler.fastcraftplus.config.Recipes;
 import co.kepler.fastcraftplus.craftgui.GUIFastCraft;
 import co.kepler.fastcraftplus.crafting.CraftingListener;
 import org.bukkit.Bukkit;
-import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.logging.Level;
 
-public class FastCraft extends JavaPlugin implements Listener {
+public class FastCraft extends JavaPlugin {
     private static FastCraft instance;
 
     private Config config;
@@ -74,8 +73,7 @@ public class FastCraft extends JavaPlugin implements Listener {
 
         PluginManager pluginManager = Bukkit.getPluginManager();
         pluginManager.registerEvents(new CraftingListener(), this);
-
-        GUIFastCraft.init();
+        pluginManager.registerEvents(new GUIFastCraft.GUIListener(), this);
     }
 
     @Override

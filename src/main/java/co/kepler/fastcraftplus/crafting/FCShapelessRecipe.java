@@ -34,13 +34,22 @@ public class FCShapelessRecipe implements FCRecipe {
         }
 
         // Create Recipe
+        ItemStack[] matrix = new ItemStack[9];
+        int matIndex = 0;
         recipe = new ShapelessRecipe(result);
         for (Ingredient ingredient : ingredients.keySet()) {
-            recipe.addIngredient(ingredients.get(ingredient), ingredient.getMaterialData()); // TODO Ignoring item data
+            int amount = ingredients.get(ingredient);
+            recipe.addIngredient(amount, ingredient.getMaterialData());
+
+            // Add items to matrix
+            ItemStack matItem = ingredient.toItemStack(1);
+            for (int i = 0; i < amount; i++) {
+                matrix[matIndex++] = matItem;
+            }
         }
 
         // Create GUIRecipe
-        guiRecipe = new GUIRecipe(ingredients, result);
+        guiRecipe = new GUIRecipe(ingredients, recipe, result, matrix);
     }
 
     @Override
