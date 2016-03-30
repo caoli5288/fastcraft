@@ -36,7 +36,7 @@ public class FCShapelessRecipe implements FCRecipe {
         // Create Recipe
         recipe = new ShapelessRecipe(result);
         for (Ingredient ingredient : ingredients.keySet()) {
-            recipe.addIngredient(ingredients.get(ingredient), ingredient.getMaterial());
+            recipe.addIngredient(ingredients.get(ingredient), ingredient.getMaterialData()); // TODO Ignoring item data
         }
 
         // Create GUIRecipe

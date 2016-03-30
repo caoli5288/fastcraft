@@ -1,8 +1,8 @@
 package co.kepler.fastcraftplus.crafting;
 
 import co.kepler.fastcraftplus.config.Recipes;
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 
 import java.util.HashMap;
@@ -83,9 +83,22 @@ public class FCShapedRecipe implements FCRecipe {
 
     @Override
     public boolean matchesMatrix(ItemStack[] matrix) {
+        // Flip the matrix, so flipped recipes can be matched
+        ItemStack[] matrixFlip = new ItemStack[matrix.length];
+        for (int x = 0; x < 3; x++) {
+            for (int y = 0; y < 3; y++) {
+                if (matrix[x + (y * 3)].getType() == Material.AIR) {
+                    matrix[x + (y * 3)] = null;
+                }
+                matrixFlip[(2 - x) + (y * 3)] = matrix[x + (y * 3)];
+            }
+        }
+
+        // Compare the shape to the matrices
         for (int dx = 0; dx <= 3 - cols; dx++) {
             for (int dy = 0; dy <= 3 - rows; dy++) {
                 if (matchesMatrix(matrix, dx, dy)) return true;
+                if (matchesMatrix(matrixFlip, dx, dy)) return true;
             }
         }
         return false;
@@ -95,20 +108,30 @@ public class FCShapedRecipe implements FCRecipe {
      * Compare a matrix offset by a certain x and y.
      *
      * @param matrix The matrix to check.
-     * @param dx     The x offset.
-     * @param dy     The y offset.
+     * @param dx     The x offset of this recipe in the grid.
+     * @param dy     The y offset of this recipe in the grid.
      * @return Returns true if the matrix matches this recipe.
      */
     private boolean matchesMatrix(ItemStack[] matrix, int dx, int dy) {
+        // Compare ingredients with items in the matrix
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {
                 ItemStack item = matrix[row * 3 + col];
                 if (row < dy || col < dx || row > dy + rows || col > dx + cols) {
+                    // If outside the current recipe
                     if (item != null) return false;
+                } else {
+                    // If inside the current recipe
+                    Ingredient ingredient = ingredientGrid[row - dy][col - dx];
+                    if (ingredient == null) {
+                        if (item != null) return false;
+                    } else {
+                        if (!ingredient.matchesItem(item)) return false;
+                    }
                 }
-                Ingredient ingredient = ingredientGrid[row + dy][col + dx]; // TODO Finish coding
             }
         }
+
         // None of the ingredients didn't match
         return true;
     }

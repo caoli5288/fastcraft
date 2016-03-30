@@ -1,10 +1,7 @@
 package co.kepler.fastcraftplus.config;
 
 import co.kepler.fastcraftplus.FastCraft;
-import co.kepler.fastcraftplus.crafting.FCRecipe;
-import co.kepler.fastcraftplus.crafting.FCShapedRecipe;
-import co.kepler.fastcraftplus.crafting.FCShapelessRecipe;
-import co.kepler.fastcraftplus.crafting.Ingredient;
+import co.kepler.fastcraftplus.crafting.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -34,6 +31,17 @@ public class Recipes {
             FastCraft.logInfo("Created recipes.yml");
         }
         YamlConfiguration recipesConfig = YamlConfiguration.loadConfiguration(recipesFile);
+
+        // Remove loaded recipes
+        for (FCRecipe fcRecipe : recipes) {
+            for (Iterator<Recipe> iter = Bukkit.recipeIterator(); iter.hasNext();) {
+                Recipe recipe = iter.next();
+                if (RecipeUtil.areEqual(recipe, fcRecipe.getRecipe())) {
+                    iter.remove();
+                    break;
+                }
+            }
+        }
 
         // Load recipes
         recipes.clear();
@@ -99,7 +107,7 @@ public class Recipes {
         }
 
         // Set recipe shape
-        List<String> shape = conf.getStringList("recipe");
+        List<String> shape = conf.getStringList("shape");
 
         // return the new recipe
         return new FCShapedRecipe(result, ingredients, shape);
@@ -133,7 +141,7 @@ public class Recipes {
     /**
      * Get an item
      *
-     * @param item   The List of Strings, without an amount, representing the Item.
+     * @param item The List of Strings, without an amount, representing the Item.
      * @return Returns an ItemStack.
      * @throws RecipeException Thrown if the item is improperly configured.
      */
@@ -157,13 +165,15 @@ public class Recipes {
                 data = -1;
             } else {
                 try {
-                    result.getData().setData(Byte.parseByte(dataStr));
+                    data = Byte.parseByte(dataStr);
                 } catch (NumberFormatException e) {
                     throw new RecipeException("Invalid item data: '" + dataStr + "'");
                 }
             }
         }
-        result.getData().setData(data);
+        if (data != 0) {
+            result.setData(type.getNewData(data));
+        }
 
         // Get the item's metadata
         if (item.size() >= 3) {

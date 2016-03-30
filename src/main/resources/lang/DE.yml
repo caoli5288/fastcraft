@@ -1,0 +1,294 @@
+# Translated into German by CloudeLecaw (https://www.spigotmc.org/members/cloudelecaw.34292/)
+#
+# If you translate this file, feel free to PM it to Kepler_ on spigotmc.org
+# if you would like it to be officially added to FastCraft+ officially.
+#
+# Use ampersands (&) for formatting/color codes. Info about formatting codes:
+# http://minecraft.gamepedia.com/Formatting_codes
+
+gui:
+  title: 'SchnelleWerkbank'
+
+  ingredients:
+    label: '&cZutaten:'
+    item: '&c %amount%x %item%' # Variables: amount, item
+
+  toolbar:
+    page-prev:
+      title: '&avorherige Seite'
+      description: # Variables: prev, total, cur
+      - '&bblaetter auf Seite %prev%/%total%'
+
+    page-next:
+      title: '&anachste Seite'
+      description: # Variables: prev, total, cur
+      - '&bblaetter auf Seite %next%/%total%'
+
+    craft-items:
+      title: '&aHerstellen'
+      description:
+      - '&bHerstellung von Gegenstaenden'
+
+    craft-armor:
+      title: '&afarbige Ruestung'
+      description:
+      - '&bHerstellung von farbiger Ruestung'
+
+    craft-fireworks:
+      title: '&aFeuerwerk'
+      description:
+      - '&bHerstellung von Feuerwerksraketen'
+      - '&bund Feuerwerkssternen'
+
+    refresh:
+      title: '&aaktualisieren'
+      description:
+      - '&bNeusoritierung der herstellbaren Gegenstaende'
+
+    multiplier:
+      title: '&aHerstellungsmuliplikator (%mult%x)' # Variables: mult
+      description: # Variables: mult
+      - '&bstellt mehr als einen Gegenstand'
+      - '&bauf einmal her'
+
+    workbench:
+      title: '&aWerkbank'
+      description:
+      - '&boeffnet die normale 3x3 Werkbank'
+
+commands: # Not yet implemented
+
+# The localized names of items.
+# d: Default item name.
+# number: Name for specific item data.
+items:
+  'minecraft:diamond': 'Diamant'
+  'minecraft:planks':
+    d: 'Holzbretter'
+    0: 'Eichenholzbretter'
+    1: 'Fichtenholzbretter'
+    2: 'Birkenholzbretter'
+    3: 'Tropenholzbretter'
+    4: 'Akazienholzbretter'
+    5: 'Schwarzeichenholzbretter'
+  'minecraft:iron_ingot': 'Eisenbarren'
+  'minecraft:gold_ingot': 'Goldbaren'
+  'minecraft:emerald': 'Smaragd'
+  'minecraft:mosssy_cobblestone': 'Bemooster Bruchstein'
+  'minecraft:sand':
+    d: 'Sand'
+    1: 'Roter Sand'
+  'minecraft:sandstone': 'Sandstein'
+  'minecraft:red_sandstone': 'Roter Sandstein'
+  'minecraft:glass': 'Glas'
+  'minecraft:cobblestone': 'Bruchstein'
+  'minecraft:nether_brick': 'Netherziegel'
+  'minecraft:nether_star': 'Netherstern'
+  'minecraft:netherbrick': 'Netherziegel'
+  'minecraft:Netherrack': 'Diamand'
+  'minecraft:dirt': 'Erde'
+  'minecraft:gravel': 'Kies'
+  'minecraft:stone_slab2': 'Rote Sandsteinstufe'
+  'minecraft:purpur_slab': 'Purpurstufe'
+  'minecraft:stick': 'Stock'
+  'minecraft:chest': 'Truhe'
+  'minecraft:wool':
+    d: 'Wolle'
+    0: 'Weisse Wolle'
+    1: 'Orange Wolle'
+    2: 'Magenta Wolle'
+    3: 'Hellblaue Wolle'
+    4: 'Gelbe Wolle'
+    5: 'Hellgruene Wolle'
+    6: 'Rosa Wolle'
+    7: 'Graue Wolle'
+    8: 'Hellgraue Wolle'
+    9: 'Tuerkiese Wolle'
+    10: 'Violette Wolle'
+    11: 'Blaue Wolle'
+    12: 'Braune Wolle'
+    13: 'Grüne Wolle'
+    14: 'Rote Wolle'
+    15: 'Schwarze Wolle'
+  'minecraft:staineded_glass':
+    d: 'Farbiges Glas'
+    0: 'Weisses Glas'
+    1: 'Oranges Glas'
+    2: 'Magenta Glas'
+    3: 'Hellblaues Glas'
+    4: 'Gelbes Glas'
+    5: 'Hellgruenes Glas'
+    6: 'Rosa Glas'
+    7: 'Graues Glas'
+    8: 'Hellgraues Glas'
+    9: 'Tuerkieses Glas'
+    10: 'Violettes Glas'
+    11: 'Blaues Glas'
+    12: 'Braunes Glas'
+    13: 'Gruenea Glas'
+    14: 'Rotes Glas'
+    15: 'Schwarzes Glas'
+  'minecraft:dye':
+    d: 'Farbstoff'
+    0: 'Tinenbeutel'
+    1: 'Roter Farbstoff'
+    2: 'Kakrusgruen'
+    3: 'Kakaubohne'
+    4: 'Lapislazuli'
+    5: 'Violetter Farbstoff'
+    6: 'Tuerkieser Farbstoff'
+    7: 'Hellgrauer Farbstoff'
+    8: 'Grauer Farbstoff'
+    9: 'Rosa Farbstoff'
+    10: 'Hellgruener Farbstoff'
+    11: 'Gelber Farbstoff'
+    12: 'Hellblauer Farbstoff'
+    13: 'Magenta Farbstoff'
+    14: 'Oranger Farbstoff'
+    15: 'Knochenmehl'
+  'minecraft:chorus_fruit': 'Chorusfrucht'
+  'minecraft:chorus_fruit_popped': 'Geplatze Chorusfrucht'
+  'minecraft:blaze_rod': 'Lohenrute'
+  'minecraft:prismarine_shared': 'Prismarinscherben'
+  'minecraft:prismarine_crystals': 'Prismarinkristalle'
+  'minecraft:quarz': 'Netherquarz'
+  'minecraft:redstone_torch': 'Redstone-Fackel'
+  'minecraft:wooden_slab':
+    d: 'Holzbstufe'
+    0: 'Eichenholzstufe'
+    1: 'Fichtenholzstufe'
+    2: 'Birkenholzstufe'
+    3: 'Tropenholzstufe'
+    4: 'Akazienholzstufe'
+    5: 'Schwarzeichenholzstufe'
+  'minecraft:stone':
+    d: 'Stein'
+    1: 'Granit'
+    3: 'Diorit'
+    5: 'Andesit'
+  'minecraft:stone_slab':
+    d: 'Steinstufe'
+    1: 'Sandsteinstufe'
+    7: 'Quarzstufe'
+  'minecraft:Coal':
+    d: 'Kohle'
+    1: 'Holzkohle'
+  'minecraft:bow': 'Bogen'
+  'minecraft:feather': 'Feder'
+  'minecraft:flint': 'Feucherstein'
+  'minecraft:gunpowder': 'Schwarzpulver'
+  'minecraft:hardend_clay': 'Gebrannter Ton'
+  'minecraft:clay': 'Ton'
+  'minecraft:clay_ball': 'Ton'
+  'minecraft:brick': 'Ziegel'
+  'minecraft:clay_ball': 'Ton'
+  'minecraft:book': 'Buch'
+  'minecraft:leather': 'Leder'
+  'minecraft:glowstone_dust': 'Glowstonestaub'
+  'minecraft:pumpkin': 'Kuerbis'
+  'minecraft:torch': 'Fackel'
+  'minecraft:melon': 'Melone'
+  'minecraft:wheat': 'Weizen'
+  'minecraft:slime_ball': 'Schleimball'
+  'minecraft:clay_ball': 'Ton'
+  'minecraft:lapis_block': 'Lapislazuliblock'
+  'minecraft:gold_block': 'Goldblock'
+  'minecraft:iron_block': 'Eisenblock'
+  'minecraft:diamond_block': 'Diamantblock'
+  'minecraft:emerald_block': 'Smaragdblock'
+  'minecraft:melon_block': 'Melone'
+  'minecraft:redstone_block': 'Redstone-Block'
+  'minecraft:slime': 'Schleimblock'
+  'minecraft:hay_block': 'Strohballen'
+  'minecraft:coal_block': 'Kohleblock'
+  'minecraft:stone_presssure_plate': 'Steindruckplatte'
+  'minecraft:ender_pearl': 'Enderperle'
+  'minecraft:blaze_powder': 'Lohenstaub'
+  'minecraft:sugar': 'Zucker'
+  'minecraft:brown_mushroom': 'Pilz'
+  'minecraft:red_mushroom': 'Pilz'
+  'minecraft:bowl': 'Schuessel'
+  'minecraft:spider_eye': 'Spinnenauge'
+  'minecraft:fermented_spider_eye': 'Fermentiertes Spinnenauge'
+  'minecraft:ghast_taer': 'Ghasttraene'
+  'minecraft:string': 'Faden'
+  'minecraft:snowball': 'Schneeball'
+  'minecraft:vine': 'Ranken'
+  'minecraft:string': 'Faden'
+  'minecraft:fishing_rod': 'Angel'
+  'minecraft:carrot': 'Karotte'
+  'minecraft:compass': 'Kompass'
+  'minecraft:paper': 'Papier'
+  'minecraft:reeds': 'Zuckerrohr'
+  'minecraft:furnace': 'Ofen'
+  'minecraft:minecart': 'Lore'
+  'minecraft:hopper': 'Trichter'
+  'minecraft:fishing_rod': 'Angel'
+  'minecraft:tripwire_hook': 'Haken'
+  'minecraft:piston': 'Kolben'
+  'minecraft:milk_bucket': 'Milcheimer'
+  'minecraft:egg': 'Ei'
+  'minecraft:apple': 'Apfel'
+  'minecraft:golden_apple': 'Goldener Apfel'
+  'minecraft:cooked_rabbit': 'Gebratenes Kanninchen'
+  'minecraft:baked_potato': 'Ofenkartoffel'
+  'minecraft:beetroot': 'Rote Bete'
+  'minecraft:Bone': 'Knochen'
+  'minecraft:red_flower':
+    d: 'Blumen'
+    0: 'Mohn'
+    1: 'Blaue Orchidee'
+    2: 'Sternlauch'
+    3: 'Porzellansternchen'
+    4: 'Rote Tulpe'
+    5: 'Orange Tulpe'
+    6: 'Weisse Tulpe'
+    7: 'Rosa Tulpe'
+    8: 'Margeritte'
+  'minecraft:double_plant':
+    d: 'Doppelblumen'
+    0: 'Sonnenblume'
+    1: 'Flieder'
+    2: 'Hohes Gras'
+    3: 'Grosser Farn'
+    4: 'Rosenstrauch'
+    5: 'Pfingstrose'
+  'minecraft:yellow_flower': 'Loewenzahn'
+  'minecraft:gold_nugget': 'Goldklumpen'
+  'minecraft:firework_charge': 'Feuerwerksstern'
+  'minecraft:fire_charge': 'Feucherkugel'
+  'minecraft:leahter_helmet': 'Lederkappe'
+  'minecraft:leather_chestplate': 'Lederjacke'
+  'minecraft:leather_leggings': 'Lederhose'
+  'minecraft:leather_boots': 'Lederstiefel'
+  'minecraft:banner':
+    d: 'farbiges Banner'
+    15: 'Weisses Banner'
+    14: 'Oranges Banner'
+    13: 'Magenta Banner'
+    12: 'Hellblaues Banner'
+    11: 'Gelbes Banner'
+    10: 'Hellgruenes Banner'
+    9: 'Rosa Banner'
+    8: 'Graues Banner'
+    7: 'Hellgraues Banner'
+    6: 'Tuerkieses Banner'
+    5: 'Violettes Banner'
+    4: 'Blaues Banner'
+    3: 'Braunes Banner'
+    2: 'Gruenea Banner'
+    1: 'Rotes Banner'
+    0: 'Schwarzes Banner'
+  'minecraft:ribbit_hide': 'Kaninchenfell'
+  'minecraft:written_book': 'Beschriebene Buch'
+  'minecraft:writable_book': 'Buch und Feder'
+  'minecraft:filled_map': 'Karte'
+  'minecraft:shears': 'Schere'
+  'minecraft:skull':
+    d: 'Kopf'
+    0: 'Skelettschadel'
+    1: 'Witherskelettschaedel'
+    2: 'Zombiekopf'
+    3: 'Kopf einen Spielers'
+    4: 'Creeperkopf'
+    5: 'Drachenkopf'

@@ -19,8 +19,8 @@
 # Recipe types:
 #   shaped:
 #     ingredients: A list of characters associated with different items.
-#     recipe: Use characters defined in ingredients to create the recipe shape. If
-#             a character appears here that is not defined, then it will be empty.
+#     shape: Use characters defined in ingredients to create the recipe shape. If
+#            a character appears here that is not defined, then it will be empty.
 #     result: The item (with an amount) that will be crafted from this recipe.
 #
 #   shapeless:
@@ -28,32 +28,25 @@
 #                  Each ingredient can be labeled anything. It's for your own reference.
 #     result: The item (with an amount) that will be crafted from this recipe.
 #
-#   furnace:
-#     exp: The experience gained by using this furnace recipe.
-#     input: The item put into the furnace.
-#     result: The item made by the furnace.
-#
 # -------------------------------- Example Recipes --------------------------------
 #
-# ThickSword:
+# thick_sword:
 #   type: shaped
 #   ingredients:
 #     p: ['minecraft:planks', ANY]
 #     d: ['minecraft:diamond_block']
-#   recipe:
-#   - ' d '
-#   - ' d '
-#   - ' p '
+#   shape:
+#   - 'd'
+#   - 'd'
+#   - 'p'
 #   result: [1, 'minecraft:diamond_sword', 0, '{display:{Name:"Thick Sword"}}']
 #
-# CharcoalBlock:
+# fish_stew:
 #   type: shapeless
 #   ingredients:
-#     charcoal: [9, 'minecraft:coal', 1]
-#   result: [1, 'minecraft:coal_block', 1, '{display:{Name:"Block of Charcoal"}}']
-#
-# FireStick:
-#   type: furnace
-#   exp: 3
-#   input: ['minecraft:stick']
-#   result: ['minecraft:blaze_rod', 0, '{display:{Name:"Fire Stick"}}']
+#     bowl:       [1, 'minecraft:bowl']
+#     raw_fish:   [1, 'minecraft:fish']
+#     raw_salmon: [1, 'minecraft:fish', 1]
+#     clownfish:  [1, 'minecraft:fish', 2]
+#     pufferfish: [1, 'minecraft:fish', 3]
+#   result: [1, 'minecraft:beetroot_soup', 0, '{display:{Name:"Fish Stew"}}']
