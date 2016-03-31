@@ -1,4 +1,4 @@
-package co.kepler.fastcraftplus.crafting;
+package co.kepler.fastcraftplus.recipes;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;

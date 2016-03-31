@@ -1,4 +1,4 @@
-package co.kepler.fastcraftplus.crafting;
+package co.kepler.fastcraftplus.recipes;
 
 import co.kepler.fastcraftplus.FastCraft;
 import com.google.common.collect.Iterators;

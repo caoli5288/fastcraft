@@ -1,6 +1,8 @@
-package co.kepler.fastcraftplus.crafting;
+package co.kepler.fastcraftplus.recipes.custom;
 
 import co.kepler.fastcraftplus.config.Recipes;
+import co.kepler.fastcraftplus.recipes.GUIRecipe;
+import co.kepler.fastcraftplus.recipes.Ingredient;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapelessRecipe;
 
@@ -9,19 +11,19 @@ import java.util.Map;
 /**
  * A shapeless recipe than supports ingredients with metadata.
  */
-public class FCShapelessRecipe implements FCRecipe {
+public class CustomShapelessRecipe implements CustomRecipe {
     private final ItemStack result;
     private final ShapelessRecipe recipe;
     private final GUIRecipe guiRecipe;
 
     /**
-     * Create a new instance of FCShapelessRecipe.
+     * Create a new instance of CustomShapelessRecipe.
      *
      * @param result      The result of the recipe.
      * @param ingredients The ingredients of the recipe.
      * @throws Recipes.RecipeException Thrown if the recipe is misconfigured.
      */
-    public FCShapelessRecipe(ItemStack result, Map<Ingredient, Integer> ingredients) throws Recipes.RecipeException {
+    public CustomShapelessRecipe(ItemStack result, Map<Ingredient, Integer> ingredients) throws Recipes.RecipeException {
         this.result = result;
 
         // Check that there aren't too many ingredients.

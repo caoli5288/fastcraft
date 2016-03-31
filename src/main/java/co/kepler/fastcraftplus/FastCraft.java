@@ -6,7 +6,7 @@ import co.kepler.fastcraftplus.config.Config;
 import co.kepler.fastcraftplus.config.Language;
 import co.kepler.fastcraftplus.config.Recipes;
 import co.kepler.fastcraftplus.craftgui.GUIFastCraft;
-import co.kepler.fastcraftplus.crafting.CraftingListener;
+import co.kepler.fastcraftplus.recipes.CraftingListener;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;

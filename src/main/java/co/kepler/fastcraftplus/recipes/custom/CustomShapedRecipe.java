@@ -1,6 +1,8 @@
-package co.kepler.fastcraftplus.crafting;
+package co.kepler.fastcraftplus.recipes.custom;
 
 import co.kepler.fastcraftplus.config.Recipes;
+import co.kepler.fastcraftplus.recipes.GUIRecipe;
+import co.kepler.fastcraftplus.recipes.Ingredient;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
@@ -12,7 +14,7 @@ import java.util.Map;
 /**
  * A shaped recipe than supports ingredients with metadata.
  */
-public class FCShapedRecipe implements FCRecipe {
+public class CustomShapedRecipe implements CustomRecipe {
     private final ItemStack result;
     private final Ingredient[][] ingredientGrid;
     private final int rows, cols;
@@ -20,15 +22,15 @@ public class FCShapedRecipe implements FCRecipe {
     private final GUIRecipe guiRecipe;
 
     /**
-     * Create a new instance of FCShapedRecipe.
+     * Create a new instance of CustomShapedRecipe.
      *
      * @param result         The result of the recipe.
      * @param ingredientsMap The chars-ingredient map.
      * @param shape          The shape of the recipe.
      * @throws Recipes.RecipeException Thrown when recipe is improperly configured.
      */
-    public FCShapedRecipe(ItemStack result, Map<Character, Ingredient> ingredientsMap,
-                          List<String> shape) throws Recipes.RecipeException {
+    public CustomShapedRecipe(ItemStack result, Map<Character, Ingredient> ingredientsMap,
+                              List<String> shape) throws Recipes.RecipeException {
         this.result = result;
 
         // Get the number of rows and columns in the shape.

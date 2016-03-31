@@ -1,12 +1,13 @@
-package co.kepler.fastcraftplus.crafting;
+package co.kepler.fastcraftplus.recipes.custom;
 
+import co.kepler.fastcraftplus.recipes.GUIRecipe;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 
 /**
  * A recipe that supports ingredients with metadata.
  */
-public interface FCRecipe {
+public interface CustomRecipe {
 
     /**
      * Get the result of this recipe.
@@ -18,14 +19,14 @@ public interface FCRecipe {
     /**
      * Get the recipe.
      *
-     * @return Returns the Recipe associated with this FCRecipe
+     * @return Returns the Recipe associated with this CustomRecipe
      */
     Recipe getRecipe();
 
     /**
      * Get the GUI recipe.
      *
-     * @return Returns the GUIRecipe associated with this FCRecipe.
+     * @return Returns the GUIRecipe associated with this CustomRecipe.
      */
     GUIRecipe getGUIRecipe();
 

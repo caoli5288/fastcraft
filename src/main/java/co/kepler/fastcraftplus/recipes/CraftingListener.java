@@ -1,6 +1,7 @@
-package co.kepler.fastcraftplus.crafting;
+package co.kepler.fastcraftplus.recipes;
 
 import co.kepler.fastcraftplus.config.Recipes;
+import co.kepler.fastcraftplus.recipes.custom.CustomRecipe;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.PrepareItemCraftEvent;
@@ -13,7 +14,7 @@ public class CraftingListener implements Listener {
 
     @EventHandler
     public void onPrepareItemCraft(PrepareItemCraftEvent e) {
-        for (FCRecipe recipe : Recipes.getRecipes()) {
+        for (CustomRecipe recipe : Recipes.getRecipes()) {
             if (!RecipeUtil.areEqual(recipe.getRecipe(), e.getRecipe())) continue;
 
             CraftingInventory inv = e.getInventory();

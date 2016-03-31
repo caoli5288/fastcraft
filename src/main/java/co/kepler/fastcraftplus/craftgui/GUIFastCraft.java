@@ -2,7 +2,6 @@ package co.kepler.fastcraftplus.craftgui;
 
 import co.kepler.fastcraftplus.FastCraft;
 import co.kepler.fastcraftplus.api.gui.*;
-import co.kepler.fastcraftplus.crafting.CraftingInvWrapper;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.HumanEntity;

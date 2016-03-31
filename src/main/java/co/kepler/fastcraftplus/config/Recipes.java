@@ -1,7 +1,10 @@
 package co.kepler.fastcraftplus.config;
 
 import co.kepler.fastcraftplus.FastCraft;
-import co.kepler.fastcraftplus.crafting.*;
+import co.kepler.fastcraftplus.recipes.*;
+import co.kepler.fastcraftplus.recipes.custom.*;
+import co.kepler.fastcraftplus.recipes.custom.CustomRecipe;
+import co.kepler.fastcraftplus.recipes.custom.CustomShapedRecipe;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -16,7 +19,7 @@ import java.util.*;
  * Manages recipes from the recipes config file.
  */
 public class Recipes {
-    private static final List<FCRecipe> recipes = new ArrayList<>();
+    private static final List<CustomRecipe> recipes = new ArrayList<>();
 
     /**
      * Unloads all previously loaded recipes, then load recipes from the recipes config.
@@ -33,10 +36,10 @@ public class Recipes {
         YamlConfiguration recipesConfig = YamlConfiguration.loadConfiguration(recipesFile);
 
         // Remove loaded recipes
-        for (FCRecipe fcRecipe : recipes) {
+        for (CustomRecipe customRecipe : recipes) {
             for (Iterator<Recipe> iter = Bukkit.recipeIterator(); iter.hasNext(); ) {
                 Recipe recipe = iter.next();
-                if (RecipeUtil.areEqual(recipe, fcRecipe.getRecipe())) {
+                if (RecipeUtil.areEqual(recipe, customRecipe.getRecipe())) {
                     iter.remove();
                     break;
                 }
@@ -47,9 +50,9 @@ public class Recipes {
         recipes.clear();
         for (String key : recipesConfig.getKeys(false)) {
             try {
-                FCRecipe fcRecipe = getRecipe(recipesConfig.getConfigurationSection(key));
-                recipes.add(fcRecipe);
-                Bukkit.addRecipe(fcRecipe.getRecipe());
+                CustomRecipe customRecipe = getRecipe(recipesConfig.getConfigurationSection(key));
+                recipes.add(customRecipe);
+                Bukkit.addRecipe(customRecipe.getRecipe());
                 FastCraft.log("Loaded recipe: " + key);
             } catch (RecipeException e) {
                 FastCraft.err("Error loading recipe '" + key + "': " + e.getMessage());
@@ -62,7 +65,7 @@ public class Recipes {
      *
      * @return The list of loaded recipes.
      */
-    public static List<FCRecipe> getRecipes() {
+    public static List<CustomRecipe> getRecipes() {
         return recipes;
     }
 
@@ -73,7 +76,7 @@ public class Recipes {
      * @return Returns a recipe.
      * @throws RecipeException Thrown if the recipe is improperly configured.
      */
-    private static FCRecipe getRecipe(ConfigurationSection conf) throws RecipeException {
+    private static CustomRecipe getRecipe(ConfigurationSection conf) throws RecipeException {
         String type = conf.getString("type");
         if (type == null) {
             throw new RecipeException("Recipe type cannot be null");
@@ -94,7 +97,7 @@ public class Recipes {
      * @return Returns a shaped recipe.
      * @throws RecipeException Thrown if the recipe is improperly configured.
      */
-    private static FCRecipe getShapedRecipe(ConfigurationSection conf) throws RecipeException {
+    private static CustomRecipe getShapedRecipe(ConfigurationSection conf) throws RecipeException {
         // Create the recipe object
         ItemStack result = getItemStack(conf.getStringList("result"));
 
@@ -110,7 +113,7 @@ public class Recipes {
         List<String> shape = conf.getStringList("shape");
 
         // return the new recipe
-        return new FCShapedRecipe(result, ingredients, shape);
+        return new CustomShapedRecipe(result, ingredients, shape);
     }
 
     /**
@@ -120,7 +123,7 @@ public class Recipes {
      * @return Returns a shapeless recipe.
      * @throws RecipeException Thrown if the recipe is improperly configured.
      */
-    private static FCRecipe getShapelessRecipe(ConfigurationSection conf) throws RecipeException {
+    private static CustomRecipe getShapelessRecipe(ConfigurationSection conf) throws RecipeException {
         // Create the recipe object
         ItemStack result = getItemStack(conf.getStringList("result"));
 
@@ -135,7 +138,7 @@ public class Recipes {
         }
 
         // Return the created recipe
-        return new FCShapelessRecipe(result, ingredients);
+        return new CustomShapelessRecipe(result, ingredients);
     }
 
     /**

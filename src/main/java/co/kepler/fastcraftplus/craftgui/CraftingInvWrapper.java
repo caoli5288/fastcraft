@@ -1,4 +1,4 @@
-package co.kepler.fastcraftplus.crafting;
+package co.kepler.fastcraftplus.craftgui;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;

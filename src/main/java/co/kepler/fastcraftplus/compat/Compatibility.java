@@ -32,8 +32,8 @@ public class Compatibility {
     private void loadCompat(PluginCompat pluginCompat) {
         Plugin plugin = Bukkit.getPluginManager().getPlugin(pluginCompat.getPluginName());
         if (plugin != null) {
-            loadedCompats.add(pluginCompat);
             pluginCompat.init();
+            loadedCompats.add(pluginCompat);
             FastCraft.log("Loaded compatibility: " + plugin.getName());
         }
     }

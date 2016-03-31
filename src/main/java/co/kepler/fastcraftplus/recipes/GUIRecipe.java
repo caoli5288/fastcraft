@@ -1,4 +1,4 @@
-package co.kepler.fastcraftplus.crafting;
+package co.kepler.fastcraftplus.recipes;
 
 import co.kepler.fastcraftplus.craftgui.GUIFastCraft;
 import org.bukkit.Bukkit;

@@ -1,6 +1,6 @@
 package co.kepler.fastcraftplus.craftgui;
 
-import co.kepler.fastcraftplus.crafting.RecipeUtil;
+import co.kepler.fastcraftplus.recipes.RecipeUtil;
 
 /**
  * A recipes layout that shows item crafting recipes.
