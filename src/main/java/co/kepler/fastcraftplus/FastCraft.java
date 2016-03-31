@@ -1,7 +1,7 @@
 package co.kepler.fastcraftplus;
 
 import co.kepler.fastcraftplus.api.gui.GUI;
-import co.kepler.fastcraftplus.compat.Compatibility;
+import co.kepler.fastcraftplus.compat.FastRecipeManager;
 import co.kepler.fastcraftplus.config.Config;
 import co.kepler.fastcraftplus.config.Language;
 import co.kepler.fastcraftplus.config.Recipes;
@@ -11,12 +11,14 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.HashSet;
+
 public class FastCraft extends JavaPlugin {
     private static FastCraft instance;
 
     private Config config;
     private Language lang;
-    private Compatibility compat;
+    private FastRecipeManager compat;
 
     @Override
     public void onEnable() {
@@ -24,7 +26,7 @@ public class FastCraft extends JavaPlugin {
 
         config = new Config();
         lang = new Language(config.getLanguage());
-        compat = new Compatibility();
+        compat = new FastRecipeManager();
 
         Recipes.loadRecipes();
 
@@ -61,7 +63,7 @@ public class FastCraft extends JavaPlugin {
      *
      * @return Returns the plugin's compatibility manager.
      */
-    public static Compatibility compat() {
+    public static FastRecipeManager compat() {
         return instance.compat;
     }
 
