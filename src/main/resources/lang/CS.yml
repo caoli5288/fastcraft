@@ -1,0 +1,71 @@
+# Translated into Czech by MachisCZ (https://www.spigotmc.org/members/machiscz.63328/)
+#
+# If you translate this file, feel free to PM it to Kepler_ on spigotmc.org
+# if you would like it to be officially added to FastCraft+ officially.
+#
+# Use ampersands (&) for formatting/color codes. Info about formatting codes:
+# http://minecraft.gamepedia.com/Formatting_codes
+
+gui:
+  title: 'FastCraft+'
+
+  ingredients:
+    label: '&aIngredience:'
+    item: '&a %amount%x %item%' # Variables: amount, item
+
+  toolbar:
+    page-prev:
+      title: '&aPredchozi stranka'
+      description: # Variables: prev, total, cur
+      - '&bJdi na stranku %prev%/%total%'
+
+    page-next:
+      title: '&aDalsi stranka'
+      description: # Variables: prev, total, cur
+      - '&bJdi na stranku %next%/%total%'
+
+    craft-items:
+      title: '&aVyroba predmetu'
+      description:
+      - '&bVyrabenÃ­ predmnetu'
+
+    craft-armor:
+      title: '&aVyroba obarveneho brnenÃ­'
+      description:
+      - '&bVyrabenÃ­ obarveneho brnenÃ­'
+
+    craft-fireworks:
+      title: '&aVyrabenÃ­ raket'
+      description:
+      - '&bVyrabenÃ­ raket a jejich naplnÃ­'
+
+    refresh:
+      title: '&aZnovu nacÃ­st'
+      description:
+      - '&bZnovu zobrazit dotupne predmety'
+
+    multiplier:
+      title: '&aVyrabecÃ­ nasobic (%mult%x)' # Variables: mult
+      description: # Variables: mult
+      - '&bVytvarej vÃ­ce predmetu najedou'
+
+    workbench:
+      title: '&aPracovnÃ­ stul'
+      description:
+      - '&bOtevre klasicky 3x3 stul'
+
+commands: # Not yet implemented
+
+# The localized names of items.
+# d: Default item name.
+# number: Name for specific item data.
+items:
+#  'minecraft:diamond': 'Diamond'
+#  'minecraft:planks':
+#    d: 'Wood Planks'
+#    0: 'Oak Wood Planks'
+#    1: 'Spruce Wood Planks'
+#    2: 'Birch Wood Planks'
+#    3: 'Jungle Wood Planks'
+#    4: 'Acacia Wood Planks'
+#    5: 'Dark Oak Wood Planks'
