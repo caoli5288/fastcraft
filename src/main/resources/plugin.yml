@@ -6,6 +6,11 @@ description: Improved crafting in Minecraft.
 
 main: co.kepler.fastcraftplus.FastCraft
 
+softdepend:
+- Vault
+- ItemMakerPro
+- ProRecipes
+
 commands:
   fastcraft:
     description: FastCraft commands.

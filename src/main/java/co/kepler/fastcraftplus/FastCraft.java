@@ -1,6 +1,7 @@
 package co.kepler.fastcraftplus;
 
 import co.kepler.fastcraftplus.api.gui.GUI;
+import co.kepler.fastcraftplus.compat.Compatibility;
 import co.kepler.fastcraftplus.config.Config;
 import co.kepler.fastcraftplus.config.Language;
 import co.kepler.fastcraftplus.config.Recipes;
@@ -10,13 +11,32 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.logging.Level;
-
 public class FastCraft extends JavaPlugin {
     private static FastCraft instance;
 
     private Config config;
     private Language lang;
+    private Compatibility compat;
+
+    @Override
+    public void onEnable() {
+        instance = this;
+
+        config = new Config();
+        lang = new Language(config.getLanguage());
+        compat = new Compatibility();
+
+        Recipes.loadRecipes();
+
+        PluginManager pluginManager = Bukkit.getPluginManager();
+        pluginManager.registerEvents(new CraftingListener(), this);
+        pluginManager.registerEvents(new GUIFastCraft.GUIListener(), this);
+    }
+
+    @Override
+    public void onDisable() {
+        GUI.disposeAll();
+    }
 
     /**
      * Get an instance of FastCraft.
@@ -34,6 +54,15 @@ public class FastCraft extends JavaPlugin {
      */
     public static Language lang() {
         return instance.lang;
+    }
+
+    /**
+     * Get the plugin's compatibility manager.
+     *
+     * @return Returns the plugin's compatibility manager.
+     */
+    public static Compatibility compat() {
+        return instance.compat;
     }
 
     /**
@@ -70,23 +99,5 @@ public class FastCraft extends JavaPlugin {
      */
     public static void warning(String msg) {
         instance.getLogger().warning(msg);
-    }
-
-    @Override
-    public void onEnable() {
-        instance = this;
-
-        config = new Config();
-        lang = new Language(config.getLanguage());
-        Recipes.loadRecipes();
-
-        PluginManager pluginManager = Bukkit.getPluginManager();
-        pluginManager.registerEvents(new CraftingListener(), this);
-        pluginManager.registerEvents(new GUIFastCraft.GUIListener(), this);
-    }
-
-    @Override
-    public void onDisable() {
-        GUI.disposeAll();
     }
 }
