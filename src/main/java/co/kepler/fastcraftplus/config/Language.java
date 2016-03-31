@@ -79,6 +79,9 @@ public class Language {
                     }
                     itemName = new ItemNames(defName, names);
                 }
+                if (itemName.getDefName() == null) {
+                    FastCraft.warning("Language (" + language + ") has missing default (d) for item: '" + item + "'");
+                }
                 itemNames.put(itemType, itemName);
             }
         }
@@ -262,6 +265,10 @@ public class Language {
         public ItemNames(String defName, Map<Integer, String> names) {
             this.defName = defName;
             this.names = names;
+        }
+
+        public String getDefName() {
+            return defName;
         }
 
         public String getName(int data) {

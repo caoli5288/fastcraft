@@ -51,7 +51,7 @@ public class FastCraft extends JavaPlugin {
      * @param msg The message to log.
      */
     public static void err(String msg) {
-        instance.getLogger().log(Level.SEVERE, msg);
+        instance.getLogger().severe(msg);
     }
 
     /**
@@ -59,8 +59,17 @@ public class FastCraft extends JavaPlugin {
      *
      * @param msg The message to log.
      */
-    public static void logInfo(String msg) {
+    public static void log(String msg) {
         instance.getLogger().info(msg);
+    }
+
+    /**
+     * Log a warning message to the console.
+     *
+     * @param msg The message to log.
+     */
+    public static void warning(String msg) {
+        instance.getLogger().warning(msg);
     }
 
     @Override

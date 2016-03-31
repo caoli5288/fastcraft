@@ -47,7 +47,7 @@ public class RecipeUtil {
             try {
                 ignoreRecipeClasses.add(Class.forName(nms + s));
             } catch (ClassNotFoundException e) {
-                FastCraft.logInfo("Class '" + s + "' does not exist");
+                FastCraft.log("Class '" + s + "' does not exist");
             }
         }
 

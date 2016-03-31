@@ -28,7 +28,7 @@ public class Recipes {
         File recipesFile = new File(fastcraft.getDataFolder(), "recipes.yml");
         if (!recipesFile.exists()) {
             fastcraft.saveResource("recipes.yml", false);
-            FastCraft.logInfo("Created recipes.yml");
+            FastCraft.log("Created recipes.yml");
         }
         YamlConfiguration recipesConfig = YamlConfiguration.loadConfiguration(recipesFile);
 
@@ -50,7 +50,7 @@ public class Recipes {
                 FCRecipe fcRecipe = getRecipe(recipesConfig.getConfigurationSection(key));
                 recipes.add(fcRecipe);
                 Bukkit.addRecipe(fcRecipe.getRecipe());
-                FastCraft.logInfo("Loaded recipe: " + key);
+                FastCraft.log("Loaded recipe: " + key);
             } catch (RecipeException e) {
                 FastCraft.err("Error loading recipe '" + key + "': " + e.getMessage());
             }
