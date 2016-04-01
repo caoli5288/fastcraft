@@ -14,6 +14,6 @@ public class LayoutRecipesItems extends LayoutRecipes {
 
     @Override
     public void updateRecipes() {
-        FastCraft.recipeManager().getRecipes(getGUI().getPlayer());
+        this.addRecipes(FastCraft.recipeManager().getRecipes(getGUI().getPlayer()));
     }
 }

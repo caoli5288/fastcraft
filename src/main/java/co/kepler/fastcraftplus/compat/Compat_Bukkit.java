@@ -29,7 +29,7 @@ public class Compat_Bukkit extends Compat {
 
     @Override
     public Set<FastRecipe> getRecipes(Player player) {
-        Set<FastRecipe> result = new HashSet<FastRecipe>();
+        Set<FastRecipe> result = new HashSet<>();
 
         // Loop through the server's recipes
         for (Iterator<Recipe> iter = Bukkit.recipeIterator(); iter.hasNext();) {
@@ -82,7 +82,9 @@ public class Compat_Bukkit extends Compat {
             // Fill map of ingredients
             for (String row : recipe.getShape()) {
                 for (char c : row.toCharArray()) {
-                    Ingredient ingredient = new Ingredient(recipe.getIngredientMap().get(c));
+                    ItemStack item = recipe.getIngredientMap().get(c);
+                    if (item == null) continue;
+                    Ingredient ingredient = new Ingredient(item);
                     Integer amount = ingredients.get(ingredient);
                     ingredients.put(ingredient, (amount == null ? 0 : amount) + 1);
                 }

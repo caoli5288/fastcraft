@@ -82,7 +82,7 @@ public class GUIButtonRecipe extends GUIButton {
      */
     @Override
     public boolean isVisible() {
-        return recipe.canCraft(gui.getPlayer(), false);
+        return recipe.canCraftFromItems(gui.getPlayer(), false);
     }
 
     /**
@@ -105,13 +105,14 @@ public class GUIButtonRecipe extends GUIButton {
     public boolean onClick(Layout layout, InventoryClickEvent invEvent) {
         if (ignoreClicks.contains(invEvent.getClick())) return false;
 
-        if (!recipe.canCraft(gui.getPlayer(), true)) {
+        // Craft the items, and return if unsuccessful
+        Set<ItemStack> results = recipe.craft(gui.getPlayer());
+        if (results == null) {
             gui.updateLayout();
             return false;
         }
 
         // Give the player the result items
-        Set<ItemStack> results = recipe.getResults();
         switch (invEvent.getClick()) {
             case DROP:
             case CONTROL_DROP:

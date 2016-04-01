@@ -76,8 +76,11 @@ public abstract class FastRecipe implements Comparable<FastRecipe> {
         int stackSize = Material.BUCKET.getMaxStackSize();
         while (buckets > stackSize) {
             result.add(new ItemStack(Material.BUCKET, stackSize));
+            buckets -= stackSize;
         }
-        result.add(new ItemStack(Material.BUCKET, buckets));
+        if (buckets > 0) {
+            result.add(new ItemStack(Material.BUCKET, buckets));
+        }
 
         // Return the list of byproducts
         return result;
@@ -130,10 +133,10 @@ public abstract class FastRecipe implements Comparable<FastRecipe> {
      * from the player's inventory if all ingredients are present.
      *
      * @param player The player crafting this recipe.
-     * @param craft  Whether this recipe should be crafted if the player has all the ingredients.
+     * @param remove If a player has all the necessary items, remove them.
      * @return Returns true if the ingredients were removed from the player's inventory.
      */
-    public boolean canCraft(Player player, boolean craft) {
+    public boolean canCraftFromItems(Player player, boolean remove) {
         // Clone the items in the player's inventory
         ItemStack[] contents = player.getInventory().getContents();
         for (int i = 0; i < contents.length; i++) {
@@ -141,23 +144,31 @@ public abstract class FastRecipe implements Comparable<FastRecipe> {
             contents[i] = contents[i].clone();
         }
 
-        boolean allRemoved = removeIngredients(contents);
-        if (allRemoved && craft) {
-            if (!callCraftEvent(player)) return true;
+        // Remove items, and see if the player has all of them
+        boolean hasAll = removeIngredients(contents);
 
-            // Update inventory to reflect removed items
-            Inventory inv = player.getInventory();
-            ItemStack result = getResult();
-            inv.setContents(contents);
-            inv.addItem(result);
-            for (ItemStack byproduct : getByproducts()) {
-                inv.addItem(byproduct);
-            }
-
-            // Award achievement
-            RecipeUtil.awardAchievement(player, result);
+        // If all items were removed, update the player's inventory
+        if (hasAll && remove) {
+            player.getInventory().setContents(contents);
+            return true;
         }
-        return allRemoved;
+
+        // Return whether the player had all the items
+        return hasAll;
+    }
+
+    /**
+     * Craft this recipe, and get the recipe's results.
+     *
+     * @param player The player crafting the recipe.
+     * @return Returns a set of resulting items, or null if the crafting was unsuccessful.
+     */
+    public Set<ItemStack> craft(Player player) {
+        if (!callCraftEvent(player)) return null;
+        if (!canCraftFromItems(player, true)) return null;
+
+        RecipeUtil.awardAchievement(player, getResult());
+        return getResults();
     }
 
     @Override
@@ -181,6 +192,7 @@ public abstract class FastRecipe implements Comparable<FastRecipe> {
 
         FastRecipe fr = (FastRecipe) o;
         if (!getResult().equals(fr.getResult())) return false;
+        if (!getDisplayResult().equals(fr.getDisplayResult())) return false;
         if (!getIngredients().equals(fr.getIngredients())) return false;
         return getByproducts().equals(fr.getByproducts());
     }
@@ -188,8 +200,9 @@ public abstract class FastRecipe implements Comparable<FastRecipe> {
     @Override
     public int hashCode() {
         int hash = getResult().hashCode();
-        hash = hash + 31 * getIngredients().hashCode();
-        return hash + 31 * getByproducts().hashCode();
+        hash = hash * 31 + getDisplayResult().hashCode();
+        hash = hash * 31 + getIngredients().hashCode();
+        return hash * 31 + getByproducts().hashCode();
     }
 
     /**

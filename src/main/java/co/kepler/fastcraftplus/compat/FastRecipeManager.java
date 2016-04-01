@@ -24,6 +24,8 @@ public class FastRecipeManager {
         loadedCompats = new ArrayList<>();
 
         // Load plugin compatibilities
+        loadCompat(new Compat_Bukkit());
+        loadCompat(new Compat_FastCraftPlus());
         loadCompat(new Compat_ItemMakerPro());
         loadCompat(new Compat_ProRecipes());
     }
