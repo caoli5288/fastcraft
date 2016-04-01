@@ -1,6 +1,5 @@
 package co.kepler.fastcraftplus.recipes.custom;
 
-import co.kepler.fastcraftplus.recipes.GUIRecipe;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 
@@ -22,13 +21,6 @@ public interface CustomRecipe {
      * @return Returns the Recipe associated with this CustomRecipe
      */
     Recipe getRecipe();
-
-    /**
-     * Get the GUI recipe.
-     *
-     * @return Returns the GUIRecipe associated with this CustomRecipe.
-     */
-    GUIRecipe getGUIRecipe();
 
     /**
      * See if this recipe matches a crafting matrix.

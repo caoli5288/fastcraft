@@ -11,14 +11,12 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.HashSet;
-
 public class FastCraft extends JavaPlugin {
     private static FastCraft instance;
 
     private Config config;
     private Language lang;
-    private FastRecipeManager compat;
+    private FastRecipeManager recipeManager;
 
     @Override
     public void onEnable() {
@@ -26,7 +24,7 @@ public class FastCraft extends JavaPlugin {
 
         config = new Config();
         lang = new Language(config.getLanguage());
-        compat = new FastRecipeManager();
+        recipeManager = new FastRecipeManager();
 
         Recipes.loadRecipes();
 
@@ -63,8 +61,8 @@ public class FastCraft extends JavaPlugin {
      *
      * @return Returns the plugin's compatibility manager.
      */
-    public static FastRecipeManager compat() {
-        return instance.compat;
+    public static FastRecipeManager recipeManager() {
+        return instance.recipeManager;
     }
 
     /**

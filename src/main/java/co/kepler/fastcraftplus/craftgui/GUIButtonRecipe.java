@@ -3,7 +3,7 @@ package co.kepler.fastcraftplus.craftgui;
 import co.kepler.fastcraftplus.FastCraft;
 import co.kepler.fastcraftplus.api.gui.GUIButton;
 import co.kepler.fastcraftplus.api.gui.Layout;
-import co.kepler.fastcraftplus.recipes.GUIRecipe;
+import co.kepler.fastcraftplus.recipes.FastRecipe;
 import co.kepler.fastcraftplus.recipes.Ingredient;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -23,7 +23,7 @@ public class GUIButtonRecipe extends GUIButton {
             ClickType.UNKNOWN, ClickType.WINDOW_BORDER_LEFT, ClickType.WINDOW_BORDER_RIGHT
     ));
 
-    GUIRecipe recipe;
+    FastRecipe recipe;
     private GUIFastCraft gui;
 
     /**
@@ -32,7 +32,7 @@ public class GUIButtonRecipe extends GUIButton {
      * @param gui    The FastCraft GUI that this button is contained in.
      * @param recipe The recipe that this button will craft.
      */
-    public GUIButtonRecipe(GUIFastCraft gui, GUIRecipe recipe) {
+    public GUIButtonRecipe(GUIFastCraft gui, FastRecipe recipe) {
         super();
         this.gui = gui;
         this.recipe = recipe;
@@ -41,7 +41,7 @@ public class GUIButtonRecipe extends GUIButton {
     @Override
     public ItemStack getItem() {
         // Add the ingredients to the lore of the item
-        ItemStack item = recipe.getCraftingResult(gui).clone();
+        ItemStack item = recipe.getDisplayResult();
         ItemMeta meta = item.getItemMeta();
         LinkedList<String> lore = new LinkedList<>();
         Map<Ingredient, Integer> ingredients = recipe.getIngredients();
@@ -53,7 +53,7 @@ public class GUIButtonRecipe extends GUIButton {
             lore.addLast(FastCraft.lang().gui.ingredients.item(ingredients.get(i), i.getName()));
         }
 
-        // If the item has a lore alread, add a space between the ingredients and the existing lore
+        // If the item has a lore already, add a space between the ingredients and the existing lore
         if (meta.getLore() != null && !meta.getLore().isEmpty()) {
             lore.addFirst("");
             lore.addAll(0, meta.getLore());
@@ -82,7 +82,7 @@ public class GUIButtonRecipe extends GUIButton {
      */
     @Override
     public boolean isVisible() {
-        return recipe.canCraft(gui);
+        return recipe.canCraft(gui.getPlayer(), false);
     }
 
     /**
@@ -105,12 +105,13 @@ public class GUIButtonRecipe extends GUIButton {
     public boolean onClick(Layout layout, InventoryClickEvent invEvent) {
         if (ignoreClicks.contains(invEvent.getClick())) return false;
 
-        List<ItemStack> results = new ArrayList<>();
-        if (!recipe.canCraft(gui, true, results)) {
+        if (!recipe.canCraft(gui.getPlayer(), true)) {
             gui.updateLayout();
             return false;
         }
 
+        // Give the player the result items
+        Set<ItemStack> results = recipe.getResults();
         switch (invEvent.getClick()) {
             case DROP:
             case CONTROL_DROP:

@@ -1,33 +1,25 @@
 package co.kepler.fastcraftplus.recipes;
 
 import co.kepler.fastcraftplus.FastCraft;
-import com.google.common.collect.Iterators;
 import org.bukkit.Achievement;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.inventory.*;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Utility methods for recipes.
  */
 public class RecipeUtil {
-    private static final String[] IGNORE_RECIPES = new String[]{
-            "RecipeArmorDye", "RecipeBookClone", "RecipeMapClone", "RecipeMapExtend",
-            "RecipeFireworks", "RecipeRepair", "RecipesBanner"
-    };
-
     private static RecipeUtil instance;
 
-    private List<GUIRecipe> recipes = new ArrayList<>();
-    private Object craftingManagerInstance;
-    private Method methodGetRecipes;
-    private Method methodToBukkitRecipe;
-    private List<Class> ignoreRecipeClasses;
     private Method methodAsNMSCopy;
     private Method methodNMSGetName;
 
@@ -37,25 +29,11 @@ public class RecipeUtil {
      * Create a new instance of RecipeUtil
      */
     private RecipeUtil() {
-        String version = Bukkit.getServer().getClass().getPackage().getName();
-        version = version.substring(version.lastIndexOf('.') + 1);
-        String nms = "net.minecraft.server." + version + ".";
-        String cb = "org.bukkit.craftbukkit." + version + ".";
-
-        ignoreRecipeClasses = new ArrayList<>();
-        for (String s : IGNORE_RECIPES) {
-            try {
-                ignoreRecipeClasses.add(Class.forName(nms + s));
-            } catch (ClassNotFoundException e) {
-                FastCraft.log("Class '" + s + "' does not exist");
-            }
-        }
-
         try {
-            Class<?> classCraftingManager = Class.forName(nms + "CraftingManager");
-            craftingManagerInstance = classCraftingManager.getMethod("getInstance").invoke(null);
-            methodGetRecipes = craftingManagerInstance.getClass().getMethod("getRecipes");
-            methodToBukkitRecipe = Class.forName(nms + "IRecipe").getMethod("toBukkitRecipe");
+            String version = Bukkit.getServer().getClass().getPackage().getName();
+            version = version.substring(version.lastIndexOf('.') + 1);
+            String nms = "net.minecraft.server." + version + ".";
+            String cb = "org.bukkit.craftbukkit." + version + ".";
 
             Class<?> classCraftItemStack = Class.forName(cb + "inventory.CraftItemStack");
             Class<?> classItemStack = Class.forName(nms + "ItemStack");
@@ -153,51 +131,6 @@ public class RecipeUtil {
         return true;
     }
 
-    public List<GUIRecipe> getRecipes() {
-        if (recipes == null || Iterators.size(Bukkit.recipeIterator()) != recipes.size()) {
-            // If recipes is uninitialized, or if the recipes have changed.
-            loadRecipes();
-        }
-        return recipes;
-    }
-
-    /**
-     * See if a recipe should be ignored.
-     *
-     * @param iRecipe The recipe to check.
-     * @return Returns true if the recipe should be ignored.
-     */
-    private boolean ignoreRecipe(Object iRecipe) {
-        for (Class c : ignoreRecipeClasses) {
-            if (c.isInstance(iRecipe)) {
-                // If this class should be ignored
-                return true;
-            } else if (c.equals(iRecipe.getClass().getEnclosingClass())) {
-                // If the enclosing class should be ignored
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Load the server's recipes as GUIRecipe's
-     */
-    private void loadRecipes() {
-        try {
-            recipes.clear();
-            for (Object iRecipe : (List) methodGetRecipes.invoke(craftingManagerInstance)) {
-                if (ignoreRecipe(iRecipe)) continue;
-                Recipe recipe = (Recipe) methodToBukkitRecipe.invoke(iRecipe);
-                if (!GUIRecipe.canBeGUIRecipe(recipe)) continue;
-                recipes.add(new GUIRecipe(recipe));
-            }
-            Collections.sort(recipes);
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
-        }
-    }
-
     /**
      * Get the name of an item.
      *
@@ -215,6 +148,7 @@ public class RecipeUtil {
         String name = FastCraft.lang().items.name(item);
         if (name != null) return name;
 
+        // Try to get the name from NMS
         try {
             Object nmsItem = methodAsNMSCopy.invoke(null, item);
             name = (String) methodNMSGetName.invoke(nmsItem);
@@ -223,8 +157,9 @@ public class RecipeUtil {
             e.printStackTrace();
         }
 
+        // Return the item's name from its material type
         new Exception("Can't find name of ItemStack: " + item).printStackTrace();
-        return "ERROR";
+        return item.getData().toString();
     }
 
     /**
@@ -240,5 +175,74 @@ public class RecipeUtil {
         if (a.getParent() == null || player.hasAchievement(a.getParent())) {
             player.awardAchievement(a);
         }
+    }
+
+    /**
+     * Get the resulting item from crafting this in a crafting table.
+     *
+     * @param recipe The recipe to check.
+     * @return Returns the item from the crafting table.
+     */
+    public ItemStack getCraftingResult(ShapedRecipe recipe, Player player) {
+        Map<Character, ItemStack> ingredients = recipe.getIngredientMap();
+        String[] shape = recipe.getShape();
+        ItemStack[] matrix = new ItemStack[9];
+
+        // Add items to the matrix
+        if (shape.length > 3) return null;
+        for (int row = 0; row < shape.length; row++) {
+            String curRow = shape[row];
+            if (curRow.length() > 3) return null;
+            for (int col = 0; col < curRow.length(); col++) {
+                matrix[row * 3 + col] = ingredients.get(curRow.charAt(col));
+            }
+        }
+
+        // Return the item in the result slot of the inventory
+        return callPrepareItemCraftEvent(player, matrix, recipe.getResult()).getInventory().getResult();
+    }
+
+    /**
+     * See if a recipe is consistent. A recipe is consistent if its result is the same as
+     * the resulting item when crafting in a crafting table.
+     *
+     * @param recipe The recipe to check.
+     * @return Returns true if the recipe is consistent.
+     */
+    public ItemStack getCraftingResult(ShapelessRecipe recipe, Player player) {
+        ItemStack[] matrix = new ItemStack[9];
+        int matIndex = 0;
+
+        // Add items to the matrix
+        for (ItemStack item : recipe.getIngredientList()) {
+            ItemStack curStack = item.clone();
+            curStack.setAmount(0);
+            for (int i = 0; i < item.getAmount(); i++) {
+                if (matIndex >= matrix.length) return null;
+                matrix[matIndex++] = curStack;
+            }
+        }
+
+        // Return the item in the result slot of the inventory
+        return callPrepareItemCraftEvent(player, matrix, recipe.getResult()).getInventory().getResult();
+    }
+
+    /**
+     * Call a PrepareItemCraftEvent for a player, with a matrix and a result item.
+     *
+     * @param player The player who will be opening the table.
+     * @param matrix The matrix of items in the crafting grid.
+     * @param result The item in the result slot of the crafting table.
+     * @return Returns the called event.
+     */
+    public PrepareItemCraftEvent callPrepareItemCraftEvent(Player player, ItemStack[] matrix, ItemStack result) {
+        CraftingInvWrapper inv = new CraftingInvWrapper(player);
+        inv.setMatrix(matrix);
+        inv.setResult(result);
+
+        PrepareItemCraftEvent event = new PrepareItemCraftEvent(inv, inv.getView(player), false);
+        Bukkit.getPluginManager().callEvent(event);
+
+        return event;
     }
 }

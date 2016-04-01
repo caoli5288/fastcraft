@@ -1,7 +1,7 @@
 package co.kepler.fastcraftplus.recipes.custom;
 
 import co.kepler.fastcraftplus.config.Recipes;
-import co.kepler.fastcraftplus.recipes.GUIRecipe;
+import co.kepler.fastcraftplus.recipes.FastRecipe;
 import co.kepler.fastcraftplus.recipes.Ingredient;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -19,7 +19,6 @@ public class CustomShapedRecipe implements CustomRecipe {
     private final Ingredient[][] ingredientGrid;
     private final int rows, cols;
     private final ShapedRecipe recipe;
-    private final GUIRecipe guiRecipe;
 
     /**
      * Create a new instance of CustomShapedRecipe.
@@ -72,9 +71,6 @@ public class CustomShapedRecipe implements CustomRecipe {
                 matrix[row * 3 + col] = ingredientsMap.get(chars[col]).toItemStack(1);
             }
         }
-
-        // Create GUIRecipe
-        guiRecipe = new GUIRecipe(ingredients, recipe, result, matrix);
     }
 
     @Override
@@ -85,11 +81,6 @@ public class CustomShapedRecipe implements CustomRecipe {
     @Override
     public ShapedRecipe getRecipe() {
         return recipe;
-    }
-
-    @Override
-    public GUIRecipe getGUIRecipe() {
-        return guiRecipe;
     }
 
     @Override

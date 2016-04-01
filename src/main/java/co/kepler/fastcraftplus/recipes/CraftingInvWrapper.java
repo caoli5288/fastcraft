@@ -1,8 +1,9 @@
-package co.kepler.fastcraftplus.craftgui;
+package co.kepler.fastcraftplus.recipes;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.*;
 
@@ -24,6 +25,36 @@ public class CraftingInvWrapper implements CraftingInventory {
      */
     public CraftingInvWrapper(InventoryHolder owner) {
         craftingInv = Bukkit.createInventory(owner, InventoryType.WORKBENCH);
+    }
+
+    /**
+     * Get an inventory view containing this crafting inventory.
+     *
+     * @param player The player whose inventory will be on the bottom of the view.
+     * @return Returns an inventory view containing this crafting inventory.
+     */
+    public InventoryView getView(final Player player) {
+        return new InventoryView() {
+            @Override
+            public Inventory getTopInventory() {
+                return craftingInv;
+            }
+
+            @Override
+            public Inventory getBottomInventory() {
+                return player.getInventory();
+            }
+
+            @Override
+            public HumanEntity getPlayer() {
+                return player;
+            }
+
+            @Override
+            public InventoryType getType() {
+                return craftingInv.getType();
+            }
+        };
     }
 
     @Override

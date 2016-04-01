@@ -1,7 +1,7 @@
 package co.kepler.fastcraftplus.craftgui;
 
 import co.kepler.fastcraftplus.api.gui.LayoutPaged;
-import co.kepler.fastcraftplus.recipes.GUIRecipe;
+import co.kepler.fastcraftplus.recipes.FastRecipe;
 
 import java.util.HashSet;
 import java.util.List;
@@ -11,7 +11,7 @@ import java.util.Set;
  * A paged GUI layout that shows craftable recipes.
  */
 public abstract class LayoutRecipes extends LayoutPaged {
-    private final Set<GUIRecipe> activeRecipes;
+    private final Set<FastRecipe> activeRecipes;
     private final GUIFastCraft gui;
 
     public LayoutRecipes(GUIFastCraft gui) {
@@ -29,10 +29,10 @@ public abstract class LayoutRecipes extends LayoutPaged {
      *
      * @param recipes The recipes to add to the GUI.
      */
-    protected void addRecipes(List<GUIRecipe> recipes) {
-        for (GUIRecipe r : recipes) {
+    protected void addRecipes(List<FastRecipe> recipes) {
+        for (FastRecipe r : recipes) {
             // If the button is already in the gui, or if it can't be crafted, continue.
-            if (activeRecipes.contains(r) || !r.canCraft(gui)) continue;
+            if (activeRecipes.contains(r) || !r.canCraft(gui.getPlayer(), false)) continue;
 
             // Create the button, and add it to the GUI.
             GUIButtonRecipe button = new GUIButtonRecipe(gui, r);

@@ -1,10 +1,11 @@
 package co.kepler.fastcraftplus.config;
 
 import co.kepler.fastcraftplus.FastCraft;
-import co.kepler.fastcraftplus.recipes.*;
-import co.kepler.fastcraftplus.recipes.custom.*;
+import co.kepler.fastcraftplus.recipes.Ingredient;
+import co.kepler.fastcraftplus.recipes.RecipeUtil;
 import co.kepler.fastcraftplus.recipes.custom.CustomRecipe;
 import co.kepler.fastcraftplus.recipes.custom.CustomShapedRecipe;
+import co.kepler.fastcraftplus.recipes.custom.CustomShapelessRecipe;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;

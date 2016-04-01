@@ -1,6 +1,7 @@
 package co.kepler.fastcraftplus.compat;
 
 import co.kepler.fastcraftplus.recipes.FastRecipe;
+import org.bukkit.entity.Player;
 
 import java.util.Set;
 
@@ -27,7 +28,8 @@ public abstract class Compat {
     /**
      * Get recipes provided by this compatibility.
      *
+     * @param player The player who will be seeing the recipes.
      * @return Returns recipes provided by this compatibility, or null if there are none.
      */
-    public abstract Set<FastRecipe> getRecipes();
+    public abstract Set<FastRecipe> getRecipes(Player player);
 }

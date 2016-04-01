@@ -16,10 +16,9 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryPickupItemEvent;
-import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
-import org.bukkit.inventory.*;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 
 import java.util.HashMap;
@@ -37,9 +36,6 @@ public class GUIFastCraft extends GUI {
     private final LayoutFastCraft craftLayout;
     private final Player player;
     private final Location location;
-
-    private final CraftingInvWrapper craftingInventory;
-    private final InventoryView craftingInventoryView;
 
     private final GUIButton btnPagePrev;
     private final GUIButton btnPageNext;
@@ -61,29 +57,6 @@ public class GUIFastCraft extends GUI {
 
         this.player = player;
         this.location = location;
-
-        craftingInventory = new CraftingInvWrapper(player);
-        craftingInventoryView = new InventoryView() {
-            @Override
-            public Inventory getTopInventory() {
-                return craftingInventory;
-            }
-
-            @Override
-            public Inventory getBottomInventory() {
-                return player.getInventory();
-            }
-
-            @Override
-            public HumanEntity getPlayer() {
-                return player;
-            }
-
-            @Override
-            public InventoryType getType() {
-                return craftingInventory.getType();
-            }
-        };
 
         craftLayout = new LayoutFastCraft(this);
         setLayout(craftLayout);
@@ -256,27 +229,6 @@ public class GUIFastCraft extends GUI {
      */
     public Player getPlayer() {
         return player;
-    }
-
-    /**
-     * Get this GUI's crafting inventory.
-     *
-     * @return Returns this GUI's crafting inventory.
-     */
-    public CraftingInventory getCraftingInventory(Recipe recipe, ItemStack[] matrix, ItemStack result) {
-        craftingInventory.setRecipe(recipe);
-        craftingInventory.setMatrix(matrix);
-        craftingInventory.setResult(result);
-        return craftingInventory;
-    }
-
-    /**
-     * Get this GUI's crafting inventory view.
-     *
-     * @return Returns this GUI's crafting inventory view.
-     */
-    public InventoryView getCraftingInventoryView() {
-        return craftingInventoryView;
     }
 
     /**

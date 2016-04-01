@@ -1,16 +1,33 @@
 package co.kepler.fastcraftplus.recipes;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
+import org.bukkit.event.inventory.ClickType;
+import org.bukkit.event.inventory.CraftItemEvent;
+import org.bukkit.event.inventory.InventoryAction;
+import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.Recipe;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * A recipe that will be used by the FastCraft+ user interface.
  */
-public abstract class FastRecipe {
+public abstract class FastRecipe implements Comparable<FastRecipe> {
+
+    /**
+     * Get the Recipe this FastRecipe was based off.
+     *
+     * @return Returns the recipe this FastRecipe was based off.
+     */
+    public abstract Recipe getRecipe();
 
     /**
      * Get the ingredients required to craft this recipe.
@@ -27,14 +44,23 @@ public abstract class FastRecipe {
     public abstract ItemStack getResult();
 
     /**
+     * Get the result shown in the FastCraft+ interface. Same as getResult() by default.
+     *
+     * @return Returns the result shown in the FastCraft+ interface.
+     */
+    public ItemStack getDisplayResult() {
+        return getResult();
+    }
+
+    /**
      * Get the byproducts of this recipe. By default, returns one empty bucket
      * for every non-empty bucket used in the recipe.
      *
      * @return Returns the results of this recipe.
      */
-    public List<ItemStack> getByproducts() {
-        List<ItemStack> result = new ArrayList<>();
-        
+    public Set<ItemStack> getByproducts() {
+        Set<ItemStack> result = new HashSet<>();
+
         // Count the number of buckets to be returned
         int buckets = 0;
         for (Ingredient i : getIngredients().keySet()) {
@@ -55,5 +81,130 @@ public abstract class FastRecipe {
 
         // Return the list of byproducts
         return result;
+    }
+
+    /**
+     * Get this recipes results, including its main result, and its byproducts.
+     *
+     * @return Returns this recipe's results.
+     */
+    public Set<ItemStack> getResults() {
+        Set<ItemStack> items = new HashSet<>();
+        items.add(getResult());
+        items.addAll(getByproducts());
+        return items;
+    }
+
+    /**
+     * Remove ingredients from an inventory.
+     *
+     * @param items The items to remove the ingredients from.
+     * @return Returns true if the inventory had the necessary ingredients.
+     */
+    public boolean removeIngredients(ItemStack[] items) {
+        LinkedList<Ingredient> toRemove = new LinkedList<>();
+
+        // Add ingredients. Those that can use any data go at the end.
+        Map<Ingredient, Integer> ingredients = getIngredients();
+        for (Ingredient i : ingredients.keySet()) {
+            if (i.anyData()) {
+                toRemove.addLast(i);
+            } else {
+                toRemove.addFirst(i);
+            }
+        }
+
+        // Remove ingredients.
+        for (Ingredient i : toRemove) {
+            if (!i.removeIngredients(items, ingredients.get(i))) {
+                // If unable to remove all of this ingredient
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * See if a player has this recipe's ingredients, and optionally, remove them
+     * from the player's inventory if all ingredients are present.
+     *
+     * @param player The player crafting this recipe.
+     * @param craft  Whether this recipe should be crafted if the player has all the ingredients.
+     * @return Returns true if the ingredients were removed from the player's inventory.
+     */
+    public boolean canCraft(Player player, boolean craft) {
+        // Clone the items in the player's inventory
+        ItemStack[] contents = player.getInventory().getContents();
+        for (int i = 0; i < contents.length; i++) {
+            if (contents[i] == null) continue;
+            contents[i] = contents[i].clone();
+        }
+
+        boolean allRemoved = removeIngredients(contents);
+        if (allRemoved && craft) {
+            if (!callCraftEvent(player)) return true;
+
+            // Update inventory to reflect removed items
+            Inventory inv = player.getInventory();
+            ItemStack result = getResult();
+            inv.setContents(contents);
+            inv.addItem(result);
+            for (ItemStack byproduct : getByproducts()) {
+                inv.addItem(byproduct);
+            }
+
+            // Award achievement
+            RecipeUtil.getInstance().awardAchievement(player, result);
+        }
+        return allRemoved;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public int compareTo(FastRecipe compareTo) {
+        ItemStack result = getResult();
+        ItemStack compResult = compareTo.getResult();
+        int i = result.getTypeId() - compResult.getTypeId();
+        if (i != 0) return i;
+
+        i = result.getData().getData() - compResult.getData().getData();
+        if (i != 0) return i;
+
+        return result.getAmount() - compResult.getAmount();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || !(o instanceof FastRecipe)) return false;
+
+        FastRecipe fr = (FastRecipe) o;
+        if (!getResult().equals(fr.getResult())) return false;
+        if (!getIngredients().equals(fr.getIngredients())) return false;
+        return getByproducts().equals(fr.getByproducts());
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = getResult().hashCode();
+        hash = hash + 31 * getIngredients().hashCode();
+        return hash + 31 * getByproducts().hashCode();
+    }
+
+    /**
+     * Call the CraftItemEvent to see if it's cancelled.
+     *
+     * @return Returns true if the event was not cancelled.
+     */
+    protected boolean callCraftEvent(Player player) {
+        CraftingInvWrapper inv = new CraftingInvWrapper(player);
+        inv.setResult(getResult());
+
+        CraftItemEvent event = new CraftItemEvent(getRecipe(), inv.getView(player),
+                InventoryType.SlotType.RESULT, 0, ClickType.UNKNOWN, InventoryAction.UNKNOWN);
+
+        Bukkit.getPluginManager().callEvent(event);
+        return !event.isCancelled() && event.getResult() != Event.Result.DENY;
     }
 }

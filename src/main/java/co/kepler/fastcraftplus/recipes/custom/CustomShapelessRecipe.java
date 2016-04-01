@@ -1,7 +1,7 @@
 package co.kepler.fastcraftplus.recipes.custom;
 
 import co.kepler.fastcraftplus.config.Recipes;
-import co.kepler.fastcraftplus.recipes.GUIRecipe;
+import co.kepler.fastcraftplus.recipes.FastRecipe;
 import co.kepler.fastcraftplus.recipes.Ingredient;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapelessRecipe;
@@ -11,10 +11,10 @@ import java.util.Map;
 /**
  * A shapeless recipe than supports ingredients with metadata.
  */
-public class CustomShapelessRecipe implements CustomRecipe {
+public class CustomShapelessRecipe extends FastRecipe implements CustomRecipe {
     private final ItemStack result;
     private final ShapelessRecipe recipe;
-    private final GUIRecipe guiRecipe;
+    Map<Ingredient, Integer> ingredients;
 
     /**
      * Create a new instance of CustomShapelessRecipe.
@@ -25,6 +25,7 @@ public class CustomShapelessRecipe implements CustomRecipe {
      */
     public CustomShapelessRecipe(ItemStack result, Map<Ingredient, Integer> ingredients) throws Recipes.RecipeException {
         this.result = result;
+        this.ingredients = ingredients;
 
         // Check that there aren't too many ingredients.
         int totalIngredients = 0;
@@ -49,9 +50,6 @@ public class CustomShapelessRecipe implements CustomRecipe {
                 matrix[matIndex++] = matItem;
             }
         }
-
-        // Create GUIRecipe
-        guiRecipe = new GUIRecipe(ingredients, recipe, result, matrix);
     }
 
     @Override
@@ -65,13 +63,14 @@ public class CustomShapelessRecipe implements CustomRecipe {
     }
 
     @Override
-    public GUIRecipe getGUIRecipe() {
-        return guiRecipe;
+    public Map<Ingredient, Integer> getIngredients() {
+        return ingredients;
     }
 
     @Override
     public boolean matchesMatrix(ItemStack[] matrix) {
-        // Set all items in matrix to null, or set amount to 1
+        // Clone matrix, and set all items in matrix to null, or set amount to 1
+        matrix = matrix.clone();
         for (int i = 0; i < matrix.length; i++) {
             if (matrix[i] == null) continue;
             if (matrix[i].getAmount() <= 0) {
@@ -83,7 +82,7 @@ public class CustomShapelessRecipe implements CustomRecipe {
         }
 
         // Make sure all ingredients exist, and that there aren't extra items
-        if (!guiRecipe.removeIngredients(matrix)) return false;
+        if (!removeIngredients(matrix)) return false;
         for (ItemStack is : matrix) {
             if (is != null) return false;
         }

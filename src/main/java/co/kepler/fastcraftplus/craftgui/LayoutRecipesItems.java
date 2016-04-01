@@ -1,5 +1,6 @@
 package co.kepler.fastcraftplus.craftgui;
 
+import co.kepler.fastcraftplus.FastCraft;
 import co.kepler.fastcraftplus.recipes.RecipeUtil;
 
 /**
@@ -13,6 +14,6 @@ public class LayoutRecipesItems extends LayoutRecipes {
 
     @Override
     public void updateRecipes() {
-        addRecipes(RecipeUtil.getInstance().getRecipes());
+        FastCraft.recipeManager().getRecipes(getGUI().getPlayer());
     }
 }

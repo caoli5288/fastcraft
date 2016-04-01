@@ -1,6 +1,7 @@
 package co.kepler.fastcraftplus.compat;
 
 import co.kepler.fastcraftplus.recipes.FastRecipe;
+import org.bukkit.entity.Player;
 
 import java.util.Set;
 
@@ -20,7 +21,7 @@ public class Compat_CraftBukkit extends Compat {
     }
 
     @Override
-    public Set<FastRecipe> getRecipes() {
+    public Set<FastRecipe> getRecipes(Player player) {
         return null;
     }
 }
