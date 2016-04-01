@@ -16,7 +16,7 @@ public class Compat_FastCraftPlus extends Compat {
     }
 
     @Override
-    public String getPluginName() {
+    public String dependsOnPlugin() {
         return null;
     }
 

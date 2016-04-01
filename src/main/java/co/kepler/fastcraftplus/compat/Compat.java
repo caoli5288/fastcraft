@@ -23,7 +23,7 @@ public abstract class Compat {
      *
      * @return Returns the name of the plugin.
      */
-    public abstract String getPluginName();
+    public abstract String dependsOnPlugin();
 
     /**
      * Get recipes provided by this compatibility.

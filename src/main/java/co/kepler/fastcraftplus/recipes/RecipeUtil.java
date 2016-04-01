@@ -18,17 +18,12 @@ import java.util.Map;
  * Utility methods for recipes.
  */
 public class RecipeUtil {
-    private static RecipeUtil instance;
+    private static Method methodAsNMSCopy;
+    private static Method methodNMSGetName;
 
-    private Method methodAsNMSCopy;
-    private Method methodNMSGetName;
+    private static Map<Material, Achievement> craftingAchievements;
 
-    private Map<Material, Achievement> craftingAchievements;
-
-    /**
-     * Create a new instance of RecipeUtil
-     */
-    private RecipeUtil() {
+    static {
         try {
             String version = Bukkit.getServer().getClass().getPackage().getName();
             version = version.substring(version.lastIndexOf('.') + 1);
@@ -52,18 +47,6 @@ public class RecipeUtil {
         craftingAchievements.put(Material.CAKE, Achievement.BAKE_CAKE);
         craftingAchievements.put(Material.STONE_PICKAXE, Achievement.BUILD_BETTER_PICKAXE);
         craftingAchievements.put(Material.WOOD_SWORD, Achievement.BUILD_SWORD);
-    }
-
-    /**
-     * Get an instance of RecipeUtil.
-     *
-     * @return Returns an instance of RecipeUtil.
-     */
-    public static RecipeUtil getInstance() {
-        if (instance == null) {
-            instance = new RecipeUtil();
-        }
-        return instance;
     }
 
     /**
@@ -137,7 +120,7 @@ public class RecipeUtil {
      * @param item The item to get the name of.
      * @return Returns the name of the item.
      */
-    public String getItemName(ItemStack item) {
+    public static String getItemName(ItemStack item) {
         if (item == null) return "null";
         if (item.hasItemMeta()) {
             String displayName = item.getItemMeta().getDisplayName();
@@ -170,7 +153,7 @@ public class RecipeUtil {
      * @param player      The player to award the achievement to.
      * @param craftedItem The item the player crafted.
      */
-    public void awardAchievement(Player player, ItemStack craftedItem) {
+    public static void awardAchievement(Player player, ItemStack craftedItem) {
         Achievement a = craftingAchievements.get(craftedItem.getType());
         if (a == null) return;
         if (player.hasAchievement(a)) return;
@@ -185,7 +168,7 @@ public class RecipeUtil {
      * @param recipe The recipe to check.
      * @return Returns the item from the crafting table.
      */
-    public ItemStack getCraftingResult(ShapedRecipe recipe, Player player) {
+    public static ItemStack getCraftingResult(ShapedRecipe recipe, Player player) {
         Map<Character, ItemStack> ingredients = recipe.getIngredientMap();
         String[] shape = recipe.getShape();
         ItemStack[] matrix = new ItemStack[9];
@@ -211,7 +194,7 @@ public class RecipeUtil {
      * @param recipe The recipe to check.
      * @return Returns true if the recipe is consistent.
      */
-    public ItemStack getCraftingResult(ShapelessRecipe recipe, Player player) {
+    public static ItemStack getCraftingResult(ShapelessRecipe recipe, Player player) {
         ItemStack[] matrix = new ItemStack[9];
         int matIndex = 0;
 
@@ -237,7 +220,7 @@ public class RecipeUtil {
      * @param result The item in the result slot of the crafting table.
      * @return Returns the called event.
      */
-    public PrepareItemCraftEvent callPrepareItemCraftEvent(Player player, ItemStack[] matrix, ItemStack result) {
+    public static PrepareItemCraftEvent callPrepareItemCraftEvent(Player player, ItemStack[] matrix, ItemStack result) {
         CraftingInvWrapper inv = new CraftingInvWrapper(player);
         inv.setMatrix(matrix);
         inv.setResult(result);

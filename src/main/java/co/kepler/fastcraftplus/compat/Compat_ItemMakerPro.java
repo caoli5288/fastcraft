@@ -18,7 +18,7 @@ public class Compat_ItemMakerPro extends Compat {
     }
 
     @Override
-    public String getPluginName() {
+    public String dependsOnPlugin() {
         return "ItemMakerPro";
     }
 

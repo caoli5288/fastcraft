@@ -66,15 +66,6 @@ public class FastCraft extends JavaPlugin {
     }
 
     /**
-     * See if this plugin is the premium version of FastCraft.
-     *
-     * @return Returns true if this plugin is the premium version.
-     */
-    public static boolean isPremium() {
-        return false;
-    }
-
-    /**
      * Log an error message to the console.
      *
      * @param msg The message to log.

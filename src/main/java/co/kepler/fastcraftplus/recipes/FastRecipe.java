@@ -88,7 +88,7 @@ public abstract class FastRecipe implements Comparable<FastRecipe> {
      *
      * @return Returns this recipe's results.
      */
-    public Set<ItemStack> getResults() {
+    public final Set<ItemStack> getResults() {
         Set<ItemStack> items = new HashSet<>();
         items.add(getResult());
         items.addAll(getByproducts());
@@ -155,7 +155,7 @@ public abstract class FastRecipe implements Comparable<FastRecipe> {
             }
 
             // Award achievement
-            RecipeUtil.getInstance().awardAchievement(player, result);
+            RecipeUtil.awardAchievement(player, result);
         }
         return allRemoved;
     }

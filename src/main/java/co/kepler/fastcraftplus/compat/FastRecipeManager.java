@@ -34,10 +34,10 @@ public class FastRecipeManager {
      * @param compat The plugin compatibility to load.
      */
     private void loadCompat(Compat compat) {
-        String pluginName = compat.getPluginName();
+        String pluginName = compat.dependsOnPlugin();
         Plugin plugin = null;
         if (pluginName != null) {
-            plugin = Bukkit.getPluginManager().getPlugin(compat.getPluginName());
+            plugin = Bukkit.getPluginManager().getPlugin(compat.dependsOnPlugin());
             if (plugin == null) return;
         }
 

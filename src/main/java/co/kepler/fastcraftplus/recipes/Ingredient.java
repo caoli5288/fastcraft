@@ -27,7 +27,7 @@ public class Ingredient {
     public Ingredient(ItemStack item) {
         material = item.getData();
         meta = item.hasItemMeta() ? item.getItemMeta() : null;
-        name = RecipeUtil.getInstance().getItemName(item);
+        name = RecipeUtil.getItemName(item);
     }
 
     /**

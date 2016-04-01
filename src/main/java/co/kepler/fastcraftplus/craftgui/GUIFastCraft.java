@@ -165,17 +165,8 @@ public class GUIFastCraft extends GUI {
         Layout navbar = craftLayout.getLayoutNavbar();
         navbar.setButton(1, 0, btnPagePrev);
         navbar.setButton(1, 8, btnPageNext);
-        if (FastCraft.isPremium()) {
-            navbar.setButton(1, 1, btnTabCrafting);
-            navbar.setButton(1, 2, btnTabArmor);
-            navbar.setButton(1, 3, btnTabFireworks);
-            navbar.setButton(1, 7, btnCraftingMultiplier);
-            navbar.setButton(1, 6, btnWorkbench);
-            navbar.setButton(1, 5, btnRefresh);
-        } else {
-            navbar.setButton(1, 4, btnWorkbench);
-            navbar.setButton(1, 5, btnRefresh);
-        }
+        navbar.setButton(1, 4, btnWorkbench);
+        navbar.setButton(1, 5, btnRefresh);
 
         // Update the GUI's layout
         updateLayout();
