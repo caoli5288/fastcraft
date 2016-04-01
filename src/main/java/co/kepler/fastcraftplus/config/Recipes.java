@@ -156,7 +156,7 @@ public class Recipes {
         // Get the item's material
         String typeStr = item.get(0);
         Material type = Bukkit.getUnsafe().getMaterialFromInternalName(typeStr);
-        if (type == null) throw new RecipeException("Unknown material: '" + typeStr + "'");
+        if (type == Material.AIR) throw new RecipeException("Unknown material: '" + typeStr + "'");
 
         // Create the resulting item
         ItemStack result = new ItemStack(type);

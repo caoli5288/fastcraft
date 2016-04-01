@@ -151,14 +151,16 @@ public class RecipeUtil {
         // Try to get the name from NMS
         try {
             Object nmsItem = methodAsNMSCopy.invoke(null, item);
-            name = (String) methodNMSGetName.invoke(nmsItem);
-            if (name != null) return name;
+            if (nmsItem != null) {
+                name = (String) methodNMSGetName.invoke(nmsItem);
+                if (name != null) return name;
+            }
         } catch (IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
 
         // Return the item's name from its material type
-        new Exception("Can't find name of ItemStack: " + item).printStackTrace();
+        FastCraft.err("Can't find item name: " + item);
         return item.getData().toString();
     }
 

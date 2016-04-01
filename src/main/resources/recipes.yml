@@ -49,4 +49,4 @@
 #     raw_salmon: [1, 'minecraft:fish', 1]
 #     clownfish:  [1, 'minecraft:fish', 2]
 #     pufferfish: [1, 'minecraft:fish', 3]
-#   result: [1, 'minecraft:beetroot_soup', 0, '{display:{Name:"Fish Stew"}}']
+#   result: [1, 'minecraft:mushroom_stew', 0, '{display:{Name:"Fish Stew"}}']
