@@ -19,7 +19,7 @@ gui:
     page-prev:
       title: '&aPrevious Page'
       description: # Variables: prev, total, cur
-      - '&bGo to page %prev%/%total$'
+      - '&bGo to page %prev%/%total%'
 
     page-next:
       title: '&aNext Page'

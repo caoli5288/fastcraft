@@ -40,14 +40,16 @@ public class Compat_Bukkit extends Compat {
                 // Create FastRecipe from a ShapedRecipe
                 ShapedRecipe sr = (ShapedRecipe) recipe;
                 ItemStack craftResult = RecipeUtil.getCraftingResult(sr, player);
-                if (craftResult != null && craftResult.equals(sr.getResult())) {
+                boolean notCancelled = RecipeUtil.callCraftItemEvent(player, sr);
+                if (notCancelled && craftResult != null && craftResult.equals(sr.getResult())) {
                     newRecipe = new FastRecipeCompat(sr);
                 }
             } else if (recipe instanceof ShapelessRecipe) {
                 // Create FastRecipe from a ShapelessRecipe
                 ShapelessRecipe sr = (ShapelessRecipe) recipe;
                 ItemStack craftResult = RecipeUtil.getCraftingResult(sr, player);
-                if (craftResult != null && craftResult.equals(sr.getResult())) {
+                boolean notCancelled = RecipeUtil.callCraftItemEvent(player, sr);
+                if (notCancelled && craftResult != null && craftResult.equals(sr.getResult())) {
                     newRecipe = new FastRecipeCompat(sr);
                 }
             } else {
