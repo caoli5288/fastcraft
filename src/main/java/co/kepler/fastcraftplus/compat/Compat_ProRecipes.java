@@ -38,11 +38,17 @@ public class Compat_ProRecipes extends Compat {
     @Override
     public Set<FastRecipe> getRecipes(Player player) {
         Set<FastRecipe> recipes = new HashSet<>();
+        // Loop through all recipe types
         for (RecipeAPI.RecipeType type : recipeTypes) {
+            // Loop through recipes of this type
             int count = api.recipeCount(type);
             for (int id = 0; id < count; id++) {
+                // Get the recipe of this type and id
                 RecipeAPI.RecipeContainer recipe = api.getRecipe(type, id);
-                recipes.add(new FastRecipeCompat(recipe));
+                if (!recipe.hasPermission() || player.hasPermission(recipe.getPermission())) {
+                    // If player has permission to craft
+                    recipes.add(new FastRecipeCompat(recipe));
+                }
             }
         }
         return recipes;
