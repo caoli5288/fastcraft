@@ -15,6 +15,8 @@ import java.util.ListIterator;
  * A wrapper class for a CraftingInventory
  */
 public class CraftingInvWrapper implements CraftingInventory {
+    private static final ItemStack AIR = new ItemStack(Material.AIR);
+
     private final Inventory craftingInv;
     private Recipe recipe;
 
@@ -59,7 +61,7 @@ public class CraftingInvWrapper implements CraftingInventory {
 
     @Override
     public ItemStack getResult() {
-        return craftingInv.getItem(0);
+        return getItem(0);
     }
 
     @Override
@@ -117,7 +119,8 @@ public class CraftingInvWrapper implements CraftingInventory {
 
     @Override
     public ItemStack getItem(int i) {
-        return craftingInv.getItem(i);
+        ItemStack item = craftingInv.getItem(i);
+        return item == null ? AIR.clone() : item;
     }
 
     @Override
@@ -137,6 +140,12 @@ public class CraftingInvWrapper implements CraftingInventory {
 
     @Override
     public ItemStack[] getContents() {
+        ItemStack[] contents = craftingInv.getContents();
+        for (int i = 0; i < contents.length; i++) {
+            if (contents[i] == null) {
+                contents[i] = AIR.clone();
+            }
+        }
         return craftingInv.getContents();
     }
 
