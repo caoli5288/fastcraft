@@ -43,15 +43,19 @@ public class RecipeCompatManager {
             if (plugin == null) return;
         }
 
-        if (compat.init()) {
-            loadedCompats.add(compat);
-            if (plugin != null) {
-                FastCraft.log("Loaded compatibility: " + plugin.getName());
+        try {
+            if (compat.init()) {
+                loadedCompats.add(compat);
+                if (plugin != null) {
+                    FastCraft.log("Loaded compatibility: " + plugin.getName());
+                }
+            } else {
+                if (plugin != null) {
+                    FastCraft.err("Unable to load compatibility: " + plugin.getName());
+                }
             }
-        } else {
-            if (plugin != null) {
-                FastCraft.err("Unable to load compatibility: " + plugin.getName());
-            }
+        } catch (Throwable t) {
+            t.printStackTrace();
         }
     }
 
@@ -64,8 +68,12 @@ public class RecipeCompatManager {
     public Set<FastRecipe> getRecipes(Player player) {
         Set<FastRecipe> result = new HashSet<>();
         for (Compat compat : loadedCompats) {
-            Set<FastRecipe> recipes = compat.getRecipes(player);
-            if (recipes != null) result.addAll(recipes);
+            try {
+                Set<FastRecipe> recipes = compat.getRecipes(player);
+                if (recipes != null) result.addAll(recipes);
+            } catch (Throwable t) {
+                t.printStackTrace();
+            }
         }
         return result;
     }
