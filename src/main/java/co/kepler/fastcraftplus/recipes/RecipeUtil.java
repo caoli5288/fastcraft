@@ -5,7 +5,8 @@ import org.bukkit.Achievement;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.PrepareItemCraftEvent;
+import org.bukkit.event.Event;
+import org.bukkit.event.inventory.*;
 import org.bukkit.inventory.*;
 
 import java.lang.reflect.InvocationTargetException;
@@ -229,5 +230,21 @@ public class RecipeUtil {
         Bukkit.getPluginManager().callEvent(event);
 
         return event;
+    }
+
+    /**
+     * Call the CraftItemEvent to see if it's cancelled.
+     *
+     * @return Returns false if the event was cancelled.
+     */
+    public static boolean callCraftItemEvent(Player player, Recipe recipe) {
+        CraftingInvWrapper inv = new CraftingInvWrapper(player);
+        inv.setResult(recipe.getResult());
+
+        CraftItemEvent event = new CraftItemEvent(recipe, inv.getView(player),
+                InventoryType.SlotType.RESULT, 0, ClickType.UNKNOWN, InventoryAction.UNKNOWN);
+
+        Bukkit.getPluginManager().callEvent(event);
+        return !event.isCancelled() && event.getResult() != Event.Result.DENY;
     }
 }

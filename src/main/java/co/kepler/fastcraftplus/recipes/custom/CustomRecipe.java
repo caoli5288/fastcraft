@@ -1,26 +1,20 @@
 package co.kepler.fastcraftplus.recipes.custom;
 
+import co.kepler.fastcraftplus.recipes.FastRecipe;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 
 /**
  * A recipe that supports ingredients with metadata.
  */
-public interface CustomRecipe {
-
-    /**
-     * Get the result of this recipe.
-     *
-     * @return Returns the item crafted by this recipe.
-     */
-    ItemStack getResult();
+public abstract class CustomRecipe extends FastRecipe {
 
     /**
      * Get the recipe.
      *
      * @return Returns the Recipe associated with this CustomRecipe
      */
-    Recipe getRecipe();
+    public abstract Recipe getRecipe();
 
     /**
      * See if this recipe matches a crafting matrix.
@@ -28,6 +22,6 @@ public interface CustomRecipe {
      * @param matrix The 3x3 matrix to check. Should be an array of length 9.
      * @return Returns true if this recipe matches the matrix.
      */
-    boolean matchesMatrix(ItemStack[] matrix);
+    public abstract boolean matchesMatrix(ItemStack[] matrix);
 
 }

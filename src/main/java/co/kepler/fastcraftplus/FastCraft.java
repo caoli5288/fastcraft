@@ -1,7 +1,7 @@
 package co.kepler.fastcraftplus;
 
 import co.kepler.fastcraftplus.api.gui.GUI;
-import co.kepler.fastcraftplus.compat.FastRecipeManager;
+import co.kepler.fastcraftplus.compat.RecipeCompatManager;
 import co.kepler.fastcraftplus.config.Config;
 import co.kepler.fastcraftplus.config.Language;
 import co.kepler.fastcraftplus.config.Recipes;
@@ -16,7 +16,7 @@ public class FastCraft extends JavaPlugin {
 
     private Config config;
     private Language lang;
-    private FastRecipeManager recipeManager;
+    private RecipeCompatManager recipeCompatManager;
 
     @Override
     public void onEnable() {
@@ -24,7 +24,7 @@ public class FastCraft extends JavaPlugin {
 
         config = new Config();
         lang = new Language(config.getLanguage());
-        recipeManager = new FastRecipeManager();
+        recipeCompatManager = new RecipeCompatManager();
 
         Recipes.loadRecipes();
 
@@ -61,8 +61,8 @@ public class FastCraft extends JavaPlugin {
      *
      * @return Returns the plugin's compatibility manager.
      */
-    public static FastRecipeManager recipeManager() {
-        return instance.recipeManager;
+    public static RecipeCompatManager recipeManager() {
+        return instance.recipeCompatManager;
     }
 
     /**

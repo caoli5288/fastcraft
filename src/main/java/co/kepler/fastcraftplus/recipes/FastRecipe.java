@@ -8,26 +8,14 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryType;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.Recipe;
 
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * A recipe that will be used by the FastCraft+ user interface.
  */
 public abstract class FastRecipe implements Comparable<FastRecipe> {
-
-    /**
-     * Get the Recipe this FastRecipe was based off.
-     *
-     * @return Returns the recipe this FastRecipe was based off.
-     */
-    public abstract Recipe getRecipe();
 
     /**
      * Get the ingredients required to craft this recipe.
@@ -37,19 +25,21 @@ public abstract class FastRecipe implements Comparable<FastRecipe> {
     public abstract Map<Ingredient, Integer> getIngredients();
 
     /**
-     * Get the result of this recipe.
+     * Get the results of this recipe.
      *
-     * @return Returns the result of this recipe.
+     * @return Returns the results of this recipe.
      */
-    public abstract ItemStack getResult();
+    public abstract List<ItemStack> getResults();
 
     /**
-     * Get the result shown in the FastCraft+ interface. Same as getResult() by default.
+     * Get the item shown in the FastCraft+ interface. Returns the first
+     * result in getResults() by default.
      *
      * @return Returns the result shown in the FastCraft+ interface.
      */
     public ItemStack getDisplayResult() {
-        return getResult();
+        List<ItemStack> results = getResults();
+        return results.isEmpty() ? null : results.get(0);
     }
 
     /**
@@ -91,9 +81,9 @@ public abstract class FastRecipe implements Comparable<FastRecipe> {
      *
      * @return Returns this recipe's results.
      */
-    public final Set<ItemStack> getResults() {
+    public final Set<ItemStack> getAllResults() {
         Set<ItemStack> items = new HashSet<>();
-        items.add(getResult());
+        items.addAll(getResults());
         items.addAll(getByproducts());
         return items;
     }
@@ -164,24 +154,29 @@ public abstract class FastRecipe implements Comparable<FastRecipe> {
      * @return Returns a set of resulting items, or null if the crafting was unsuccessful.
      */
     public Set<ItemStack> craft(Player player) {
-        if (!callCraftEvent(player)) return null;
         if (!canCraftFromItems(player, true)) return null;
 
-        RecipeUtil.awardAchievement(player, getResult());
-        return getResults();
+        for (ItemStack is : getResults()) {
+            RecipeUtil.awardAchievement(player, is);
+        }
+        return getAllResults();
     }
 
     @Override
     @SuppressWarnings("deprecation")
     public int compareTo(FastRecipe compareTo) {
-        ItemStack result = getResult();
-        ItemStack compResult = compareTo.getResult();
+        ItemStack result = getDisplayResult();
+        ItemStack compResult = compareTo.getDisplayResult();
+
+        // Compare item ID's
         int i = result.getTypeId() - compResult.getTypeId();
         if (i != 0) return i;
 
+        // Compare item data
         i = result.getData().getData() - compResult.getData().getData();
         if (i != 0) return i;
 
+        // Compare amounts
         return result.getAmount() - compResult.getAmount();
     }
 
@@ -191,7 +186,7 @@ public abstract class FastRecipe implements Comparable<FastRecipe> {
         if (o == null || !(o instanceof FastRecipe)) return false;
 
         FastRecipe fr = (FastRecipe) o;
-        if (!getResult().equals(fr.getResult())) return false;
+        if (!getResults().equals(fr.getResults())) return false;
         if (!getDisplayResult().equals(fr.getDisplayResult())) return false;
         if (!getIngredients().equals(fr.getIngredients())) return false;
         return getByproducts().equals(fr.getByproducts());
@@ -199,25 +194,9 @@ public abstract class FastRecipe implements Comparable<FastRecipe> {
 
     @Override
     public int hashCode() {
-        int hash = getResult().hashCode();
+        int hash = getResults().hashCode();
         hash = hash * 31 + getDisplayResult().hashCode();
         hash = hash * 31 + getIngredients().hashCode();
         return hash * 31 + getByproducts().hashCode();
-    }
-
-    /**
-     * Call the CraftItemEvent to see if it's cancelled.
-     *
-     * @return Returns true if the event was not cancelled.
-     */
-    protected boolean callCraftEvent(Player player) {
-        CraftingInvWrapper inv = new CraftingInvWrapper(player);
-        inv.setResult(getResult());
-
-        CraftItemEvent event = new CraftItemEvent(getRecipe(), inv.getView(player),
-                InventoryType.SlotType.RESULT, 0, ClickType.UNKNOWN, InventoryAction.UNKNOWN);
-
-        Bukkit.getPluginManager().callEvent(event);
-        return !event.isCancelled() && event.getResult() != Event.Result.DENY;
     }
 }

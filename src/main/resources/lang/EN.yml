@@ -11,6 +11,10 @@ gui:
     label: '&aIngredients:'
     item: '&a %amount%x %item%' # Variables: amount, item
 
+  results:
+    label: '&aResults:'
+    item: '&a %amount%x %item%' # Varibales: amount, item
+
   toolbar:
     page-prev:
       title: '&aPrevious Page'

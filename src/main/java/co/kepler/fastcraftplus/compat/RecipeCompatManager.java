@@ -14,13 +14,13 @@ import java.util.Set;
 /**
  * Manages the plugin's FastRecipes.
  */
-public class FastRecipeManager {
+public class RecipeCompatManager {
     private List<Compat> loadedCompats;
 
     /**
-     * Create a new instance of FastRecipeManager.
+     * Create a new instance of RecipeCompatManager.
      */
-    public FastRecipeManager() {
+    public RecipeCompatManager() {
         loadedCompats = new ArrayList<>();
 
         // Load plugin compatibilities

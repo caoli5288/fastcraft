@@ -42,6 +42,7 @@ public class GUIButtonRecipe extends GUIButton {
     public ItemStack getItem() {
         // Add the ingredients to the lore of the item
         ItemStack item = recipe.getDisplayResult();
+        List<ItemStack> results = recipe.getResults();
         ItemMeta meta = item.getItemMeta();
         LinkedList<String> lore = new LinkedList<>();
         Map<Ingredient, Integer> ingredients = recipe.getIngredients();
@@ -49,8 +50,15 @@ public class GUIButtonRecipe extends GUIButton {
         // Add ingredients and amounts to the lore
         lore.addFirst(FastCraft.lang().gui.ingredients.label());
         for (Ingredient i : ingredients.keySet()) {
-            // Format: #x Ingredient
             lore.addLast(FastCraft.lang().gui.ingredients.item(ingredients.get(i), i.getName()));
+        }
+
+        // Add results and amounts to the lore if more than one result
+        if (results.size() > 1) {
+            lore.addLast("");
+            for (ItemStack is : results) {
+                lore.addLast(FastCraft.lang().gui.results.item(is));
+            }
         }
 
         // If the item has a lore already, add a space between the ingredients and the existing lore

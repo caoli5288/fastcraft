@@ -7,6 +7,7 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,8 +15,9 @@ import java.util.Map;
 /**
  * A shaped recipe than supports ingredients with metadata.
  */
-public class CustomShapedRecipe implements CustomRecipe {
-    private final ItemStack result;
+public class CustomShapedRecipe extends CustomRecipe {
+    private final HashMap<Ingredient, Integer> ingredients;
+    private final List<ItemStack> results;
     private final Ingredient[][] ingredientGrid;
     private final int rows, cols;
     private final ShapedRecipe recipe;
@@ -30,7 +32,7 @@ public class CustomShapedRecipe implements CustomRecipe {
      */
     public CustomShapedRecipe(ItemStack result, Map<Character, Ingredient> ingredientsMap,
                               List<String> shape) throws Recipes.RecipeException {
-        this.result = result;
+        this.results = Collections.singletonList(result);
 
         // Get the number of rows and columns in the shape.
         rows = shape.size();
@@ -44,7 +46,7 @@ public class CustomShapedRecipe implements CustomRecipe {
         }
 
         // Copy ingredients to the matrix
-        Map<Ingredient, Integer> ingredients = new HashMap<>();
+        ingredients = new HashMap<>();
         ingredientGrid = new Ingredient[rows][cols];
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {
@@ -74,13 +76,18 @@ public class CustomShapedRecipe implements CustomRecipe {
     }
 
     @Override
-    public ItemStack getResult() {
-        return result.clone();
+    public List<ItemStack> getResults() {
+        return results;
     }
 
     @Override
     public ShapedRecipe getRecipe() {
         return recipe;
+    }
+
+    @Override
+    public Map<Ingredient, Integer> getIngredients() {
+        return ingredients;
     }
 
     @Override

@@ -1,10 +1,7 @@
 package co.kepler.fastcraftplus.craftgui;
 
 import co.kepler.fastcraftplus.FastCraft;
-import co.kepler.fastcraftplus.compat.FastRecipeManager;
 import co.kepler.fastcraftplus.recipes.FastRecipe;
-import co.kepler.fastcraftplus.recipes.RecipeUtil;
-import org.bukkit.inventory.Recipe;
 
 import java.util.ArrayList;
 import java.util.Collections;

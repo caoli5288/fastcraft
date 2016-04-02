@@ -1,6 +1,7 @@
 package co.kepler.fastcraftplus.config;
 
 import co.kepler.fastcraftplus.FastCraft;
+import co.kepler.fastcraftplus.recipes.RecipeUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -135,6 +136,7 @@ public class Language {
 
     public class GUI {
         public final Ingredients ingredients = new Ingredients();
+        public final Results results = new Results();
         public final Toolbar toolbar = new Toolbar();
 
         public String title() {
@@ -148,6 +150,17 @@ public class Language {
 
             public String item(int amount, String item) {
                 return get("gui.ingredients.item", "amount", s(amount), "item", item);
+            }
+        }
+
+        public class Results {
+            public String label() {
+                return get("gui.results.label");
+            }
+
+            public String item(ItemStack is) {
+                String itemName = RecipeUtil.getItemName(is);
+                return get("gui.results.item", "amount", s(is.getAmount()), "item", itemName);
             }
         }
 

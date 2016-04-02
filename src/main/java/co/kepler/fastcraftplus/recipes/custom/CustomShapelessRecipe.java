@@ -6,13 +6,15 @@ import co.kepler.fastcraftplus.recipes.Ingredient;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapelessRecipe;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 /**
  * A shapeless recipe than supports ingredients with metadata.
  */
-public class CustomShapelessRecipe extends FastRecipe implements CustomRecipe {
-    private final ItemStack result;
+public class CustomShapelessRecipe extends CustomRecipe {
+    private final List<ItemStack> results;
     private final ShapelessRecipe recipe;
     Map<Ingredient, Integer> ingredients;
 
@@ -24,7 +26,7 @@ public class CustomShapelessRecipe extends FastRecipe implements CustomRecipe {
      * @throws Recipes.RecipeException Thrown if the recipe is misconfigured.
      */
     public CustomShapelessRecipe(ItemStack result, Map<Ingredient, Integer> ingredients) throws Recipes.RecipeException {
-        this.result = result;
+        this.results = Collections.singletonList(result);
         this.ingredients = ingredients;
 
         // Check that there aren't too many ingredients.
@@ -53,8 +55,8 @@ public class CustomShapelessRecipe extends FastRecipe implements CustomRecipe {
     }
 
     @Override
-    public ItemStack getResult() {
-        return result.clone();
+    public List<ItemStack> getResults() {
+        return results;
     }
 
     @Override

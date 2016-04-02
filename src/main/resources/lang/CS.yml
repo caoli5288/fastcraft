@@ -13,6 +13,10 @@ gui:
     label: '&aIngredience:'
     item: '&a %amount%x %item%' # Variables: amount, item
 
+  results:
+    label: '&aVýsledky:'
+    item: '&a %amount%x %item%' # Varibales: amount, item
+
   toolbar:
     page-prev:
       title: '&aPredchozi stranka'
