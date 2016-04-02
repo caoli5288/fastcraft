@@ -9,8 +9,11 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.file.Files;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -35,14 +38,28 @@ public class Language {
      */
     @SuppressWarnings("deprecation")
     public Language(String language) {
+        FastCraft fastCraft = FastCraft.getInstance();
+
         String resPath = "lang/" + language + ".yml";
-        InputStream resStream = FastCraft.getInstance().getResource(resPath);
-        if (resStream == null) {
-            FastCraft.err("Language file not found: '" + resPath + "'");
-            lang = new YamlConfiguration();
-        } else {
+        InputStream resStream = fastCraft.getResource(resPath);
+        if (resStream != null) {
+            // Load from internal lang file
             InputStreamReader reader = new InputStreamReader(resStream);
             lang = YamlConfiguration.loadConfiguration(reader);
+        } else {
+            try {
+                // Load from custom lang file
+                File langFile = new File(fastCraft.getDataFolder(), resPath);
+                if (!langFile.exists()) {
+                    langFile.getParentFile().mkdirs();
+                    FastCraft.log("Created language file: '" + langFile.getName() + "'");
+                    Files.copy(fastCraft.getResource("lang/EN.yml"), langFile.toPath());
+                }
+                lang = YamlConfiguration.loadConfiguration(langFile);
+            } catch (IOException e) {
+                e.printStackTrace();
+                lang = new YamlConfiguration();
+            }
         }
 
         // Load item names

@@ -1,4 +1,4 @@
-# language: EN      Custom languages can be added by creating another file
-#                   in the lang directory of the FastCraft+ jar file.
+# language: EN      If the language specified does not exist, a new language file will be added to the
+#                   lang folder in the FastCraftPlus plugin directory.
 
 language: EN
