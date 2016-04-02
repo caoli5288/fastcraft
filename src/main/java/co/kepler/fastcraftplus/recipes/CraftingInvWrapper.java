@@ -37,7 +37,7 @@ public class CraftingInvWrapper implements CraftingInventory {
         return new InventoryView() {
             @Override
             public Inventory getTopInventory() {
-                return craftingInv;
+                return CraftingInvWrapper.this;
             }
 
             @Override
