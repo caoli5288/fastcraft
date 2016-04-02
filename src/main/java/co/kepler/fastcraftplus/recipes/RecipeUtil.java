@@ -170,6 +170,35 @@ public class RecipeUtil {
      * @return Returns the item from the crafting table.
      */
     public static ItemStack getCraftingResult(ShapedRecipe recipe, Player player) {
+        ItemStack[] matrix = getRecipeMatrix(recipe);
+        if (matrix == null) return null;
+
+        // Return the item in the result slot of the inventory
+        return callPrepareItemCraftEvent(player, recipe, matrix, recipe.getResult()).getInventory().getResult();
+    }
+
+    /**
+     * See if a recipe is consistent. A recipe is consistent if its result is the same as
+     * the resulting item when crafting in a crafting table.
+     *
+     * @param recipe The recipe to check.
+     * @return Returns true if the recipe is consistent.
+     */
+    public static ItemStack getCraftingResult(ShapelessRecipe recipe, Player player) {
+        ItemStack[] matrix = getRecipeMatrix(recipe);
+        if (matrix == null) return null;
+
+        // Return the item in the result slot of the inventory
+        return callPrepareItemCraftEvent(player, recipe, matrix, recipe.getResult()).getInventory().getResult();
+    }
+
+    /**
+     * Get a recipe's matrix of ingredients in the crafting table.
+     *
+     * @param recipe The recipe to get the matrix of.
+     * @return Return a matrix, or null if the recipe's shape has a dimension greater than 3.
+     */
+    public static ItemStack[] getRecipeMatrix(ShapedRecipe recipe) {
         Map<Character, ItemStack> ingredients = recipe.getIngredientMap();
         String[] shape = recipe.getShape();
         ItemStack[] matrix = new ItemStack[9];
@@ -184,18 +213,10 @@ public class RecipeUtil {
             }
         }
 
-        // Return the item in the result slot of the inventory
-        return callPrepareItemCraftEvent(player, matrix, recipe.getResult()).getInventory().getResult();
+        return matrix;
     }
 
-    /**
-     * See if a recipe is consistent. A recipe is consistent if its result is the same as
-     * the resulting item when crafting in a crafting table.
-     *
-     * @param recipe The recipe to check.
-     * @return Returns true if the recipe is consistent.
-     */
-    public static ItemStack getCraftingResult(ShapelessRecipe recipe, Player player) {
+    public static ItemStack[] getRecipeMatrix(ShapelessRecipe recipe) {
         ItemStack[] matrix = new ItemStack[9];
         int matIndex = 0;
 
@@ -208,9 +229,7 @@ public class RecipeUtil {
                 matrix[matIndex++] = curStack;
             }
         }
-
-        // Return the item in the result slot of the inventory
-        return callPrepareItemCraftEvent(player, matrix, recipe.getResult()).getInventory().getResult();
+        return matrix;
     }
 
     /**
@@ -221,8 +240,14 @@ public class RecipeUtil {
      * @param result The item in the result slot of the crafting table.
      * @return Returns the called event.
      */
-    public static PrepareItemCraftEvent callPrepareItemCraftEvent(Player player, ItemStack[] matrix, ItemStack result) {
+    public static PrepareItemCraftEvent callPrepareItemCraftEvent(Player player, Recipe recipe,
+                                                                  ItemStack[] matrix, ItemStack result) {
+        assert player != null : "Player must not be null";
+        assert recipe != null : "Recipe must not be null";
+        assert matrix != null : "Matrix must not be null";
+
         CraftingInvWrapper inv = new CraftingInvWrapper(player);
+        inv.setRecipe(recipe);
         inv.setMatrix(matrix);
         inv.setResult(result);
 
@@ -237,7 +262,11 @@ public class RecipeUtil {
      *
      * @return Returns false if the event was cancelled.
      */
-    public static boolean callCraftItemEvent(Player player, Recipe recipe) {
+    public static boolean callCraftItemEvent(Player player, Recipe recipe, ItemStack[] matrix, ItemStack result) {
+        assert player != null : "Player must not be null";
+        assert recipe != null : "Recipe must not be null";
+        assert matrix != null : "Matrix must not be null";
+
         CraftingInvWrapper inv = new CraftingInvWrapper(player);
         inv.setResult(recipe.getResult());
 

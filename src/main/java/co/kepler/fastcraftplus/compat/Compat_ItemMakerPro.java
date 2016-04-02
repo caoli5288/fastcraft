@@ -4,7 +4,7 @@ import co.kepler.fastcraftplus.recipes.FastRecipe;
 import co.kepler.fastcraftplus.recipes.Ingredient;
 import com.kirelcodes.ItemMaker.API.RecipeGetter;
 import com.kirelcodes.ItemMaker.Recipes.Perfect.PerfectShapedRecipe;
-import com.kirelcodes.ItemMaker.Recipes.Perfect.PerfefectShapelessRecipe;
+import com.kirelcodes.ItemMaker.Recipes.Perfect.PerfectShapelessRecipe;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -40,7 +40,7 @@ public class Compat_ItemMakerPro extends Compat {
         }
 
         // Add shapeless recipes
-        for (PerfefectShapelessRecipe recipe : RecipeGetter.getShapelessRecipe()) {
+        for (PerfectShapelessRecipe recipe : RecipeGetter.getShapelessRecipe()) {
             if (!recipe.hasPermission() || player.hasPermission(recipe.getPermission())) {
                 // If player has permission to craft
                 recipes.add(new FastRecipeCompat(recipe));
@@ -67,7 +67,7 @@ public class Compat_ItemMakerPro extends Compat {
             }
         }
 
-        public FastRecipeCompat(PerfefectShapelessRecipe recipe) {
+        public FastRecipeCompat(PerfectShapelessRecipe recipe) {
             results = Collections.singletonList(recipe.getResult());
 
             // Add ingredients

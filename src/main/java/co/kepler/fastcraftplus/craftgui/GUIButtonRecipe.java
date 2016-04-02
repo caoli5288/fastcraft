@@ -41,7 +41,7 @@ public class GUIButtonRecipe extends GUIButton {
     @Override
     public ItemStack getItem() {
         // Add the ingredients to the lore of the item
-        ItemStack item = recipe.getDisplayResult();
+        ItemStack item = recipe.getDisplayResult().clone();
         List<ItemStack> results = recipe.getResults();
         ItemMeta meta = item.getItemMeta();
         LinkedList<String> lore = new LinkedList<>();

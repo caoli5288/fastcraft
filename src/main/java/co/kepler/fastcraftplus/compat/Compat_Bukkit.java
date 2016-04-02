@@ -34,35 +34,42 @@ public class Compat_Bukkit extends Compat {
         // Loop through the server's recipes
         for (Iterator<Recipe> iter = Bukkit.recipeIterator(); iter.hasNext();) {
             Recipe recipe = iter.next();
-            FastRecipe newRecipe = null;
-
             if (recipe instanceof ShapedRecipe) {
                 // Create FastRecipe from a ShapedRecipe
                 ShapedRecipe sr = (ShapedRecipe) recipe;
+
+                // Get the result when crafting in a workbench
                 ItemStack craftResult = RecipeUtil.getCraftingResult(sr, player);
-                boolean notCancelled = RecipeUtil.callCraftItemEvent(player, sr);
-                if (notCancelled && craftResult != null && craftResult.equals(sr.getResult())) {
-                    newRecipe = new FastRecipeCompat(sr);
+                if (sr.getResult() != null && craftResult != null && !sr.getResult().equals(craftResult)) continue;
+
+                // Get the matrix of items needed to craft this recipe
+                ItemStack[] matrix = RecipeUtil.getRecipeMatrix(sr);
+                if (matrix == null) continue;
+
+                // If crafting the recipe isn't cancelled, create a new recipe
+                if (RecipeUtil.callCraftItemEvent(player, sr, matrix, sr.getResult())) {
+                    result.add(new FastRecipeCompat(sr));
                 }
             } else if (recipe instanceof ShapelessRecipe) {
                 // Create FastRecipe from a ShapelessRecipe
                 ShapelessRecipe sr = (ShapelessRecipe) recipe;
-                ItemStack craftResult = RecipeUtil.getCraftingResult(sr, player);
-                boolean notCancelled = RecipeUtil.callCraftItemEvent(player, sr);
-                if (notCancelled && craftResult != null && craftResult.equals(sr.getResult())) {
-                    newRecipe = new FastRecipeCompat(sr);
-                }
-            } else {
-                continue;
-            }
 
-            // Add the new recipe to the result
-            if (newRecipe != null) {
-                result.add(newRecipe);
+                // Get the result when crafting in a workbench
+                ItemStack craftResult = RecipeUtil.getCraftingResult(sr, player);
+                if (sr.getResult() != null && craftResult != null && !sr.getResult().equals(craftResult)) continue;
+
+                // Get the matrix of items needed to craft this recipe
+                ItemStack[] matrix = RecipeUtil.getRecipeMatrix(sr);
+                if (matrix == null) continue;
+
+                // If crafting the recipe isn't cancelled, create a new recipe
+                if (RecipeUtil.callCraftItemEvent(player, sr, matrix, sr.getResult())) {
+                    result.add(new FastRecipeCompat(sr));
+                }
             }
         }
 
-        // Return a list of FastRecipes
+        // Return a set of FastRecipes
         return result;
     }
 
@@ -72,7 +79,6 @@ public class Compat_Bukkit extends Compat {
     public static class FastRecipeCompat extends FastRecipe {
         private final Map<Ingredient, Integer> ingredients = new HashMap<>();
         private final List<ItemStack> result;
-        private final Recipe recipe;
 
         /**
          * Create a new FastRecipeCompat from a ShapedRecipe.
@@ -80,7 +86,6 @@ public class Compat_Bukkit extends Compat {
          * @param recipe The Recipe this FastRecipe is based off of.
          */
         public FastRecipeCompat(ShapedRecipe recipe) {
-            this.recipe = recipe;
             result = Collections.singletonList(recipe.getResult());
 
             // Fill map of ingredients
@@ -101,7 +106,6 @@ public class Compat_Bukkit extends Compat {
          * @param recipe The Recipe this FastRecipe is based off of.
          */
         public FastRecipeCompat(ShapelessRecipe recipe) {
-            this.recipe = recipe;
             result = Collections.singletonList(recipe.getResult());
 
             // Fill map of ingredients
