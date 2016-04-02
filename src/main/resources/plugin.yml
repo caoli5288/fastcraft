@@ -7,13 +7,75 @@ description: Improved crafting in Minecraft.
 main: co.kepler.fastcraftplus.FastCraft
 
 softdepend:
-- Vault
 - ItemMakerPro
 - ProRecipes
 
+
 commands:
   fastcraft:
-    description: FastCraft commands.
-    usage: /fastcraft
-    aliases:
-      -fc
+    description: FastCraft+ commands
+    usage: /<command> <toggle|craft>
+    aliases: [fc]
+
+  fastcraft toggle:
+    description: Toggle whether crafting with FastCraft+ is enabled
+    usage: /<command> toggle <on|off|toggle> [player]
+
+  fastcraft toggle on:
+    description: Enable crafting with FastCraft+
+    usage: /<command> toggle on [player]
+    permission: fastcraft.toggle
+
+  fastcraft toggle off:
+    description: Disable crafting with FastCraft+
+    usage: /<command> toggle off [player]
+    permission: fastcraft.toggle
+
+  fastcraft toggle toggle:
+    description: Toggle crafting with FastCraft+
+    usage: /<command> toggle toggle [player]
+    permission: fastcraft.toggle
+
+  fastcraftadmin:
+    description: FastCraft+ admin commands
+    usage: /<command>
+    permission: fastcraft.admin
+    aliases: [fcadmin, fca]
+
+
+permissions:
+  fastcraft.*:
+    description: All FastCraft+ permissions
+    default: op
+    children:
+      fastcraft.use: true
+      fastcraft.craft: true
+      fastcraft.admin.*: true
+
+  fastcraft.use:
+    description: Permission to use FastCraft+ for crafting
+    default: true
+
+  fastcraft.toggle:
+    description: Permission for a player to enable/disable FastCraft+
+    default: true
+    children:
+      fastcraft.toggle.other: false
+
+  fastcraft.toggle.other:
+    description: Permission to toggle FastCraft+ for another player
+    default: op
+
+  fastcraft.craft:
+    description: Permission to use /fastcraft craft
+    default: false
+
+  fastcraft.admin:
+    description: All FastCraft+ admin permissions
+    default: op
+    children:
+      fastcraft.admin.reload: true
+
+  fastcraft.admin.reload:
+    description: Reload FastCraft+ config files
+    default: op
