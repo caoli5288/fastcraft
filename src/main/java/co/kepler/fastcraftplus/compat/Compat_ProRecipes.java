@@ -76,5 +76,10 @@ public class Compat_ProRecipes extends Compat {
         public List<ItemStack> getResults() {
             return results;
         }
+
+        @Override
+        public ItemStack[] getMatrix() {
+            return null; // TODO
+        }
     }
 }

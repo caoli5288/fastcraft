@@ -2,11 +2,11 @@ package co.kepler.fastcraftplus.compat;
 
 import co.kepler.fastcraftplus.recipes.FastRecipe;
 import co.kepler.fastcraftplus.recipes.Ingredient;
-import com.kirelcodes.ItemMaker.API.RecipeGetter;
 import com.kirelcodes.ItemMaker.Recipes.Perfect.PerfectShapedRecipe;
 import com.kirelcodes.ItemMaker.Recipes.Perfect.PerfectShapelessRecipe;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.Recipe;
 
 import java.util.*;
 
@@ -16,6 +16,7 @@ import java.util.*;
  * Plugin: https://www.spigotmc.org/resources/7173/
  */
 public class Compat_ItemMakerPro extends Compat {
+    private final Map<Recipe, FastRecipe> recipes = new HashMap<>();
 
     @Override
     public boolean init() {
@@ -30,41 +31,86 @@ public class Compat_ItemMakerPro extends Compat {
     @Override
     public Set<FastRecipe> getRecipes(Player player) {
         Set<FastRecipe> recipes = new HashSet<>();
+        ItemStack[] matrix = new ItemStack[9];
 
-        // Add shaped recipes
-        for (PerfectShapedRecipe recipe : RecipeGetter.getShapedRecipes()) {
-            if (!recipe.hasPermission() || player.hasPermission(recipe.getPermission())) {
-                // If player has permission to craft
-                recipes.add(new FastRecipeCompat(recipe));
-            }
-        }
-
-        // Add shapeless recipes
-        for (PerfectShapelessRecipe recipe : RecipeGetter.getShapelessRecipe()) {
-            if (!recipe.hasPermission() || player.hasPermission(recipe.getPermission())) {
-                // If player has permission to craft
-                recipes.add(new FastRecipeCompat(recipe));
-            }
-        }
+        // TODO
 
         return recipes;
+    }
+
+    /**
+     * Get a FastRecipe from the given Recipe.
+     *
+     * @param recipe The Recipe to get a FastRecipe from.
+     * @return Returns a FastRecipe, or null if unable.
+     */
+    private FastRecipe getRecipe(PerfectShapedRecipe recipe) {
+        if (!loadRecipe(recipe)) return null;
+        return recipes.get(recipe.getRecipe());
+    }
+
+    /**
+     * Get a FastRecipe from the given Recipe.
+     *
+     * @param recipe The Recipe to get a FastRecipe from.
+     * @return Returns a FastRecipe, or null if unable.
+     */
+    private FastRecipe getRecipe(PerfectShapelessRecipe recipe) {
+        if (!loadRecipe(recipe)) return null;
+        return recipes.get(recipe.getRecipe());
+    }
+
+    /**
+     * Load a recipe, and store it for later access by getRecipe.
+     *
+     * @param recipe The recipe to load.
+     * @return Returns true if the recipe was successfully loaded, or if it was already loaded.
+     */
+    private boolean loadRecipe(PerfectShapedRecipe recipe) {
+        if (recipes.containsKey(recipe.getRecipe())) return true;
+        recipes.put(recipe.getRecipe(), new FastRecipeCompat(recipe));
+        return true;
+    }
+
+    /**
+     * Load a recipe, and store it for later access by getRecipe.
+     *
+     * @param recipe The recipe to load.
+     * @return Returns true if the recipe was successfully loaded, or if it was already loaded.
+     */
+    private boolean loadRecipe(PerfectShapelessRecipe recipe) {
+        if (recipes.containsKey(recipe.getRecipe())) return true;
+        recipes.put(recipe.getRecipe(), new FastRecipeCompat(recipe));
+        return true;
     }
 
     public static class FastRecipeCompat extends FastRecipe {
         private final Map<Ingredient, Integer> ingredients = new HashMap<>();
         private final List<ItemStack> results;
+        private final ItemStack[] matrix;
 
         public FastRecipeCompat(PerfectShapedRecipe recipe) {
             results = Collections.singletonList(recipe.getResult());
 
             // Add ingredients
-            for (ItemStack[] isArr : recipe.getItems()) {
-                for (ItemStack is : isArr) {
+            ItemStack[][] items = recipe.getItems();
+            ItemStack[] matrix = items.length > 3 ? null : new ItemStack[9];
+            for (int row = 0; row < items.length; row++) {
+                ItemStack[] curRow = items[row];
+                if (curRow.length > 3) matrix = null;
+                for (int col = 0; col < items[row].length; col++) {
+                    ItemStack is = items[row][col];
                     Ingredient ingredient = new Ingredient(is);
                     Integer amount = ingredients.get(ingredient);
                     ingredients.put(ingredient, (amount == null ? 0 : amount) + is.getAmount());
+                    if (matrix != null) {
+                        matrix[row * 3 + col] = is;
+                    }
                 }
             }
+
+            // Set the matrix
+            this.matrix = matrix;
         }
 
         public FastRecipeCompat(PerfectShapelessRecipe recipe) {
@@ -76,6 +122,21 @@ public class Compat_ItemMakerPro extends Compat {
                 Integer amount = ingredients.get(ingredient);
                 ingredients.put(ingredient, (amount == null ? 0 : amount) + is.getAmount());
             }
+
+            // Fill matrix
+            ItemStack[] matrix = new ItemStack[9];
+            int matIndex = 0;
+            for (Ingredient ingredient : ingredients.keySet()) {
+                if (matIndex >= matrix.length) {
+                    matrix = null;
+                    break;
+                }
+                ItemStack curItem = ingredient.toItemStack(1);
+                for (int i = 0; i < ingredients.get(ingredient); i++) {
+                    matrix[matIndex++] = curItem;
+                }
+            }
+            this.matrix = matrix;
         }
 
         @Override
@@ -86,6 +147,11 @@ public class Compat_ItemMakerPro extends Compat {
         @Override
         public List<ItemStack> getResults() {
             return results;
+        }
+
+        @Override
+        public ItemStack[] getMatrix() {
+            return matrix;
         }
     }
 }

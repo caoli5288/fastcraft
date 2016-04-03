@@ -16,7 +16,8 @@ import java.util.Map;
 public class CustomShapelessRecipe extends CustomRecipe {
     private final List<ItemStack> results;
     private final ShapelessRecipe recipe;
-    Map<Ingredient, Integer> ingredients;
+    private final Map<Ingredient, Integer> ingredients;
+    private final ItemStack[] matrix;
 
     /**
      * Create a new instance of CustomShapelessRecipe.
@@ -39,7 +40,7 @@ public class CustomShapelessRecipe extends CustomRecipe {
         }
 
         // Create Recipe
-        ItemStack[] matrix = new ItemStack[9];
+        matrix = new ItemStack[9];
         int matIndex = 0;
         recipe = new ShapelessRecipe(result);
         for (Ingredient ingredient : ingredients.keySet()) {
@@ -67,6 +68,11 @@ public class CustomShapelessRecipe extends CustomRecipe {
     @Override
     public Map<Ingredient, Integer> getIngredients() {
         return ingredients;
+    }
+
+    @Override
+    public ItemStack[] getMatrix() {
+        return matrix;
     }
 
     @Override

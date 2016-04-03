@@ -21,6 +21,7 @@ public class CustomShapedRecipe extends CustomRecipe {
     private final Ingredient[][] ingredientGrid;
     private final int rows, cols;
     private final ShapedRecipe recipe;
+    private final ItemStack[] matrix;
 
     /**
      * Create a new instance of CustomShapedRecipe.
@@ -66,7 +67,7 @@ public class CustomShapedRecipe extends CustomRecipe {
         }
 
         // Create matrix
-        ItemStack[] matrix = new ItemStack[9];
+        matrix = new ItemStack[9];
         for (int row = 0; row < shapeArr.length; row++) {
             char[] chars = shapeArr[row].toCharArray();
             for (int col = 0; col < chars.length; col++) {
@@ -88,6 +89,11 @@ public class CustomShapedRecipe extends CustomRecipe {
     @Override
     public Map<Ingredient, Integer> getIngredients() {
         return ingredients;
+    }
+
+    @Override
+    public ItemStack[] getMatrix() {
+        return matrix;
     }
 
     @Override

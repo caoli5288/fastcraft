@@ -2,6 +2,7 @@ package co.kepler.fastcraftplus.compat;
 
 import co.kepler.fastcraftplus.recipes.FastRecipe;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Recipe;
 
 import java.util.Set;
 

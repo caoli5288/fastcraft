@@ -148,6 +148,13 @@ public abstract class FastRecipe implements Comparable<FastRecipe> {
     }
 
     /**
+     * Get the matrix of items used in the crafting table to craft this recipe.
+     *
+     * @return Returns the matrix of items, or null if this recipe cannot be crafted in a crafting table.
+     */
+    public abstract ItemStack[] getMatrix();
+
+    /**
      * Craft this recipe, and get the recipe's results.
      *
      * @param player The player crafting the recipe.

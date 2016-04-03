@@ -169,22 +169,7 @@ public class RecipeUtil {
      * @param recipe The recipe to check.
      * @return Returns the item from the crafting table.
      */
-    public static ItemStack getCraftingResult(ShapedRecipe recipe, Player player) {
-        ItemStack[] matrix = getRecipeMatrix(recipe);
-        if (matrix == null) return null;
-
-        // Return the item in the result slot of the inventory
-        return callPrepareItemCraftEvent(player, recipe, matrix, recipe.getResult()).getInventory().getResult();
-    }
-
-    /**
-     * See if a recipe is consistent. A recipe is consistent if its result is the same as
-     * the resulting item when crafting in a crafting table.
-     *
-     * @param recipe The recipe to check.
-     * @return Returns true if the recipe is consistent.
-     */
-    public static ItemStack getCraftingResult(ShapelessRecipe recipe, Player player) {
+    public static ItemStack getCraftingResult(Recipe recipe, Player player) {
         ItemStack[] matrix = getRecipeMatrix(recipe);
         if (matrix == null) return null;
 
