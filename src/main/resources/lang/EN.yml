@@ -7,7 +7,7 @@
 gui:
   title: 'FastCraft+'
 
-  # Leave blank to make item names unchanged.
+  # Leave blank to keep item names unchanged.
   item-name: # Variables: name
 
   ingredients:
