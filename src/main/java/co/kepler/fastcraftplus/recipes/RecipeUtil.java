@@ -196,37 +196,39 @@ public class RecipeUtil {
      * Get a recipe's matrix of ingredients in the crafting table.
      *
      * @param recipe The recipe to get the matrix of.
-     * @return Return a matrix, or null if the recipe's shape has a dimension greater than 3.
+     * @return Return a matrix, or null if the recipe can't fit in a crafting grid.
      */
-    public static ItemStack[] getRecipeMatrix(ShapedRecipe recipe) {
-        Map<Character, ItemStack> ingredients = recipe.getIngredientMap();
-        String[] shape = recipe.getShape();
-        ItemStack[] matrix = new ItemStack[9];
+    public static ItemStack[] getRecipeMatrix(Recipe recipe) {
+        assert recipe instanceof ShapedRecipe || recipe instanceof ShapelessRecipe :
+                "Recipe must be a ShapedRecipe or a ShapelessRecipe";
 
-        // Add items to the matrix
-        if (shape.length > 3) return null;
-        for (int row = 0; row < shape.length; row++) {
-            String curRow = shape[row];
-            if (curRow.length() > 3) return null;
-            for (int col = 0; col < curRow.length(); col++) {
-                matrix[row * 3 + col] = ingredients.get(curRow.charAt(col));
+        ItemStack[] matrix = new ItemStack[9];
+        if (recipe instanceof ShapedRecipe) {
+            ShapedRecipe sr = (ShapedRecipe) recipe;
+            Map<Character, ItemStack> ingredients = sr.getIngredientMap();
+            String[] shape = sr.getShape();
+
+            // Add items to the matrix
+            if (shape.length > 3) return null;
+            for (int row = 0; row < shape.length; row++) {
+                String curRow = shape[row];
+                if (curRow.length() > 3) return null;
+                for (int col = 0; col < curRow.length(); col++) {
+                    matrix[row * 3 + col] = ingredients.get(curRow.charAt(col));
+                }
             }
-        }
+        } else {
+            ShapelessRecipe sr = (ShapelessRecipe) recipe;
 
-        return matrix;
-    }
-
-    public static ItemStack[] getRecipeMatrix(ShapelessRecipe recipe) {
-        ItemStack[] matrix = new ItemStack[9];
-        int matIndex = 0;
-
-        // Add items to the matrix
-        for (ItemStack item : recipe.getIngredientList()) {
-            ItemStack curStack = item.clone();
-            curStack.setAmount(0);
-            for (int i = 0; i < item.getAmount(); i++) {
-                if (matIndex >= matrix.length) return null;
-                matrix[matIndex++] = curStack;
+            // Add items to the matrix
+            int matIndex = 0;
+            for (ItemStack item : sr.getIngredientList()) {
+                ItemStack curStack = item.clone();
+                curStack.setAmount(0);
+                for (int i = 0; i < item.getAmount(); i++) {
+                    if (matIndex >= matrix.length) return null;
+                    matrix[matIndex++] = curStack;
+                }
             }
         }
         return matrix;
