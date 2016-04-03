@@ -11,22 +11,22 @@ gui:
 
   ingredients:
     label: '&aIngredience:'
-    item: '&a %amount%x %item%' # Variables: amount, item
+    item: '&a <amount>x <item>' # Variables: amount, item
 
   results:
     label: '&aVýsledky:'
-    item: '&a %amount%x %item%' # Varibales: amount, item
+    item: '&a <amount>x <item>' # Varibales: amount, item
 
   toolbar:
     page-prev:
       title: '&aPredchozi stranka'
       description: # Variables: prev, total, cur
-      - '&bJdi na stranku %prev%/%total%'
+      - '&bJdi na stranku <prev>/<total>'
 
     page-next:
       title: '&aDalsi stranka'
       description: # Variables: prev, total, cur
-      - '&bJdi na stranku %next%/%total%'
+      - '&bJdi na stranku <next>/<total>'
 
     craft-items:
       title: '&aVyroba predmetu'
@@ -49,7 +49,7 @@ gui:
       - '&bZnovu zobrazit dotupne predmety'
 
     multiplier:
-      title: '&aVyrabecÃ­ nasobic (%mult%x)' # Variables: mult
+      title: '&aVyrabecÃ­ nasobic (<mult>x)' # Variables: mult
       description: # Variables: mult
       - '&bVytvarej vÃ­ce predmetu najedou'
 

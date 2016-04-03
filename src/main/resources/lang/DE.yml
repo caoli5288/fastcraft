@@ -11,22 +11,22 @@ gui:
 
   ingredients:
     label: '&cZutaten:'
-    item: '&c %amount%x %item%' # Variables: amount, item
+    item: '&c <amount>x <item>' # Variables: amount, item
 
   results:
     label: '&aErgebnisse:'
-    item: '&a %amount%x %item%' # Varibales: amount, item
+    item: '&a <amount>x <item>' # Varibales: amount, item
 
   toolbar:
     page-prev:
       title: '&avorherige Seite'
       description: # Variables: prev, total, cur
-      - '&bblaetter auf Seite %prev%/%total%'
+      - '&bblaetter auf Seite <prev>/<total>'
 
     page-next:
       title: '&anachste Seite'
       description: # Variables: prev, total, cur
-      - '&bblaetter auf Seite %next%/%total%'
+      - '&bblaetter auf Seite <next>/<total>'
 
     craft-items:
       title: '&aHerstellen'
@@ -50,7 +50,7 @@ gui:
       - '&bNeusoritierung der herstellbaren Gegenstaende'
 
     multiplier:
-      title: '&aHerstellungsmuliplikator (%mult%x)' # Variables: mult
+      title: '&aHerstellungsmuliplikator (<mult>x)' # Variables: mult
       description: # Variables: mult
       - '&bstellt mehr als einen Gegenstand'
       - '&bauf einmal her'

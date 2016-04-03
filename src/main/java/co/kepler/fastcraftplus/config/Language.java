@@ -23,7 +23,7 @@ import java.util.Map;
  * Supplies access to the plugin's language files.
  */
 public class Language {
-    private static final String NOT_FOUND = ChatColor.RED + "[Lang: %key%]";
+    private static final String NOT_FOUND = ChatColor.RED + "[Lang: <key>]";
     private static final String NOT_FOUND_KEY = "key";
     public final GUI gui = new GUI();
     public final Commands commands = new Commands();
@@ -126,7 +126,7 @@ public class Language {
         assert varVal.length % 2 == 0 : "varVal must have an even number of elements";
 
         for (int i = 0; i < varVal.length; i += 2) {
-            str = str.replace("%" + varVal[i] + "%", varVal[i + 1]);
+            str = str.replace("<" + varVal[i] + ">", varVal[i + 1]);
         }
         return ChatColor.translateAlternateColorCodes('&', str);
     }

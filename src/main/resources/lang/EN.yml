@@ -9,22 +9,22 @@ gui:
 
   ingredients:
     label: '&aIngredients:'
-    item: '&a %amount%x %item%' # Variables: amount, item
+    item: '&a <amount>x <item>' # Variables: amount, item
 
   results:
     label: '&aResults:'
-    item: '&a %amount%x %item%' # Varibales: amount, item
+    item: '&a <amount>x <item>' # Varibales: amount, item
 
   toolbar:
     page-prev:
       title: '&aPrevious Page'
       description: # Variables: prev, total, cur
-      - '&bGo to page %prev%/%total%'
+      - '&bGo to page <prev>/<total>'
 
     page-next:
       title: '&aNext Page'
       description: # Variables: prev, total, cur
-      - '&bGo to page %next%/%total%'
+      - '&bGo to page <next>/<total>'
 
     craft-items:
       title: '&aCraft Items'
@@ -47,7 +47,7 @@ gui:
       - '&bRe-sort items'
 
     multiplier:
-      title: '&aCrafting Multiplier (%mult%x)' # Variables: mult
+      title: '&aCrafting Multiplier (<mult>x)' # Variables: mult
       description: # Variables: mult
       - '&bCraft more than once at a time'
 
