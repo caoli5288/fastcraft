@@ -3,6 +3,7 @@ package co.kepler.fastcraftplus.craftgui;
 import co.kepler.fastcraftplus.FastCraft;
 import co.kepler.fastcraftplus.api.gui.GUIButton;
 import co.kepler.fastcraftplus.api.gui.Layout;
+import co.kepler.fastcraftplus.config.Language;
 import co.kepler.fastcraftplus.recipes.FastRecipe;
 import co.kepler.fastcraftplus.recipes.Ingredient;
 import org.bukkit.event.inventory.ClickType;
@@ -40,6 +41,8 @@ public class GUIButtonRecipe extends GUIButton {
 
     @Override
     public ItemStack getItem() {
+        Language lang = FastCraft.lang();
+
         // Add the ingredients to the lore of the item
         ItemStack item = recipe.getDisplayResult().clone();
         List<ItemStack> results = recipe.getResults();
@@ -47,17 +50,21 @@ public class GUIButtonRecipe extends GUIButton {
         LinkedList<String> lore = new LinkedList<>();
         Map<Ingredient, Integer> ingredients = recipe.getIngredients();
 
+        // Set the display name of the item
+        meta.setDisplayName(lang.gui.itemName(item));
+
         // Add ingredients and amounts to the lore
-        lore.addFirst(FastCraft.lang().gui.ingredients.label());
+        lore.addFirst(lang.gui.ingredients.label());
         for (Ingredient i : ingredients.keySet()) {
-            lore.addLast(FastCraft.lang().gui.ingredients.item(ingredients.get(i), i.getName()));
+            lore.addLast(lang.gui.ingredients.item(ingredients.get(i), i.getName()));
         }
 
         // Add results and amounts to the lore if more than one result
         if (results.size() > 1) {
             lore.addLast("");
+            lore.add(lang.gui.results.label());
             for (ItemStack is : results) {
-                lore.addLast(FastCraft.lang().gui.results.item(is));
+                lore.addLast(lang.gui.results.item(is));
             }
         }
 

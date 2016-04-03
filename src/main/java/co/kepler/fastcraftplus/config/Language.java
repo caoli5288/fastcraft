@@ -160,6 +160,12 @@ public class Language {
             return get("gui.title");
         }
 
+        public String itemName(ItemStack item) {
+            if (lang.getString("gui.item-name") == null) return null;
+            String name = RecipeUtil.getItemName(item);
+            return get("gui.item-name", "name", name);
+        }
+
         public class Ingredients {
             public String label() {
                 return get("gui.ingredients.label");
