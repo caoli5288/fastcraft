@@ -2,6 +2,7 @@ package co.kepler.fastcraftplus.compat;
 
 import co.kepler.fastcraftplus.recipes.FastRecipe;
 import co.kepler.fastcraftplus.recipes.Ingredient;
+import com.kirelcodes.ItemMaker.API.RecipeGetter;
 import com.kirelcodes.ItemMaker.Recipes.Perfect.PerfectShapedRecipe;
 import com.kirelcodes.ItemMaker.Recipes.Perfect.PerfectShapelessRecipe;
 import org.bukkit.entity.Player;
@@ -20,6 +21,7 @@ public class Compat_ItemMakerPro extends Compat {
 
     @Override
     public boolean init() {
+        getRecipes(null);
         return true;
     }
 
@@ -31,9 +33,22 @@ public class Compat_ItemMakerPro extends Compat {
     @Override
     public Set<FastRecipe> getRecipes(Player player) {
         Set<FastRecipe> recipes = new HashSet<>();
-        ItemStack[] matrix = new ItemStack[9];
 
-        // TODO
+        // Get PerfectShapedRecipes
+        for (PerfectShapedRecipe recipe : RecipeGetter.getShapedRecipes()) {
+            if (player == null || !recipe.hasPermission() || player.hasPermission(recipe.getPermission())) {
+                // If player is null, or if player has permission to craft
+                FastRecipe fr = getRecipe(recipe);
+            }
+        }
+
+        // Get PerfectShapelessRecipes
+        for (PerfectShapelessRecipe recipe : RecipeGetter.getShapelessRecipe()) {
+            if (player == null || !recipe.hasPermission() || player.hasPermission(recipe.getPermission())) {
+                // If player is null, or if player has permission to craft
+                FastRecipe fr = getRecipe(recipe);
+            }
+        }
 
         return recipes;
     }
