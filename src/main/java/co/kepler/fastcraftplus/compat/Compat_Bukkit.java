@@ -30,6 +30,7 @@ public class Compat_Bukkit extends Compat {
 
     @Override
     public boolean init() {
+        getRecipes(null);
         return true;
     }
 
