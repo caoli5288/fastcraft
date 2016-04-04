@@ -6,6 +6,7 @@ import mc.mcgrizzz.prorecipes.ProRecipes;
 import mc.mcgrizzz.prorecipes.RecipeAPI;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.Recipe;
 
 import java.util.*;
 
@@ -16,8 +17,9 @@ import java.util.*;
  * API: https://www.spigotmc.org/wiki/prorecipes-recipeapi/
  */
 public class Compat_ProRecipes extends Compat {
-    private RecipeAPI api;
+    private final Map<Recipe, FastRecipe> recipes = new HashMap<>();
     private RecipeAPI.RecipeType[] recipeTypes;
+    private RecipeAPI api;
 
     @Override
     public boolean init() {
@@ -33,6 +35,11 @@ public class Compat_ProRecipes extends Compat {
     @Override
     public String dependsOnPlugin() {
         return "ProRecipes";
+    }
+
+    @Override
+    public Set<Recipe> getHandledRecipes() {
+        return recipes.keySet();
     }
 
     @Override
@@ -52,6 +59,29 @@ public class Compat_ProRecipes extends Compat {
             }
         }
         return recipes;
+    }
+
+    /**
+     * Get a FastRecipe from the given Recipe.
+     *
+     * @param recipe The Recipe to get a FastRecipe from.
+     * @return Returns a FastRecipe, or null if unable.
+     */
+    private FastRecipe getRecipe(RecipeAPI.RecipeContainer recipe) {
+        if (!loadRecipe(recipe)) return null;
+        return recipes.get(api.);
+    }
+
+    /**
+     * Load a recipe, and store it for later access by getRecipe.
+     *
+     * @param recipe The recipe to load.
+     * @return Returns true if the recipe was successfully loaded, or if it was already loaded.
+     */
+    private boolean loadRecipe(RecipeAPI.RecipeContainer recipe) {
+        if (recipes.containsKey(recipe.getRecipe())) return true;
+        recipes.put(recipe.getRecipe(), new FastRecipeCompat(recipe));
+        return true;
     }
 
     public static class FastRecipeCompat extends FastRecipe {

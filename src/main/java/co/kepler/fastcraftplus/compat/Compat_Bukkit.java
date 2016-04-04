@@ -19,6 +19,15 @@ public class Compat_Bukkit extends Compat {
     private final Map<Recipe, FastRecipe> recipes = new HashMap<>();
     private final Set<Recipe> disabledRecipes = new HashSet<>();
 
+    /**
+     * Create a new compatibility instance for Bukkit.
+     *
+     * @param manager The manager this compatibility is associated with.
+     */
+    public Compat_Bukkit(RecipeCompatManager manager) {
+        super(manager);
+    }
+
     @Override
     public boolean init() {
         return true;
@@ -27,6 +36,14 @@ public class Compat_Bukkit extends Compat {
     @Override
     public String dependsOnPlugin() {
         return null;
+    }
+
+    @Override
+    public Set<Recipe> getHandledRecipes() {
+        Set<Recipe> result = new HashSet<>();
+        result.addAll(recipes.keySet());
+        result.addAll(disabledRecipes);
+        return result;
     }
 
     @Override

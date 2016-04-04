@@ -10,6 +10,25 @@ import java.util.Set;
  * An interface to be used by plugin compatibility classes.
  */
 public abstract class Compat {
+    private final RecipeCompatManager manager;
+
+    /**
+     * Create a new compatibility instance.
+     *
+     * @param manager The manager this compatibility is associated with.
+     */
+    public Compat(RecipeCompatManager manager) {
+        this.manager = manager;
+    }
+
+    /**
+     * Get the recipe compatibility manager this compat is associated with.
+     *
+     * @return Get this compat's recipe compatibility manager.
+     */
+    protected final RecipeCompatManager getManager() {
+        return manager;
+    }
 
     /**
      * Called when the plugin compatibility is loaded.
@@ -27,9 +46,16 @@ public abstract class Compat {
     public abstract String dependsOnPlugin();
 
     /**
+     * Get a Set of Recipes handled by this compatibility.
+     *
+     * @return Returns a set of Recipes handled by this compatibility.
+     */
+    public abstract Set<Recipe> getHandledRecipes();
+
+    /**
      * Get recipes provided by this compatibility.
      *
-     * @param player The player who will be seeing the recipes.
+     * @param player The player who will be seeing the recipes. Null if loading recipes.
      * @return Returns recipes provided by this compatibility, or null if there are none.
      */
     public abstract Set<FastRecipe> getRecipes(Player player);

@@ -5,6 +5,7 @@ import co.kepler.fastcraftplus.config.Recipes;
 import co.kepler.fastcraftplus.recipes.FastRecipe;
 import co.kepler.fastcraftplus.recipes.custom.CustomRecipe;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Recipe;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -14,6 +15,15 @@ import java.util.Set;
  */
 public class Compat_FastCraftPlus extends Compat {
 
+    /**
+     * Create a new compatibility instance for FastCraft+.
+     *
+     * @param manager The manager this compatibility is associated with.
+     */
+    public Compat_FastCraftPlus(RecipeCompatManager manager) {
+        super(manager);
+    }
+
     @Override
     public boolean init() {
         return true;
@@ -22,6 +32,15 @@ public class Compat_FastCraftPlus extends Compat {
     @Override
     public String dependsOnPlugin() {
         return null;
+    }
+
+    @Override
+    public Set<Recipe> getHandledRecipes() {
+        Set<Recipe> result = new HashSet<Recipe>();
+        for (CustomRecipe r : Recipes.getRecipes()) {
+            result.add(r.getRecipe());
+        }
+        return result;
     }
 
     @Override

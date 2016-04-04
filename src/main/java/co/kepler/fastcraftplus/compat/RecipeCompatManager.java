@@ -4,6 +4,7 @@ import co.kepler.fastcraftplus.FastCraft;
 import co.kepler.fastcraftplus.recipes.FastRecipe;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Recipe;
 import org.bukkit.plugin.Plugin;
 
 import java.util.ArrayList;
@@ -24,10 +25,10 @@ public class RecipeCompatManager {
         loadedCompats = new ArrayList<>();
 
         // Load plugin compatibilities
-        loadCompat(new Compat_Bukkit());
-        loadCompat(new Compat_FastCraftPlus());
-        loadCompat(new Compat_ItemMakerPro());
-        loadCompat(new Compat_ProRecipes());
+        loadCompat(new Compat_FastCraftPlus(this));
+        loadCompat(new Compat_ItemMakerPro(this));
+        loadCompat(new Compat_ProRecipes(this));
+        loadCompat(new Compat_Bukkit(this)); // Must be loaded last
     }
 
     /**
@@ -74,6 +75,14 @@ public class RecipeCompatManager {
             } catch (Throwable t) {
                 t.printStackTrace();
             }
+        }
+        return result;
+    }
+
+    public Set<Recipe> getLoadedRecipes() {
+        Set<Recipe> result = new HashSet<>();
+        for (Compat compat : loadedCompats) {
+            result.addAll(compat.getHandledRecipes());
         }
         return result;
     }

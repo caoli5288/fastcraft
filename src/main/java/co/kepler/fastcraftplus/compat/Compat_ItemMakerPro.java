@@ -19,6 +19,15 @@ import java.util.*;
 public class Compat_ItemMakerPro extends Compat {
     private final Map<Recipe, FastRecipe> recipes = new HashMap<>();
 
+    /**
+     * Create a new compatibility instance for Item Maker Pro.
+     *
+     * @param manager The manager this compatibility is associated with.
+     */
+    public Compat_ItemMakerPro(RecipeCompatManager manager) {
+        super(manager);
+    }
+
     @Override
     public boolean init() {
         getRecipes(null);
@@ -28,6 +37,11 @@ public class Compat_ItemMakerPro extends Compat {
     @Override
     public String dependsOnPlugin() {
         return "ItemMakerPro";
+    }
+
+    @Override
+    public Set<Recipe> getHandledRecipes() {
+        return recipes.keySet();
     }
 
     @Override

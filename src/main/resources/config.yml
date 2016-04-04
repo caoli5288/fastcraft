@@ -1,4 +1,5 @@
 # language: EN      If the language specified does not exist, a new language file will be added to the
 #                   lang folder in the FastCraftPlus plugin directory.
+#                   Available languages: English (EN), German (DE), Russian (RU), Czech (CS)
 
 language: EN
