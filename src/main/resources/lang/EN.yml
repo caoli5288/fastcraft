@@ -7,6 +7,9 @@
 gui:
   title: 'FastCraft+'
 
+  # Leave blank to keep item names unchanged.
+  item-name: # Variables: name
+
   ingredients:
     label: '&aIngredients:'
     item: '&a <amount>x <item>' # Variables: amount, item

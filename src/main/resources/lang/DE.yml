@@ -9,6 +9,9 @@
 gui:
   title: 'SchnelleWerkbank'
 
+  # Leave blank to keep item names unchanged.
+  item-name: # Variables: name
+
   ingredients:
     label: '&cZutaten:'
     item: '&c <amount>x <item>' # Variables: amount, item
