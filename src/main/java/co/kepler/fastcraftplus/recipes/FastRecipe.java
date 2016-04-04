@@ -9,6 +9,7 @@ import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.Recipe;
 
 import java.util.*;
 
@@ -16,6 +17,20 @@ import java.util.*;
  * A recipe that will be used by the FastCraft+ user interface.
  */
 public abstract class FastRecipe implements Comparable<FastRecipe> {
+
+    /**
+     * Get the Recipe associated with this FastRecipe, or null if none exists.
+     *
+     * @return Returns the Recipe associated with this FastRecipe.
+     */
+    public abstract Recipe getRecipe();
+
+    /**
+     * Get the matrix of items used in the crafting table to craft this recipe.
+     *
+     * @return Returns the matrix of items, or null if this recipe cannot be crafted in a crafting table.
+     */
+    public abstract ItemStack[] getMatrix();
 
     /**
      * Get the ingredients required to craft this recipe.
@@ -95,9 +110,14 @@ public abstract class FastRecipe implements Comparable<FastRecipe> {
      * @return Returns true if the inventory had the necessary ingredients.
      */
     public boolean removeIngredients(ItemStack[] items) {
-        LinkedList<Ingredient> toRemove = new LinkedList<>();
+        // Clone the items in the player's inventory
+        for (int i = 0; i < items.length; i++) {
+            if (items[i] == null) continue;
+            items[i] = items[i].clone();
+        }
 
         // Add ingredients. Those that can use any data go at the end.
+        LinkedList<Ingredient> toRemove = new LinkedList<>();
         Map<Ingredient, Integer> ingredients = getIngredients();
         for (Ingredient i : ingredients.keySet()) {
             if (i.anyData()) {
@@ -119,53 +139,36 @@ public abstract class FastRecipe implements Comparable<FastRecipe> {
     }
 
     /**
-     * See if a player has this recipe's ingredients, and optionally, remove them
-     * from the player's inventory if all ingredients are present.
+     * Craft this FastRecipe.
      *
      * @param player The player crafting this recipe.
-     * @param remove If a player has all the necessary items, remove them.
      * @return Returns true if the ingredients were removed from the player's inventory.
      */
-    public boolean canCraftFromItems(Player player, boolean remove) {
-        // Clone the items in the player's inventory
-        ItemStack[] contents = player.getInventory().getContents();
-        for (int i = 0; i < contents.length; i++) {
-            if (contents[i] == null) continue;
-            contents[i] = contents[i].clone();
-        }
-
-        // Remove items, and see if the player has all of them
-        boolean hasAll = removeIngredients(contents);
-
-        // If all items were removed, update the player's inventory
-        if (hasAll && remove) {
-            player.getInventory().setContents(contents);
-            return true;
-        }
-
-        // Return whether the player had all the items
-        return hasAll;
-    }
-
-    /**
-     * Get the matrix of items used in the crafting table to craft this recipe.
-     *
-     * @return Returns the matrix of items, or null if this recipe cannot be crafted in a crafting table.
-     */
-    public abstract ItemStack[] getMatrix();
-
-    /**
-     * Craft this recipe, and get the recipe's results.
-     *
-     * @param player The player crafting the recipe.
-     * @return Returns a set of resulting items, or null if the crafting was unsuccessful.
-     */
     public Set<ItemStack> craft(Player player) {
-        if (!canCraftFromItems(player, true)) return null;
+        ItemStack[] contents = player.getInventory().getContents();
 
+        // Remove items, and return false if unable to craft
+        if (!removeIngredients(contents)) return null;
+
+        // Attempt to craft in a crafting grid.
+        ItemStack[] matrix = getMatrix();
+        Recipe recipe = getRecipe();
+        if (matrix != null && recipe != null) {
+            if (!RecipeUtil.callCraftItemEvent(player, recipe, matrix, getDisplayResult())) {
+                // If crafting cancelled
+                return null;
+            }
+        }
+
+        // Remove items from the player's inventory.
+        player.getInventory().setContents(contents);
+
+        // Award achievements
         for (ItemStack is : getResults()) {
             RecipeUtil.awardAchievement(player, is);
         }
+
+        // Return this recipe's results
         return getAllResults();
     }
 

@@ -17,9 +17,17 @@ import java.util.*;
  * API: https://www.spigotmc.org/wiki/prorecipes-recipeapi/
  */
 public class Compat_ProRecipes extends Compat {
-    private final Map<Recipe, FastRecipe> recipes = new HashMap<>();
     private RecipeAPI.RecipeType[] recipeTypes;
     private RecipeAPI api;
+
+    /**
+     * Create a new compatibility instance for ProRecipes.
+     *
+     * @param manager The manager this compatibility is associated with.
+     */
+    public Compat_ProRecipes(RecipeCompatManager manager) {
+        super(manager);
+    }
 
     @Override
     public boolean init() {
@@ -39,7 +47,7 @@ public class Compat_ProRecipes extends Compat {
 
     @Override
     public Set<Recipe> getHandledRecipes() {
-        return recipes.keySet();
+        return Collections.emptySet() ;
     }
 
     @Override
@@ -61,29 +69,6 @@ public class Compat_ProRecipes extends Compat {
         return recipes;
     }
 
-    /**
-     * Get a FastRecipe from the given Recipe.
-     *
-     * @param recipe The Recipe to get a FastRecipe from.
-     * @return Returns a FastRecipe, or null if unable.
-     */
-    private FastRecipe getRecipe(RecipeAPI.RecipeContainer recipe) {
-        if (!loadRecipe(recipe)) return null;
-        return recipes.get(api.);
-    }
-
-    /**
-     * Load a recipe, and store it for later access by getRecipe.
-     *
-     * @param recipe The recipe to load.
-     * @return Returns true if the recipe was successfully loaded, or if it was already loaded.
-     */
-    private boolean loadRecipe(RecipeAPI.RecipeContainer recipe) {
-        if (recipes.containsKey(recipe.getRecipe())) return true;
-        recipes.put(recipe.getRecipe(), new FastRecipeCompat(recipe));
-        return true;
-    }
-
     public static class FastRecipeCompat extends FastRecipe {
         private final Map<Ingredient, Integer> ingredients = new HashMap<>();
         private final List<ItemStack> results = new ArrayList<>();
@@ -98,6 +83,16 @@ public class Compat_ProRecipes extends Compat {
         }
 
         @Override
+        public Recipe getRecipe() {
+            return null;
+        }
+
+        @Override
+        public ItemStack[] getMatrix() {
+            return null;
+        }
+
+        @Override
         public Map<Ingredient, Integer> getIngredients() {
             return ingredients;
         }
@@ -105,11 +100,6 @@ public class Compat_ProRecipes extends Compat {
         @Override
         public List<ItemStack> getResults() {
             return results;
-        }
-
-        @Override
-        public ItemStack[] getMatrix() {
-            return null; // TODO
         }
     }
 }

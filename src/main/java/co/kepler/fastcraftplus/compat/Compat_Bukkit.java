@@ -111,6 +111,7 @@ public class Compat_Bukkit extends Compat {
     public static class FastRecipeCompat extends FastRecipe {
         private final Map<Ingredient, Integer> ingredients = new HashMap<>();
         private final List<ItemStack> result;
+        private final Recipe recipe;
         private final ItemStack[] matrix;
 
         /**
@@ -124,6 +125,7 @@ public class Compat_Bukkit extends Compat {
 
             // Set the result and the matrix of this item
             result = Collections.singletonList(recipe.getResult());
+            this.recipe = recipe;
             this.matrix = matrix;
 
             // Fill map of ingredients
@@ -151,6 +153,16 @@ public class Compat_Bukkit extends Compat {
         }
 
         @Override
+        public Recipe getRecipe() {
+            return recipe;
+        }
+
+        @Override
+        public ItemStack[] getMatrix() {
+            return matrix;
+        }
+
+        @Override
         public Map<Ingredient, Integer> getIngredients() {
             return ingredients;
         }
@@ -158,11 +170,6 @@ public class Compat_Bukkit extends Compat {
         @Override
         public List<ItemStack> getResults() {
             return result;
-        }
-
-        @Override
-        public ItemStack[] getMatrix() {
-            return matrix;
         }
     }
 }

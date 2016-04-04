@@ -97,7 +97,8 @@ public class GUIButtonRecipe extends GUIButton {
      */
     @Override
     public boolean isVisible() {
-        return recipe.canCraftFromItems(gui.getPlayer(), false);
+        ItemStack[] contents = gui.getPlayer().getInventory().getContents();
+        return recipe.removeIngredients(contents);
     }
 
     /**

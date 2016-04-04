@@ -116,10 +116,12 @@ public class Compat_ItemMakerPro extends Compat {
     public static class FastRecipeCompat extends FastRecipe {
         private final Map<Ingredient, Integer> ingredients = new HashMap<>();
         private final List<ItemStack> results;
+        private final Recipe recipe;
         private final ItemStack[] matrix;
 
         public FastRecipeCompat(PerfectShapedRecipe recipe) {
             results = Collections.singletonList(recipe.getResult());
+            this.recipe = recipe.getRecipe();
 
             // Add ingredients
             ItemStack[][] items = recipe.getItems();
@@ -144,6 +146,7 @@ public class Compat_ItemMakerPro extends Compat {
 
         public FastRecipeCompat(PerfectShapelessRecipe recipe) {
             results = Collections.singletonList(recipe.getResult());
+            this.recipe = recipe.getRecipe();
 
             // Add ingredients
             for (ItemStack is : recipe.getItems()) {
@@ -169,6 +172,16 @@ public class Compat_ItemMakerPro extends Compat {
         }
 
         @Override
+        public Recipe getRecipe() {
+            return recipe;
+        }
+
+        @Override
+        public ItemStack[] getMatrix() {
+            return matrix;
+        }
+
+        @Override
         public Map<Ingredient, Integer> getIngredients() {
             return ingredients;
         }
@@ -176,11 +189,6 @@ public class Compat_ItemMakerPro extends Compat {
         @Override
         public List<ItemStack> getResults() {
             return results;
-        }
-
-        @Override
-        public ItemStack[] getMatrix() {
-            return matrix;
         }
     }
 }
