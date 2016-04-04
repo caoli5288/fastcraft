@@ -11,25 +11,39 @@ import org.bukkit.inventory.*;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Utility methods for recipes.
  */
 public class RecipeUtil {
+    private static final String[] IGNORE_RECIPES = new String[]{
+            "RecipeArmorDye", "RecipeBookClone", "RecipeMapClone", "RecipeMapExtend",
+            "RecipeFireworks", "RecipeRepair", "RecipesBanner"
+    };
+
+    private static List<Class> ignoreRecipeClasses;
     private static Method methodAsNMSCopy;
     private static Method methodNMSGetName;
 
     private static Map<Material, Achievement> craftingAchievements;
 
     static {
+        String version = Bukkit.getServer().getClass().getPackage().getName();
+        version = version.substring(version.lastIndexOf('.') + 1);
+        String nms = "net.minecraft.server." + version + ".";
+        String cb = "org.bukkit.craftbukkit." + version + ".";
+
+        ignoreRecipeClasses = new ArrayList<>();
+        for (String s : IGNORE_RECIPES) {
+            try {
+                ignoreRecipeClasses.add(Class.forName(nms + s));
+            } catch (ClassNotFoundException e) {
+                FastCraft.log("Class '" + s + "' does not exist");
+            }
+        }
+
         try {
-            String version = Bukkit.getServer().getClass().getPackage().getName();
-            version = version.substring(version.lastIndexOf('.') + 1);
-            String nms = "net.minecraft.server." + version + ".";
-            String cb = "org.bukkit.craftbukkit." + version + ".";
 
             Class<?> classCraftItemStack = Class.forName(cb + "inventory.CraftItemStack");
             Class<?> classItemStack = Class.forName(nms + "ItemStack");
@@ -48,6 +62,73 @@ public class RecipeUtil {
         craftingAchievements.put(Material.CAKE, Achievement.BAKE_CAKE);
         craftingAchievements.put(Material.STONE_PICKAXE, Achievement.BUILD_BETTER_PICKAXE);
         craftingAchievements.put(Material.WOOD_SWORD, Achievement.BUILD_SWORD);
+    }
+
+    /**
+     * See if a recipe should be ignored.
+     *
+     * @param iRecipe The recipe to check.
+     * @return Returns true if the recipe should be ignored.
+     */
+    public static boolean shouldIgnoreRecipe(Object iRecipe) {
+        for (Class c : ignoreRecipeClasses) {
+            if (c.isInstance(iRecipe)) {
+                // If this class should be ignored
+                return true;
+            } else if (c.equals(iRecipe.getClass().getEnclosingClass())) {
+                // If the enclosing class should be ignored
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Get the name of an item.
+     *
+     * @param item The item to get the name of.
+     * @return Returns the name of the item.
+     */
+    public static String getItemName(ItemStack item) {
+        if (item == null) return "null";
+        if (item.hasItemMeta()) {
+            String displayName = item.getItemMeta().getDisplayName();
+            if (displayName != null) return displayName;
+        }
+
+        // Try to get the item's name from lang
+        String name = FastCraft.lang().items.name(item);
+        if (name != null) return name;
+
+        // Try to get the name from NMS
+        try {
+            Object nmsItem = methodAsNMSCopy.invoke(null, item);
+            if (nmsItem != null) {
+                name = (String) methodNMSGetName.invoke(nmsItem);
+                if (name != null) return name;
+            }
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
+
+        // Return the item's name from its material type
+        FastCraft.err("Can't find item name: " + item);
+        return item.getData().toString();
+    }
+
+    /**
+     * Award a player an achievement for crafting an item.
+     *
+     * @param player      The player to award the achievement to.
+     * @param craftedItem The item the player crafted.
+     */
+    public static void awardAchievement(Player player, ItemStack craftedItem) {
+        Achievement a = craftingAchievements.get(craftedItem.getType());
+        if (a == null) return;
+        if (player.hasAchievement(a)) return;
+        if (a.getParent() == null || player.hasAchievement(a.getParent())) {
+            player.awardAchievement(a);
+        }
     }
 
     /**
@@ -113,54 +194,6 @@ public class RecipeUtil {
         }
 
         return true;
-    }
-
-    /**
-     * Get the name of an item.
-     *
-     * @param item The item to get the name of.
-     * @return Returns the name of the item.
-     */
-    public static String getItemName(ItemStack item) {
-        if (item == null) return "null";
-        if (item.hasItemMeta()) {
-            String displayName = item.getItemMeta().getDisplayName();
-            if (displayName != null) return displayName;
-        }
-
-        // Try to get the item's name from lang
-        String name = FastCraft.lang().items.name(item);
-        if (name != null) return name;
-
-        // Try to get the name from NMS
-        try {
-            Object nmsItem = methodAsNMSCopy.invoke(null, item);
-            if (nmsItem != null) {
-                name = (String) methodNMSGetName.invoke(nmsItem);
-                if (name != null) return name;
-            }
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
-        }
-
-        // Return the item's name from its material type
-        FastCraft.err("Can't find item name: " + item);
-        return item.getData().toString();
-    }
-
-    /**
-     * Award a player an achievement for crafting an item.
-     *
-     * @param player      The player to award the achievement to.
-     * @param craftedItem The item the player crafted.
-     */
-    public static void awardAchievement(Player player, ItemStack craftedItem) {
-        Achievement a = craftingAchievements.get(craftedItem.getType());
-        if (a == null) return;
-        if (player.hasAchievement(a)) return;
-        if (a.getParent() == null || player.hasAchievement(a.getParent())) {
-            player.awardAchievement(a);
-        }
     }
 
     /**

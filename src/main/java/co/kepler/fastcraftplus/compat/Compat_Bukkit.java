@@ -88,6 +88,9 @@ public class Compat_Bukkit extends Compat {
         // Ignore recipes with null results
         if (recipe.getResult() == null) return false;
 
+        // Ignore special recipes
+        if (RecipeUtil.shouldIgnoreRecipe(recipe)) return false;
+
         // Load recipe
         if (recipe instanceof ShapedRecipe || recipe instanceof ShapelessRecipe) {
             // Get the matrix of items needed to craft this recipe
