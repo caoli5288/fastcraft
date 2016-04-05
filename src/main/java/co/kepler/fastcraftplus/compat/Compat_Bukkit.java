@@ -52,7 +52,7 @@ public class Compat_Bukkit extends Compat {
         Set<FastRecipe> result = new HashSet<>();
 
         // Loop through the server's recipes
-        for (Iterator<Recipe> iter = Bukkit.recipeIterator(); iter.hasNext();) {
+        for (Iterator<Recipe> iter = Bukkit.recipeIterator(); iter.hasNext(); ) {
             FastRecipe recipe = getRecipe(iter.next());
             if (recipe != null) result.add(recipe);
         }

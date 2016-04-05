@@ -1,7 +1,6 @@
 package co.kepler.fastcraftplus.recipes.custom;
 
 import co.kepler.fastcraftplus.config.Recipes;
-import co.kepler.fastcraftplus.recipes.FastRecipe;
 import co.kepler.fastcraftplus.recipes.Ingredient;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;

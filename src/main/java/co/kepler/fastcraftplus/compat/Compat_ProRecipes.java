@@ -47,7 +47,7 @@ public class Compat_ProRecipes extends Compat {
 
     @Override
     public Set<Recipe> getHandledRecipes() {
-        return Collections.emptySet() ;
+        return Collections.emptySet();
     }
 
     @Override

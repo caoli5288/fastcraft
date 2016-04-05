@@ -22,9 +22,12 @@ public class RecipeUtil {
             "RecipeFireworks", "RecipeRepair", "RecipesBanner"
     };
 
-    private static List<Class> ignoreRecipeClasses;
+    private static Set<Integer> ignoreRecipeHashes;
     private static Method methodAsNMSCopy;
     private static Method methodNMSGetName;
+    private static Method methodGetRecipes;
+    private static Method methodToBukkitRecipe;
+    private static Object craftingManagerInstance;
 
     private static Map<Material, Achievement> craftingAchievements;
 
@@ -34,21 +37,39 @@ public class RecipeUtil {
         String nms = "net.minecraft.server." + version + ".";
         String cb = "org.bukkit.craftbukkit." + version + ".";
 
-        ignoreRecipeClasses = new ArrayList<>();
-        for (String s : IGNORE_RECIPES) {
-            try {
-                ignoreRecipeClasses.add(Class.forName(nms + s));
-            } catch (ClassNotFoundException e) {
-                FastCraft.log("Class '" + s + "' does not exist");
-            }
-        }
-
         try {
+            Class<?> classCraftingManager = Class.forName(nms + "CraftingManager");
+            craftingManagerInstance = classCraftingManager.getMethod("getInstance").invoke(null);
+            methodGetRecipes = craftingManagerInstance.getClass().getMethod("getRecipes");
+            methodToBukkitRecipe = Class.forName(nms + "IRecipe").getMethod("toBukkitRecipe");
 
             Class<?> classCraftItemStack = Class.forName(cb + "inventory.CraftItemStack");
             Class<?> classItemStack = Class.forName(nms + "ItemStack");
             methodAsNMSCopy = classCraftItemStack.getMethod("asNMSCopy", ItemStack.class);
             methodNMSGetName = classItemStack.getMethod("getName");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // Find which recipes should be ignored by FastCraft
+        ignoreRecipeHashes = new HashSet<>();
+        try {
+            for (Object iRecipe : (List) methodGetRecipes.invoke(craftingManagerInstance)) {
+                for (String ignoreType : IGNORE_RECIPES) {
+                    Class recipeClass = iRecipe.getClass();
+                    Class enclClass = iRecipe.getClass().getEnclosingClass();
+                    if (recipeClass.getSimpleName().equals(ignoreType) ||
+                            enclClass != null && enclClass.getSimpleName().equals(ignoreType)) {
+                        Recipe recipe = (Recipe) methodToBukkitRecipe.invoke(iRecipe);
+                        for (Iterator<Recipe> iter = Bukkit.recipeIterator(); iter.hasNext(); ) {
+                            Recipe next = iter.next();
+                            if (areEqual(recipe, next)) {
+                                ignoreRecipeHashes.add(hashRecipe(next));
+                            }
+                        }
+                    }
+                }
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -67,20 +88,11 @@ public class RecipeUtil {
     /**
      * See if a recipe should be ignored.
      *
-     * @param iRecipe The recipe to check.
+     * @param recipe The recipe to check.
      * @return Returns true if the recipe should be ignored.
      */
-    public static boolean shouldIgnoreRecipe(Object iRecipe) {
-        for (Class c : ignoreRecipeClasses) {
-            if (c.isInstance(iRecipe)) {
-                // If this class should be ignored
-                return true;
-            } else if (c.equals(iRecipe.getClass().getEnclosingClass())) {
-                // If the enclosing class should be ignored
-                return true;
-            }
-        }
-        return false;
+    public static boolean shouldIgnoreRecipe(Recipe recipe) {
+        return ignoreRecipeHashes.contains(hashRecipe(recipe));
     }
 
     /**
@@ -295,5 +307,25 @@ public class RecipeUtil {
 
         Bukkit.getPluginManager().callEvent(event);
         return !event.isCancelled() && event.getResult() != Event.Result.DENY;
+    }
+
+    public static int hashRecipe(Recipe r) {
+        int hash = r.getResult().hashCode();
+        if (r instanceof ShapedRecipe) {
+            ShapedRecipe sr = (ShapedRecipe) r;
+            for (String s : sr.getShape()) {
+                for (char c : s.toCharArray()) {
+                    hash *= 31;
+                    ItemStack is = sr.getIngredientMap().get(c);
+                    hash += is == null ? 0 : is.hashCode();
+                }
+            }
+        } else if (r instanceof ShapelessRecipe) {
+            ShapelessRecipe sr = (ShapelessRecipe) r;
+            for (ItemStack is : sr.getIngredientList()) {
+                hash = hash * 31 + is.hashCode();
+            }
+        }
+        return hash;
     }
 }
