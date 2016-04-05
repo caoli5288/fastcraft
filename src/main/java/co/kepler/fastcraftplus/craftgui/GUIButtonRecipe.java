@@ -122,7 +122,7 @@ public class GUIButtonRecipe extends GUIButton {
         if (ignoreClicks.contains(invEvent.getClick())) return false;
 
         // Craft the items, and return if unsuccessful
-        Set<ItemStack> results = recipe.craft(gui.getPlayer());
+        Set<ItemStack> results = recipe.craft(gui);
         if (results == null) {
             gui.updateLayout();
             return false;

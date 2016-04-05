@@ -3,7 +3,6 @@ package co.kepler.fastcraftplus.compat;
 import co.kepler.fastcraftplus.recipes.FastRecipe;
 import co.kepler.fastcraftplus.recipes.Ingredient;
 import co.kepler.fastcraftplus.recipes.RecipeUtil;
-import com.sun.jmx.mbeanserver.Util;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -49,7 +48,6 @@ public class Compat_Bukkit extends Compat {
         }
 
         // Return a set of FastRecipes
-        System.out.println("--------> " + result.size());
         return result;
     }
 

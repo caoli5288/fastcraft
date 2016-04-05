@@ -223,6 +223,15 @@ public class GUIFastCraft extends GUI {
     }
 
     /**
+     * Get the location of this GUI.
+     *
+     * @return Returns the location of this GUI.
+     */
+    public Location getLocation() {
+        return location;
+    }
+
+    /**
      * Show a tab in the GUI.
      *
      * @param tab The tab to show.

@@ -1,6 +1,7 @@
 package co.kepler.fastcraftplus.recipes;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
@@ -19,13 +20,14 @@ public class CraftingInvWrapper implements CraftingInventory {
 
     private final Inventory craftingInv;
     private Recipe recipe;
+    private Location location;
 
     /**
      * Create a new instance of CraftingInvWrapper.
      *
      * @param owner The owner of the crafting inventory.
      */
-    public CraftingInvWrapper(InventoryHolder owner) {
+    public CraftingInvWrapper(InventoryHolder owner, Location location) {
         craftingInv = Bukkit.createInventory(owner, InventoryType.WORKBENCH);
     }
 
@@ -151,6 +153,16 @@ public class CraftingInvWrapper implements CraftingInventory {
 
     @Override
     public void setContents(ItemStack[] itemStacks) throws IllegalArgumentException {
+        craftingInv.setContents(itemStacks);
+    }
+
+    // @Override
+    public ItemStack[] getStorageContents() {
+        return craftingInv.getContents();
+    }
+
+    // @Override
+    public void setStorageContents(ItemStack[] itemStacks) throws IllegalArgumentException {
         craftingInv.setContents(itemStacks);
     }
 
@@ -289,5 +301,10 @@ public class CraftingInvWrapper implements CraftingInventory {
     @Override
     public ListIterator<ItemStack> iterator(int i) {
         return craftingInv.iterator(i);
+    }
+
+    // @Override
+    public Location getLocation() {
+        return location;
     }
 }

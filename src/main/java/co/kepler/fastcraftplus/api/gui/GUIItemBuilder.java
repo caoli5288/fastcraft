@@ -1,8 +1,8 @@
 package co.kepler.fastcraftplus.api.gui;
 
+import co.kepler.fastcraftplus.BukkitUtil;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.material.MaterialData;
@@ -56,13 +56,13 @@ public class GUIItemBuilder {
     public ItemStack build() {
         if (hideInfo) {
             // Add item tags to hide the item's info.
-            meta.addItemFlags(
-                    ItemFlag.HIDE_ATTRIBUTES,
-                    ItemFlag.HIDE_ENCHANTS,
-                    ItemFlag.HIDE_DESTROYS,
-                    ItemFlag.HIDE_PLACED_ON,
-                    ItemFlag.HIDE_POTION_EFFECTS,
-                    ItemFlag.HIDE_UNBREAKABLE
+            BukkitUtil.ItemFlag.addItemFlags(meta,
+                    BukkitUtil.ItemFlag.HIDE_ATTRIBUTES,
+                    BukkitUtil.ItemFlag.HIDE_ENCHANTS,
+                    BukkitUtil.ItemFlag.HIDE_DESTROYS,
+                    BukkitUtil.ItemFlag.HIDE_PLACED_ON,
+                    BukkitUtil.ItemFlag.HIDE_POTION_EFFECTS,
+                    BukkitUtil.ItemFlag.HIDE_UNBREAKABLE
             );
         }
         if (glowing) {
@@ -73,7 +73,7 @@ public class GUIItemBuilder {
 
             // Only hide the info if hideInfo is false
             if (!hideInfo) {
-                meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+                BukkitUtil.ItemFlag.addItemFlags(meta, BukkitUtil.ItemFlag.HIDE_ENCHANTS);
             }
         }
         base.setItemMeta(meta);

@@ -1,8 +1,10 @@
 package co.kepler.fastcraftplus.recipes;
 
+import co.kepler.fastcraftplus.BukkitUtil;
 import co.kepler.fastcraftplus.FastCraft;
 import org.bukkit.Achievement;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -32,8 +34,7 @@ public class RecipeUtil {
     private static Map<Material, Achievement> craftingAchievements;
 
     static {
-        String version = Bukkit.getServer().getClass().getPackage().getName();
-        version = version.substring(version.lastIndexOf('.') + 1);
+        String version = BukkitUtil.serverVersion();
         String nms = "net.minecraft.server." + version + ".";
         String cb = "org.bukkit.craftbukkit." + version + ".";
 
@@ -268,13 +269,13 @@ public class RecipeUtil {
      * @param result The item in the result slot of the crafting table.
      * @return Returns the called event.
      */
-    public static PrepareItemCraftEvent callPrepareItemCraftEvent(Player player, Recipe recipe,
-                                                                  ItemStack[] matrix, ItemStack result) {
+    public static PrepareItemCraftEvent callPrepareItemCraftEvent(Player player, Recipe recipe, ItemStack[] matrix,
+                                                                  ItemStack result, Location location) {
         assert player != null : "Player must not be null";
         assert recipe != null : "Recipe must not be null";
         assert matrix != null : "Matrix must not be null";
 
-        CraftingInvWrapper inv = new CraftingInvWrapper(player);
+        CraftingInvWrapper inv = new CraftingInvWrapper(player, location);
         inv.setRecipe(recipe);
         inv.setMatrix(matrix);
         inv.setResult(result);
@@ -290,12 +291,13 @@ public class RecipeUtil {
      *
      * @return Returns false if the event was cancelled.
      */
-    public static boolean callCraftItemEvent(Player player, Recipe recipe, ItemStack[] matrix, ItemStack result) {
+    public static boolean callCraftItemEvent(Player player, Recipe recipe, ItemStack[] matrix,
+                                             ItemStack result, Location location) {
         assert player != null : "Player must not be null";
         assert recipe != null : "Recipe must not be null";
         assert matrix != null : "Matrix must not be null";
 
-        CraftingInvWrapper inv = new CraftingInvWrapper(player);
+        CraftingInvWrapper inv = new CraftingInvWrapper(player, location);
         inv.setResult(recipe.getResult());
 
         CraftItemEvent event = new CraftItemEvent(recipe, inv.getView(player),

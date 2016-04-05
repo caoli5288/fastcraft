@@ -5,7 +5,6 @@ import co.kepler.fastcraftplus.recipes.FastRecipe;
 import co.kepler.fastcraftplus.recipes.RecipeUtil;
 import co.kepler.fastcraftplus.recipes.custom.CustomRecipe;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Recipe;
 
 import java.util.HashSet;
 import java.util.Set;

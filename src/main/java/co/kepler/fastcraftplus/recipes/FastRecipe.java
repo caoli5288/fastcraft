@@ -1,5 +1,6 @@
 package co.kepler.fastcraftplus.recipes;
 
+import co.kepler.fastcraftplus.craftgui.GUIFastCraft;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -135,10 +136,11 @@ public abstract class FastRecipe implements Comparable<FastRecipe> {
     /**
      * Craft this FastRecipe.
      *
-     * @param player The player crafting this recipe.
+     * @param gui The gui this recipe is being crafted in.
      * @return Returns true if the ingredients were removed from the player's inventory.
      */
-    public Set<ItemStack> craft(Player player) {
+    public Set<ItemStack> craft(GUIFastCraft gui) {
+        Player player = gui.getPlayer();
         ItemStack[] contents = player.getInventory().getContents();
 
         // Remove items, and return false if unable to craft
@@ -148,7 +150,7 @@ public abstract class FastRecipe implements Comparable<FastRecipe> {
         ItemStack[] matrix = getMatrix();
         Recipe recipe = getRecipe();
         if (matrix != null && recipe != null) {
-            if (!RecipeUtil.callCraftItemEvent(player, recipe, matrix, getDisplayResult())) {
+            if (!RecipeUtil.callCraftItemEvent(player, recipe, matrix, getDisplayResult(), gui.getLocation())) {
                 // If crafting cancelled
                 return null;
             }
