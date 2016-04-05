@@ -3,6 +3,7 @@ package co.kepler.fastcraftplus.compat;
 import co.kepler.fastcraftplus.recipes.FastRecipe;
 import co.kepler.fastcraftplus.recipes.Ingredient;
 import co.kepler.fastcraftplus.recipes.RecipeUtil;
+import com.sun.jmx.mbeanserver.Util;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -16,8 +17,7 @@ import java.util.*;
  * Recipe compatibility class for Bukkit.
  */
 public class Compat_Bukkit extends Compat {
-    private final Map<Recipe, FastRecipe> recipes = new HashMap<>();
-    private final Set<Recipe> disabledRecipes = new HashSet<>();
+    private final Map<Integer, FastRecipe> recipes = new HashMap<>();
 
     /**
      * Create a new compatibility instance for Bukkit.
@@ -37,14 +37,6 @@ public class Compat_Bukkit extends Compat {
     @Override
     public String dependsOnPlugin() {
         return null;
-    }
-
-    @Override
-    public Set<Recipe> getHandledRecipes() {
-        Set<Recipe> result = new HashSet<>();
-        result.addAll(recipes.keySet());
-        result.addAll(disabledRecipes);
-        return result;
     }
 
     @Override
@@ -68,10 +60,8 @@ public class Compat_Bukkit extends Compat {
      * @return Returns a FastRecipe, or null if unable.
      */
     protected FastRecipe getRecipe(Recipe recipe) {
-        if (disabledRecipes.contains(recipe)) return null;
-        if (loadRecipe(recipe)) return recipes.get(recipe);
-        disabledRecipes.add(recipe);
-        return null;
+        int hash = RecipeUtil.hashRecipe(recipe);
+        return loadRecipe(recipe, hash) ? recipes.get(hash) : null;
     }
 
     /**
@@ -80,16 +70,17 @@ public class Compat_Bukkit extends Compat {
      * @param recipe The recipe to load.
      * @return Returns true if the recipe was successfully loaded, or if it was already loaded.
      */
-    protected boolean loadRecipe(Recipe recipe) {
+    protected boolean loadRecipe(Recipe recipe, int hash) {
+        if (getManager().isRecipeHandled(hash)) return false;
+
         // See if this recipe has already been loaded.
-        if (disabledRecipes.contains(recipe)) return true;
-        if (recipes.containsKey(recipe)) return true;
+        if (recipes.containsKey(hash)) return true;
 
         // Ignore recipes with null results
         if (recipe.getResult() == null) return false;
 
         // Ignore special recipes
-        if (RecipeUtil.shouldIgnoreRecipe(recipe)) return false;
+        if (RecipeUtil.shouldIgnoreRecipe(hash)) return false;
 
         // Load recipe
         if (recipe instanceof ShapedRecipe || recipe instanceof ShapelessRecipe) {
@@ -97,13 +88,10 @@ public class Compat_Bukkit extends Compat {
             ItemStack[] matrix = RecipeUtil.getRecipeMatrix(recipe);
             if (matrix == null) return false;
 
-            // Get the result when crafting in a workbench
-            ItemStack craftResult = RecipeUtil.getCraftingResult(recipe, null);
-            if (!recipe.getResult().equals(craftResult)) return false;
-
             // Add recipe to recipes map
             FastRecipe result = new FastRecipeCompat(recipe, matrix);
-            recipes.put(recipe, result);
+            recipes.put(hash, result);
+            getManager().addHandledRecipe(hash);
             return true;
         }
         return false;

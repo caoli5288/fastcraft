@@ -34,15 +34,6 @@ public class Compat_FastCraftPlus extends Compat {
     }
 
     @Override
-    public Set<Recipe> getHandledRecipes() {
-        Set<Recipe> result = new HashSet<>();
-        for (CustomRecipe r : Recipes.getRecipes()) {
-            result.add(r.getRecipe());
-        }
-        return result;
-    }
-
-    @Override
     public Set<FastRecipe> getRecipes(Player player) {
         Set<FastRecipe> recipes = new HashSet<>();
         recipes.addAll(Recipes.getRecipes());

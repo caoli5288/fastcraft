@@ -2,6 +2,7 @@ package co.kepler.fastcraftplus.compat;
 
 import co.kepler.fastcraftplus.recipes.FastRecipe;
 import co.kepler.fastcraftplus.recipes.Ingredient;
+import co.kepler.fastcraftplus.recipes.RecipeUtil;
 import com.kirelcodes.ItemMaker.API.RecipeGetter;
 import com.kirelcodes.ItemMaker.Recipes.Perfect.PerfectShapedRecipe;
 import com.kirelcodes.ItemMaker.Recipes.Perfect.PerfectShapelessRecipe;
@@ -17,7 +18,7 @@ import java.util.*;
  * Plugin: https://www.spigotmc.org/resources/7173/
  */
 public class Compat_ItemMakerPro extends Compat {
-    private final Map<Recipe, FastRecipe> recipes = new HashMap<>();
+    private final Map<Integer, FastRecipe> recipes = new HashMap<>();
 
     /**
      * Create a new compatibility instance for Item Maker Pro.
@@ -40,11 +41,6 @@ public class Compat_ItemMakerPro extends Compat {
     }
 
     @Override
-    public Set<Recipe> getHandledRecipes() {
-        return recipes.keySet();
-    }
-
-    @Override
     public Set<FastRecipe> getRecipes(Player player) {
         Set<FastRecipe> recipes = new HashSet<>();
 
@@ -52,7 +48,7 @@ public class Compat_ItemMakerPro extends Compat {
         for (PerfectShapedRecipe recipe : RecipeGetter.getShapedRecipes()) {
             if (player == null || !recipe.hasPermission() || player.hasPermission(recipe.getPermission())) {
                 // If player is null, or if player has permission to craft
-                FastRecipe fr = getRecipe(recipe);
+                recipes.add(getRecipe(recipe));
             }
         }
 
@@ -60,7 +56,7 @@ public class Compat_ItemMakerPro extends Compat {
         for (PerfectShapelessRecipe recipe : RecipeGetter.getShapelessRecipe()) {
             if (player == null || !recipe.hasPermission() || player.hasPermission(recipe.getPermission())) {
                 // If player is null, or if player has permission to craft
-                FastRecipe fr = getRecipe(recipe);
+                recipes.add(getRecipe(recipe));
             }
         }
 
@@ -74,8 +70,9 @@ public class Compat_ItemMakerPro extends Compat {
      * @return Returns a FastRecipe, or null if unable.
      */
     private FastRecipe getRecipe(PerfectShapedRecipe recipe) {
-        if (!loadRecipe(recipe)) return null;
-        return recipes.get(recipe.getRecipe());
+        int hash = RecipeUtil.hashRecipe(recipe.getRecipe());
+        if (!loadRecipe(recipe, hash)) return null;
+        return recipes.get(hash);
     }
 
     /**
@@ -85,8 +82,9 @@ public class Compat_ItemMakerPro extends Compat {
      * @return Returns a FastRecipe, or null if unable.
      */
     private FastRecipe getRecipe(PerfectShapelessRecipe recipe) {
-        if (!loadRecipe(recipe)) return null;
-        return recipes.get(recipe.getRecipe());
+        int hash = RecipeUtil.hashRecipe(recipe.getRecipe());
+        if (!loadRecipe(recipe, hash)) return null;
+        return recipes.get(hash);
     }
 
     /**
@@ -95,9 +93,10 @@ public class Compat_ItemMakerPro extends Compat {
      * @param recipe The recipe to load.
      * @return Returns true if the recipe was successfully loaded, or if it was already loaded.
      */
-    private boolean loadRecipe(PerfectShapedRecipe recipe) {
-        if (recipes.containsKey(recipe.getRecipe())) return true;
-        recipes.put(recipe.getRecipe(), new FastRecipeCompat(recipe));
+    private boolean loadRecipe(PerfectShapedRecipe recipe, int hash) {
+        if (recipes.containsKey(hash)) return true;
+        recipes.put(hash, new FastRecipeCompat(recipe));
+        getManager().addHandledRecipe(hash);
         return true;
     }
 
@@ -107,9 +106,10 @@ public class Compat_ItemMakerPro extends Compat {
      * @param recipe The recipe to load.
      * @return Returns true if the recipe was successfully loaded, or if it was already loaded.
      */
-    private boolean loadRecipe(PerfectShapelessRecipe recipe) {
-        if (recipes.containsKey(recipe.getRecipe())) return true;
-        recipes.put(recipe.getRecipe(), new FastRecipeCompat(recipe));
+    private boolean loadRecipe(PerfectShapelessRecipe recipe, int hash) {
+        if (recipes.containsKey(hash)) return true;
+        recipes.put(hash, new FastRecipeCompat(recipe));
+        getManager().addHandledRecipe(hash);
         return true;
     }
 

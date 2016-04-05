@@ -88,11 +88,21 @@ public class RecipeUtil {
     /**
      * See if a recipe should be ignored.
      *
+     * @param hash The recipe hash to check.
+     * @return Returns true if the recipe should be ignored.
+     */
+    public static boolean shouldIgnoreRecipe(int hash) {
+        return ignoreRecipeHashes.contains(hash);
+    }
+
+    /**
+     * See if a recipe should be ignored.
+     *
      * @param recipe The recipe to check.
      * @return Returns true if the recipe should be ignored.
      */
     public static boolean shouldIgnoreRecipe(Recipe recipe) {
-        return ignoreRecipeHashes.contains(hashRecipe(recipe));
+        return shouldIgnoreRecipe(hashRecipe(recipe));
     }
 
     /**
@@ -206,20 +216,6 @@ public class RecipeUtil {
         }
 
         return true;
-    }
-
-    /**
-     * Get the resulting item from crafting this in a crafting table.
-     *
-     * @param recipe The recipe to check.
-     * @return Returns the item from the crafting table.
-     */
-    public static ItemStack getCraftingResult(Recipe recipe, Player player) {
-        ItemStack[] matrix = getRecipeMatrix(recipe);
-        if (matrix == null) return null;
-
-        // Return the item in the result slot of the inventory
-        return callPrepareItemCraftEvent(player, recipe, matrix, recipe.getResult()).getInventory().getResult();
     }
 
     /**

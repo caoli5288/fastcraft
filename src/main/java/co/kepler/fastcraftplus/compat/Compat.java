@@ -46,13 +46,6 @@ public abstract class Compat {
     public abstract String dependsOnPlugin();
 
     /**
-     * Get a Set of Recipes handled by this compatibility.
-     *
-     * @return Returns a set of Recipes handled by this compatibility.
-     */
-    public abstract Set<Recipe> getHandledRecipes();
-
-    /**
      * Get recipes provided by this compatibility.
      *
      * @param player The player who will be seeing the recipes. Null if loading recipes.

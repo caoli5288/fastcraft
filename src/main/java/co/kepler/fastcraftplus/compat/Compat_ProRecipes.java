@@ -46,11 +46,6 @@ public class Compat_ProRecipes extends Compat {
     }
 
     @Override
-    public Set<Recipe> getHandledRecipes() {
-        return Collections.emptySet();
-    }
-
-    @Override
     public Set<FastRecipe> getRecipes(Player player) {
         Set<FastRecipe> recipes = new HashSet<>();
         // Loop through all recipe types

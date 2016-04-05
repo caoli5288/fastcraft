@@ -2,6 +2,7 @@ package co.kepler.fastcraftplus.compat;
 
 import co.kepler.fastcraftplus.FastCraft;
 import co.kepler.fastcraftplus.recipes.FastRecipe;
+import co.kepler.fastcraftplus.recipes.RecipeUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Recipe;
@@ -16,14 +17,13 @@ import java.util.Set;
  * Manages the plugin's FastRecipes.
  */
 public class RecipeCompatManager {
-    private List<Compat> loadedCompats;
+    private List<Compat> loadedCompats = new ArrayList<>();
+    private Set<Integer> handledRecipeHashes = new HashSet<>();
 
     /**
      * Create a new instance of RecipeCompatManager.
      */
     public RecipeCompatManager() {
-        loadedCompats = new ArrayList<>();
-
         // Load plugin compatibilities
         loadCompat(new Compat_FastCraftPlus(this));
         loadCompat(new Compat_ItemMakerPro(this));
@@ -79,11 +79,19 @@ public class RecipeCompatManager {
         return result;
     }
 
-    public Set<Recipe> getLoadedRecipes() {
-        Set<Recipe> result = new HashSet<>();
-        for (Compat compat : loadedCompats) {
-            result.addAll(compat.getHandledRecipes());
-        }
-        return result;
+    public void addHandledRecipe(int hash) {
+        handledRecipeHashes.add(hash);
+    }
+
+    public void addHandledRecipe(Recipe recipe) {
+        addHandledRecipe(RecipeUtil.hashRecipe(recipe));
+    }
+
+    public boolean isRecipeHandled(int hash) {
+        return handledRecipeHashes.contains(hash);
+    }
+
+    public boolean isRecipeHandled(Recipe recipe) {
+        return isRecipeHandled(RecipeUtil.hashRecipe(recipe));
     }
 }
