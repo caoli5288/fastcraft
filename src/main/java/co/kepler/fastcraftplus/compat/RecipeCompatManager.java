@@ -47,6 +47,7 @@ public class RecipeCompatManager {
         try {
             if (compat.init()) {
                 loadedCompats.add(compat);
+                compat.getRecipes(null);
                 if (plugin != null) {
                     FastCraft.log("Loaded compatibility: " + plugin.getName());
                 }

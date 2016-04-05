@@ -31,7 +31,6 @@ public class Compat_ItemMakerPro extends Compat {
 
     @Override
     public boolean init() {
-        getRecipes(null);
         return true;
     }
 

@@ -317,9 +317,10 @@ public class RecipeUtil {
                 }
             }
         } else if (r instanceof ShapelessRecipe) {
+            hash *= 31;
             ShapelessRecipe sr = (ShapelessRecipe) r;
             for (ItemStack is : sr.getIngredientList()) {
-                hash = hash * 31 + is.hashCode();
+                hash += is.hashCode();
             }
         }
         return hash;

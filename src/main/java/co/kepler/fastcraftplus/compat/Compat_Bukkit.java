@@ -30,7 +30,6 @@ public class Compat_Bukkit extends Compat {
 
     @Override
     public boolean init() {
-        getRecipes(null);
         return true;
     }
 
@@ -50,6 +49,7 @@ public class Compat_Bukkit extends Compat {
         }
 
         // Return a set of FastRecipes
+        System.out.println("--------> " + result.size());
         return result;
     }
 
@@ -71,10 +71,11 @@ public class Compat_Bukkit extends Compat {
      * @return Returns true if the recipe was successfully loaded, or if it was already loaded.
      */
     protected boolean loadRecipe(Recipe recipe, int hash) {
-        if (getManager().isRecipeHandled(hash)) return false;
-
         // See if this recipe has already been loaded.
         if (recipes.containsKey(hash)) return true;
+
+        // Ignore recipe if it's already been handled by another compatibility
+        if (getManager().isRecipeHandled(hash)) return false;
 
         // Ignore recipes with null results
         if (recipe.getResult() == null) return false;
