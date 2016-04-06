@@ -17,6 +17,7 @@ import java.util.*;
  * API: https://www.spigotmc.org/wiki/prorecipes-recipeapi/
  */
 public class Compat_ProRecipes extends Compat {
+    private Map<Integer, FastRecipe> recipes = new HashMap<>();
     private RecipeAPI.RecipeType[] recipeTypes;
     private RecipeAPI api;
 
@@ -55,13 +56,39 @@ public class Compat_ProRecipes extends Compat {
             for (int id = 0; id < count; id++) {
                 // Get the recipe of this type and id
                 RecipeAPI.RecipeContainer recipe = api.getRecipe(type, id);
-                if (!recipe.hasPermission() || player.hasPermission(recipe.getPermission())) {
+                if (player == null || !recipe.hasPermission() || player.hasPermission(recipe.getPermission())) {
                     // If player has permission to craft
-                    recipes.add(new FastRecipeCompat(recipe));
+                    FastRecipe fastRecipe = getRecipe(recipe);
+                    if (fastRecipe != null) recipes.add(fastRecipe);
                 }
             }
         }
         return recipes;
+    }
+
+    public FastRecipe getRecipe(RecipeAPI.RecipeContainer recipe) {
+        int hash = hash(recipe);
+        if (!loadRecipe(recipe, hash)) return null;
+        return recipes.get(hash);
+    }
+
+    public boolean loadRecipe(RecipeAPI.RecipeContainer recipe, int hash) {
+        if (!recipes.containsKey(hash)) {
+            recipes.put(hash, new FastRecipeCompat(recipe));
+        }
+        return true;
+    }
+
+    public int hash(RecipeAPI.RecipeContainer recipe) {
+        int hash = 0;
+        for (ItemStack is : recipe.getResult()) {
+            if (is != null) hash += is.hashCode();
+        }
+        hash *= 31;
+        for (ItemStack is : recipe.getIngredients()) {
+            if (is != null) hash += is.hashCode();
+        }
+        return hash;
     }
 
     public static class FastRecipeCompat extends FastRecipe {
@@ -71,6 +98,7 @@ public class Compat_ProRecipes extends Compat {
         public FastRecipeCompat(RecipeAPI.RecipeContainer recipe) {
             Collections.addAll(results, recipe.getResult());
             for (ItemStack is : recipe.getIngredients()) {
+                if (is == null) continue;
                 Ingredient ingredient = new Ingredient(is);
                 Integer amount = ingredients.get(ingredient);
                 ingredients.put(ingredient, (amount == null ? 0 : amount) + is.getAmount());

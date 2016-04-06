@@ -114,6 +114,8 @@ public class RecipeUtil {
      */
     public static String getItemName(ItemStack item) {
         if (item == null) return "null";
+
+        // Return the item's display name if it has one.
         if (item.hasItemMeta()) {
             String displayName = item.getItemMeta().getDisplayName();
             if (displayName != null) return displayName;
@@ -135,7 +137,7 @@ public class RecipeUtil {
         }
 
         // Return the item's name from its material type
-        FastCraft.err("Can't find item name: " + item);
+        // FastCraft.err("Can't find item name: " + item); // TODO
         return item.getData().toString();
     }
 

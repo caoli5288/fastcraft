@@ -159,7 +159,9 @@ public class Language {
         }
 
         public String itemName(ItemStack item) {
-            if (lang.getString("gui.item-name") == null) return null;
+            if (lang.getString("gui.item-name") == null) {
+                return item.getItemMeta().getDisplayName();
+            }
             String name = RecipeUtil.getItemName(item);
             return get("gui.item-name", "name", name);
         }
