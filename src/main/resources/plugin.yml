@@ -19,21 +19,21 @@ commands:
 
   fastcraft toggle:
     description: Toggle whether crafting with FastCraft+ is enabled
-    usage: /<command> toggle <on|off|toggle> [player]
+    usage: /<command> toggle <on|off|toggle>
 
   fastcraft toggle on:
     description: Enable crafting with FastCraft+
-    usage: /<command> toggle on [player]
+    usage: /<command> toggle on <player>
     permission: fastcraft.toggle
 
   fastcraft toggle off:
     description: Disable crafting with FastCraft+
-    usage: /<command> toggle off [player]
+    usage: /<command> toggle off <player>
     permission: fastcraft.toggle
 
   fastcraft toggle toggle:
     description: Toggle crafting with FastCraft+
-    usage: /<command> toggle toggle [player]
+    usage: /<command> toggle toggle <player>
     permission: fastcraft.toggle
 
   fastcraftadmin:
