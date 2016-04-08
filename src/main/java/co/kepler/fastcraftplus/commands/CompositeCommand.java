@@ -25,7 +25,12 @@ public abstract class CompositeCommand implements CommandExecutor, TabCompleter{
 
     @Override
     public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] strings) {
+        LinkedList<String> args = new LinkedList<>();
+        Collections.addAll(args, strings);
+        String toComplete = args.getLast();
+        args.removeLast();
 
+        return onTabComplete(commandSender, args, toComplete);
     }
 
     protected boolean onCommand(CommandSender sender, LinkedList<String> args) {
@@ -40,8 +45,16 @@ public abstract class CompositeCommand implements CommandExecutor, TabCompleter{
         return runCommand(sender, args);
     }
 
-    protected List<String> onTabComplete(CommandSender sender, String toComplete) {
-
+    protected List<String> onTabComplete(CommandSender sender, LinkedList<String> args, String toComplete) {
+        if (args.size() > 0) {
+            CompositeCommand command = subCommands.get(args.getFirst().toLowerCase());
+            if (command != null) {
+                LinkedList<String> newArgs = new LinkedList<>(args);
+                newArgs.removeFirst();
+                return command.getTabComplete(sender, newArgs, toComplete);
+            }
+        }
+        return getTabComplete(sender, args, toComplete);
     }
 
     public void addSubCommand(CompositeCommand command) {
@@ -53,4 +66,6 @@ public abstract class CompositeCommand implements CommandExecutor, TabCompleter{
     }
 
     public abstract boolean runCommand(CommandSender sender, LinkedList<String> args);
+
+    public abstract List<String> getTabComplete(CommandSender sender, LinkedList<String> args, String toComplete);
 }
