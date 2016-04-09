@@ -1,6 +1,7 @@
 package co.kepler.fastcraftplus.compat;
 
-import co.kepler.fastcraftplus.config.Recipes;
+import co.kepler.fastcraftplus.FastCraft;
+import co.kepler.fastcraftplus.config.RecipesConfig;
 import co.kepler.fastcraftplus.recipes.FastRecipe;
 import co.kepler.fastcraftplus.recipes.RecipeUtil;
 import co.kepler.fastcraftplus.recipes.custom.CustomRecipe;
@@ -36,8 +37,8 @@ public class Compat_FastCraftPlus extends Compat {
     @Override
     public Set<FastRecipe> getRecipes(Player player) {
         Set<FastRecipe> recipes = new HashSet<>();
-        recipes.addAll(Recipes.getRecipes());
-        for (CustomRecipe r : Recipes.getRecipes()) {
+        recipes.addAll(FastCraft.recipes().getRecipes());
+        for (CustomRecipe r : FastCraft.recipes().getRecipes()) {
             getManager().addHandledRecipe(RecipeUtil.hashRecipe(r.getRecipe()));
         }
         return recipes;

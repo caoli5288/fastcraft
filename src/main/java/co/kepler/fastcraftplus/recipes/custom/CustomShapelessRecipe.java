@@ -1,6 +1,6 @@
 package co.kepler.fastcraftplus.recipes.custom;
 
-import co.kepler.fastcraftplus.config.Recipes;
+import co.kepler.fastcraftplus.config.RecipesConfig;
 import co.kepler.fastcraftplus.recipes.Ingredient;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapelessRecipe;
@@ -23,9 +23,9 @@ public class CustomShapelessRecipe extends CustomRecipe {
      *
      * @param result      The result of the recipe.
      * @param ingredients The ingredients of the recipe.
-     * @throws Recipes.RecipeException Thrown if the recipe is misconfigured.
+     * @throws RecipesConfig.RecipeException Thrown if the recipe is misconfigured.
      */
-    public CustomShapelessRecipe(ItemStack result, Map<Ingredient, Integer> ingredients) throws Recipes.RecipeException {
+    public CustomShapelessRecipe(ItemStack result, Map<Ingredient, Integer> ingredients) throws RecipesConfig.RecipeException {
         this.results = Collections.singletonList(result);
         this.ingredients = ingredients;
 
@@ -35,7 +35,7 @@ public class CustomShapelessRecipe extends CustomRecipe {
             totalIngredients += i;
         }
         if (totalIngredients > 9) {
-            throw new Recipes.RecipeException("Recipes can have at most 9 ingredients");
+            throw new RecipesConfig.RecipeException("Recipes can have at most 9 ingredients");
         }
 
         // Create Recipe

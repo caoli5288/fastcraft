@@ -2,9 +2,9 @@ package co.kepler.fastcraftplus;
 
 import co.kepler.fastcraftplus.api.gui.GUI;
 import co.kepler.fastcraftplus.compat.RecipeCompatManager;
-import co.kepler.fastcraftplus.config.Config;
-import co.kepler.fastcraftplus.config.Language;
-import co.kepler.fastcraftplus.config.Recipes;
+import co.kepler.fastcraftplus.config.PluginConfig;
+import co.kepler.fastcraftplus.config.LanguageConfig;
+import co.kepler.fastcraftplus.config.RecipesConfig;
 import co.kepler.fastcraftplus.craftgui.GUIFastCraft;
 import co.kepler.fastcraftplus.recipes.CraftingListener;
 import org.bukkit.Bukkit;
@@ -14,19 +14,21 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class FastCraft extends JavaPlugin {
     private static FastCraft instance;
 
-    private Config config;
-    private Language lang;
+    private PluginConfig config;
+    private LanguageConfig lang;
+    private RecipesConfig recipes;
+
     private RecipeCompatManager recipeCompatManager;
 
     @Override
     public void onEnable() {
         instance = this;
 
-        config = new Config();
-        lang = new Language(config.getLanguage());
-        recipeCompatManager = new RecipeCompatManager();
+        config = new PluginConfig();
+        lang = new LanguageConfig(config.getLanguage());
+        recipes = new RecipesConfig();
 
-        Recipes.loadRecipes();
+        recipeCompatManager = new RecipeCompatManager();
 
         PluginManager pluginManager = Bukkit.getPluginManager();
         pluginManager.registerEvents(new CraftingListener(), this);
@@ -48,12 +50,30 @@ public class FastCraft extends JavaPlugin {
     }
 
     /**
+     * Get the plugin's configuration.
+     *
+     * @return Return the plugin's configuration.
+     */
+    public static PluginConfig config() {
+        return instance.config;
+    }
+
+    /**
      * Get the plugin's language configuration.
      *
      * @return Return the plugin's language configuration.
      */
-    public static Language lang() {
+    public static LanguageConfig lang() {
         return instance.lang;
+    }
+
+    /**
+     * Get the plugin's recipes configuration.
+     *
+     * @return Return the plugin's recipes configuration.
+     */
+    public static RecipesConfig recipes() {
+        return instance.recipes;
     }
 
     /**

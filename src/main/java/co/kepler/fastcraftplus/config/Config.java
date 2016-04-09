@@ -1,30 +1,25 @@
 package co.kepler.fastcraftplus.config;
 
 import co.kepler.fastcraftplus.FastCraft;
-import org.bukkit.configuration.Configuration;
+import org.bukkit.configuration.file.YamlConfiguration;
+
+import java.io.InputStream;
 
 /**
- * A class for access to the FastCraft+ configuration.
+ * To be used by configuration classes that access an internal config, only.
  */
-public class Config {
-    private Configuration config;
-
-    public Config() {
-        loadConfig();
-    }
+public abstract class Config {
+    protected final YamlConfiguration internalConfig;
+    protected final String resPath;
 
     /**
-     * Loads config with default values, and saves to update the config.
+     * Create a new Config from a resource.
+     *
+     * @param resPath The path of the config resource.
      */
-    public void loadConfig() {
-        FastCraft fastCraft = FastCraft.getInstance();
-        fastCraft.saveDefaultConfig();
-        config = fastCraft.getConfig();
-        config.options().copyDefaults(true);
-        fastCraft.saveConfig();
-    }
-
-    public String getLanguage() {
-        return config.getString("language");
+    public Config(String resPath) {
+        this.resPath = resPath;
+        InputStream resStream = FastCraft.getInstance().getResource(resPath);
+        internalConfig = YamlConfiguration.loadConfiguration(resStream);
     }
 }

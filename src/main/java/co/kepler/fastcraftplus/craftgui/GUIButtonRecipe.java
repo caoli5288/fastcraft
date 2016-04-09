@@ -3,7 +3,7 @@ package co.kepler.fastcraftplus.craftgui;
 import co.kepler.fastcraftplus.FastCraft;
 import co.kepler.fastcraftplus.api.gui.GUIButton;
 import co.kepler.fastcraftplus.api.gui.Layout;
-import co.kepler.fastcraftplus.config.Language;
+import co.kepler.fastcraftplus.config.LanguageConfig;
 import co.kepler.fastcraftplus.recipes.FastRecipe;
 import co.kepler.fastcraftplus.recipes.Ingredient;
 import org.bukkit.event.inventory.ClickType;
@@ -41,7 +41,7 @@ public class GUIButtonRecipe extends GUIButton {
 
     @Override
     public ItemStack getItem() {
-        Language lang = FastCraft.lang();
+        LanguageConfig lang = FastCraft.lang();
 
         // Add the ingredients to the lore of the item
         ItemStack item = recipe.getDisplayResult().clone();

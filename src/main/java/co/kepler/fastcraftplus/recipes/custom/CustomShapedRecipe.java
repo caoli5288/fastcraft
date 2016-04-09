@@ -1,6 +1,6 @@
 package co.kepler.fastcraftplus.recipes.custom;
 
-import co.kepler.fastcraftplus.config.Recipes;
+import co.kepler.fastcraftplus.config.RecipesConfig;
 import co.kepler.fastcraftplus.recipes.Ingredient;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -28,21 +28,21 @@ public class CustomShapedRecipe extends CustomRecipe {
      * @param result         The result of the recipe.
      * @param ingredientsMap The chars-ingredient map.
      * @param shape          The shape of the recipe.
-     * @throws Recipes.RecipeException Thrown when recipe is improperly configured.
+     * @throws RecipesConfig.RecipeException Thrown when recipe is improperly configured.
      */
     public CustomShapedRecipe(ItemStack result, Map<Character, Ingredient> ingredientsMap,
-                              List<String> shape) throws Recipes.RecipeException {
+                              List<String> shape) throws RecipesConfig.RecipeException {
         this.results = Collections.singletonList(result);
 
         // Get the number of rows and columns in the shape.
         rows = shape.size();
-        if (rows < 1 || rows > 3) throw new Recipes.RecipeException("The recipe's shape height must be from 1 to 3");
+        if (rows < 1 || rows > 3) throw new RecipesConfig.RecipeException("The recipe's shape height must be from 1 to 3");
         cols = shape.get(0).length();
-        if (cols < 1 || cols > 3) throw new Recipes.RecipeException("The recipe's shape width must be from 1 to 3");
+        if (cols < 1 || cols > 3) throw new RecipesConfig.RecipeException("The recipe's shape width must be from 1 to 3");
 
         // Ensure all rows are the same width
         for (String s : shape) {
-            if (s.length() != cols) throw new Recipes.RecipeException("All rows in the shape must be the same width");
+            if (s.length() != cols) throw new RecipesConfig.RecipeException("All rows in the shape must be the same width");
         }
 
         // Copy ingredients to the matrix

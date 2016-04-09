@@ -21,7 +21,7 @@ import java.util.Map;
 /**
  * Supplies access to the plugin's language files.
  */
-public class Language {
+public class LanguageConfig { // TODO Extend Config
     private static final String NOT_FOUND = ChatColor.RED + "[Lang: <key>]";
     private static final String NOT_FOUND_KEY = "key";
     public final GUI gui = new GUI();
@@ -36,7 +36,7 @@ public class Language {
      * @param language The language to use.
      */
     @SuppressWarnings("deprecation")
-    public Language(String language) {
+    public LanguageConfig(String language) {
         FastCraft fastCraft = FastCraft.getInstance();
 
         String resPath = "lang/" + language + ".yml";

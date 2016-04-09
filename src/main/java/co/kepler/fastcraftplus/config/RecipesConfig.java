@@ -19,22 +19,16 @@ import java.util.*;
 /**
  * Manages recipes from the recipes config file.
  */
-public class Recipes {
+public class RecipesConfig extends ConfigExternal {
     private static final List<CustomRecipe> recipes = new ArrayList<>();
 
-    /**
-     * Unloads all previously loaded recipes, then load recipes from the recipes config.
-     * If the config does not exist, copy the resource to the plugin directory.
-     */
-    public static void loadRecipes() {
-        // Setup and load recipes config
-        FastCraft fastcraft = FastCraft.getInstance();
-        File recipesFile = new File(fastcraft.getDataFolder(), "recipes.yml");
-        if (!recipesFile.exists()) {
-            fastcraft.saveResource("recipes.yml", false);
-            FastCraft.log("Created recipes.yml");
-        }
-        YamlConfiguration recipesConfig = YamlConfiguration.loadConfiguration(recipesFile);
+    public RecipesConfig() {
+        super("recipes.yml");
+    }
+
+    @Override
+    public void load() {
+        super.load();
 
         // Remove loaded recipes
         for (CustomRecipe customRecipe : recipes) {
@@ -49,9 +43,9 @@ public class Recipes {
 
         // Load recipes
         recipes.clear();
-        for (String key : recipesConfig.getKeys(false)) {
+        for (String key : config.getKeys(false)) {
             try {
-                CustomRecipe customRecipe = getRecipe(recipesConfig.getConfigurationSection(key));
+                CustomRecipe customRecipe = getRecipe(config.getConfigurationSection(key));
                 recipes.add(customRecipe);
                 Bukkit.addRecipe(customRecipe.getRecipe());
                 FastCraft.log("Loaded recipe: " + key);
@@ -66,7 +60,7 @@ public class Recipes {
      *
      * @return The list of loaded recipes.
      */
-    public static List<CustomRecipe> getRecipes() {
+    public List<CustomRecipe> getRecipes() {
         return recipes;
     }
 
@@ -77,7 +71,7 @@ public class Recipes {
      * @return Returns a recipe.
      * @throws RecipeException Thrown if the recipe is improperly configured.
      */
-    private static CustomRecipe getRecipe(ConfigurationSection conf) throws RecipeException {
+    private CustomRecipe getRecipe(ConfigurationSection conf) throws RecipeException {
         String type = conf.getString("type");
         if (type == null) {
             throw new RecipeException("Recipe type cannot be null");
@@ -98,7 +92,7 @@ public class Recipes {
      * @return Returns a shaped recipe.
      * @throws RecipeException Thrown if the recipe is improperly configured.
      */
-    private static CustomRecipe getShapedRecipe(ConfigurationSection conf) throws RecipeException {
+    private CustomRecipe getShapedRecipe(ConfigurationSection conf) throws RecipeException {
         // Create the recipe object
         ItemStack result = getItemStack(conf.getStringList("result"));
 
@@ -124,7 +118,7 @@ public class Recipes {
      * @return Returns a shapeless recipe.
      * @throws RecipeException Thrown if the recipe is improperly configured.
      */
-    private static CustomRecipe getShapelessRecipe(ConfigurationSection conf) throws RecipeException {
+    private CustomRecipe getShapelessRecipe(ConfigurationSection conf) throws RecipeException {
         // Create the recipe object
         ItemStack result = getItemStack(conf.getStringList("result"));
 
@@ -150,7 +144,7 @@ public class Recipes {
      * @throws RecipeException Thrown if the item is improperly configured.
      */
     @SuppressWarnings("deprecation")
-    private static Ingredient getIngredient(List<String> item) throws RecipeException {
+    private Ingredient getIngredient(List<String> item) throws RecipeException {
         if (item.isEmpty() || item.size() > 3) throw new RecipeException("Item must have 1, 2, or 3 parameters");
 
         // Get the item's material
@@ -196,7 +190,7 @@ public class Recipes {
      * @return Returns an ItemStack.
      * @throws RecipeException Throws an exception if the item is improperly configured.
      */
-    private static ItemStack getItemStack(List<String> item) throws RecipeException {
+    private ItemStack getItemStack(List<String> item) throws RecipeException {
         if (item.size() < 2) {
             throw new RecipeException("Item with amount have at least two elements");
         }
