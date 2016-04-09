@@ -4,10 +4,7 @@ import co.kepler.fastcraftplus.FastCraft;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.nio.file.Files;
 
 /**
@@ -45,8 +42,10 @@ public abstract class ConfigExternal extends Config {
      */
     public void load() {
         try {
-            // Create the configuration file if it doesn't already exist
-            if (!configFile.exists()) {
+            // Save the config header, or save the config if it doesn't exist
+            if (configFile.exists()) {
+                saveHeader();
+            } else {
                 File parent = configFile.getParentFile();
                 if (parent.mkdirs()) FastCraft.log("Created directory: " + parent);
                 Files.copy(FastCraft.getInstance().getResource(resPath), configFile.toPath());
@@ -59,23 +58,41 @@ public abstract class ConfigExternal extends Config {
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
         }
-
-        // Set header and defaults
-        config.setDefaults(internalConfig);
-        config.options().header(internalConfig.options().header());
-
-        // Save the config
-        save();
     }
 
     /**
-     * Save the config to its external file.
+     * Save the comments at the top of the default config to the config file.
      */
-    protected void save() {
-        try {
-            config.save(configFile);
-        } catch (IOException e) {
-            e.printStackTrace();
+    private void saveHeader() throws IOException {
+        StringBuilder newFileStr = new StringBuilder();
+        InputStream stream;
+        BufferedReader reader;
+        String curLine;
+
+        // Read in header from internal config
+        stream = FastCraft.getInstance().getResource(resPath);
+        reader = new BufferedReader(new InputStreamReader(stream));
+        while ((curLine = reader.readLine()) != null && curLine.startsWith("#")) {
+            newFileStr.append(curLine).append('\n');
         }
+        newFileStr.append('\n');
+        reader.close();
+
+        // Read in config values from external config
+        stream = new FileInputStream(configFile);
+        reader = new BufferedReader(new InputStreamReader(stream));
+        curLine = reader.readLine();
+        while (curLine != null && curLine.startsWith("#")) curLine = reader.readLine(); // Skip header comments
+        while (curLine != null && curLine.matches("\\s*")) curLine = reader.readLine(); // Skip empty lines
+        while (curLine != null) { // Append the rest of the file
+            newFileStr.append(curLine).append('\n');
+            curLine = reader.readLine();
+        }
+        reader.close();
+
+        // Write the file
+        FileWriter writer = new FileWriter(configFile);
+        writer.write(newFileStr.toString());
+        writer.close();
     }
 }
