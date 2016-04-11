@@ -1,5 +1,6 @@
 package co.kepler.fastcraftplus.config;
 
+import co.kepler.fastcraftplus.BukkitUtil;
 import co.kepler.fastcraftplus.FastCraft;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -56,7 +57,7 @@ public abstract class ConfigExternal extends Config {
                 }
 
                 // Load the config
-                config = YamlConfiguration.loadConfiguration(configFile);
+                config = BukkitUtil.loadConfiguration(new FileReader(configFile));
             } catch (IOException e) {
                 e.printStackTrace();
             }

@@ -1,8 +1,13 @@
 package co.kepler.fastcraftplus;
 
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.Reader;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -22,6 +27,41 @@ public class BukkitUtil {
         if (version != null) return version;
         version = Bukkit.getServer().getClass().getPackage().getName();
         return version = version.substring(version.lastIndexOf('.') + 1);
+    }
+
+    /**
+     * Load into an existing YamlConfiguration from a Reader.
+     *
+     * @param reader The reader to read the config from.
+     * @param config The config to read into.
+     */
+    public static void loadConfiguration(Reader reader, YamlConfiguration config) {
+        try {
+            BufferedReader bufferedReader = new BufferedReader(reader);
+            StringBuilder sb = new StringBuilder();
+
+            // Read the stream into a String
+            String curLine;
+            while ((curLine = bufferedReader.readLine()) != null) {
+                sb.append(curLine).append('\n');
+            }
+
+            config.loadFromString(sb.toString());
+        } catch (IOException | InvalidConfigurationException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Load a new YamlConfiguration from a Reader.
+     *
+     * @param reader The reader to read the config from.
+     * @return Returns a new YamlConfiguration.
+     */
+    public static YamlConfiguration loadConfiguration(Reader reader) {
+        YamlConfiguration result = new YamlConfiguration();
+        loadConfiguration(reader, result);
+        return result;
     }
 
     /**
