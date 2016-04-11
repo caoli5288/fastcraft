@@ -21,6 +21,7 @@ public abstract class Config {
      * @param resPath The path of the internal config.
      */
     protected void setInternalConfig(String resPath) {
+        this.resPath = resPath;
         if (resPath != null) {
             InputStream resStream = FastCraft.getInstance().getResource(resPath);
             Reader reader = new InputStreamReader(resStream);
