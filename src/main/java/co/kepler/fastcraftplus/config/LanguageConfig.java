@@ -6,7 +6,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Collections;
@@ -21,7 +20,6 @@ public class LanguageConfig extends ConfigExternal {
     private static final String NOT_FOUND = ChatColor.RED + "[Lang: <key>]";
     private static final String NOT_FOUND_KEY = "key";
 
-    private YamlConfiguration lang;
     private Map<Material, ItemNames> itemNames;
 
     /**
@@ -51,7 +49,7 @@ public class LanguageConfig extends ConfigExternal {
         super.load();
 
         // Load item names
-        ConfigurationSection itemSection = lang.getConfigurationSection("items");
+        ConfigurationSection itemSection = config.getConfigurationSection("items");
         itemNames = new HashMap<>();
         if (itemSection != null) {
             for (String item : itemSection.getKeys(false)) {
@@ -120,7 +118,7 @@ public class LanguageConfig extends ConfigExternal {
     }
 
     private String get(String key, String... varVal) {
-        String entry = lang.getString(key);
+        String entry = config.getString(key);
         if (entry == null) {
             return format(NOT_FOUND, NOT_FOUND_KEY, key);
         }
@@ -128,7 +126,7 @@ public class LanguageConfig extends ConfigExternal {
     }
 
     private List<String> getList(String key, String... varVal) {
-        List<String> entry = lang.getStringList(key);
+        List<String> entry = config.getStringList(key);
         if (entry == null) {
             return Collections.singletonList(format(NOT_FOUND, NOT_FOUND_KEY, key));
         }
@@ -139,13 +137,12 @@ public class LanguageConfig extends ConfigExternal {
         return entry;
     }
 
-
     public String gui_title() {
         return get("gui.title");
     }
 
     public String gui_itemName(ItemStack item) {
-        if (lang.getString("gui.item-name") == null) {
+        if (config.getString("gui.item-name") == null) {
             return item.getItemMeta().getDisplayName();
         }
         String name = RecipeUtil.getItemName(item);
@@ -239,7 +236,6 @@ public class LanguageConfig extends ConfigExternal {
         if (names == null) return null;
         return names.getName(item.getData().getData());
     }
-
 
     /**
      * Keeps track of an item's names.

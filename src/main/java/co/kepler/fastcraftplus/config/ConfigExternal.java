@@ -1,7 +1,6 @@
 package co.kepler.fastcraftplus.config;
 
 import co.kepler.fastcraftplus.FastCraft;
-import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.*;
@@ -31,7 +30,6 @@ public abstract class ConfigExternal extends Config {
      */
     protected void setExternalConfig(String filePath) {
         configFile = filePath == null ? null : new File(FastCraft.getInstance().getDataFolder(), filePath);
-        load();
     }
 
     protected void setConfigs(String path) {
@@ -45,24 +43,27 @@ public abstract class ConfigExternal extends Config {
     public void load() {
         if (configFile == null) {
             config = new YamlConfiguration();
-            return;
-        }
-        try {
-            // Save the config header, or save the config if it doesn't exist
-            if (configFile.exists()) {
-                saveHeader();
-            } else {
-                File parent = configFile.getParentFile();
-                if (parent.mkdirs()) FastCraft.log("Created directory: " + parent);
-                Files.copy(FastCraft.getInstance().getResource(resPath), configFile.toPath());
-                FastCraft.log("Created config: " + configFile.getName());
-            }
+        } else {
+            try {
+                // Save the config header, or save the config if it doesn't exist
+                if (configFile.exists()) {
+                    saveHeader();
+                } else {
+                    File parent = configFile.getParentFile();
+                    if (parent.mkdirs()) FastCraft.log("Created directory: " + parent);
+                    Files.copy(FastCraft.getInstance().getResource(resPath), configFile.toPath());
+                    FastCraft.log("Created config: " + configFile.getName());
+                }
 
-            // Load the config
-            config.load(configFile);
-        } catch (IOException | InvalidConfigurationException e) {
-            e.printStackTrace();
+                // Load the config
+                config = YamlConfiguration.loadConfiguration(configFile);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
+
+        // Set default values
+        config.setDefaults(internalConfig);
     }
 
     /**

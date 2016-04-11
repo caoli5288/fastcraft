@@ -3,6 +3,7 @@ package co.kepler.fastcraftplus;
 import co.kepler.fastcraftplus.api.gui.GUI;
 import co.kepler.fastcraftplus.commands.CommandManager;
 import co.kepler.fastcraftplus.compat.RecipeCompatManager;
+import co.kepler.fastcraftplus.config.ConfigExternal;
 import co.kepler.fastcraftplus.config.LanguageConfig;
 import co.kepler.fastcraftplus.config.PluginConfig;
 import co.kepler.fastcraftplus.config.RecipesConfig;
@@ -12,9 +13,13 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class FastCraft extends JavaPlugin {
     private static FastCraft instance;
 
+    private List<ConfigExternal> externalConfigs;
     private PluginConfig config;
     private LanguageConfig lang;
     private RecipesConfig recipes;
@@ -25,10 +30,12 @@ public class FastCraft extends JavaPlugin {
     public void onEnable() {
         instance = this;
 
-        // Create configurations
-        config = new PluginConfig();
-        lang = new LanguageConfig();
-        recipes = new RecipesConfig();
+        // Create and load configurations
+        externalConfigs = new ArrayList<>();
+        externalConfigs.add(config = new PluginConfig());
+        externalConfigs.add(lang = new LanguageConfig());
+        externalConfigs.add(recipes = new RecipesConfig());
+        loadConfigs();
 
         // Create recipe compatibility manager
         recipeCompatManager = new RecipeCompatManager();
@@ -45,6 +52,15 @@ public class FastCraft extends JavaPlugin {
     @Override
     public void onDisable() {
         GUI.disposeAll();
+    }
+
+    /**
+     * Load all FastCraft+ configs.
+     */
+    public static void loadConfigs() {
+        for (ConfigExternal conf : getInstance().externalConfigs) {
+            conf.load();
+        }
     }
 
     /**
