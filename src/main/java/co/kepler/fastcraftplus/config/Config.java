@@ -1,9 +1,8 @@
 package co.kepler.fastcraftplus.config;
 
-import co.kepler.fastcraftplus.FastCraft;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import java.io.InputStream;
+import java.io.File;
 
 /**
  * To be used by configuration classes that access an internal config, only.
@@ -14,8 +13,8 @@ public abstract class Config {
 
     protected void setInternalConfig(String resPath) {
         if (resPath != null) {
-            InputStream resStream = FastCraft.getInstance().getResource(resPath);
-            internalConfig = YamlConfiguration.loadConfiguration(resStream);
+            File resFile = new File(getClass().getResource(resPath).getFile());
+            internalConfig = YamlConfiguration.loadConfiguration(resFile);
         } else {
             internalConfig = new YamlConfiguration();
         }

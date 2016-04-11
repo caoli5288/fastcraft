@@ -59,8 +59,7 @@ public abstract class ConfigExternal extends Config {
             }
 
             // Load the config
-            InputStream stream = new FileInputStream(configFile);
-            config.load(stream);
+            config.load(configFile);
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
         }
