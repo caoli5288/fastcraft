@@ -4,8 +4,8 @@ Remove this line, fill out everything in {braces}, and remove any irrelevant sec
 {Summarize the issue here}
 
 # Server/FastCraft+ Versions
-FastCraft+ v{#.#}
 {Bukkit/Spigot/etc.} {1.#.#}
+FastCraft+ v{#.#}
 
 # Relevant plugins
 [Plugin name/version]({URL to plugin})
