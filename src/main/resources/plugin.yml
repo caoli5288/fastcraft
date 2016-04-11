@@ -21,6 +21,11 @@ commands:
     usage: /<command>
     aliases: [fcadmin, fca]
 
+  craft:
+    description: Open a crafting inventory
+    usage: /<command>
+    aliases: [cr, workbench, wb]
+
 permissions:
   fastcraft.*:
     description: All FastCraft+ permissions
