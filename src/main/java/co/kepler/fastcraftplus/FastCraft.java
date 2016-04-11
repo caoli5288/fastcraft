@@ -27,7 +27,7 @@ public class FastCraft extends JavaPlugin {
 
         // Create configurations
         config = new PluginConfig();
-        lang = new LanguageConfig(config.getLanguage());
+        lang = new LanguageConfig();
         recipes = new RecipesConfig();
 
         // Create recipe compatibility manager

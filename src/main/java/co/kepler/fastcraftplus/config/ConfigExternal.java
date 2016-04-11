@@ -11,36 +11,42 @@ import java.nio.file.Files;
  * To be used by configuration classes with an internal and external config.
  */
 public abstract class ConfigExternal extends Config {
-    protected final YamlConfiguration config;
-    protected final File configFile;
+    protected YamlConfiguration config;
+    protected File configFile = null;
+    private final boolean copyHeader;
 
     /**
      * Create a config that is stored in the plugin folder.
      *
-     * @param resPath  The path of the config resource.
-     * @param filePath The path of the resource file, relative to the plugin folder.
+     * @param copyHeader Whether the comment header should be copied from the internal file.
      */
-    public ConfigExternal(String resPath, String filePath) {
-        super(resPath);
-        config = new YamlConfiguration();
-        configFile = new File(FastCraft.getInstance().getDataFolder(), filePath);
-        load();
+    public ConfigExternal(boolean copyHeader) {
+        this.copyHeader = copyHeader;
     }
 
     /**
-     * Create a config that is stored in the plugin folder.
+     * Set the external config file.
      *
-     * @param resPath The path of the config resource, and the resource
-     *                file, relative to the plugin folder.
+     * @param filePath The path of the file within the FastCraft+ plugin directory.
      */
-    public ConfigExternal(String resPath) {
-        this(resPath, resPath);
+    protected void setExternalConfig(String filePath) {
+        configFile = filePath == null ? null : new File(FastCraft.getInstance().getDataFolder(), filePath);
+        load();
+    }
+
+    protected void setConfigs(String path) {
+        setInternalConfig(path);
+        setExternalConfig(path);
     }
 
     /**
      * Load the config, creating the external file if necessary.
      */
     public void load() {
+        if (configFile == null) {
+            config = new YamlConfiguration();
+            return;
+        }
         try {
             // Save the config header, or save the config if it doesn't exist
             if (configFile.exists()) {
@@ -64,6 +70,8 @@ public abstract class ConfigExternal extends Config {
      * Save the comments at the top of the default config to the config file.
      */
     private void saveHeader() throws IOException {
+        if (!copyHeader || resPath == null || configFile == null) return;
+
         StringBuilder newFileStr = new StringBuilder();
         InputStream stream;
         BufferedReader reader;

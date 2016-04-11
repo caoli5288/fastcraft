@@ -9,10 +9,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -21,7 +17,7 @@ import java.util.Map;
 /**
  * Supplies access to the plugin's language files.
  */
-public class LanguageConfig { // TODO Extend Config
+public class LanguageConfig extends ConfigExternal {
     private static final String NOT_FOUND = ChatColor.RED + "[Lang: <key>]";
     private static final String NOT_FOUND_KEY = "key";
 
@@ -30,33 +26,29 @@ public class LanguageConfig { // TODO Extend Config
 
     /**
      * Create an instance of Language
-     *
-     * @param language The language to use.
      */
-    @SuppressWarnings("deprecation")
-    public LanguageConfig(String language) {
-        FastCraft fastCraft = FastCraft.getInstance();
+    public LanguageConfig() {
+        super(false);
+    }
 
-        String resPath = "lang/" + language + ".yml";
-        InputStream resStream = fastCraft.getResource(resPath);
-        if (resStream != null) {
-            // Load from internal lang file
-            lang = YamlConfiguration.loadConfiguration(resStream);
+    @Override
+    @SuppressWarnings("deprecation")
+    public void load() {
+        String language = FastCraft.config().getLanguage();
+        resPath = "lang/" + language + ".yml";
+
+        // Set internal and external configs
+        if (FastCraft.getInstance().getResource(resPath) == null) {
+            // If a resource for this language doesn't exist
+            setInternalConfig("lang/EN.yml");
+            setExternalConfig(resPath);
         } else {
-            try {
-                // Load from custom lang file
-                File langFile = new File(fastCraft.getDataFolder(), resPath);
-                if (!langFile.exists()) {
-                    langFile.getParentFile().mkdirs();
-                    FastCraft.log("Created language file: '" + langFile.getName() + "'");
-                    Files.copy(fastCraft.getResource("lang/EN.yml"), langFile.toPath());
-                }
-                lang = YamlConfiguration.loadConfiguration(langFile);
-            } catch (IOException e) {
-                e.printStackTrace();
-                lang = new YamlConfiguration();
-            }
+            setInternalConfig(resPath);
+            setExternalConfig(null);
         }
+
+        // Load configuration
+        super.load();
 
         // Load item names
         ConfigurationSection itemSection = lang.getConfigurationSection("items");
@@ -104,7 +96,7 @@ public class LanguageConfig { // TODO Extend Config
     /**
      * Useful method to convert an integer to a String.
      *
-     * @param integer The ineger to convert to a String.
+     * @param integer The integer to convert to a String.
      * @return Returns the integer as a String.
      */
     private String s(int integer) {

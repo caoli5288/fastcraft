@@ -9,17 +9,16 @@ import java.io.InputStream;
  * To be used by configuration classes that access an internal config, only.
  */
 public abstract class Config {
-    protected final YamlConfiguration internalConfig;
-    protected final String resPath;
+    protected YamlConfiguration internalConfig = new YamlConfiguration();
+    protected String resPath = null;
 
-    /**
-     * Create a new Config from a resource.
-     *
-     * @param resPath The path of the config resource.
-     */
-    public Config(String resPath) {
-        this.resPath = resPath;
-        InputStream resStream = FastCraft.getInstance().getResource(resPath);
-        internalConfig = YamlConfiguration.loadConfiguration(resStream);
+    protected void setInternalConfig(String resPath) {
+        if (resPath != null) {
+            InputStream resStream = FastCraft.getInstance().getResource(resPath);
+            internalConfig = YamlConfiguration.loadConfiguration(resStream);
+        } else {
+            internalConfig = new YamlConfiguration();
+        }
     }
+
 }

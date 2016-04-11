@@ -6,7 +6,8 @@ package co.kepler.fastcraftplus.config;
 public class PluginConfig extends ConfigExternal {
 
     public PluginConfig() {
-        super("config.yml");
+        super(true);
+        setConfigs("config.yml");
     }
 
     public String getLanguage() {
