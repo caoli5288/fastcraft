@@ -10,38 +10,16 @@ softdepend:
 - ItemMakerPro
 - ProRecipes
 
-
 commands:
   fastcraft:
     description: FastCraft+ commands
-    usage: /<command> <toggle|craft>
+    usage: /<command>
     aliases: [fc]
-
-  fastcraft toggle:
-    description: Toggle whether crafting with FastCraft+ is enabled
-    usage: /<command> toggle <on|off|toggle>
-
-  fastcraft toggle on:
-    description: Enable crafting with FastCraft+
-    usage: /<command> toggle on <player>
-    permission: fastcraft.toggle
-
-  fastcraft toggle off:
-    description: Disable crafting with FastCraft+
-    usage: /<command> toggle off <player>
-    permission: fastcraft.toggle
-
-  fastcraft toggle toggle:
-    description: Toggle crafting with FastCraft+
-    usage: /<command> toggle toggle <player>
-    permission: fastcraft.toggle
 
   fastcraftadmin:
     description: FastCraft+ admin commands
     usage: /<command>
-    permission: fastcraft.admin
     aliases: [fcadmin, fca]
-
 
 permissions:
   fastcraft.*:
@@ -70,7 +48,7 @@ permissions:
     description: Permission to use /fastcraft craft
     default: false
 
-  fastcraft.admin:
+  fastcraft.admin.*:
     description: All FastCraft+ admin permissions
     default: op
     children:
