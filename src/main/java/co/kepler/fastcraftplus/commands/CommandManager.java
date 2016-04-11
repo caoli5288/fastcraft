@@ -54,6 +54,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
         if (command == null) return Collections.emptyList();
 
         // Tab complete the command
-        return command.onTabComplete(sender, args);
+        List<String> result = command.onTabComplete(sender, args);
+        return result == null ? Collections.<String>emptyList() : result;
     }
 }

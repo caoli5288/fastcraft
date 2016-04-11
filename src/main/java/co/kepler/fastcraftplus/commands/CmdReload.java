@@ -1,9 +1,22 @@
 package co.kepler.fastcraftplus.commands;
 
+import org.bukkit.command.CommandSender;
 import sun.java2d.pipe.SpanShapeRenderer;
 
+import java.util.List;
+
 /**
- * Created by Ben on 4/10/2016.
+ * Handles the reload command.
  */
 public class CmdReload extends SimpleCommand {
+
+    @Override
+    public void onCommand(CommandSender sender, String[] args) {
+
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, String[] args) {
+        return null;
+    }
 }
