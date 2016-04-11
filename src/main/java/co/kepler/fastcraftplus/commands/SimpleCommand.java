@@ -15,7 +15,7 @@ public abstract class SimpleCommand {
      * Called when a command is run.
      *
      * @param sender The command sender.
-     * @param args The command arguments.
+     * @param args   The command arguments.
      */
     public abstract void onCommand(CommandSender sender, String[] args);
 
@@ -23,7 +23,7 @@ public abstract class SimpleCommand {
      * Get tab complete options for a command argument.
      *
      * @param sender The command sender.
-     * @param args The command arguments.
+     * @param args   The command arguments.
      * @return The tab complete options.
      */
     public abstract List<String> onTabComplete(CommandSender sender, String[] args);
@@ -43,7 +43,7 @@ public abstract class SimpleCommand {
     /**
      * Find all the matches to a tab completed command argument.
      *
-     * @param arg The argument to find matches for.
+     * @param arg     The argument to find matches for.
      * @param toMatch The possible matches.
      * @return Returns a list of matches.
      */

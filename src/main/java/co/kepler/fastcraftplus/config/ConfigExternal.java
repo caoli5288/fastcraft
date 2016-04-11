@@ -30,8 +30,8 @@ public abstract class ConfigExternal extends Config {
     /**
      * Create a config that is stored in the plugin folder.
      *
-     * @param resPath  The path of the config resource, and the resource
-     *                 file, relative to the plugin folder.
+     * @param resPath The path of the config resource, and the resource
+     *                file, relative to the plugin folder.
      */
     public ConfigExternal(String resPath) {
         this(resPath, resPath);

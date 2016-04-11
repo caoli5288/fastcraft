@@ -24,9 +24,7 @@ import java.util.Map;
 public class LanguageConfig { // TODO Extend Config
     private static final String NOT_FOUND = ChatColor.RED + "[Lang: <key>]";
     private static final String NOT_FOUND_KEY = "key";
-    public final GUI gui = new GUI();
-    public final Commands commands = new Commands();
-    public final Items items = new Items();
+
     private YamlConfiguration lang;
     private Map<Material, ItemNames> itemNames;
 
@@ -149,151 +147,111 @@ public class LanguageConfig { // TODO Extend Config
         return entry;
     }
 
-    public class GUI {
-        public final Ingredients ingredients = new Ingredients();
-        public final Results results = new Results();
-        public final Toolbar toolbar = new Toolbar();
 
-        public String title() {
-            return get("gui.title");
-        }
-
-        public String itemName(ItemStack item) {
-            if (lang.getString("gui.item-name") == null) {
-                return item.getItemMeta().getDisplayName();
-            }
-            String name = RecipeUtil.getItemName(item);
-            return get("gui.item-name", "name", name);
-        }
-
-        public class Ingredients {
-            public String label() {
-                return get("gui.ingredients.label");
-            }
-
-            public String item(int amount, String item) {
-                return get("gui.ingredients.item", "amount", s(amount), "item", item);
-            }
-        }
-
-        public class Results {
-            public String label() {
-                return get("gui.results.label");
-            }
-
-            public String item(ItemStack is) {
-                String itemName = RecipeUtil.getItemName(is);
-                return get("gui.results.item", "amount", s(is.getAmount()), "item", itemName);
-            }
-        }
-
-        public class Toolbar {
-            private static final String tb = "gui.toolbar.";
-
-            public final PagePrev pagePrev = new PagePrev();
-            public final PageNext pageNext = new PageNext();
-            public final CraftItems craftItems = new CraftItems();
-            public final CraftArmor craftArmor = new CraftArmor();
-            public final CraftFireworks craftFireworks = new CraftFireworks();
-            public final Refresh refresh = new Refresh();
-            public final Multiplier multiplier = new Multiplier();
-            public final Workbench workbench = new Workbench();
-
-            public class PagePrev {
-                public String title() {
-                    return get(tb + "page-prev.title");
-                }
-
-                public List<String> description(int prev, int total, int cur) {
-                    return getList(tb + "page-prev.description", "prev", s(prev), "total", s(total), "cur", s(cur));
-                }
-            }
-
-            public class PageNext {
-                public String title() {
-                    return get(tb + "page-next.title");
-                }
-
-                public List<String> description(int prev, int total, int cur) {
-                    return getList(tb + "page-next.description", "next", s(prev), "total", s(total), "cur", s(cur));
-                }
-            }
-
-            public class CraftItems {
-                public String title() {
-                    return get(tb + "craft-items.title");
-                }
-
-                public List<String> description() {
-                    return getList(tb + "craft-items.description");
-                }
-            }
-
-            public class CraftArmor {
-                public String title() {
-                    return get(tb + "craft-armor.title");
-                }
-
-                public List<String> description() {
-                    return getList(tb + "craft-armor.description");
-                }
-            }
-
-            public class CraftFireworks {
-                public String title() {
-                    return get(tb + "craft-fireworks.title");
-                }
-
-                public List<String> description() {
-                    return getList(tb + "craft-fireworks.description");
-                }
-            }
-
-            public class Refresh {
-                public String title() {
-                    return get(tb + "refresh.title");
-                }
-
-                public List<String> description() {
-                    return getList(tb + "refresh.description");
-                }
-            }
-
-            public class Multiplier {
-                public String title(int mult) {
-                    return get(tb + "multiplier.title", "mult", s(mult));
-                }
-
-                public List<String> description(int mult) {
-                    return getList(tb + "refresh.description", "mult", s(mult));
-                }
-            }
-
-            public class Workbench {
-                public String title() {
-                    return get(tb + "workbench.title");
-                }
-
-                public List<String> description() {
-                    return getList(tb + "workbench.description");
-                }
-            }
-        }
+    public String gui_title() {
+        return get("gui.title");
     }
 
-    public class Commands {
-
-    }
-
-    public class Items {
-        @SuppressWarnings("deprecation")
-        public String name(ItemStack item) {
-            ItemNames names = itemNames.get(item.getType());
-            if (names == null) return null;
-            return names.getName(item.getData().getData());
+    public String gui_itemName(ItemStack item) {
+        if (lang.getString("gui.item-name") == null) {
+            return item.getItemMeta().getDisplayName();
         }
+        String name = RecipeUtil.getItemName(item);
+        return get("gui.item-name", "name", name);
     }
 
+    public String gui_ingredients_item(int amount, String item) {
+        return get("gui.ingredients.item", "amount", s(amount), "item", item);
+    }
+
+    public String gui_ingredients_label() {
+        return get("gui.ingredients.label");
+    }
+
+    public String gui_results_label() {
+        return get("gui.results.label");
+    }
+
+    public String gui_results_item(ItemStack is) {
+        String itemName = RecipeUtil.getItemName(is);
+        return get("gui.results.item", "amount", s(is.getAmount()), "item", itemName);
+    }
+
+    public String gui_toolbar_pagePrev_title() {
+        return get("gui.toolbar.page-prev.title");
+    }
+
+    public List<String> gui_toolbar_pagePrev_description(int prev, int total, int cur) {
+        return getList("gui.toolbar.page-prev.description", "prev", s(prev), "total", s(total), "cur", s(cur));
+    }
+
+    public String gui_toolbar_pageNext_title() {
+        return get("gui.toolbar.page-next.title");
+    }
+
+    public List<String> gui_toolbar_pageNext_description(int prev, int total, int cur) {
+        return getList("gui.toolbar.page-next.description", "next", s(prev), "total", s(total), "cur", s(cur));
+    }
+
+    public String gui_toolbar_craftItems_title() {
+        return get("gui.toolbar.craft-items.title");
+    }
+
+    public List<String> gui_toolbar_craftItems_description() {
+        return getList("gui.toolbar.craft-items.description");
+    }
+
+    public String gui_toolbar_craftArmor_title() {
+        return get("gui.toolbar.craft-armor.title");
+    }
+
+    public List<String> gui_toolbar_craftArmor_description() {
+        return getList("gui.toolbar.craft-armor.description");
+    }
+
+    public String gui_toolbar_craftFireworks_title() {
+        return get("gui.toolbar.craft-fireworks.title");
+    }
+
+    public List<String> gui_toolbar_craftFireworks_description() {
+        return getList("gui.toolbar.craft-fireworks.description");
+    }
+
+    public String gui_toolbar_refresh_title() {
+        return get("gui.toolbar.refresh.title");
+    }
+
+    public List<String> gui_toolbar_refresh_description() {
+        return getList("gui.toolbar.refresh.description");
+    }
+
+    public String gui_toolbar_multiplier_title(int mult) {
+        return get("gui.toolbar.multiplier.title", "mult", s(mult));
+    }
+
+    public List<String> gui_toolbar_multiplier_description(int mult) {
+        return getList("gui.toolbar.multiplier.description", "mult", s(mult));
+    }
+
+    public String gui_toolbar_workbench_title() {
+        return get("gui.toolbar.workbench.title");
+    }
+
+    public List<String> gui_toolbar_workbench_description() {
+        return getList("gui.toolbar.workbench.description");
+    }
+
+    @SuppressWarnings("deprecation")
+    public String items_name(ItemStack item) {
+        ItemNames names = itemNames.get(item.getType());
+        if (names == null) return null;
+        return names.getName(item.getData().getData());
+    }
+
+
+    /**
+     * Keeps track of an item's names.
+     */
     private class ItemNames {
         private final String defName;
         private final Map<Integer, String> names;

@@ -21,9 +21,9 @@ public class CommandManager implements CommandExecutor, TabCompleter {
      * Create a new instance of the command manager.
      */
     public CommandManager() {
-        commandMap.put("fastcraft",      new CmdFastCraft());
+        commandMap.put("fastcraft", new CmdFastCraft());
         commandMap.put("fastcraftadmin", new CmdFastCraftAdmin());
-        commandMap.put("craft",          new CmdCraft());
+        commandMap.put("craft", new CmdCraft());
     }
 
     /**
@@ -43,7 +43,8 @@ public class CommandManager implements CommandExecutor, TabCompleter {
         if (command == null) return false;
 
         // Execute the command, and return true
-        command.onCommand(sender, args);command.popFirst(new Integer[0]);
+        command.onCommand(sender, args);
+        command.popFirst(new Integer[0]);
         return true;
     }
 

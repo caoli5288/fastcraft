@@ -53,7 +53,7 @@ public class GUIFastCraft extends GUI {
      */
     @SuppressWarnings("all")
     public GUIFastCraft(final Player player, Location location) {
-        super(FastCraft.lang().gui.title(), 6);
+        super(FastCraft.lang().gui_title(), 6);
 
         this.player = player;
         this.location = location;
@@ -63,8 +63,8 @@ public class GUIFastCraft extends GUI {
 
         // Create Previous Page button
         btnPagePrev = new GUIButton(new GUIItemBuilder(Material.ARROW)
-                .setDisplayName(FastCraft.lang().gui.toolbar.pagePrev.title())
-                .setLore(FastCraft.lang().gui.toolbar.pagePrev.description(
+                .setDisplayName(FastCraft.lang().gui_toolbar_pagePrev_title())
+                .setLore(FastCraft.lang().gui_toolbar_pagePrev_description(
                         craftLayout.getCurRecipesLayout().getPage() - 1,
                         craftLayout.getCurRecipesLayout().getPageCount(),
                         craftLayout.getCurRecipesLayout().getPage()
@@ -77,8 +77,8 @@ public class GUIFastCraft extends GUI {
 
         // Create Next Page button
         btnPageNext = new GUIButton(new GUIItemBuilder(Material.ARROW)
-                .setDisplayName(FastCraft.lang().gui.toolbar.pageNext.title())
-                .setLore(FastCraft.lang().gui.toolbar.pageNext.description(
+                .setDisplayName(FastCraft.lang().gui_toolbar_pageNext_title())
+                .setLore(FastCraft.lang().gui_toolbar_pageNext_description(
                         craftLayout.getCurRecipesLayout().getPage() + 1,
                         craftLayout.getCurRecipesLayout().getPageCount(),
                         craftLayout.getCurRecipesLayout().getPage()
@@ -91,8 +91,8 @@ public class GUIFastCraft extends GUI {
 
         // Create Refresh button
         btnRefresh = new GUIButton(new GUIItemBuilder(Material.NETHER_STAR)
-                .setDisplayName(FastCraft.lang().gui.toolbar.refresh.title())
-                .setLore(FastCraft.lang().gui.toolbar.refresh.description())
+                .setDisplayName(FastCraft.lang().gui_toolbar_refresh_title())
+                .setLore(FastCraft.lang().gui_toolbar_refresh_description())
                 .setHideInfo(true).build());
         btnRefresh.setClickAction(new GUIButton.ClickAction() {
             public boolean onClick(GUIButton.Click info) {
@@ -102,8 +102,8 @@ public class GUIFastCraft extends GUI {
 
         // Create Crafting Multiplier button
         btnCraftingMultiplier = new GUIButton(new GUIItemBuilder(Material.ANVIL)
-                .setDisplayName(FastCraft.lang().gui.toolbar.multiplier.title(1)) // TODO
-                .setLore(FastCraft.lang().gui.toolbar.multiplier.description(1)) // TODO
+                .setDisplayName(FastCraft.lang().gui_toolbar_multiplier_title(1)) // TODO
+                .setLore(FastCraft.lang().gui_toolbar_multiplier_description(1)) // TODO
                 .setLore(NOT_YET_IMPLEMENTED).build());
         btnCraftingMultiplier.setClickAction(new GUIButton.ClickAction() {
             public boolean onClick(GUIButton.Click info) {
@@ -113,8 +113,8 @@ public class GUIFastCraft extends GUI {
 
         // Create Workbench button
         btnWorkbench = new GUIButton(new GUIItemBuilder(Material.WORKBENCH)
-                .setDisplayName(FastCraft.lang().gui.toolbar.workbench.title())
-                .setLore(FastCraft.lang().gui.toolbar.workbench.description()).build());
+                .setDisplayName(FastCraft.lang().gui_toolbar_workbench_title())
+                .setLore(FastCraft.lang().gui_toolbar_workbench_description()).build());
         btnWorkbench.setClickAction(new GUIButton.ClickAction() {
             public boolean onClick(GUIButton.Click info) {
                 return btnWorkbenchClick(info);
@@ -123,8 +123,8 @@ public class GUIFastCraft extends GUI {
 
         // Create Crafting button
         btnTabCrafting = new GUIButtonGlowing(new GUIItemBuilder(Material.STICK)
-                .setDisplayName(FastCraft.lang().gui.toolbar.craftItems.title())
-                .setLore(FastCraft.lang().gui.toolbar.craftItems.description())
+                .setDisplayName(FastCraft.lang().gui_toolbar_craftItems_title())
+                .setLore(FastCraft.lang().gui_toolbar_craftItems_description())
                 .setHideInfo(true).build());
         btnTabCrafting.setClickAction(new GUIButton.ClickAction() {
             public boolean onClick(GUIButton.Click info) {
@@ -135,8 +135,8 @@ public class GUIFastCraft extends GUI {
 
         // Create armor button
         ItemStack coloredChestplate = new GUIItemBuilder(Material.LEATHER_CHESTPLATE)
-                .setDisplayName(FastCraft.lang().gui.toolbar.craftArmor.title())
-                .setLore(FastCraft.lang().gui.toolbar.craftArmor.description())
+                .setDisplayName(FastCraft.lang().gui_toolbar_craftArmor_title())
+                .setLore(FastCraft.lang().gui_toolbar_craftArmor_description())
                 .setLore(NOT_YET_IMPLEMENTED)
                 .setHideInfo(true).build();
         LeatherArmorMeta chestplateMeta = (LeatherArmorMeta) coloredChestplate.getItemMeta();
@@ -151,8 +151,8 @@ public class GUIFastCraft extends GUI {
 
         // Create Fireworks button
         btnTabFireworks = new GUIButtonGlowing(new GUIItemBuilder(Material.FIREWORK)
-                .setDisplayName(FastCraft.lang().gui.toolbar.craftFireworks.title())
-                .setLore(FastCraft.lang().gui.toolbar.craftFireworks.description())
+                .setDisplayName(FastCraft.lang().gui_toolbar_craftFireworks_title())
+                .setLore(FastCraft.lang().gui_toolbar_craftFireworks_description())
                 .setLore(NOT_YET_IMPLEMENTED)
                 .setHideInfo(true).build());
         btnTabFireworks.setClickAction(new GUIButton.ClickAction() {

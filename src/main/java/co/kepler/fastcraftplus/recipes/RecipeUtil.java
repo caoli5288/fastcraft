@@ -122,7 +122,7 @@ public class RecipeUtil {
         }
 
         // Try to get the item's name from lang
-        String name = FastCraft.lang().items.name(item);
+        String name = FastCraft.lang().items_name(item);
         if (name != null) return name;
 
         // Try to get the name from NMS

@@ -9,11 +9,9 @@ import co.kepler.fastcraftplus.recipes.custom.CustomShapelessRecipe;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 
-import java.io.File;
 import java.util.*;
 
 /**

@@ -1,7 +1,6 @@
 package co.kepler.fastcraftplus.compat;
 
 import co.kepler.fastcraftplus.FastCraft;
-import co.kepler.fastcraftplus.config.RecipesConfig;
 import co.kepler.fastcraftplus.recipes.FastRecipe;
 import co.kepler.fastcraftplus.recipes.RecipeUtil;
 import co.kepler.fastcraftplus.recipes.custom.CustomRecipe;

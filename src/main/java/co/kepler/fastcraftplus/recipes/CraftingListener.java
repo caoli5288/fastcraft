@@ -1,7 +1,6 @@
 package co.kepler.fastcraftplus.recipes;
 
 import co.kepler.fastcraftplus.FastCraft;
-import co.kepler.fastcraftplus.config.RecipesConfig;
 import co.kepler.fastcraftplus.recipes.custom.CustomRecipe;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

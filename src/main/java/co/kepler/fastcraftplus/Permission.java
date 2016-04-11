@@ -11,6 +11,7 @@ public enum Permission {
     ADMIN_RELOAD("fastcraft.admin.reload");
 
     public final String permission;
+
     Permission(String permission) {
         this.permission = permission;
     }

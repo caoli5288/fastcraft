@@ -51,20 +51,20 @@ public class GUIButtonRecipe extends GUIButton {
         Map<Ingredient, Integer> ingredients = recipe.getIngredients();
 
         // Set the display name of the item
-        meta.setDisplayName(lang.gui.itemName(item));
+        meta.setDisplayName(lang.gui_itemName(item));
 
         // Add ingredients and amounts to the lore
-        lore.addFirst(lang.gui.ingredients.label());
+        lore.addFirst(lang.gui_ingredients_label());
         for (Ingredient i : ingredients.keySet()) {
-            lore.addLast(lang.gui.ingredients.item(ingredients.get(i), i.getName()));
+            lore.addLast(lang.gui_ingredients_item(ingredients.get(i), i.getName()));
         }
 
         // Add results and amounts to the lore if more than one result
         if (results.size() > 1) {
             lore.addLast("");
-            lore.add(lang.gui.results.label());
+            lore.add(lang.gui_results_label());
             for (ItemStack is : results) {
-                lore.addLast(lang.gui.results.item(is));
+                lore.addLast(lang.gui_results_item(is));
             }
         }
 
