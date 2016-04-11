@@ -3,7 +3,7 @@ Remove this line, fill out everything in {braces}, and remove any irrelevant sec
 # Description
 {Summarize the issue here}
 
-# Server/FastCraft Versions
+# Server/FastCraft+ Versions
 FastCraft+ v{#.#}
 {Bukkit/Spigot/etc.} {1.#.#}
 
