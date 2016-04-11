@@ -1,6 +1,7 @@
 package co.kepler.fastcraftplus;
 
 import co.kepler.fastcraftplus.api.gui.GUI;
+import co.kepler.fastcraftplus.commands.CommandManager;
 import co.kepler.fastcraftplus.compat.RecipeCompatManager;
 import co.kepler.fastcraftplus.config.PluginConfig;
 import co.kepler.fastcraftplus.config.LanguageConfig;
@@ -24,15 +25,21 @@ public class FastCraft extends JavaPlugin {
     public void onEnable() {
         instance = this;
 
+        // Create configurations
         config = new PluginConfig();
         lang = new LanguageConfig(config.getLanguage());
         recipes = new RecipesConfig();
 
+        // Create recipe compatibility manager
         recipeCompatManager = new RecipeCompatManager();
 
+        // Register events
         PluginManager pluginManager = Bukkit.getPluginManager();
         pluginManager.registerEvents(new CraftingListener(), this);
         pluginManager.registerEvents(new GUIFastCraft.GUIListener(), this);
+
+        // Register commands
+        new CommandManager().registerCommands();
     }
 
     @Override

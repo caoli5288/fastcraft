@@ -1,7 +1,6 @@
 package co.kepler.fastcraftplus.commands;
 
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.TabCompleter;
+import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,7 +9,24 @@ import java.util.List;
 /**
  * A class to be extended by other command executors.
  */
-public abstract class Command implements CommandExecutor, TabCompleter {
+public abstract class SimpleCommand {
+
+    /**
+     * Called when a command is run.
+     *
+     * @param sender The command sender.
+     * @param args The command arguments.
+     */
+    public abstract void onCommand(CommandSender sender, String[] args);
+
+    /**
+     * Get tab complete options for a command argument.
+     *
+     * @param sender The command sender.
+     * @param args The command arguments.
+     * @return The tab complete options.
+     */
+    public abstract List<String> onTabComplete(CommandSender sender, String[] args);
 
     /**
      * Copy an array, removing the first element.
