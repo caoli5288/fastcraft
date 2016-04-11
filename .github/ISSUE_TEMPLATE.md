@@ -1,9 +1,11 @@
 # Description
 (Summarize the issue here)
 
-# Versions
+# Server/FastCraft Versions
 FastCraft v#.#
-Spigot 1.#.#
+(Bukkit/Spigot/etc.) 1.#.#
+
+# Relevant plugins
 [Plugin name/version](URL to plugin)
 
 # Stack Trace
