@@ -1,15 +1,17 @@
+Remove this line, fill out everything in {braces}, and remove any irrelevant sections.
+
 # Description
-(Summarize the issue here)
+{Summarize the issue here}
 
 # Server/FastCraft Versions
-FastCraft v#.#
-(Bukkit/Spigot/etc.) 1.#.#
+FastCraft v{#.#}
+{Bukkit/Spigot/etc.} {1.#.#}
 
 # Relevant plugins
-[Plugin name/version](URL to plugin)
+[Plugin name/version]({URL to plugin})
 
 # Stack Trace
 <details>
     <summary>Show Stack Trace</summary>
-    <code>(Copy stack trace from console here)</code>
+    <code>{Copy stack trace from console here}</code>
 </details>
