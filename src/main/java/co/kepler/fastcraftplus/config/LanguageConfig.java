@@ -230,6 +230,54 @@ public class LanguageConfig extends ConfigExternal {
         return getList("gui.toolbar.workbench.description");
     }
 
+    public String commands_noPerm(String permission) {
+        return get("commands.no-perm", "perm", permission);
+    }
+
+    public String commands_playerOnly() {
+        return get("commands.player-only");
+    }
+
+    public String commands_fastcraft_usage() {
+        return get("commands.fastcraft.usage");
+    }
+
+    public String commands_fastcraft_craft_usage() {
+        return get("commands.fastcraft craft.usage");
+    }
+
+    public String commands_fastcraft_toggle_usage() {
+        return get("commands.fastcraft toggle.usage");
+    }
+
+    public String commands_fastcraft_toggle_output_on() {
+        return get("commands.fastcraft toggle.output.on");
+    }
+
+    public String commands_fastcraft_toggle_output_off() {
+        return get("commands.fastcraft toggle.output.off");
+    }
+
+    public String commands_fastcraft_toggle_output_on_other(String player) {
+        return get("commands.fastcraft toggle.output.on-other");
+    }
+
+    public String commands_fastcraft_toggle_output_off_other(String player) {
+        return get("commands.fastcraft toggle.output.off-other");
+    }
+
+    public String commands_fastcraftadmin_usage() {
+        return get("commands.fastcraftadmin.usage");
+    }
+
+    public String commands_fastcraftadmin_reload_usage() {
+        return get("commands.fastcraftadmin reload.usage");
+    }
+
+    public String commands_fastcraftadmin_reload_output() {
+        return get("commands.fastcraftadmin reload.output");
+    }
+
     @SuppressWarnings("deprecation")
     public String items_name(ItemStack item) {
         ItemNames names = itemNames.get(item.getType());
