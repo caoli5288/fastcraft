@@ -230,8 +230,8 @@ public class LanguageConfig extends ConfigExternal {
         return getList("gui.toolbar.workbench.description");
     }
 
-    public String commands_usage(String usageKey) {
-        return get("commands.usage", "usage", get(usageKey));
+    public String commands_usage(String usage) {
+        return get("commands.usage", "usage", usage);
     }
 
     public String commands_noPerm(String permission) {
@@ -239,47 +239,27 @@ public class LanguageConfig extends ConfigExternal {
     }
 
     public String commands_playerOnly() {
-        return commands_usage("commands.player-only");
-    }
-
-    public String commands_fastcraft_usage() {
-        return commands_usage("commands.fastcraft.usage");
-    }
-
-    public String commands_fastcraft_craft_usage() {
-        return commands_usage("commands.fastcraft craft.usage");
-    }
-
-    public String commands_fastcraft_toggle_usage() {
-        return commands_usage("commands.fastcraft toggle.usage");
+        return get("commands.player-only");
     }
 
     public String commands_fastcraft_toggle_output_on() {
-        return commands_usage("commands.fastcraft toggle.output.on");
+        return get("commands.fastcraft toggle.output.on");
     }
 
     public String commands_fastcraft_toggle_output_off() {
-        return commands_usage("commands.fastcraft toggle.output.off");
+        return get("commands.fastcraft toggle.output.off");
     }
 
     public String commands_fastcraft_toggle_output_on_other(String player) {
-        return commands_usage("commands.fastcraft toggle.output.on-other");
+        return get("commands.fastcraft toggle.output.on-other");
     }
 
     public String commands_fastcraft_toggle_output_off_other(String player) {
-        return commands_usage("commands.fastcraft toggle.output.off-other");
-    }
-
-    public String commands_fastcraftadmin_usage() {
-        return commands_usage("commands.fastcraftadmin.usage");
-    }
-
-    public String commands_fastcraftadmin_reload_usage() {
-        return commands_usage("commands.fastcraftadmin reload.usage");
+        return get("commands.fastcraft toggle.output.off-other");
     }
 
     public String commands_fastcraftadmin_reload_output() {
-        return commands_usage("commands.fastcraftadmin reload.output");
+        return get("commands.fastcraftadmin reload.output");
     }
 
     @SuppressWarnings("deprecation")

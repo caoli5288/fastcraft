@@ -9,6 +9,8 @@ import java.util.List;
  * Handles the fastcraft command.
  */
 public class CmdFastCraft extends SimpleCommand {
+    private static final String USAGE = "/fastcraft <craft|toggle>";
+
     private final SimpleCommand cmdCraft = new CmdCraft();
     private final SimpleCommand cmdToggle = new CmdToggle();
 
@@ -22,7 +24,7 @@ public class CmdFastCraft extends SimpleCommand {
                 return cmdToggle.onCommand(sender, popFirst(args));
             }
         }
-        sender.sendMessage(FastCraft.lang().commands_fastcraft_usage());
+        sender.sendMessage(FastCraft.lang().commands_usage(USAGE));
         return true;
     }
 

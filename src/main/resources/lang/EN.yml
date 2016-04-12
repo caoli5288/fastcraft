@@ -64,25 +64,14 @@ commands:
   no-perm: '&cYou don''t have the required permission for this command: <perm>' # Variables: perm
   player-only: '&cYou must be a player to use this command.'
 
-  fastcraft:
-    usage: '/fastcraft <craft|toggle>'
-
-  fastcraft craft:
-    usage: '/fastcraft craft'
-
   fastcraft toggle:
-    usage: '/fastcraft toggle <on|off|toggle> [player]'
     output:
       on:        '&aEnabled FastCraft+ interface.'
       off:       '&aDisabled FastCraft+ interface.'
       on-other:  '&aEnabled FastCraft+ interface for <player>.'  # Variables: player
       off-other: '&aDisabled FastCraft+ interface for <player>.' # Variables: player
 
-  fastcraftadmin:
-    usage: '/fastcraftadmin <reload>'
-
   fastcraftadmin reload:
-    usage: '/fastcraftadmin reload'
     output: '&aFastCraft+ config files reloaded.'
 
 # The localized names of items.
