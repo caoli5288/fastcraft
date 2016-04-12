@@ -9,8 +9,8 @@ import java.util.List;
  * Handles the fastcraft command.
  */
 public class CmdFastCraft extends SimpleCommand {
-    private SimpleCommand cmdCraft = new CmdCraft();
-    private SimpleCommand cmdToggle = new CmdToggle();
+    private final SimpleCommand cmdCraft = new CmdCraft();
+    private final SimpleCommand cmdToggle = new CmdToggle();
 
     @Override
     public boolean onCommand(CommandSender sender, String[] args) {
@@ -28,6 +28,6 @@ public class CmdFastCraft extends SimpleCommand {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, String[] args) {
-        return null;
+        return null; // TODO
     }
 }

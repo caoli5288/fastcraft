@@ -230,8 +230,8 @@ public class LanguageConfig extends ConfigExternal {
         return getList("gui.toolbar.workbench.description");
     }
 
-    public String commands_usage(String usage) {
-        return get("commands.usage", "usage", usage);
+    public String commands_usage(String usageKey) {
+        return get("commands.usage", "usage", get(usageKey));
     }
 
     public String commands_noPerm(String permission) {
