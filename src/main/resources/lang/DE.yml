@@ -1,34 +1,32 @@
-# Translated into German by CloudeLecaw (https://www.spigotmc.org/members/cloudelecaw.34292/)
+# Wenn ihr diese Datei uebersetzt, waere es soll wenn ihr Kepler_ auf spigotmc.org anscheibt.
+# wenn ihr offizell zu FastCraft+ hinzugefuegt werden wollt.
 #
-# If you translate this file, feel free to PM it to Kepler_ on spigotmc.org
-# if you would like it to be officially added to FastCraft+ officially.
-#
-# Use ampersands (&) for formatting/color codes. Info about formatting codes:
+# Benutzt Sonderzeichen (&) Fuer Farb-, und Formatierungskodes. Informationen ueber Formatierungskodes:
 # http://minecraft.gamepedia.com/Formatting_codes
 
 gui:
-  title: 'SchnelleWerkbank'
+  title: 'FastCraft+'
 
-  # Leave blank to keep item names unchanged.
-  item-name: # Variables: name
+  # Lasse es leer um die Gegenstandsnamen nicht zu veraendern.
+  item-name: # Variablen: Name
 
   ingredients:
-    label: '&cZutaten:'
-    item: '&c <amount>x <item>' # Variables: amount, item
+    label: '&aZutaten:'
+    item: '&b <amount>x <item>' # Variablen: amount, item
 
   results:
     label: '&aErgebnisse:'
-    item: '&a <amount>x <item>' # Varibales: amount, item
+    item: '&b <amount>x <item>' # Variablen: amount, item
 
   toolbar:
     page-prev:
       title: '&avorherige Seite'
-      description: # Variables: prev, total, cur
+      description: # Variablen: prev, total, cur
       - '&bblaetter auf Seite <prev>/<total>'
 
     page-next:
       title: '&anachste Seite'
-      description: # Variables: prev, total, cur
+      description: # Variablen: prev, total, cur
       - '&bblaetter auf Seite <next>/<total>'
 
     craft-items:
@@ -39,7 +37,7 @@ gui:
     craft-armor:
       title: '&afarbige Ruestung'
       description:
-      - '&bHerstellung von farbiger Ruestung'
+      - '&bHerstellung von farbiger Lederruestung'
 
     craft-fireworks:
       title: '&aFeuerwerk'
@@ -53,8 +51,8 @@ gui:
       - '&bNeusoritierung der herstellbaren Gegenstaende'
 
     multiplier:
-      title: '&aHerstellungsmuliplikator (<mult>x)' # Variables: mult
-      description: # Variables: mult
+      title: '&aHerstellungsmuliplikator (<mult>x)'
+      description: # Variablen: mult
       - '&bstellt mehr als einen Gegenstand'
       - '&bauf einmal her'
 
@@ -63,12 +61,36 @@ gui:
       description:
       - '&boeffnet die normale 3x3 Werkbank'
 
-commands: # Not yet implemented
+commands:
+  usage: '&cNutzes des Befehl: <usage>' # Variablen: usage
+  no-perm: '&cDu hast nicht die benoetigte Berechtigung fuer diesen Befehl: <perm>' # Variables: perm
+  player-only: '&cDu musst ein Spieler sein um diesen Befehl benutzen zu koennen.'
 
-# The localized names of items.
-# d: Default item name.
-# number: Name for specific item data.
+  fastcraft toggle:
+    output:
+      on:        '&aDas Interface von FastCraft+ wurde aktiviert.'
+      off:       '&aDas Interface von FastCraft+ wurde deaktiviert.'
+      on-other:  '&aDas Interface von FastCraft+ wurde fuer <player> aktiviert.'  # Variablen: player
+      off-other: '&aDas Interface von FastCraft+ wurde fuer <player> deaktiviert.'  # Variablen: player
+
+  fastcraftadmin reload:
+    output: '&aDie FastCraft+ Konfigurationsdatein wurden neugeladen.'
+
+# Die loakisierten Namen der Gegenstaende.
+# d: urspruenglicher Gegenstandsname -> wird immer verwendet wenn keine
+# weitere Metadatenangabe erfolgt ist.
+# number: Name /zahl) der spezifischen Metadatei
 items:
+#  'minecraft:diamond': 'Diamant'
+#  'minecraft:planks':
+#    d: 'Holzbretter'
+#    0: 'Eichenholzbretter'
+#    1: 'Fichtenholzbretter'
+#    2: 'Birkenholzbretter'
+#    3: 'Tropenholzbretter'
+#    4: 'Akazienholzbretter'
+#    5: 'Schwarzeichenholzbretter'
+
   'minecraft:diamond': 'Diamant'
   'minecraft:planks':
     d: 'Holzbretter'
@@ -262,7 +284,7 @@ items:
     d: 'Goldener Apfel'
     0: 'Goldener Apfel'
     1: 'Goldener Apfel'
-  'minecraft:cooked_rabbit': 'Gebratenes Kanninchen'
+  'minecraft:cooked_rabbit': 'Gebratenes Kaninchen'
   'minecraft:baked_potato': 'Ofenkartoffel'
   'minecraft:beetroot': 'Rote Bete'
   'minecraft:Bone': 'Knochen'
@@ -278,7 +300,7 @@ items:
     7: 'Rosa Tulpe'
     8: 'Margeritte'
   'minecraft:double_plant':
-    d: 'Doppelblumen'
+    d: 'Hohe Pflanze'
     0: 'Sonnenblume'
     1: 'Flieder'
     2: 'Hohes Gras'
@@ -294,7 +316,7 @@ items:
   'minecraft:leather_leggings': 'Lederhose'
   'minecraft:leather_boots': 'Lederstiefel'
   'minecraft:banner':
-    d: 'farbiges Banner'
+    d: 'Farbiges Banner'
     15: 'Weisses Banner'
     14: 'Oranges Banner'
     13: 'Magenta Banner'
@@ -312,15 +334,15 @@ items:
     1: 'Rotes Banner'
     0: 'Schwarzes Banner'
   'minecraft:ribbit_hide': 'Kaninchenfell'
-  'minecraft:written_book': 'Beschriebene Buch'
+  'minecraft:written_book': 'Beschriebenes Buch'
   'minecraft:writable_book': 'Buch und Feder'
   'minecraft:filled_map': 'Karte'
   'minecraft:shears': 'Schere'
   'minecraft:skull':
     d: 'Kopf'
-    0: 'Skelettschadel'
+    0: 'Skelettschaedel'
     1: 'Witherskelettschaedel'
     2: 'Zombiekopf'
-    3: 'Kopf einen Spielers'
+    3: 'Spielerkopf'
     4: 'Creeperkopf'
     5: 'Drachenkopf'
