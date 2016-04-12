@@ -42,10 +42,8 @@ public class CommandManager implements CommandExecutor, TabCompleter {
         SimpleCommand command = commandMap.get(c.getName());
         if (command == null) return false;
 
-        // Execute the command, and return true
-        command.onCommand(sender, args);
-        command.popFirst(new Integer[0]);
-        return true;
+        // Execute the command, and return its result
+        return command.onCommand(sender, args);
     }
 
     @Override

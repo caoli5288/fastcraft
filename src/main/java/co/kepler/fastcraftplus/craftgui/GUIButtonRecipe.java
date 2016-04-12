@@ -130,21 +130,21 @@ public class GUIButtonRecipe extends GUIButton {
 
         // Give the player the result items
         switch (invEvent.getClick()) {
-            case DROP:
-            case CONTROL_DROP:
-                // Drop items on the ground.
-                for (ItemStack is : results) {
-                    invEvent.getView().setItem(InventoryView.OUTSIDE, is);
-                }
-                break;
-            default:
-                // Add to inventory. Drop rest on ground if not enough space.
-                Inventory inv = gui.getPlayer().getInventory();
-                ItemStack[] resultsArr = new ItemStack[results.size()];
-                for (ItemStack is : inv.addItem(results.toArray(resultsArr)).values()) {
-                    invEvent.getView().setItem(InventoryView.OUTSIDE, is);
-                }
-                break;
+        case DROP:
+        case CONTROL_DROP:
+            // Drop items on the ground.
+            for (ItemStack is : results) {
+                invEvent.getView().setItem(InventoryView.OUTSIDE, is);
+            }
+            break;
+        default:
+            // Add to inventory. Drop rest on ground if not enough space.
+            Inventory inv = gui.getPlayer().getInventory();
+            ItemStack[] resultsArr = new ItemStack[results.size()];
+            for (ItemStack is : inv.addItem(results.toArray(resultsArr)).values()) {
+                invEvent.getView().setItem(InventoryView.OUTSIDE, is);
+            }
+            break;
         }
 
         gui.updateLayout();

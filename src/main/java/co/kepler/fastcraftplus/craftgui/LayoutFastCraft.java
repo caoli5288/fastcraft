@@ -52,14 +52,14 @@ public class LayoutFastCraft extends LayoutMulti {
      */
     public LayoutRecipes getLayoutTab(CraftingTab tab) {
         switch (tab) {
-            case CRAFTING:
-                return layoutCraftingItems;
-            case ARMOR:
-                return layoutCraftingArmor;
-            case FIREWORKS:
-                return layoutCraftingFireworks;
-            default:
-                return null;
+        case CRAFTING:
+            return layoutCraftingItems;
+        case ARMOR:
+            return layoutCraftingArmor;
+        case FIREWORKS:
+            return layoutCraftingFireworks;
+        default:
+            return null;
         }
     }
 

@@ -16,8 +16,9 @@ public abstract class SimpleCommand {
      *
      * @param sender The command sender.
      * @param args   The command arguments.
+     * @return Returns true if the command was executed successfully.
      */
-    public abstract void onCommand(CommandSender sender, String[] args);
+    public abstract boolean onCommand(CommandSender sender, String[] args);
 
     /**
      * Get tab complete options for a command argument.
@@ -37,7 +38,7 @@ public abstract class SimpleCommand {
      */
     protected <T> T[] popFirst(T[] arr) {
         assert arr != null && arr.length > 0 : "Nonempty array required";
-        return Arrays.copyOfRange(arr, 1, arr.length - 1);
+        return Arrays.copyOfRange(arr, 1, arr.length);
     }
 
     /**

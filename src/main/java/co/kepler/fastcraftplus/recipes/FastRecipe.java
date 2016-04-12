@@ -65,10 +65,10 @@ public abstract class FastRecipe implements Comparable<FastRecipe> {
         int buckets = 0;
         for (Ingredient i : getIngredients().keySet()) {
             switch (i.getMaterial()) {
-                case LAVA_BUCKET:
-                case MILK_BUCKET:
-                case WATER_BUCKET:
-                    buckets += getIngredients().get(i);
+            case LAVA_BUCKET:
+            case MILK_BUCKET:
+            case WATER_BUCKET:
+                buckets += getIngredients().get(i);
             }
         }
 

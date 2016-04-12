@@ -76,10 +76,10 @@ public class RecipesConfig extends ConfigExternal {
             throw new RecipeException("Recipe type cannot be null");
         }
         switch (type.toLowerCase()) {
-            case "shaped":
-                return getShapedRecipe(conf);
-            case "shapeless":
-                return getShapelessRecipe(conf);
+        case "shaped":
+            return getShapedRecipe(conf);
+        case "shapeless":
+            return getShapelessRecipe(conf);
         }
         throw new RecipeException("Invalid recipe type for : '" + type + "'");
     }

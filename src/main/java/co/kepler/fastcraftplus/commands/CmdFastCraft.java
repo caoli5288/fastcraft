@@ -1,5 +1,6 @@
 package co.kepler.fastcraftplus.commands;
 
+import co.kepler.fastcraftplus.FastCraft;
 import org.bukkit.command.CommandSender;
 
 import java.util.List;
@@ -8,10 +9,21 @@ import java.util.List;
  * Handles the fastcraft command.
  */
 public class CmdFastCraft extends SimpleCommand {
+    private SimpleCommand cmdCraft = new CmdCraft();
+    private SimpleCommand cmdToggle = new CmdToggle();
 
     @Override
-    public void onCommand(CommandSender sender, String[] args) {
-
+    public boolean onCommand(CommandSender sender, String[] args) {
+        if (args.length > 0) {
+            switch (args[0].toLowerCase()) {
+            case "craft":
+                return cmdCraft.onCommand(sender, popFirst(args));
+            case "toggle":
+                return cmdToggle.onCommand(sender, popFirst(args));
+            }
+        }
+        sender.sendMessage(FastCraft.lang().commands_fastcraft_usage());
+        return true;
     }
 
     @Override

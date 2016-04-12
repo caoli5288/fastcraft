@@ -208,11 +208,11 @@ public class GUI implements InventoryHolder {
             } else {
                 // Cancel shift clicks to stop items from being put into the GUI.
                 switch (e.getClick()) {
-                    case SHIFT_LEFT:
-                    case SHIFT_RIGHT:
-                    case UNKNOWN:
-                        e.setCancelled(true);
-                    default:
+                case SHIFT_LEFT:
+                case SHIFT_RIGHT:
+                case UNKNOWN:
+                    e.setCancelled(true);
+                default:
                 }
             }
         }
