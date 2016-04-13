@@ -73,7 +73,9 @@ public class CustomShapedRecipe extends CustomRecipe {
         for (int row = 0; row < shapeArr.length; row++) {
             char[] chars = shapeArr[row].toCharArray();
             for (int col = 0; col < chars.length; col++) {
-                matrix[row * 3 + col] = ingredientsMap.get(chars[col]).toItemStack(1);
+                Ingredient ingredient = ingredientsMap.get(chars[col]);
+                if (ingredient == null) continue;
+                matrix[row * 3 + col] = ingredient.toItemStack(1);
             }
         }
     }
