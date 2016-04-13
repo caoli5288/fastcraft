@@ -8,6 +8,7 @@ import co.kepler.fastcraftplus.config.LanguageConfig;
 import co.kepler.fastcraftplus.config.PluginConfig;
 import co.kepler.fastcraftplus.config.RecipesConfig;
 import co.kepler.fastcraftplus.craftgui.GUIFastCraft;
+import co.kepler.fastcraftplus.craftgui.PlayerManager;
 import co.kepler.fastcraftplus.recipes.CraftingListener;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
@@ -25,6 +26,7 @@ public class FastCraft extends JavaPlugin {
     private RecipesConfig recipes;
 
     private RecipeCompatManager recipeCompatManager;
+    private PlayerManager playerManager;
 
     @Override
     public void onEnable() {
@@ -37,13 +39,15 @@ public class FastCraft extends JavaPlugin {
         externalConfigs.add(recipes = new RecipesConfig());
         loadConfigs();
 
-        // Create recipe compatibility manager
+        // Load managers
         recipeCompatManager = new RecipeCompatManager();
+        playerManager = new PlayerManager();
 
         // Register events
         PluginManager pluginManager = Bukkit.getPluginManager();
         pluginManager.registerEvents(new CraftingListener(), this);
         pluginManager.registerEvents(new GUIFastCraft.GUIListener(), this);
+        pluginManager.registerEvents(playerManager, this);
 
         // Register commands
         new CommandManager().registerCommands();
@@ -106,6 +110,10 @@ public class FastCraft extends JavaPlugin {
      */
     public static RecipeCompatManager recipeManager() {
         return instance.recipeCompatManager;
+    }
+
+    public static PlayerManager playerManager() {
+        return instance.playerManager;
     }
 
     /**
