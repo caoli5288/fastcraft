@@ -90,7 +90,16 @@ items:
 #    3: 'Tropenholzbretter'
 #    4: 'Akazienholzbretter'
 #    5: 'Schwarzeichenholzbretter'
-
+  'minecraft:log':
+    d: 'Holz'
+    0: 'Eichenholz'
+    1: 'Fichtenholz'
+    2: 'Birkenholz'
+    3: 'Tropenholz'
+  'minecraft:log2':
+    d: 'Holz'
+    0: 'Akazienholz'
+    1: 'Schwarzeichenholz'
   'minecraft:diamond': 'Diamant'
   'minecraft:planks':
     d: 'Holzbretter'
