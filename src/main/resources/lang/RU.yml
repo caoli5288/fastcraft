@@ -57,7 +57,20 @@ gui:
       description:
       - '&bОткрыть сетку крафта 3x3'
 
-commands: # Not yet implemented
+commands:
+  usage: '&cИспользуй команду: <usage>' # Variables: usage
+  no-perm: '&cУ тебя нет прв для использования данной команды: <perm>' # Variables: perm
+  player-only: '&cТы должен быть игроком, чтобы использовать эту команду.'
+
+  fastcraft toggle:
+    output:
+      on:        '&aИнтерфейс FastCraft+ включён.'
+      off:       '&aИнтерфейс FastCraft+ выключен.'
+      on-other:  '&aИнтерфейс FastCraft+ включён для игрока <player>.'  # Variables: player
+      off-other: '&aИнтерфейс FastCraft+ выключён для игрока <player>.' # Variables: player
+
+  fastcraftadmin reload:
+    output: '&aКонфигурация FastCraft+ перезагружена.'
 
 # The localized names of items.
 # d: Default item name.
