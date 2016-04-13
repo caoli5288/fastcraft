@@ -334,17 +334,6 @@ public class GUIFastCraft extends GUI {
         }
 
         @EventHandler(priority = EventPriority.HIGHEST)
-        public void onPlayerInteract(PlayerInteractEvent e) {
-            if (e.isCancelled()) return;
-            if (e.getAction() != Action.RIGHT_CLICK_BLOCK) return;
-            if (e.getClickedBlock().getType() != Material.WORKBENCH) return;
-
-            // Cancel the interaction, and show the FastCraft GUI.
-            e.setCancelled(true);
-            new GUIFastCraft(e.getPlayer(), e.getClickedBlock().getLocation()).show();
-        }
-
-        @EventHandler(priority = EventPriority.HIGHEST)
         public void onBlockBreak(BlockBreakEvent e) {
             if (e.isCancelled()) return;
             blockRemoved(e.getBlock());
