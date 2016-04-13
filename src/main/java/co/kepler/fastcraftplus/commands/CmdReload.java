@@ -10,7 +10,6 @@ import java.util.List;
  * Handles the reload command.
  */
 public class CmdReload extends SimpleCommand {
-    private SimpleCommand cmdReload = new CmdReload();
 
     @Override
     public boolean onCommand(CommandSender sender, String[] args) {
