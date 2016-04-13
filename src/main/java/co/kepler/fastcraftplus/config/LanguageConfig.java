@@ -242,6 +242,10 @@ public class LanguageConfig extends ConfigExternal {
         return get("commands.player-only");
     }
 
+    public String commands_consoleOnly() {
+        return get("commands.console-only");
+    }
+
     public String commands_fastcraft_toggle_output_on() {
         return get("commands.fastcraft toggle.output.on");
     }

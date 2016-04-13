@@ -9,9 +9,10 @@ import java.util.List;
  * Handles the fastcraftadmin command.
  */
 public class CmdFastCraftAdmin extends SimpleCommand {
-    private static final String USAGE = "/fastcraftadmin <reload>";
+    private static final String USAGE = "/fastcraftadmin <reload|debug>";
 
     private final SimpleCommand cmdReload = new CmdReload();
+    private final SimpleCommand cmdDebug = new CmdDebug();
 
     @Override
     public boolean onCommand(CommandSender sender, String[] args) {
@@ -19,6 +20,8 @@ public class CmdFastCraftAdmin extends SimpleCommand {
             switch (args[0].toLowerCase()) {
             case "reload":
                 return cmdReload.onCommand(sender, popFirst(args));
+            case "debug":
+                return cmdDebug.onCommand(sender, popFirst(args));
             }
         }
         sender.sendMessage(FastCraft.lang().commands_usage(USAGE));

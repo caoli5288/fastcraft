@@ -63,6 +63,7 @@ commands:
   usage: '&cCommand usage: <usage>' # Variables: usage
   no-perm: '&cYou don''t have the required permission for this command: <perm>' # Variables: perm
   player-only: '&cYou must be a player to use this command.'
+  console-only: '&cThis command can only be executed in the server console'
 
   fastcraft toggle:
     output:
