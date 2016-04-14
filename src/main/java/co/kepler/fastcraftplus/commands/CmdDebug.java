@@ -11,11 +11,12 @@ import java.util.List;
  * Handles the debug command. Used to provide information for bug reports.
  */
 public class CmdDebug extends SimpleCommand {
+    private static final String USAGE = "/fastcraftadmin debug";
 
     @Override
     public boolean onCommand(CommandSender sender, String[] args) {
         if (args.length != 0) {
-            sender.sendMessage(FastCraft.lang().commands_fastcraftadmin_reload_output());
+            sender.sendMessage(FastCraft.lang().commands_usage(USAGE));
         } else if (!sender.equals(Bukkit.getConsoleSender())) {
             sender.sendMessage(FastCraft.lang().commands_consoleOnly());
         } else {
