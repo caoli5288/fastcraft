@@ -9,6 +9,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -68,6 +69,11 @@ public class PlayerManager implements Listener {
         player.openWorkbench(location, force);
     }
 
+    /**
+     * Handle inventory opening. If a workbench is being opened, replace it with a GUI.
+     *
+     * @param e The inventory open event.
+     */
     @EventHandler
     public void onInventoryOpen(InventoryOpenEvent e) {
         if (e.isCancelled() || e.getInventory().getType() != InventoryType.WORKBENCH) return;
@@ -89,5 +95,21 @@ public class PlayerManager implements Listener {
                 new GUIFastCraft(player, null).show(); // TODO non-null location
             }
         }.runTask(FastCraft.getInstance());
+    }
+
+    /**
+     * Listen to player commands, and disable the GUI from
+     * opening if a compatibility command is executed.
+     *
+     * @param e The player command event.
+     */
+    @EventHandler
+    public void onCommand(PlayerCommandPreprocessEvent e) {
+        String message = e.getMessage().toLowerCase();
+        for (String compat : FastCraft.config().getCommandCompat()) {
+            if (message.startsWith(compat.toLowerCase())) {
+                allowWorkbenchForTick(e.getPlayer().getUniqueId());
+            }
+        }
     }
 }

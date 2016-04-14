@@ -27,5 +27,4 @@ public abstract class Config {
             internalConfig = new YamlConfiguration();
         }
     }
-
 }

@@ -1,5 +1,18 @@
-# language: EN      If the language specified does not exist, a new language file will be added to the
+# language          If the language specified does not exist, a new language file will be added to the
 #                   lang folder in the FastCraftPlus plugin directory.
 #                   Available languages: English (EN), German (DE), Russian (RU), Czech (CS)
+#
+# command-compat    Do not open the FastCraft+ GUI when any of these commands are run.
 
 language: EN
+
+command-compat:
+- /recipe
+- /erecipe
+- /formula
+- /eformula
+- /method
+- /emethod
+- /recipes
+- /erecipes
+- /furniture recipe
