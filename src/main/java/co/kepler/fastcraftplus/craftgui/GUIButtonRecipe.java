@@ -68,8 +68,8 @@ public class GUIButtonRecipe extends GUIButton {
             }
         }
 
-        // If the item has a lore already, add a space between the ingredients and the existing lore
-        if (meta.getLore() != null && !meta.getLore().isEmpty()) {
+        // If the item has a lore already, or has enchants, add an empty line
+        if ((meta.getLore() != null && !meta.getLore().isEmpty()) || meta.hasEnchants()) {
             lore.addFirst("");
             lore.addAll(0, meta.getLore());
         }
