@@ -21,7 +21,7 @@ public class RecipesConfig extends ConfigExternal {
     private static final List<CustomRecipe> recipes = new ArrayList<>();
 
     public RecipesConfig() {
-        super(true);
+        super(true, false);
         setConfigs("recipes.yml");
     }
 

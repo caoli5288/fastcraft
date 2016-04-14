@@ -8,7 +8,7 @@ import java.util.List;
 public class PluginConfig extends ConfigExternal {
 
     public PluginConfig() {
-        super(true);
+        super(true, true);
         setConfigs("config.yml");
     }
 

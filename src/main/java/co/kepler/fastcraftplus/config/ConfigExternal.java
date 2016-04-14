@@ -13,15 +13,17 @@ import java.nio.file.Files;
 public abstract class ConfigExternal extends Config {
     protected YamlConfiguration config;
     protected File configFile = null;
-    private final boolean copyHeader;
+    private final boolean copyHeader, copyDefaults;
 
     /**
      * Create a config that is stored in the plugin folder.
      *
-     * @param copyHeader Whether the comment header should be copied from the internal file.
+     * @param copyHeader   Whether the comment header should be copied from the internal file.
+     * @param copyDefaults Whether default values from the internal config should be copied.
      */
-    public ConfigExternal(boolean copyHeader) {
+    public ConfigExternal(boolean copyHeader, boolean copyDefaults) {
         this.copyHeader = copyHeader;
+        this.copyDefaults = copyDefaults;
     }
 
     /**
@@ -47,9 +49,7 @@ public abstract class ConfigExternal extends Config {
         } else {
             try {
                 // Save the config header, or save the config if it doesn't exist
-                if (configFile.exists()) {
-                    saveHeader();
-                } else {
+                if (!configFile.exists()) {
                     File parent = configFile.getParentFile();
                     if (parent.mkdirs()) FastCraft.log("Created directory: " + parent);
                     Files.copy(FastCraft.getInstance().getResource(resPath), configFile.toPath());
@@ -58,6 +58,10 @@ public abstract class ConfigExternal extends Config {
 
                 // Load the config
                 config = BukkitUtil.loadConfiguration(new FileInputStream(configFile));
+
+                // Save default values and copy comment header
+                if (copyDefaults) saveDefaults();
+                if (copyHeader) saveHeader();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -71,7 +75,7 @@ public abstract class ConfigExternal extends Config {
      * Save the comments at the top of the default config to the config file.
      */
     private void saveHeader() throws IOException {
-        if (!copyHeader || resPath == null || configFile == null) return;
+        if (resPath == null || configFile == null) return;
 
         StringBuilder newFileStr = new StringBuilder();
         InputStream stream;
@@ -103,5 +107,13 @@ public abstract class ConfigExternal extends Config {
         FileWriter writer = new FileWriter(configFile);
         writer.write(newFileStr.toString());
         writer.close();
+    }
+
+    private void saveDefaults() {
+        if (resPath == null || configFile == null) return;
+
+        config.setDefaults(internalConfig);
+        config.options().copyDefaults(true);
+        BukkitUtil.saveConfiguration(config, configFile);
     }
 }

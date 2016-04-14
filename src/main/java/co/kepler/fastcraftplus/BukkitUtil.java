@@ -66,6 +66,23 @@ public class BukkitUtil {
     }
 
     /**
+     * Save a YamlConfiguration to a file.
+     *
+     * @param config The configuration to save.
+     * @param file The file to write to.
+     */
+    public static void saveConfiguration(YamlConfiguration config, File file) {
+        try {
+            OutputStream stream = new FileOutputStream(file);
+            Writer writer = new OutputStreamWriter(stream, CONFIG_CHARSET);
+            writer.write(config.saveToString());
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * ItemFlag replacement for backwards compatibility with old bukkit versions.
      */
     public static class ItemFlag {

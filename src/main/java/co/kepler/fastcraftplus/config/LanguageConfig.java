@@ -26,7 +26,7 @@ public class LanguageConfig extends ConfigExternal {
      * Create an instance of Language
      */
     public LanguageConfig() {
-        super(false);
+        super(false, false);
     }
 
     @Override
