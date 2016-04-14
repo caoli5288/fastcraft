@@ -5,8 +5,6 @@ import co.kepler.fastcraftplus.FastCraft;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
 
 /**
  * To be used by configuration classes that access an internal config, only.
@@ -24,8 +22,7 @@ public abstract class Config {
         this.resPath = resPath;
         if (resPath != null) {
             InputStream resStream = FastCraft.getInstance().getResource(resPath);
-            Reader reader = new InputStreamReader(resStream);
-            internalConfig = BukkitUtil.loadConfiguration(reader);
+            internalConfig = BukkitUtil.loadConfiguration(resStream);
         } else {
             internalConfig = new YamlConfiguration();
         }

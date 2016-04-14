@@ -5,9 +5,7 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.Reader;
+import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -15,6 +13,8 @@ import java.lang.reflect.Method;
  * Utility class for Bukkit.
  */
 public class BukkitUtil {
+    private static final String CONFIG_CHARSET = "UTF-8";
+
     private static String version = null;
     private static Boolean supportsItemFlags = null;
 
@@ -32,11 +32,12 @@ public class BukkitUtil {
     /**
      * Load into an existing YamlConfiguration from a Reader.
      *
-     * @param reader The reader to read the config from.
+     * @param stream The input stream to read the config from.
      * @param config The config to read into.
      */
-    public static void loadConfiguration(Reader reader, YamlConfiguration config) {
+    public static void loadConfiguration(InputStream stream, YamlConfiguration config) {
         try {
+            Reader reader = new InputStreamReader(stream, CONFIG_CHARSET);
             BufferedReader bufferedReader = new BufferedReader(reader);
             StringBuilder sb = new StringBuilder();
 
@@ -55,12 +56,12 @@ public class BukkitUtil {
     /**
      * Load a new YamlConfiguration from a Reader.
      *
-     * @param reader The reader to read the config from.
+     * @param stream The input stream to read the config from.
      * @return Returns a new YamlConfiguration.
      */
-    public static YamlConfiguration loadConfiguration(Reader reader) {
+    public static YamlConfiguration loadConfiguration(InputStream stream) {
         YamlConfiguration result = new YamlConfiguration();
-        loadConfiguration(reader, result);
+        loadConfiguration(stream, result);
         return result;
     }
 

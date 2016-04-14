@@ -57,7 +57,7 @@ public abstract class ConfigExternal extends Config {
                 }
 
                 // Load the config
-                config = BukkitUtil.loadConfiguration(new FileReader(configFile));
+                config = BukkitUtil.loadConfiguration(new FileInputStream(configFile));
             } catch (IOException e) {
                 e.printStackTrace();
             }
