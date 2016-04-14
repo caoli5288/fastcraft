@@ -1,4 +1,4 @@
-Remove this top line, and replace all {brace-enclosed text} (removing the braces as well).
+Remove this top line, and replace all {brace-enclosed text}, removing the braces as well.
 
 # Description
 {Summarize the issue here}
