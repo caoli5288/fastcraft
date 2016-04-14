@@ -267,7 +267,7 @@ public class GUIFastCraft extends GUI {
     }
 
     private boolean btnWorkbenchClick(GUIButton.Click info) {
-        FastCraft.playerManager().openWorkbench(info.event.getWhoClicked(), location, false);
+        FastCraft.playerManager().openWorkbench(info.event.getWhoClicked(), location, location == null);
         return true;
     }
 

@@ -80,10 +80,9 @@ public class PlayerManager implements Listener {
 
         // Open GUI in one tick
         final Player player = (Player) humanEntity;
-        final Location location = inv.getLocation();
         new BukkitRunnable() {
             public void run() {
-                new GUIFastCraft(player, location).show();
+                new GUIFastCraft(player, null).show(); // TODO non-null location
             }
         }.runTask(FastCraft.getInstance());
     }
