@@ -12,5 +12,5 @@ Remove this top line, and replace all {brace-enclosed text}, removing the braces
 # Stack Trace
 <details>
     <summary>Show stack trace</summary>
-    <code>{If there's a stack trace, copy it here. Otherwise, this section can be deleted}</code>
+    ```{If there's a stack trace, copy it here. Otherwise, this section can be deleted}```
 </details>
