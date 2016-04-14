@@ -1,17 +1,16 @@
-Remove this line, fill out everything in {braces}, and remove any irrelevant sections.
+Remove these top lines, and replace all {brace-enclosed text}.
 
 # Description
 {Summarize the issue here}
 
-# Server/FastCraft+ Versions
-{Bukkit/Spigot/etc.} {1.#.#}
-FastCraft+ v{#.#}
-
-# Relevant plugins
-[Plugin name/version]({URL to plugin})
+# Debug Output
+<details>
+    <summary>Show **/fcadmin debug** output</summary>
+    <code>{In your server console, run the command "fcadmin debug", and put the output here}</code>
+</details>
 
 # Stack Trace
 <details>
-    <summary>Show Stack Trace</summary>
-    <code>{Copy stack trace from console here}</code>
+    <summary>Show stack trace</summary>
+    <code>{If there's a stack trace, copy it here. Otherwise, this section can be deleted}</code>
 </details>
