@@ -14,7 +14,7 @@ public class CraftingListener implements Listener {
 
     @EventHandler
     public void onPrepareItemCraft(PrepareItemCraftEvent e) {
-        for (CustomRecipe recipe : FastCraft.recipes().getRecipes()) {
+        for (CustomRecipe recipe : FastCraft.recipes().getRecipes()) { // TODO Hash for efficiency
             if (!RecipeUtil.areEqual(recipe.getRecipe(), e.getRecipe())) continue;
 
             CraftingInventory inv = e.getInventory();

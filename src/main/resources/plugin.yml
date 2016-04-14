@@ -11,20 +11,20 @@ softdepend:
 - ProRecipes
 
 commands:
-  fastcraft:
-    description: FastCraft+ commands
-    usage: /<command>
-    aliases: [fc]
+#  fastcraft:
+#    description: FastCraft+ commands
+#    usage: /<command>
+#    aliases: [fc]
 
   fastcraftadmin:
     description: FastCraft+ admin commands
     usage: /<command>
     aliases: [fcadmin, fca]
 
-  craft:
-    description: Open a crafting inventory
-    usage: /<command>
-    aliases: [cr, workbench, wb]
+#  craft:
+#    description: Open a crafting inventory
+#    usage: /<command>
+#    aliases: [cr, workbench, wb]
 
 permissions:
   fastcraft.*:

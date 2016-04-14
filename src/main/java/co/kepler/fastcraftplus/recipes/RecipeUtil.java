@@ -309,8 +309,15 @@ public class RecipeUtil {
         return !event.isCancelled() && event.getResult() != Event.Result.DENY;
     }
 
+    /**
+     * Get a hashcode for a recipe.
+     *
+     * @param r The recipe to hash.
+     * @return Returns the generated hashcode.
+     */
     public static int hashRecipe(Recipe r) {
-        int hash = r.getResult().hashCode();
+        ItemStack result = r.getResult();
+        int hash = result == null ? 0 : result.hashCode();
         if (r instanceof ShapedRecipe) {
             ShapedRecipe sr = (ShapedRecipe) r;
             for (String s : sr.getShape()) {
@@ -353,6 +360,7 @@ public class RecipeUtil {
                 if (item == null) continue;
                 result.setIngredient(c, item.getData().clone());
             }
+            return result;
         } else if (toClone instanceof ShapelessRecipe) {
             ShapelessRecipe recipe = (ShapelessRecipe) toClone;
             ShapelessRecipe result = new ShapelessRecipe(recipe.getResult().clone());

@@ -21,9 +21,9 @@ public class CommandManager implements CommandExecutor, TabCompleter {
      * Create a new instance of the command manager.
      */
     public CommandManager() {
-        commandMap.put("fastcraft", new CmdFastCraft());
+        // commandMap.put("fastcraft", new CmdFastCraft());
         commandMap.put("fastcraftadmin", new CmdFastCraftAdmin());
-        commandMap.put("craft", new CmdCraft());
+        // commandMap.put("craft", new CmdCraft());
     }
 
     /**
