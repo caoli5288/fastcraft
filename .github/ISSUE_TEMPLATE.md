@@ -6,7 +6,7 @@ Remove this top line, and replace all {brace-enclosed text}, removing the braces
 # Debug Output
 <details>
     <summary>Show **/fcadmin debug** output</summary>
-    <code>{In your server console, run the command "fcadmin debug", and put the output here}</code>
+    ```{In your server console, run the command "fcadmin debug", and put the output here}```
 </details>
 
 # Stack Trace
