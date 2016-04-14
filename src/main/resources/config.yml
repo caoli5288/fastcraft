@@ -2,7 +2,7 @@
 #                   lang folder in the FastCraftPlus plugin directory.
 #                   Available languages: English (EN), German (DE), Russian (RU), Czech (CS)
 #
-# command-compat    Do not open the FastCraft+ GUI when any of these commands are run.
+# command-compat    Do not open the FastCraft+ GUI for these commands.
 
 language: EN
 
