@@ -337,6 +337,7 @@ public class RecipeUtil {
      * @return Returns the cloned recipe, or null if unable to clone.
      */
     public static Recipe cloneRecipe(Recipe toClone) {
+        if (toClone == null) return null;
         if (toClone instanceof ShapedRecipe) {
             ShapedRecipe recipe = (ShapedRecipe) toClone;
             ShapedRecipe result = new ShapedRecipe(recipe.getResult().clone());

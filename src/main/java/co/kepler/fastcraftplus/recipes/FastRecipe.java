@@ -42,8 +42,11 @@ public abstract class FastRecipe implements Comparable<FastRecipe> {
      * @return Returns the matrix of items, or null if this recipe cannot be crafted in a crafting table.
      */
     public final ItemStack[] getMatrix() {
-        ItemStack[] result = getMatrixInternal().clone();
+        ItemStack[] result = getMatrixInternal();
+        if (result == null) return null;
+        result = result.clone();
         for (int i = 0; i < result.length; i++) {
+            if (result[i] == null) continue;
             result[i] = result[i].clone();
         }
         return result;
@@ -80,7 +83,9 @@ public abstract class FastRecipe implements Comparable<FastRecipe> {
     public final List<ItemStack> getResults() {
         List<ItemStack> result = new ArrayList<>(getResultsInternal());
         for (int i = 0; i < result.size(); i++) {
-            result.set(i, result.get(i).clone());
+            ItemStack item = result.get(i);
+            if (item == null) continue;
+            result.set(i, item.clone());
         }
         return result;
     }

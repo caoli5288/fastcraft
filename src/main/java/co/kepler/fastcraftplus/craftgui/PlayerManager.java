@@ -67,12 +67,20 @@ public class PlayerManager implements Listener {
         if (e.isCancelled() || e.getInventory().getType() != InventoryType.WORKBENCH) return;
 
         // See if the player is able to open a FastCraft+ interface
-        HumanEntity player = e.getPlayer();
-        if (!(player instanceof Player)) return;
-        if (isWorkbenchAllowed(player.getUniqueId())) return;
+        HumanEntity humanEntity = e.getPlayer();
+        if (!(humanEntity instanceof Player)) return;
+        if (isWorkbenchAllowed(humanEntity.getUniqueId())) return;
 
         // Cancel the interaction, and show the FastCraft GUI.
         e.setCancelled(true);
-        new GUIFastCraft((Player) player, e.getInventory().getLocation()).show();
+
+        // Open GUI in one tick
+        final Player player = (Player) humanEntity;
+        final Location location = e.getInventory().getLocation();
+        new BukkitRunnable() {
+            public void run() {
+                new GUIFastCraft(player, location).show();
+            }
+        }.runTask(FastCraft.getInstance());
     }
 }
