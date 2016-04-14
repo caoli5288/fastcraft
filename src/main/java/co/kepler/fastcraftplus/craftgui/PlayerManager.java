@@ -37,7 +37,11 @@ public class PlayerManager implements Listener {
             public void run() {
                 Integer val = allowWorkbench.get(uuid);
                 if (val == null) return;
-                allowWorkbench.put(uuid, --val == 0 ? null : val); // Decrement, or set null if zero
+                if (--val == 0) {
+                    allowWorkbench.remove(uuid);
+                    return;
+                }
+                allowWorkbench.put(uuid, val); // Decrement, or set null if zero
             }
         }.runTask(FastCraft.getInstance());
     }
