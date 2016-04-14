@@ -106,22 +106,22 @@ public class Compat_ProRecipes extends Compat {
         }
 
         @Override
-        public Recipe getRecipe() {
+        protected Recipe getRecipeInternal() {
             return null;
         }
 
         @Override
-        public ItemStack[] getMatrix() {
+        protected ItemStack[] getMatrixInternal() {
             return null;
         }
 
         @Override
-        public Map<Ingredient, Integer> getIngredients() {
+        protected Map<Ingredient, Integer> getIngredientsInternal() {
             return ingredients;
         }
 
         @Override
-        public List<ItemStack> getResults() {
+        protected List<ItemStack> getResultsInternal() {
             return results;
         }
     }

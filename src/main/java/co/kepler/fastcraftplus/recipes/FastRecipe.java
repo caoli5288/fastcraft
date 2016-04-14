@@ -14,32 +14,76 @@ import java.util.*;
 public abstract class FastRecipe implements Comparable<FastRecipe> {
 
     /**
+     * Get the un-cloned Recipe associated with this FastRecipe, or null if none exists.
+     *
+     * @return Returns the Recipe associated with this FastRecipe.
+     */
+    protected abstract Recipe getRecipeInternal();
+
+    /**
      * Get the Recipe associated with this FastRecipe, or null if none exists.
      *
      * @return Returns the Recipe associated with this FastRecipe.
      */
-    public abstract Recipe getRecipe();
+    public final Recipe getRecipe() {
+        return RecipeUtil.cloneRecipe(getRecipeInternal());
+    }
+
+    /**
+     * Get the un-cloned matrix of items used in the crafting table to craft this recipe.
+     *
+     * @return Returns the matrix of items, or null if this recipe cannot be crafted in a crafting table.
+     */
+    protected abstract ItemStack[] getMatrixInternal();
 
     /**
      * Get the matrix of items used in the crafting table to craft this recipe.
      *
      * @return Returns the matrix of items, or null if this recipe cannot be crafted in a crafting table.
      */
-    public abstract ItemStack[] getMatrix();
+    public final ItemStack[] getMatrix() {
+        ItemStack[] result = getMatrixInternal().clone();
+        for (int i = 0; i < result.length; i++) {
+            result[i] = result[i].clone();
+        }
+        return result;
+    }
+
+    /**
+     * Get the un-cloned ingredients required to craft this recipe.
+     *
+     * @return Returns the ingredients required to craft this recipe.
+     */
+    protected abstract Map<Ingredient, Integer> getIngredientsInternal();
 
     /**
      * Get the ingredients required to craft this recipe.
      *
      * @return Returns the ingredients required to craft this recipe.
      */
-    public abstract Map<Ingredient, Integer> getIngredients();
+    public final Map<Ingredient, Integer> getIngredients() {
+        return new HashMap<>(getIngredientsInternal());
+    }
+
+    /**
+     * Get the un-cloned results of this recipe.
+     *
+     * @return Returns the results of this recipe.
+     */
+    protected abstract List<ItemStack> getResultsInternal();
 
     /**
      * Get the results of this recipe.
      *
-     * @return Returns the results of this recipe.
+     * @return Returns the results of this recipe
      */
-    public abstract List<ItemStack> getResults();
+    public final List<ItemStack> getResults() {
+        List<ItemStack> result = new ArrayList<>(getResultsInternal());
+        for (int i = 0; i < result.size(); i++) {
+            result.set(i, result.get(i).clone());
+        }
+        return result;
+    }
 
     /**
      * Get the item shown in the FastCraft+ interface. Returns the first
@@ -49,7 +93,7 @@ public abstract class FastRecipe implements Comparable<FastRecipe> {
      */
     public ItemStack getDisplayResult() {
         List<ItemStack> results = getResults();
-        return results.isEmpty() ? null : results.get(0);
+        return results.isEmpty() ? null : results.get(0).clone();
     }
 
     /**

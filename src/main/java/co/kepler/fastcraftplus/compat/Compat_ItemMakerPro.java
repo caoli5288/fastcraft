@@ -171,22 +171,22 @@ public class Compat_ItemMakerPro extends Compat {
         }
 
         @Override
-        public Recipe getRecipe() {
+        protected Recipe getRecipeInternal() {
             return recipe;
         }
 
         @Override
-        public ItemStack[] getMatrix() {
+        protected ItemStack[] getMatrixInternal() {
             return matrix;
         }
 
         @Override
-        public Map<Ingredient, Integer> getIngredients() {
+        protected Map<Ingredient, Integer> getIngredientsInternal() {
             return ingredients;
         }
 
         @Override
-        public List<ItemStack> getResults() {
+        protected List<ItemStack> getResultsInternal() {
             return results;
         }
     }

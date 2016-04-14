@@ -81,22 +81,22 @@ public class CustomShapedRecipe extends CustomRecipe {
     }
 
     @Override
-    public List<ItemStack> getResults() {
+    protected List<ItemStack> getResultsInternal() {
         return results;
     }
 
     @Override
-    public ShapedRecipe getRecipe() {
+    protected ShapedRecipe getRecipeInternal() {
         return recipe;
     }
 
     @Override
-    public Map<Ingredient, Integer> getIngredients() {
+    protected Map<Ingredient, Integer> getIngredientsInternal() {
         return ingredients;
     }
 
     @Override
-    public ItemStack[] getMatrix() {
+    protected ItemStack[] getMatrixInternal() {
         return matrix;
     }
 

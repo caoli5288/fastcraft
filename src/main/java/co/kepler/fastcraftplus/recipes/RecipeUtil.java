@@ -329,4 +329,40 @@ public class RecipeUtil {
         }
         return hash;
     }
+
+    /**
+     * Clone a recipe.
+     *
+     * @param toClone The recipe to clone.
+     * @return Returns the cloned recipe, or null if unable to clone.
+     */
+    public static Recipe cloneRecipe(Recipe toClone) {
+        if (toClone instanceof ShapedRecipe) {
+            ShapedRecipe recipe = (ShapedRecipe) toClone;
+            ShapedRecipe result = new ShapedRecipe(recipe.getResult().clone());
+
+            // Copy recipe shape
+            String[] shape = recipe.getShape();
+            result.shape(Arrays.copyOf(shape, shape.length));
+
+            // Copy ingredients map
+            Map<Character, ItemStack> ingredients = recipe.getIngredientMap();
+            for (char c : ingredients.keySet()) {
+                result.setIngredient(c, ingredients.get(c).getData().clone());
+            }
+        } else if (toClone instanceof ShapelessRecipe) {
+            ShapelessRecipe recipe = (ShapelessRecipe) toClone;
+            ShapelessRecipe result = new ShapelessRecipe(recipe.getResult().clone());
+
+            // Copy ingredients
+            for (ItemStack ingredient : recipe.getIngredientList()) {
+                result.addIngredient(ingredient.getAmount(), ingredient.getData());
+            }
+            return result;
+        } else if (toClone instanceof FurnaceRecipe) {
+            FurnaceRecipe recipe = (FurnaceRecipe) toClone;
+            return new FurnaceRecipe(recipe.getResult().clone(), recipe.getInput().getData());
+        }
+        return null;
+    }
 }
