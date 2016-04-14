@@ -349,7 +349,9 @@ public class RecipeUtil {
             // Copy ingredients map
             Map<Character, ItemStack> ingredients = recipe.getIngredientMap();
             for (char c : ingredients.keySet()) {
-                result.setIngredient(c, ingredients.get(c).getData().clone());
+                ItemStack item = ingredients.get(c);
+                if (item == null) continue;
+                result.setIngredient(c, item.getData().clone());
             }
         } else if (toClone instanceof ShapelessRecipe) {
             ShapelessRecipe recipe = (ShapelessRecipe) toClone;

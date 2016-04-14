@@ -1,6 +1,7 @@
 package co.kepler.fastcraftplus.craftgui;
 
 import co.kepler.fastcraftplus.FastCraft;
+import co.kepler.fastcraftplus.Permission;
 import org.bukkit.Location;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
@@ -8,6 +9,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
@@ -61,22 +63,24 @@ public class PlayerManager implements Listener {
         allowWorkbenchForTick(player.getUniqueId());
         player.openWorkbench(location, force);
     }
-    
+
     @EventHandler
     public void onInventoryOpen(InventoryOpenEvent e) {
         if (e.isCancelled() || e.getInventory().getType() != InventoryType.WORKBENCH) return;
 
         // See if the player is able to open a FastCraft+ interface
         HumanEntity humanEntity = e.getPlayer();
+        final Inventory inv = e.getInventory();
         if (!(humanEntity instanceof Player)) return;
         if (isWorkbenchAllowed(humanEntity.getUniqueId())) return;
+        if (!e.getPlayer().hasPermission(Permission.USE)) return;
 
-        // Cancel the interaction, and show the FastCraft GUI.
+        // Cancel event
         e.setCancelled(true);
 
         // Open GUI in one tick
         final Player player = (Player) humanEntity;
-        final Location location = e.getInventory().getLocation();
+        final Location location = inv.getLocation();
         new BukkitRunnable() {
             public void run() {
                 new GUIFastCraft(player, location).show();
