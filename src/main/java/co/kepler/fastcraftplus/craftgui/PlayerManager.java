@@ -80,7 +80,7 @@ public class PlayerManager implements Listener {
             return result;
         }
 
-        public static void savePrefs() {
+        public static void saveAllPrefs() {
             for (UUID uuid : prefs.keySet()) {
                 File prefsFile = getPrefsFile(uuid);
                 BukkitUtil.saveConfiguration(prefs.get(uuid).conf, prefsFile);

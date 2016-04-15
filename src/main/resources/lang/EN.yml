@@ -64,6 +64,7 @@ commands:
   no-perm: '&cYou don''t have the required permission for this command: <perm>' # Variables: perm
   player-only: '&cYou must be a player to use this command.'
   console-only: '&cThis command can only be executed in the server console'
+  unknown-player: '&cUnknown player: <player>' # Variables: player
 
   fastcraft toggle:
     output:

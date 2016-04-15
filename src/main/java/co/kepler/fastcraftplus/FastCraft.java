@@ -56,6 +56,7 @@ public class FastCraft extends JavaPlugin {
     @Override
     public void onDisable() {
         GUI.disposeAll();
+        PlayerManager.Prefs.saveAllPrefs();
     }
 
     /**

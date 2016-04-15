@@ -14,7 +14,7 @@ import java.util.List;
  * Handles the craft command.
  */
 public class CmdCraft extends SimpleCommand {
-    private static final String USAGE = "/fastcraftadmin craft [workbench|fastcraft]";
+    private static final String USAGE = "/fastcraft craft [workbench|fastcraft]";
     private static final String WORKBENCH = "workbench", FASTCRAFT = "fastcraft";
     private static final List<String> types = Arrays.asList(WORKBENCH, FASTCRAFT);
 
@@ -49,6 +49,8 @@ public class CmdCraft extends SimpleCommand {
         if (PlayerManager.Prefs.getPrefs(player).isFastCraftEnabled()
                 || !player.hasPermission(Permission.USE)) {
             new GUIFastCraft(player, null).show();
+        } else {
+            player.openWorkbench(null, true);
         }
     }
 
