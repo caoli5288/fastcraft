@@ -51,8 +51,8 @@ gui:
       - '&bNeusoritierung der herstellbaren Gegenstaende'
 
     multiplier:
-      title: '&aHerstellungsmuliplikator (<mult>x)'
-      description: # Variablen: mult
+      title: '&aHerstellungsmuliplikator (<mult>x)' # Variablen: mult
+      description:
       - '&bstellt mehr als einen Gegenstand'
       - '&bauf einmal her'
 
@@ -65,13 +65,14 @@ commands:
   usage: '&cNutzes des Befehl: <usage>' # Variablen: usage
   no-perm: '&cDu hast nicht die benoetigte Berechtigung fuer diesen Befehl: <perm>' # Variables: perm
   player-only: '&cDu musst ein Spieler sein um diesen Befehl benutzen zu koennen.'
+  console-only: '&cDieser Befehl kann nur von der Konsole ausgefuehrt werden.'
 
   fastcraft toggle:
     output:
       on:        '&aDas Interface von FastCraft+ wurde aktiviert.'
       off:       '&aDas Interface von FastCraft+ wurde deaktiviert.'
-      on-other:  '&aDas Interface von FastCraft+ wurde fuer <player> aktiviert.'  # Variablen: player
-      off-other: '&aDas Interface von FastCraft+ wurde fuer <player> deaktiviert.'  # Variablen: player
+      on-other:  '&aDas Interface von FastCraft+ wurde fuer <player> aktiviert.' # Variablen: player
+      off-other: '&aDas Interface von FastCraft+ wurde fuer <player> deaktiviert.' # Variablen: player
 
   fastcraftadmin reload:
     output: '&aDie FastCraft+ Konfigurationsdatein wurden neugeladen.'
@@ -79,7 +80,7 @@ commands:
 # Die loakisierten Namen der Gegenstaende.
 # d: urspruenglicher Gegenstandsname -> wird immer verwendet wenn keine
 # weitere Metadatenangabe erfolgt ist.
-# number: Name /zahl) der spezifischen Metadatei
+# number: Name /Zahl) der spezifischen Metadatei
 items:
 #  'minecraft:diamond': 'Diamant'
 #  'minecraft:planks':
@@ -189,8 +190,8 @@ items:
     d: 'Farbstoff'
     0: 'Tintenbeutel'
     1: 'Roter Farbstoff'
-    2: 'Kakrusgruen'
-    3: 'Kakaubohne'
+    2: 'Kaktusgruen'
+    3: 'Kakaobohnen'
     4: 'Lapislazuli'
     5: 'Violetter Farbstoff'
     6: 'Tuerkieser Farbstoff'
@@ -326,22 +327,22 @@ items:
   'minecraft:leather_boots': 'Lederstiefel'
   'minecraft:banner':
     d: 'Farbiges Banner'
-    15: 'Weisses Banner'
-    14: 'Oranges Banner'
-    13: 'Magenta Banner'
-    12: 'Hellblaues Banner'
-    11: 'Gelbes Banner'
-    10: 'Hellgruenes Banner'
-    9: 'Rosa Banner'
-    8: 'Graues Banner'
-    7: 'Hellgraues Banner'
-    6: 'Tuerkieses Banner'
-    5: 'Violettes Banner'
-    4: 'Blaues Banner'
-    3: 'Braunes Banner'
-    2: 'Gruenea Banner'
-    1: 'Rotes Banner'
     0: 'Schwarzes Banner'
+    1: 'Rotes Banner'
+    2: 'Gruenea Banner'
+    3: 'Braunes Banner'
+    4: 'Blaues Banner'
+    5: 'Violettes Banner'
+    6: 'Tuerkieses Banner'
+    7: 'Hellgraues Banner'
+    8: 'Graues Banner'
+    9: 'Rosa Banner'
+    10: 'Hellgruenes Banner'
+    11: 'Gelbes Banner'
+    12: 'Hellblaues Banner'
+    13: 'Magenta Banner'
+    14: 'Oranges Banner'
+    15: 'Weisses Banner'
   'minecraft:ribbit_hide': 'Kaninchenfell'
   'minecraft:written_book': 'Beschriebenes Buch'
   'minecraft:writable_book': 'Buch und Feder'
