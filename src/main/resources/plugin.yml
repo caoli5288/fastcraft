@@ -11,20 +11,20 @@ softdepend:
 - ProRecipes
 
 commands:
-#  fastcraft:
-#    description: FastCraft+ commands
-#    usage: /<command>
-#    aliases: [fc]
+  fastcraft:
+    description: FastCraft+ commands
+    usage: /<command>
+    aliases: [fc]
 
   fastcraftadmin:
     description: FastCraft+ admin commands
     usage: /<command>
     aliases: [fcadmin, fca]
 
-#  craft:
-#    description: Open a crafting inventory
-#    usage: /<command>
-#    aliases: [cr, workbench, wb]
+  craft:
+    description: Open a crafting inventory
+    usage: /<command>
+    aliases: [cr, workbench, wb]
 
 permissions:
   fastcraft.*:
@@ -39,17 +39,25 @@ permissions:
     description: Permission to use FastCraft+ for crafting
     default: true
 
-  fastcraft.toggle:
+  fastcraft.command.*:
+    description: All non-admin FastCraft+ commands
+    default: false
+    children:
+      fastcraft.craft: true
+      fastcraft.toggle: true
+      fastcraft.toggle.other: true
+
+  fastcraft.command.toggle:
     description: Permission for a player to enable/disable FastCraft+
     default: true
     children:
       fastcraft.toggle.other: false
 
-  fastcraft.toggle.other:
+  fastcraft.command.toggle.other:
     description: Permission to toggle FastCraft+ for another player
     default: op
 
-  fastcraft.craft:
+  fastcraft.command.craft:
     description: Permission to use /fastcraft craft
     default: false
 

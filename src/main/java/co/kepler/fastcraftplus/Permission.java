@@ -6,8 +6,8 @@ package co.kepler.fastcraftplus;
 public class Permission {
     public static final String
             USE = "fastcraft.use",
-            TOGGLE = "fastcraft.toggle",
-            TOGGLE_OTHER = "fastcraft.toggle.other",
-            CRAFT = "fastcraft.craft",
+            COMMAND_CRAFT = "fastcraft.craft",
+            COMMAND_TOGGLE = "fastcraft.toggle",
+            COMMAND_TOGGLE_OTHER = "fastcraft.toggle.other",
             ADMIN_RELOAD = "fastcraft.admin.reload";
 }
