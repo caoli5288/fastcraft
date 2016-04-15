@@ -64,8 +64,8 @@ commands:
 
   fastcraft toggle:
     output:
-      on:        '&aИнтерфейс FastCraft+ включён.'
-      off:       '&aИнтерфейс FastCraft+ выключен.'
+      on-self:   '&aИнтерфейс FastCraft+ включён.'
+      off-self:  '&aИнтерфейс FastCraft+ выключен.'
       on-other:  '&aИнтерфейс FastCraft+ включён для игрока <player>.'  # Variables: player
       off-other: '&aИнтерфейс FastCraft+ выключён для игрока <player>.' # Variables: player
 

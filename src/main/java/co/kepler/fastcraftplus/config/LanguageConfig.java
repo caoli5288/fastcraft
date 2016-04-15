@@ -250,12 +250,12 @@ public class LanguageConfig extends ConfigExternal {
         return get("commands.unknown-player", "player", player);
     }
 
-    public String commands_fastcraft_toggle_output_on() {
-        return get("commands.fastcraft toggle.output.on");
+    public String commands_fastcraft_toggle_output_on_self() {
+        return get("commands.fastcraft toggle.output.on-self");
     }
 
-    public String commands_fastcraft_toggle_output_off() {
-        return get("commands.fastcraft toggle.output.off");
+    public String commands_fastcraft_toggle_output_off_self() {
+        return get("commands.fastcraft toggle.output.off-self");
     }
 
     public String commands_fastcraft_toggle_output_on_other(String player) {

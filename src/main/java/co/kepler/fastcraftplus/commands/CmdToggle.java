@@ -76,9 +76,9 @@ public class CmdToggle extends SimpleCommand {
 
         // Send message to toggled player
         if (enabled) {
-            togglePlayer.sendMessage(FastCraft.lang().commands_fastcraft_toggle_output_on());
+            togglePlayer.sendMessage(FastCraft.lang().commands_fastcraft_toggle_output_on_self());
         } else {
-            togglePlayer.sendMessage(FastCraft.lang().commands_fastcraft_toggle_output_off());
+            togglePlayer.sendMessage(FastCraft.lang().commands_fastcraft_toggle_output_off_self());
         }
 
         // Set player preferences
