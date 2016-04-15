@@ -1,18 +1,19 @@
 package co.kepler.fastcraftplus.craftgui;
 
+import co.kepler.fastcraftplus.BukkitUtil;
 import co.kepler.fastcraftplus.FastCraft;
 import co.kepler.fastcraftplus.Permission;
-import org.bukkit.Location;
-import org.bukkit.entity.HumanEntity;
+import org.bukkit.Material;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.InventoryOpenEvent;
-import org.bukkit.event.inventory.InventoryType;
-import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerInteractEvent;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -21,95 +22,77 @@ import java.util.UUID;
  * Manages players preferences, and handles opening crafting GUI's.
  */
 public class PlayerManager implements Listener {
-    private final Map<UUID, Integer> allowWorkbench = new HashMap<>();
 
     /**
-     * Allow a workbench to be opened for a tick.
+     * Handles player interactions with workbench blocks.
      *
-     * @param uuid The player's UUID.
-     */
-    private void allowWorkbenchForTick(final UUID uuid) {
-        // Allow workbench to open
-        Integer val = allowWorkbench.get(uuid);
-        allowWorkbench.put(uuid, (val == null ? 0 : val) + 1); // Increment, or set to 1 if null
-
-        // Disallow workbench to open in a tick
-        new BukkitRunnable() {
-            public void run() {
-                Integer val = allowWorkbench.get(uuid);
-                if (val == null) return;
-                if (--val == 0) {
-                    allowWorkbench.remove(uuid);
-                    return;
-                }
-                allowWorkbench.put(uuid, val); // Decrement, or set null if zero
-            }
-        }.runTask(FastCraft.getInstance());
-    }
-
-    /**
-     * See if a workbench is being allowed to open.
-     *
-     * @param uuid The player's UUID.
-     * @return Returns true if a workbench should be allowed to open.
-     */
-    private boolean isWorkbenchAllowed(UUID uuid) {
-        return allowWorkbench.containsKey(uuid);
-    }
-
-    /**
-     * Open a workbench for a player.
-     *
-     * @param player   The player for which the workbench will be opened.
-     * @param location The location of the workbench.
-     * @param force    Whether the inventory should be forced open.
-     */
-    public void openWorkbench(HumanEntity player, Location location, boolean force) {
-        allowWorkbenchForTick(player.getUniqueId());
-        player.openWorkbench(location, force);
-    }
-
-    /**
-     * Handle inventory opening. If a workbench is being opened, replace it with a GUI.
-     *
-     * @param e The inventory open event.
+     * @param e The player interact event.
      */
     @EventHandler
-    public void onInventoryOpen(InventoryOpenEvent e) {
-        if (e.isCancelled() || e.getInventory().getType() != InventoryType.WORKBENCH) return;
+    public void onPlayerInteract(PlayerInteractEvent e) {
+        if (e.isCancelled()) return;
+        if (e.getAction() != Action.RIGHT_CLICK_BLOCK) return;
+        if (e.getClickedBlock().getType() != Material.WORKBENCH) return;
 
-        // See if the player is able to open a FastCraft+ interface
-        HumanEntity humanEntity = e.getPlayer();
-        final Inventory inv = e.getInventory();
-        if (!(humanEntity instanceof Player)) return;
-        if (isWorkbenchAllowed(humanEntity.getUniqueId())) return;
-        if (!e.getPlayer().hasPermission(Permission.USE)) return;
+        // See if the player has permission to open a FastCraft+ interface
+        Player player = e.getPlayer();
+        if (!player.hasPermission(Permission.USE)) return;
 
-        // Cancel event
+        // If the player has FastCraft+ enabled
+        if (!Prefs.getPrefs(player).isFastCraftEnabled()) return;
+
+        // Cancel the event, and open the GUI
         e.setCancelled(true);
-
-        // Open GUI in one tick
-        final Player player = (Player) humanEntity;
-        new BukkitRunnable() {
-            public void run() {
-                new GUIFastCraft(player, null).show(); // TODO non-null location
-            }
-        }.runTask(FastCraft.getInstance());
+        new GUIFastCraft(player, e.getClickedBlock().getLocation()).show();
     }
 
-    /**
-     * Listen to player commands, and disable the GUI from
-     * opening if a compatibility command is executed.
-     *
-     * @param e The player command event.
-     */
-    @EventHandler
-    public void onCommand(PlayerCommandPreprocessEvent e) {
-        String message = e.getMessage().toLowerCase();
-        for (String compat : FastCraft.config().getCommandCompat()) {
-            if (message.startsWith(compat.toLowerCase())) {
-                allowWorkbenchForTick(e.getPlayer().getUniqueId());
+    public static class Prefs {
+        private static final String KEY_ENABLED = "enabled";
+
+        private static Map<UUID, Prefs> prefs = new HashMap<>();
+
+        private YamlConfiguration conf = new YamlConfiguration();
+
+        private static File getPrefsFile(UUID uuid) {
+            return new File(FastCraft.getInstance().getDataFolder(), "preferences/" + uuid + ".yml");
+        }
+
+        public static Prefs getPrefs(Player player) {
+            UUID uuid = player.getUniqueId();
+            if (prefs.containsKey(uuid)) return prefs.get(uuid);
+
+            Prefs result = new Prefs();
+            try {
+                File playerFile = getPrefsFile(uuid);
+                File parentDir = playerFile.getParentFile();
+                if (parentDir.mkdirs()) {
+                    FastCraft.log("Created directory: " + parentDir);
+                }
+                if (playerFile.createNewFile()) {
+                    FastCraft.log("Created preferences file for " + player.getName());
+                }
+                BukkitUtil.loadConfiguration(new FileInputStream(playerFile), result.conf);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
+
+            prefs.put(uuid, result);
+            return result;
+        }
+
+        public static void savePrefs() {
+            for (UUID uuid : prefs.keySet()) {
+                File prefsFile = getPrefsFile(uuid);
+                BukkitUtil.saveConfiguration(prefs.get(uuid).conf, prefsFile);
+            }
+        }
+
+        public boolean isFastCraftEnabled() {
+            return conf.getBoolean(KEY_ENABLED, FastCraft.config().getDefaultEnabled());
+        }
+
+        public void setFastCraftEnabled(boolean enabled) {
+            conf.set(KEY_ENABLED, enabled);
         }
     }
 }

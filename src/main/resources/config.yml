@@ -2,17 +2,8 @@
 #                   lang folder in the FastCraftPlus plugin directory.
 #                   Available languages: English (EN), German (DE), Russian (RU), Czech (CS)
 #
-# command-compat    Do not open the FastCraft+ GUI for these commands.
+# default-enabled   Whether FastCraft+ is enabled for players by default.
 
 language: EN
 
-command-compat:
-- /recipe
-- /erecipe
-- /formula
-- /eformula
-- /method
-- /emethod
-- /recipes
-- /erecipes
-- /furniture recipe
+default-enabled: true

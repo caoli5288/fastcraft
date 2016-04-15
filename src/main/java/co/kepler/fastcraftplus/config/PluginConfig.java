@@ -16,6 +16,10 @@ public class PluginConfig extends ConfigExternal {
         return config.getString("language");
     }
 
+    public boolean getDefaultEnabled() {
+        return config.getBoolean("default-enabled");
+    }
+
     public List<String> getCommandCompat() {
         return config.getStringList("command-compat");
     }

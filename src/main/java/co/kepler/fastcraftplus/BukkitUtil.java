@@ -69,7 +69,7 @@ public class BukkitUtil {
      * Save a YamlConfiguration to a file.
      *
      * @param config The configuration to save.
-     * @param file The file to write to.
+     * @param file   The file to write to.
      */
     public static void saveConfiguration(YamlConfiguration config, File file) {
         try {
