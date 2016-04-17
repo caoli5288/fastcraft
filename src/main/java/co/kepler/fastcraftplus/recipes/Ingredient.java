@@ -17,7 +17,7 @@ public class Ingredient {
 
     private final MaterialData material;
     private final ItemMeta meta;
-    private final String name;
+    private final ItemStack item;
 
     /**
      * Create an ingredient from an item.
@@ -27,7 +27,7 @@ public class Ingredient {
     public Ingredient(ItemStack item) {
         material = item.getData();
         meta = item.hasItemMeta() ? item.getItemMeta() : null;
-        name = RecipeUtil.getItemName(item);
+        this.item = item.clone();
     }
 
     /**
@@ -81,7 +81,7 @@ public class Ingredient {
      * @return Returns the ingredient's name.
      */
     public String getName() {
-        return name;
+        return RecipeUtil.getItemName(item);
     }
 
     /**

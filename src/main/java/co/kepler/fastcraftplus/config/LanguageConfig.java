@@ -6,6 +6,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Collections;
@@ -49,45 +50,52 @@ public class LanguageConfig extends ConfigExternal {
         super.load();
 
         // Load item names
-        ConfigurationSection itemSection = config.getConfigurationSection("items");
+        YamlConfiguration itemSection = new YamlConfiguration();
+        copyDefaults(config.getConfigurationSection("items"), itemSection);
+        copyDefaults(internalConfig.getConfigurationSection("items"), itemSection);
         itemNames = new HashMap<>();
-        if (itemSection != null) {
-            for (String item : itemSection.getKeys(false)) {
-                Material itemType = Bukkit.getUnsafe().getMaterialFromInternalName(item);
-                if (itemType == null) {
-                    FastCraft.err("Unknown item type: '" + item + "'");
-                    continue;
-                }
-                ItemNames itemName;
-                if (itemSection.isString(item)) {
-                    // If item name was given directly
-                    itemName = new ItemNames(itemSection.getString(item), null);
-                } else {
-                    // If item names are given based off of item data values
-                    ConfigurationSection nameSection = itemSection.getConfigurationSection(item);
-                    String defName = null;
-                    Map<Integer, String> names = new HashMap<>();
-                    for (String data : nameSection.getKeys(false)) {
-                        if (data.equals("d")) {
-                            // Get the default item name
-                            defName = nameSection.getString(data);
-                        } else {
-                            // Get the item name for specific data values
-                            try {
-                                int num = Integer.parseInt(data);
-                                names.put(num, nameSection.getString(data));
-                            } catch (NumberFormatException e) {
-                                FastCraft.err("Item data is not 'd' or a number: " + data);
-                            }
+        for (String item : itemSection.getKeys(false)) {
+            Material itemType = Bukkit.getUnsafe().getMaterialFromInternalName(item);
+            if (itemType == null) {
+                FastCraft.err("Unknown item type: '" + item + "'");
+                continue;
+            }
+            ItemNames itemName;
+            if (itemSection.isString(item)) {
+                // If item name was given directly
+                itemName = new ItemNames(itemSection.getString(item), null);
+            } else {
+                // If item names are given based off of item data values
+                ConfigurationSection nameSection = itemSection.getConfigurationSection(item);
+                String defName = null;
+                Map<Integer, String> names = new HashMap<>();
+                for (String data : nameSection.getKeys(false)) {
+                    if (data.equals("d")) {
+                        // Get the default item name
+                        defName = nameSection.getString(data);
+                    } else {
+                        // Get the item name for specific data values
+                        try {
+                            int num = Integer.parseInt(data);
+                            names.put(num, nameSection.getString(data));
+                        } catch (NumberFormatException e) {
+                            FastCraft.err("Item data is not 'd' or a number: " + data);
                         }
                     }
-                    itemName = new ItemNames(defName, names);
                 }
-                if (itemName.getDefName() == null) {
-                    FastCraft.warning("Language (" + language + ") has missing default (d) for item: '" + item + "'");
-                }
-                itemNames.put(itemType, itemName);
+                itemName = new ItemNames(defName, names);
             }
+            if (itemName.getDefName() == null) {
+                FastCraft.warning("Language (" + language + ") has missing default (d) for item: '" + item + "'");
+            }
+            itemNames.put(itemType, itemName);
+        }
+    }
+
+    private void copyDefaults(ConfigurationSection from, ConfigurationSection to) {
+        if (from == null || to == null) return;
+        for (String key : from.getKeys(true)) {
+            if (!to.contains(key)) to.set(key, from.get(key));
         }
     }
 

@@ -2,10 +2,7 @@ package co.kepler.fastcraftplus.recipes;
 
 import co.kepler.fastcraftplus.BukkitUtil;
 import co.kepler.fastcraftplus.FastCraft;
-import org.bukkit.Achievement;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.inventory.*;
@@ -118,7 +115,7 @@ public class RecipeUtil {
         // Return the item's display name if it has one.
         if (item.hasItemMeta()) {
             String displayName = item.getItemMeta().getDisplayName();
-            if (displayName != null) return displayName;
+            if (displayName != null) return ChatColor.ITALIC + displayName;
         }
 
         // Try to get the item's name from lang

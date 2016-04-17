@@ -9,6 +9,7 @@ main: co.kepler.fastcraftplus.FastCraft
 softdepend:
 - ItemMakerPro
 - ProRecipes
+- CrateReloaded
 
 commands:
   fastcraft:
