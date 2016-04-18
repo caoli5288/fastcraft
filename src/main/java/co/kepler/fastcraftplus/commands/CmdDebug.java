@@ -5,6 +5,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -45,8 +48,8 @@ public class CmdDebug extends SimpleCommand {
                 .append("  Java ").append(System.getProperty("java.version")).append("\n");
 
         // Output plugins and versions
-        Plugin[] plugins = Bukkit.getPluginManager().getPlugins();
-        output.append("Other Plugins (").append(plugins.length - 1).append("):\n");
+        List<Plugin> plugins = getSortedPlugins();
+        output.append("Other Plugins (").append(plugins.size() - 1).append("):\n");
         for (Plugin plugin : plugins) {
             if (plugin.equals(FastCraft.getInstance())) continue; // Don't output FastCraft+ here
             output.append("  ").append(plugin.getName()).append(" ")
@@ -55,6 +58,21 @@ public class CmdDebug extends SimpleCommand {
 
         output.append("===========================================\n");
         FastCraft.log(output.toString());
+    }
 
+    /**
+     * Gets all plugins on the server, sorted alphabetically.
+     *
+     * @return Returns a sorted list of the server's plugins.
+     */
+    public List<Plugin> getSortedPlugins() {
+        List<Plugin> result = Arrays.asList(Bukkit.getPluginManager().getPlugins());
+        Collections.sort(result, new Comparator<Plugin>() {
+            @Override
+            public int compare(Plugin p0, Plugin p1) {
+                return p0.getName().compareToIgnoreCase(p1.getName());
+            }
+        });
+        return result;
     }
 }

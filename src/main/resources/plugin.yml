@@ -33,7 +33,7 @@ permissions:
     default: op
     children:
       fastcraft.use: true
-      fastcraft.craft: true
+      fastcraft.command.*: true
       fastcraft.admin.*: true
 
   fastcraft.use:
