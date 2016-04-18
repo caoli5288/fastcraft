@@ -45,6 +45,7 @@ public class Compat_ItemMakerPro extends Compat {
 
         // Get PerfectShapedRecipes
         for (PerfectShapedRecipe recipe : RecipeGetter.getShapedRecipes()) {
+            if (recipe == null) continue;
             if (player == null || !recipe.hasPermission() || player.hasPermission(recipe.getPermission())) {
                 // If player is null, or if player has permission to craft
                 recipes.add(getRecipe(recipe));
@@ -53,6 +54,7 @@ public class Compat_ItemMakerPro extends Compat {
 
         // Get PerfectShapelessRecipes
         for (PerfectShapelessRecipe recipe : RecipeGetter.getShapelessRecipe()) {
+            if (recipe == null) continue;
             if (player == null || !recipe.hasPermission() || player.hasPermission(recipe.getPermission())) {
                 // If player is null, or if player has permission to craft
                 recipes.add(getRecipe(recipe));
