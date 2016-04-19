@@ -21,6 +21,8 @@ public class RecipeUtil {
             "RecipeFireworks", "RecipeRepair", "RecipesBanner"
     };
 
+    private static boolean initialized = false;
+
     private static Set<Integer> ignoreRecipeHashes;
     private static Method methodAsNMSCopy;
     private static Method methodNMSGetName;
@@ -31,11 +33,11 @@ public class RecipeUtil {
     private static Map<Material, Achievement> craftingAchievements;
 
     static {
-        String version = BukkitUtil.serverVersion();
-        String nms = "net.minecraft.server." + version + ".";
-        String cb = "org.bukkit.craftbukkit." + version + ".";
-
         try {
+            String version = BukkitUtil.serverVersion();
+            String nms = "net.minecraft.server." + version + ".";
+            String cb = "org.bukkit.craftbukkit." + version + ".";
+
             Class<?> classCraftingManager = Class.forName(nms + "CraftingManager");
             craftingManagerInstance = classCraftingManager.getMethod("getInstance").invoke(null);
             methodGetRecipes = craftingManagerInstance.getClass().getMethod("getRecipes");
@@ -45,13 +47,9 @@ public class RecipeUtil {
             Class<?> classItemStack = Class.forName(nms + "ItemStack");
             methodAsNMSCopy = classCraftItemStack.getMethod("asNMSCopy", ItemStack.class);
             methodNMSGetName = classItemStack.getMethod("getName");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
-        // Find which recipes should be ignored by FastCraft
-        ignoreRecipeHashes = new HashSet<>();
-        try {
+            // Find which recipes should be ignored by FastCraft
+            ignoreRecipeHashes = new HashSet<>();
             for (Object iRecipe : (List) methodGetRecipes.invoke(craftingManagerInstance)) {
                 for (String ignoreType : IGNORE_RECIPES) {
                     Class recipeClass = iRecipe.getClass();
@@ -68,19 +66,30 @@ public class RecipeUtil {
                     }
                 }
             }
+
+            craftingAchievements = new HashMap<>();
+            craftingAchievements.put(Material.WORKBENCH, Achievement.BUILD_WORKBENCH);
+            craftingAchievements.put(Material.WOOD_PICKAXE, Achievement.BUILD_PICKAXE);
+            craftingAchievements.put(Material.FURNACE, Achievement.BUILD_FURNACE);
+            craftingAchievements.put(Material.WOOD_HOE, Achievement.BUILD_HOE);
+            craftingAchievements.put(Material.BREAD, Achievement.MAKE_BREAD);
+            craftingAchievements.put(Material.CAKE, Achievement.BAKE_CAKE);
+            craftingAchievements.put(Material.STONE_PICKAXE, Achievement.BUILD_BETTER_PICKAXE);
+            craftingAchievements.put(Material.WOOD_SWORD, Achievement.BUILD_SWORD);
+
+            initialized = true;
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
 
-        craftingAchievements = new HashMap<>();
-        craftingAchievements.put(Material.WORKBENCH, Achievement.BUILD_WORKBENCH);
-        craftingAchievements.put(Material.WOOD_PICKAXE, Achievement.BUILD_PICKAXE);
-        craftingAchievements.put(Material.FURNACE, Achievement.BUILD_FURNACE);
-        craftingAchievements.put(Material.WOOD_HOE, Achievement.BUILD_HOE);
-        craftingAchievements.put(Material.BREAD, Achievement.MAKE_BREAD);
-        craftingAchievements.put(Material.CAKE, Achievement.BAKE_CAKE);
-        craftingAchievements.put(Material.STONE_PICKAXE, Achievement.BUILD_BETTER_PICKAXE);
-        craftingAchievements.put(Material.WOOD_SWORD, Achievement.BUILD_SWORD);
+    /**
+     * See if RecipeUtil has been initialized.
+     *
+     * @return Returns false if unable to initialize.
+     */
+    public static boolean isInitialized() {
+        return initialized;
     }
 
     /**
