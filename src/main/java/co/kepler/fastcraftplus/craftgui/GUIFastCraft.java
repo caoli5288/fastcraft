@@ -18,6 +18,7 @@ import org.bukkit.event.inventory.InventoryPickupItemEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -266,8 +267,12 @@ public class GUIFastCraft extends GUI {
         return false; // TODO
     }
 
-    private boolean btnWorkbenchClick(GUIButton.Click info) {
-        info.event.getWhoClicked().openWorkbench(location, location == null);
+    private boolean btnWorkbenchClick(final GUIButton.Click info) {
+        new BukkitRunnable() {
+            public void run() {
+                info.event.getWhoClicked().openWorkbench(location, location == null);
+            }
+        }.runTask(FastCraft.getInstance());
         return true;
     }
 
