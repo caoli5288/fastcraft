@@ -13,23 +13,23 @@ gui:
   item-name: # Variables: name
 
   ingredients:
-    label: '&aIngredience:'
+    label: '&aIngredients:'
     item: '&a <amount>x <item>' # Variables: amount, item
 
   results:
-    label: '&aVýsledky:'
+    label: '&aResults:'
     item: '&a <amount>x <item>' # Varibales: amount, item
 
   toolbar:
     page-prev:
       title: '&aPredchozi stranka'
       description: # Variables: prev, total, cur
-      - '&bJdi na stranku <prev>/<total>'
+      - '&bJit na stranku <prev>/<total>'
 
     page-next:
       title: '&aDalsi stranka'
       description: # Variables: prev, total, cur
-      - '&bJdi na stranku <next>/<total>'
+      - '&bJit na stranku <next>/<total>'
 
     craft-items:
       title: '&aVyroba predmetu'
@@ -47,21 +47,36 @@ gui:
       - '&bVyrabenÃ­ raket a jejich naplnÃ­'
 
     refresh:
-      title: '&aZnovu nacÃ­st'
+      title: '&aZnovu nacist'
       description:
       - '&bZnovu zobrazit dotupne predmety'
 
     multiplier:
-      title: '&aVyrabecÃ­ nasobic (<mult>x)' # Variables: mult
+      title: '&aVyrabecÃ­ nasobic (%mult%x)' # Variables: mult
       description: # Variables: mult
       - '&bVytvarej vÃ­ce predmetu najedou'
 
     workbench:
-      title: '&aPracovnÃ­ stul'
+      title: '&aPracovni stul'
       description:
       - '&bOtevre klasicky 3x3 stul'
 
-commands: # Not yet implemented
+commands:
+  usage: '&cSpravne pouziti prikazu: <usage>' # Variables: usage
+  no-perm: '&cNemas dostatecna opravneni opravneni pro tento prikaz: <perm>' # Variables: perm
+  player-only: '&cTento prikaz jde pouzit pouze ve hre.'
+  console-only: '&cTento prikaz muze vyt pouzit pouze z konsole'
+  unknown-player: '&cNeznamy hrac: <player>' # Variables: player
+
+  fastcraft toggle:
+    output:
+      on-self:   '&aFastCraft+ interface zapnut.'
+      off-self:  '&aFastCraft+ interface vypnut.'
+      on-other:  '&aFastCraft+ interface zapnut pro hrace <player>.'  # Variables: player
+      off-other: '&aFastCraft+ interface vypnut pro hrace <player>.' # Variables: player
+
+  fastcraftadmin reload:
+    output: '&aFastCraft+ nastaveni znovu nacteno.'
 
 # The localized names of items.
 # d: Default item name.
