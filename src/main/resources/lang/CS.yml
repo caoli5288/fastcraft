@@ -13,11 +13,11 @@ gui:
   item-name: # Variables: name
 
   ingredients:
-    label: '&aIngredients:'
+    label: '&aIngredience:'
     item: '&a <amount>x <item>' # Variables: amount, item
 
   results:
-    label: '&aResults:'
+    label: '&aVýsledky:'
     item: '&a <amount>x <item>' # Varibales: amount, item
 
   toolbar:
@@ -52,7 +52,7 @@ gui:
       - '&bZnovu zobrazit dotupne predmety'
 
     multiplier:
-      title: '&aVyrabecÃ­ nasobic (%mult%x)' # Variables: mult
+      title: '&aVyrabecÃ­ nasobic (<mult>x)' # Variables: mult
       description: # Variables: mult
       - '&bVytvarej vÃ­ce predmetu najedou'
 
