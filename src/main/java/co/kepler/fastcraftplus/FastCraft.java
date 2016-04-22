@@ -10,7 +10,6 @@ import co.kepler.fastcraftplus.config.RecipesConfig;
 import co.kepler.fastcraftplus.craftgui.GUIFastCraft;
 import co.kepler.fastcraftplus.craftgui.PlayerManager;
 import co.kepler.fastcraftplus.recipes.CraftingListener;
-import co.kepler.fastcraftplus.recipes.RecipeUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -32,13 +31,6 @@ public class FastCraft extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
-
-        // Disable if unable to initialize RecipeUtil
-        if (!RecipeUtil.isInitialized()) {
-            err("Unable to initialize RecipeUtil. Disabling.");
-            Bukkit.getPluginManager().disablePlugin(this);
-            return;
-        }
 
         // Create and load configurations
         externalConfigs = new ArrayList<>();

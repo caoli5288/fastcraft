@@ -1,5 +1,6 @@
 package co.kepler.fastcraftplus.recipes;
 
+import co.kepler.fastcraftplus.BukkitUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -81,7 +82,7 @@ public class Ingredient {
      * @return Returns the ingredient's name.
      */
     public String getName() {
-        return RecipeUtil.getItemName(item);
+        return BukkitUtil.getItemName(item);
     }
 
     /**

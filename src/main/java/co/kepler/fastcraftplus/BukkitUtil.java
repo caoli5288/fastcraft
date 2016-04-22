@@ -1,8 +1,11 @@
 package co.kepler.fastcraftplus;
 
+import org.apache.commons.lang.WordUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.io.*;
@@ -15,8 +18,22 @@ import java.lang.reflect.Method;
 public class BukkitUtil {
     private static final String CONFIG_CHARSET = "UTF-8";
 
-    private static String version = null;
+    private static boolean canGetNativeItemNames = false;
+    private static Method methodAsNMSCopy, methodNMSGetName;
+
     private static Boolean supportsItemFlags = null;
+
+    static {
+        try {
+            Class<?> classCraftItemStack = Class.forName(obc() + "inventory.CraftItemStack");
+            Class<?> classItemStack = Class.forName(nms() + "ItemStack");
+            methodAsNMSCopy = classCraftItemStack.getMethod("asNMSCopy", ItemStack.class);
+            methodNMSGetName = classItemStack.getMethod("getName");
+            canGetNativeItemNames = true;
+        } catch (ClassNotFoundException | NoSuchMethodException e) {
+            FastCraft.err("Unable to load native Minecraft item names");
+        }
+    }
 
     /**
      * Get the server's version String.
@@ -24,9 +41,26 @@ public class BukkitUtil {
      * @return Return the server's version String.
      */
     public static String serverVersion() {
-        if (version != null) return version;
-        version = Bukkit.getServer().getClass().getPackage().getName();
-        return version = version.substring(version.lastIndexOf('.') + 1);
+        String version = Bukkit.getServer().getClass().getPackage().getName();
+        return version.substring(version.lastIndexOf('.') + 1);
+    }
+
+    /**
+     * Get the net.minecraft.server classpath.
+     *
+     * @return Returns "net.minecraft.server.[version]."
+     */
+    public static String nms() {
+        return "net.minecraft.server." + serverVersion() + ".";
+    }
+
+    /**
+     * Get the org.bukkit.craftbukkit classpath.
+     *
+     * @return Returns "org.bukkit.craftbukkit.[version]."
+     */
+    public static String obc() {
+        return "org.bukkit.craftbukkit." + serverVersion() + ".";
     }
 
     /**
@@ -80,6 +114,40 @@ public class BukkitUtil {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Get the name of an item.
+     *
+     * @param item The item to get the name of.
+     * @return Returns the name of the item.
+     */
+    public static String getItemName(ItemStack item) {
+        if (item == null) return "null";
+
+        // Return the item's display name if it has one.
+        if (item.hasItemMeta()) {
+            String displayName = item.getItemMeta().getDisplayName();
+            if (displayName != null) return ChatColor.ITALIC + displayName;
+        }
+
+        // Try to get the item's name from lang
+        String name = FastCraft.lang().items_name(item);
+        if (name != null) return name;
+
+        // Try to get the name from NMS
+        if (canGetNativeItemNames) {
+            try {
+                Object nmsItem = methodAsNMSCopy.invoke(null, item);
+                if (nmsItem != null) {
+                    name = (String) methodNMSGetName.invoke(nmsItem);
+                    if (name != null) return name;
+                }
+            } catch (IllegalAccessException | InvocationTargetException ignored) {}
+        }
+
+        // Return the item's name from its material type
+        return WordUtils.capitalizeFully(item.getData().toString());
     }
 
     /**

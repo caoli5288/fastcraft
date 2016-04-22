@@ -1,8 +1,10 @@
 package co.kepler.fastcraftplus.recipes;
 
 import co.kepler.fastcraftplus.BukkitUtil;
-import co.kepler.fastcraftplus.FastCraft;
-import org.bukkit.*;
+import org.bukkit.Achievement;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.inventory.*;
@@ -21,11 +23,7 @@ public class RecipeUtil {
             "RecipeFireworks", "RecipeRepair", "RecipesBanner"
     };
 
-    private static boolean initialized = false;
-
     private static Set<Integer> ignoreRecipeHashes;
-    private static Method methodAsNMSCopy;
-    private static Method methodNMSGetName;
     private static Method methodGetRecipes;
     private static Method methodToBukkitRecipe;
     private static Object craftingManagerInstance;
@@ -35,18 +33,12 @@ public class RecipeUtil {
     static {
         try {
             String version = BukkitUtil.serverVersion();
-            String nms = "net.minecraft.server." + version + ".";
-            String cb = "org.bukkit.craftbukkit." + version + ".";
 
+            String nms = BukkitUtil.nms();
             Class<?> classCraftingManager = Class.forName(nms + "CraftingManager");
             craftingManagerInstance = classCraftingManager.getMethod("getInstance").invoke(null);
             methodGetRecipes = craftingManagerInstance.getClass().getMethod("getRecipes");
             methodToBukkitRecipe = Class.forName(nms + "IRecipe").getMethod("toBukkitRecipe");
-
-            Class<?> classCraftItemStack = Class.forName(cb + "inventory.CraftItemStack");
-            Class<?> classItemStack = Class.forName(nms + "ItemStack");
-            methodAsNMSCopy = classCraftItemStack.getMethod("asNMSCopy", ItemStack.class);
-            methodNMSGetName = classItemStack.getMethod("getName");
 
             // Find which recipes should be ignored by FastCraft
             ignoreRecipeHashes = new HashSet<>();
@@ -66,30 +58,21 @@ public class RecipeUtil {
                     }
                 }
             }
-
-            craftingAchievements = new HashMap<>();
-            craftingAchievements.put(Material.WORKBENCH, Achievement.BUILD_WORKBENCH);
-            craftingAchievements.put(Material.WOOD_PICKAXE, Achievement.BUILD_PICKAXE);
-            craftingAchievements.put(Material.FURNACE, Achievement.BUILD_FURNACE);
-            craftingAchievements.put(Material.WOOD_HOE, Achievement.BUILD_HOE);
-            craftingAchievements.put(Material.BREAD, Achievement.MAKE_BREAD);
-            craftingAchievements.put(Material.CAKE, Achievement.BAKE_CAKE);
-            craftingAchievements.put(Material.STONE_PICKAXE, Achievement.BUILD_BETTER_PICKAXE);
-            craftingAchievements.put(Material.WOOD_SWORD, Achievement.BUILD_SWORD);
-
-            initialized = true;
-        } catch (Exception e) {
+        } catch (ClassNotFoundException | NoSuchMethodException
+                | IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
-    }
 
-    /**
-     * See if RecipeUtil has been initialized.
-     *
-     * @return Returns false if unable to initialize.
-     */
-    public static boolean isInitialized() {
-        return initialized;
+        // Load achievements associated with each item
+        craftingAchievements = new HashMap<>();
+        craftingAchievements.put(Material.WORKBENCH, Achievement.BUILD_WORKBENCH);
+        craftingAchievements.put(Material.WOOD_PICKAXE, Achievement.BUILD_PICKAXE);
+        craftingAchievements.put(Material.FURNACE, Achievement.BUILD_FURNACE);
+        craftingAchievements.put(Material.WOOD_HOE, Achievement.BUILD_HOE);
+        craftingAchievements.put(Material.BREAD, Achievement.MAKE_BREAD);
+        craftingAchievements.put(Material.CAKE, Achievement.BAKE_CAKE);
+        craftingAchievements.put(Material.STONE_PICKAXE, Achievement.BUILD_BETTER_PICKAXE);
+        craftingAchievements.put(Material.WOOD_SWORD, Achievement.BUILD_SWORD);
     }
 
     /**
@@ -110,41 +93,6 @@ public class RecipeUtil {
      */
     public static boolean shouldIgnoreRecipe(Recipe recipe) {
         return shouldIgnoreRecipe(hashRecipe(recipe));
-    }
-
-    /**
-     * Get the name of an item.
-     *
-     * @param item The item to get the name of.
-     * @return Returns the name of the item.
-     */
-    public static String getItemName(ItemStack item) {
-        if (item == null) return "null";
-
-        // Return the item's display name if it has one.
-        if (item.hasItemMeta()) {
-            String displayName = item.getItemMeta().getDisplayName();
-            if (displayName != null) return ChatColor.ITALIC + displayName;
-        }
-
-        // Try to get the item's name from lang
-        String name = FastCraft.lang().items_name(item);
-        if (name != null) return name;
-
-        // Try to get the name from NMS
-        try {
-            Object nmsItem = methodAsNMSCopy.invoke(null, item);
-            if (nmsItem != null) {
-                name = (String) methodNMSGetName.invoke(nmsItem);
-                if (name != null) return name;
-            }
-        } catch (IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
-        }
-
-        // Return the item's name from its material type
-        // FastCraft.err("Can't find item name: " + item); // TODO
-        return item.getData().toString();
     }
 
     /**
