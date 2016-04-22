@@ -143,7 +143,8 @@ public class BukkitUtil {
                     name = (String) methodNMSGetName.invoke(nmsItem);
                     if (name != null) return name;
                 }
-            } catch (IllegalAccessException | InvocationTargetException ignored) {}
+            } catch (IllegalAccessException | InvocationTargetException ignored) {
+            }
         }
 
         // Return the item's name from its material type

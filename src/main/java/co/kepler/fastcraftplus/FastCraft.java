@@ -11,6 +11,7 @@ import co.kepler.fastcraftplus.craftgui.GUIFastCraft;
 import co.kepler.fastcraftplus.craftgui.PlayerManager;
 import co.kepler.fastcraftplus.recipes.CraftingListener;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -123,7 +124,7 @@ public class FastCraft extends JavaPlugin {
      * @param msg The message to log.
      */
     public static void err(String msg) {
-        instance.getLogger().severe(msg);
+        instance.getLogger().severe(ChatColor.RED + msg);
     }
 
     /**

@@ -1,6 +1,7 @@
 package co.kepler.fastcraftplus.recipes;
 
 import co.kepler.fastcraftplus.BukkitUtil;
+import co.kepler.fastcraftplus.FastCraft;
 import org.bukkit.Achievement;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -18,16 +19,12 @@ import java.util.*;
  * Utility methods for recipes.
  */
 public class RecipeUtil {
-    private static final String[] IGNORE_RECIPES = new String[]{
+    private static final String[] IGNORE_RECIPE_CLASSES = new String[]{
             "RecipeArmorDye", "RecipeBookClone", "RecipeMapClone", "RecipeMapExtend",
             "RecipeFireworks", "RecipeRepair", "RecipesBanner"
     };
 
     private static Set<Integer> ignoreRecipeHashes;
-    private static Method methodGetRecipes;
-    private static Method methodToBukkitRecipe;
-    private static Object craftingManagerInstance;
-
     private static Map<Material, Achievement> craftingAchievements;
 
     static {
@@ -36,14 +33,14 @@ public class RecipeUtil {
 
             String nms = BukkitUtil.nms();
             Class<?> classCraftingManager = Class.forName(nms + "CraftingManager");
-            craftingManagerInstance = classCraftingManager.getMethod("getInstance").invoke(null);
-            methodGetRecipes = craftingManagerInstance.getClass().getMethod("getRecipes");
-            methodToBukkitRecipe = Class.forName(nms + "IRecipe").getMethod("toBukkitRecipe");
+            Object craftingManagerInstance = classCraftingManager.getMethod("getInstance").invoke(null);
+            Method methodGetRecipes = craftingManagerInstance.getClass().getMethod("getRecipes");
+            Method methodToBukkitRecipe = Class.forName(nms + "IRecipe").getMethod("toBukkitRecipe");
 
             // Find which recipes should be ignored by FastCraft
             ignoreRecipeHashes = new HashSet<>();
             for (Object iRecipe : (List) methodGetRecipes.invoke(craftingManagerInstance)) {
-                for (String ignoreType : IGNORE_RECIPES) {
+                for (String ignoreType : IGNORE_RECIPE_CLASSES) {
                     Class recipeClass = iRecipe.getClass();
                     Class enclClass = iRecipe.getClass().getEnclosingClass();
                     if (recipeClass.getSimpleName().equals(ignoreType) ||
@@ -60,7 +57,8 @@ public class RecipeUtil {
             }
         } catch (ClassNotFoundException | NoSuchMethodException
                 | IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
+            FastCraft.err("Unable to load disabled recipes. Incompatible " +
+                    "Minecraft recipes, such as maps and banners, may appear");
         }
 
         // Load achievements associated with each item
