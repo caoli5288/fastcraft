@@ -1,7 +1,6 @@
 package co.kepler.fastcraftplus.recipes;
 
-import co.kepler.fastcraftplus.BukkitUtil;
-import co.kepler.fastcraftplus.FastCraft;
+import com.google.common.collect.ImmutableMap;
 import org.bukkit.Achievement;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -11,67 +10,35 @@ import org.bukkit.event.Event;
 import org.bukkit.event.inventory.*;
 import org.bukkit.inventory.*;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Utility methods for recipes.
  */
 public class RecipeUtil {
-    private static final String[] IGNORE_RECIPE_CLASSES = new String[]{
-            "RecipeArmorDye", "RecipeBookClone", "RecipeMapClone", "RecipeMapExtend",
-            "RecipeFireworks", "RecipeRepair", "RecipesBanner"
-    };
+    // Recipes that should be ignored by FastCraft+
+    private static Set<Integer> ignoreRecipeHashes = new HashSet<>(Arrays.asList(
+            -1790165977, 434920731, 469091008, // Map cloning
+            315219687, 313670400, // Dyed leather armor
+            434711233, 432506854, // Banners
+            408495308, // Fireworks
+            461434721 // Book cloning
+    ));
 
-    private static Set<Integer> ignoreRecipeHashes;
-    private static Map<Material, Achievement> craftingAchievements;
-
-    static {
-        try {
-            String version = BukkitUtil.serverVersion();
-
-            String nms = BukkitUtil.nms();
-            Class<?> classCraftingManager = Class.forName(nms + "CraftingManager");
-            Object craftingManagerInstance = classCraftingManager.getMethod("getInstance").invoke(null);
-            Method methodGetRecipes = craftingManagerInstance.getClass().getMethod("getRecipes");
-            Method methodToBukkitRecipe = Class.forName(nms + "IRecipe").getMethod("toBukkitRecipe");
-
-            // Find which recipes should be ignored by FastCraft
-            ignoreRecipeHashes = new HashSet<>();
-            for (Object iRecipe : (List) methodGetRecipes.invoke(craftingManagerInstance)) {
-                for (String ignoreType : IGNORE_RECIPE_CLASSES) {
-                    Class recipeClass = iRecipe.getClass();
-                    Class enclClass = iRecipe.getClass().getEnclosingClass();
-                    if (recipeClass.getSimpleName().equals(ignoreType) ||
-                            enclClass != null && enclClass.getSimpleName().equals(ignoreType)) {
-                        Recipe recipe = (Recipe) methodToBukkitRecipe.invoke(iRecipe);
-                        for (Iterator<Recipe> iter = Bukkit.recipeIterator(); iter.hasNext(); ) {
-                            Recipe next = iter.next();
-                            if (areEqual(recipe, next)) {
-                                ignoreRecipeHashes.add(hashRecipe(next));
-                            }
-                        }
-                    }
-                }
-            }
-        } catch (ClassNotFoundException | NoSuchMethodException
-                | IllegalAccessException | InvocationTargetException e) {
-            FastCraft.err("Unable to load disabled recipes. Incompatible " +
-                    "Minecraft recipes, such as maps and banners, may appear");
-        }
-
-        // Load achievements associated with each item
-        craftingAchievements = new HashMap<>();
-        craftingAchievements.put(Material.WORKBENCH, Achievement.BUILD_WORKBENCH);
-        craftingAchievements.put(Material.WOOD_PICKAXE, Achievement.BUILD_PICKAXE);
-        craftingAchievements.put(Material.FURNACE, Achievement.BUILD_FURNACE);
-        craftingAchievements.put(Material.WOOD_HOE, Achievement.BUILD_HOE);
-        craftingAchievements.put(Material.BREAD, Achievement.MAKE_BREAD);
-        craftingAchievements.put(Material.CAKE, Achievement.BAKE_CAKE);
-        craftingAchievements.put(Material.STONE_PICKAXE, Achievement.BUILD_BETTER_PICKAXE);
-        craftingAchievements.put(Material.WOOD_SWORD, Achievement.BUILD_SWORD);
-    }
+    // Achievements associated with different items
+    private static Map<Material, Achievement> craftingAchievements
+            = ImmutableMap.<Material, Achievement>builder()
+            .put(Material.WORKBENCH, Achievement.BUILD_WORKBENCH)
+            .put(Material.WOOD_PICKAXE, Achievement.BUILD_PICKAXE)
+            .put(Material.FURNACE, Achievement.BUILD_FURNACE)
+            .put(Material.WOOD_HOE, Achievement.BUILD_HOE)
+            .put(Material.BREAD, Achievement.MAKE_BREAD)
+            .put(Material.CAKE, Achievement.BAKE_CAKE)
+            .put(Material.STONE_PICKAXE, Achievement.BUILD_BETTER_PICKAXE)
+            .put(Material.WOOD_SWORD, Achievement.BUILD_SWORD).build();
 
     /**
      * See if a recipe should be ignored.

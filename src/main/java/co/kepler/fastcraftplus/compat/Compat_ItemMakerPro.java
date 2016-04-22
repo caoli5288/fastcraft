@@ -14,7 +14,7 @@ import java.util.*;
 
 /**
  * Recipe compatibility for Item Maker Pro.
- * <p/>
+ * <p>
  * Plugin: https://www.spigotmc.org/resources/7173/
  */
 public class Compat_ItemMakerPro extends Compat {

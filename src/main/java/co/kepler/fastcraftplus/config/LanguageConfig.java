@@ -148,6 +148,7 @@ public class LanguageConfig extends ConfigExternal {
 
     /**
      * Get a list of strings from the language configuration
+     *
      * @param key    The language key to get
      * @param varVal The variables and values for the language entry.
      * @return Returns the list entry, with values substituted for its variables.
