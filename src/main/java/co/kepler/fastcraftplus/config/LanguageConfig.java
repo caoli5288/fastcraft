@@ -92,6 +92,12 @@ public class LanguageConfig extends ConfigExternal {
         }
     }
 
+    /**
+     * Copy missing values in one configuration from another.
+     *
+     * @param from The configuration to copy values from.
+     * @param to   The configuration to copy values to.
+     */
     private void copyDefaults(ConfigurationSection from, ConfigurationSection to) {
         if (from == null || to == null) return;
         for (String key : from.getKeys(true)) {
@@ -125,6 +131,13 @@ public class LanguageConfig extends ConfigExternal {
         return ChatColor.translateAlternateColorCodes('&', str);
     }
 
+    /**
+     * Get a string from the language configuration.
+     *
+     * @param key    The language key to get.
+     * @param varVal The variables and values for the language entry.
+     * @return Returns the string entry, with values substituted for its variables.
+     */
     private String get(String key, String... varVal) {
         String entry = config.getString(key);
         if (entry == null) {
@@ -133,6 +146,12 @@ public class LanguageConfig extends ConfigExternal {
         return format(entry, varVal);
     }
 
+    /**
+     * Get a list of strings from the language configuration
+     * @param key    The language key to get
+     * @param varVal The variables and values for the language entry.
+     * @return Returns the list entry, with values substituted for its variables.
+     */
     private List<String> getList(String key, String... varVal) {
         List<String> entry = config.getStringList(key);
         if (entry == null) {

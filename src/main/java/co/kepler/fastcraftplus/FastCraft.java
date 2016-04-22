@@ -18,6 +18,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The main class for FastCraft+
+ */
 public class FastCraft extends JavaPlugin {
     private static FastCraft instance;
 
@@ -114,6 +117,11 @@ public class FastCraft extends JavaPlugin {
         return instance.recipeCompatManager;
     }
 
+    /**
+     * Get an instance of the player manager.
+     *
+     * @return Returns an instance of the player manager.
+     */
     public static PlayerManager playerManager() {
         return instance.playerManager;
     }
