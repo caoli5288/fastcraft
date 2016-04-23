@@ -19,7 +19,7 @@ public class CmdReload extends SimpleCommand {
         } else if (!sender.hasPermission(Permission.ADMIN_RELOAD)) {
             sender.sendMessage(FastCraft.lang().commands_noPerm(Permission.ADMIN_RELOAD));
         } else {
-            FastCraft.loadConfigs();
+            FastCraft.getInstance().reload();
             sender.sendMessage(FastCraft.lang().commands_fastcraftadmin_reload_output());
         }
         return true;

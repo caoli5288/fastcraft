@@ -40,7 +40,7 @@ public class FastCraft extends JavaPlugin {
         externalConfigs.add(lang = new LanguageConfig());
         externalConfigs.add(recipes = new RecipesConfig());
         externalConfigs.add(blacklist = new BlacklistConfig());
-        loadConfigs();
+        load();
 
         // Load managers
         recipeCompatManager = new RecipeCompatManager();
@@ -58,17 +58,32 @@ public class FastCraft extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        unload();
+    }
+
+    /**
+     * Load FastCraft+.
+     */
+    public static void load() {
+        for (ConfigExternal conf : getInstance().externalConfigs) {
+            conf.load();
+        }
+    }
+
+    /**
+     * Unload FastCraft+.
+     */
+    public static void unload() {
         GUI.disposeAll();
         PlayerManager.Prefs.saveAllPrefs();
     }
 
     /**
-     * Load all FastCraft+ configs.
+     * Reload FastCraft+.
      */
-    public static void loadConfigs() {
-        for (ConfigExternal conf : getInstance().externalConfigs) {
-            conf.load();
-        }
+    public void reload() {
+        unload();
+        load();
     }
 
     /**
