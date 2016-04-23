@@ -24,21 +24,20 @@ public class RecipeUtil {
             -1790165977, 434920731, 469091008, // Map cloning
             315219687, 313670400, // Dyed leather armor
             434711233, 432506854, // Banners
-            408495308, // Fireworks
-            461434721 // Book cloning
+            461434721, // Book cloning
+            408495308 // Fireworks
     ));
 
     // Achievements associated with different items
-    private static Map<Material, Achievement> craftingAchievements
-            = ImmutableMap.<Material, Achievement>builder()
-            .put(Material.WORKBENCH, Achievement.BUILD_WORKBENCH)
-            .put(Material.WOOD_PICKAXE, Achievement.BUILD_PICKAXE)
-            .put(Material.FURNACE, Achievement.BUILD_FURNACE)
-            .put(Material.WOOD_HOE, Achievement.BUILD_HOE)
-            .put(Material.BREAD, Achievement.MAKE_BREAD)
-            .put(Material.CAKE, Achievement.BAKE_CAKE)
+    private static Map<Material, Achievement> craftingAchievements = ImmutableMap.<Material, Achievement>builder()
             .put(Material.STONE_PICKAXE, Achievement.BUILD_BETTER_PICKAXE)
-            .put(Material.WOOD_SWORD, Achievement.BUILD_SWORD).build();
+            .put(Material.WOOD_PICKAXE, Achievement.BUILD_PICKAXE)
+            .put(Material.WOOD_SWORD, Achievement.BUILD_SWORD)
+            .put(Material.WORKBENCH, Achievement.BUILD_WORKBENCH)
+            .put(Material.WOOD_HOE, Achievement.BUILD_HOE)
+            .put(Material.FURNACE, Achievement.BUILD_FURNACE)
+            .put(Material.BREAD, Achievement.MAKE_BREAD)
+            .put(Material.CAKE, Achievement.BAKE_CAKE).build();
 
     /**
      * See if a recipe should be ignored.

@@ -249,9 +249,13 @@ public abstract class FastRecipe implements Comparable<FastRecipe> {
 
     @Override
     public int hashCode() {
-        int hash = getResults().hashCode();
-        hash = hash * 31 + getDisplayResult().hashCode();
+        int hash = getDisplayResult().hashCode();
         hash = hash * 31 + getIngredients().hashCode();
-        return hash * 31 + getByproducts().hashCode();
+        hash = hash * 31 + getByproducts().hashCode();
+        hash = hash * 31;
+        for (ItemStack is : getResults()) {
+            hash += is.hashCode();
+        }
+        return hash;
     }
 }

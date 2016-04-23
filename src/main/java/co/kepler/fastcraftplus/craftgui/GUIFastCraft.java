@@ -35,6 +35,7 @@ public class GUIFastCraft extends GUI {
     private final LayoutFastCraft craftLayout;
     private final Player player;
     private final Location location;
+    private final boolean showHashes;
 
     private final GUIButton btnPagePrev;
     private final GUIButton btnPageNext;
@@ -51,11 +52,12 @@ public class GUIFastCraft extends GUI {
      * @param player The player who will be shown this GUI.
      */
     @SuppressWarnings("all")
-    public GUIFastCraft(final Player player, Location location) {
+    public GUIFastCraft(final Player player, Location location, boolean showHashes) {
         super(FastCraft.lang().gui_title(), 6);
 
         this.player = player;
         this.location = location;
+        this.showHashes = showHashes;
 
         craftLayout = new LayoutFastCraft(this);
         setLayout(craftLayout);
@@ -228,6 +230,15 @@ public class GUIFastCraft extends GUI {
      */
     public Location getLocation() {
         return location;
+    }
+
+    /**
+     * See if hashes should be shown in the GUI.
+     *
+     * @return Return true if hashes should be shown
+     */
+    public boolean showHashes() {
+        return showHashes;
     }
 
     /**

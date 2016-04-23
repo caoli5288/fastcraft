@@ -2,6 +2,7 @@ package co.kepler.fastcraftplus.config;
 
 import co.kepler.fastcraftplus.BukkitUtil;
 import co.kepler.fastcraftplus.FastCraft;
+import co.kepler.fastcraftplus.recipes.FastRecipe;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -132,6 +133,18 @@ public class LanguageConfig extends ConfigExternal {
     }
 
     /**
+     * Get a nullable string from the language configuration.
+     *
+     * @param key    The language key to get.
+     * @param varVal The variables and values for the language entry.
+     * @return Returns the string entry, with values substituted for its variables.
+     */
+    private String getNullable(String key, String... varVal) {
+        String entry = config.getString(key);
+        return entry == null ? null : format(entry, varVal);
+    }
+
+    /**
      * Get a string from the language configuration.
      *
      * @param key    The language key to get.
@@ -139,11 +152,8 @@ public class LanguageConfig extends ConfigExternal {
      * @return Returns the string entry, with values substituted for its variables.
      */
     private String get(String key, String... varVal) {
-        String entry = config.getString(key);
-        if (entry == null) {
-            return format(NOT_FOUND, NOT_FOUND_KEY, key);
-        }
-        return format(entry, varVal);
+        String entry = getNullable(key, varVal);
+        return entry == null ? format(NOT_FOUND, NOT_FOUND_KEY, key) : entry;
     }
 
     /**
@@ -170,7 +180,12 @@ public class LanguageConfig extends ConfigExternal {
     }
 
     public String gui_itemName(ItemStack item) {
-        return get("gui.item-name", "name");
+        return getNullable("gui.item-name", "name", BukkitUtil.getItemName(item));
+    }
+
+    public List<String> gui_hashcode(FastRecipe recipe) {
+        String hash = BlacklistConfig.getHashStr(recipe.hashCode());
+        return getList("gui.hashcode", "hash", hash);
     }
 
     public String gui_ingredients_item(int amount, String item) {

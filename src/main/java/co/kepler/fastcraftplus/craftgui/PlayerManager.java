@@ -43,7 +43,7 @@ public class PlayerManager implements Listener {
 
         // Cancel the event, and open the GUI
         e.setCancelled(true);
-        new GUIFastCraft(player, e.getClickedBlock().getLocation()).show();
+        new GUIFastCraft(player, e.getClickedBlock().getLocation(), false).show();
     }
 
     public static class Prefs {

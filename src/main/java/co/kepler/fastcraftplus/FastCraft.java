@@ -3,10 +3,7 @@ package co.kepler.fastcraftplus;
 import co.kepler.fastcraftplus.api.gui.GUI;
 import co.kepler.fastcraftplus.commands.CommandManager;
 import co.kepler.fastcraftplus.compat.RecipeCompatManager;
-import co.kepler.fastcraftplus.config.ConfigExternal;
-import co.kepler.fastcraftplus.config.LanguageConfig;
-import co.kepler.fastcraftplus.config.PluginConfig;
-import co.kepler.fastcraftplus.config.RecipesConfig;
+import co.kepler.fastcraftplus.config.*;
 import co.kepler.fastcraftplus.craftgui.GUIFastCraft;
 import co.kepler.fastcraftplus.craftgui.PlayerManager;
 import co.kepler.fastcraftplus.recipes.CraftingListener;
@@ -28,6 +25,7 @@ public class FastCraft extends JavaPlugin {
     private PluginConfig config;
     private LanguageConfig lang;
     private RecipesConfig recipes;
+    private BlacklistConfig blacklist;
 
     private RecipeCompatManager recipeCompatManager;
     private PlayerManager playerManager;
@@ -41,6 +39,7 @@ public class FastCraft extends JavaPlugin {
         externalConfigs.add(config = new PluginConfig());
         externalConfigs.add(lang = new LanguageConfig());
         externalConfigs.add(recipes = new RecipesConfig());
+        externalConfigs.add(blacklist = new BlacklistConfig());
         loadConfigs();
 
         // Load managers
@@ -84,7 +83,7 @@ public class FastCraft extends JavaPlugin {
     /**
      * Get the plugin's configuration.
      *
-     * @return Return the plugin's configuration.
+     * @return Returns the configuration.
      */
     public static PluginConfig config() {
         return instance.config;
@@ -93,7 +92,7 @@ public class FastCraft extends JavaPlugin {
     /**
      * Get the plugin's language configuration.
      *
-     * @return Return the plugin's language configuration.
+     * @return Returns the language configuration.
      */
     public static LanguageConfig lang() {
         return instance.lang;
@@ -102,16 +101,25 @@ public class FastCraft extends JavaPlugin {
     /**
      * Get the plugin's recipes configuration.
      *
-     * @return Return the plugin's recipes configuration.
+     * @return Returns the configuration.
      */
     public static RecipesConfig recipes() {
         return instance.recipes;
     }
 
     /**
+     * Get the plugin's blacklist configuration.
+     *
+     * @return Returns the blacklist configuration.
+     */
+    public static BlacklistConfig blacklist() {
+        return instance.blacklist;
+    }
+
+    /**
      * Get the plugin's compatibility manager.
      *
-     * @return Returns the plugin's compatibility manager.
+     * @return Returns the compatibility manager.
      */
     public static RecipeCompatManager recipeManager() {
         return instance.recipeCompatManager;

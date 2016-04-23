@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class CmdCraft extends SimpleCommand {
     private static final String USAGE = "/fastcraft craft [workbench|fastcraft]";
-    private static final String WORKBENCH = "workbench", FASTCRAFT = "fastcraft";
+    private static final String WORKBENCH = "workbench", FASTCRAFT = "fastcraft", HASH = "fastcraft*";
     private static final List<String> types = Arrays.asList(WORKBENCH, FASTCRAFT);
 
     @Override
@@ -48,7 +48,7 @@ public class CmdCraft extends SimpleCommand {
     private void open(Player player) {
         if (PlayerManager.Prefs.getPrefs(player).isFastCraftEnabled()
                 || !player.hasPermission(Permission.USE)) {
-            new GUIFastCraft(player, null).show();
+            new GUIFastCraft(player, null, false).show();
         } else {
             player.openWorkbench(null, true);
         }
@@ -61,14 +61,14 @@ public class CmdCraft extends SimpleCommand {
      * @param type   The type of inventory to open.
      */
     private void open(Player player, String type) {
-        if (!types.contains(type)) {
+        if (!types.contains(type) && !type.equals(HASH)) {
             player.sendMessage(FastCraft.lang().commands_usage(USAGE));
         } else if (type.equals(WORKBENCH)) {
             player.openWorkbench(null, true);
         } else if (!player.hasPermission(Permission.USE)) {
             player.sendMessage(FastCraft.lang().commands_noPerm(Permission.USE));
         } else {
-            new GUIFastCraft(player, null).show();
+            new GUIFastCraft(player, null, type.equals(HASH)).show();
         }
     }
 }

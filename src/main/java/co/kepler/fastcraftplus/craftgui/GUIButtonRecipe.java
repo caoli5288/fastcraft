@@ -24,7 +24,7 @@ public class GUIButtonRecipe extends GUIButton {
             ClickType.UNKNOWN, ClickType.WINDOW_BORDER_LEFT, ClickType.WINDOW_BORDER_RIGHT
     ));
 
-    FastRecipe recipe;
+    private FastRecipe recipe;
     private GUIFastCraft gui;
 
     /**
@@ -66,6 +66,12 @@ public class GUIButtonRecipe extends GUIButton {
             for (ItemStack is : results) {
                 lore.addLast(lang.gui_results_item(is));
             }
+        }
+
+        // Add the hashcode to the lore
+        if (gui.showHashes()) {
+            lore.addLast("");
+            lore.addAll(lang.gui_hashcode(recipe));
         }
 
         // If the item has a lore already, or has enchants, add an empty line
