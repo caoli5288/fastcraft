@@ -10,6 +10,10 @@ gui:
   # Lasse es leer um die Gegenstandsnamen nicht zu veraendern.
   item-name: # Variablen: Name
 
+  hashcode: # Variablen: hash
+  - '&7Hashcode:'
+  - '&7 <hash>'
+
   ingredients:
     label: '&aZutaten:'
     item: '&b <amount>x <item>' # Variablen: amount, item
