@@ -14,7 +14,7 @@
 #                       recipe's hashcode will be under its list of ingredients.
 #
 #
-# items:                Specific items can be listed here. Items should be listed
+# results/ingredients:  Specific items can be listed here. Items should be listed
 #                       using this format: [type, data, metadata]
 #
 #                       Both data and metadata are optional, but type is required.
@@ -34,8 +34,10 @@ use-as-whitelist: false
 hashes:
 #  dummy item: abc123
 
-items:
+results:
 #  thick sword: ['minecraft:diamond_sword', 0, '{display:{Name:"Thick Sword"}}']
+
+ingredients:
 #  all planks: ['minecraft:planks']
 #  oak plank: ['minecraft:planks', 0]
 #  all planks named Zombie: ['minecraft:planks', ANY, '{display:{Name:"Zombie"}}']

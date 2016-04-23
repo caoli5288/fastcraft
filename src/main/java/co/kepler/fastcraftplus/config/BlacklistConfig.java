@@ -2,6 +2,7 @@ package co.kepler.fastcraftplus.config;
 
 import co.kepler.fastcraftplus.FastCraft;
 import co.kepler.fastcraftplus.recipes.FastRecipe;
+import co.kepler.fastcraftplus.recipes.Ingredient;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -20,7 +21,8 @@ public class BlacklistConfig extends ConfigExternal {
 
     private static final Map<Integer, Boolean> recipesAllowed = new HashMap<>();
     private static final Set<Integer> hashes = new HashSet<>();
-    private List<BlacklistItem> items = new ArrayList<>();
+    private List<BlacklistItem> results = new ArrayList<>();
+    private List<BlacklistItem> ingredients = new ArrayList<>();
 
     private boolean isBlacklist;
 
@@ -36,7 +38,8 @@ public class BlacklistConfig extends ConfigExternal {
         // Clear collections
         recipesAllowed.clear();
         hashes.clear();
-        items.clear();
+        results.clear();
+        ingredients.clear();
 
         // Get blacklist/whitelist type
         isBlacklist = !config.getBoolean("use-as-whitelist");
@@ -53,14 +56,26 @@ public class BlacklistConfig extends ConfigExternal {
             }
         }
 
-        // Load items
-        ConfigurationSection itemSection = config.getConfigurationSection("items");
-        if (itemSection != null) {
-            for (String key : itemSection.getKeys(false)) {
+        // Load results
+        ConfigurationSection resultSection = config.getConfigurationSection("results");
+        if (resultSection != null) {
+            for (String key : resultSection.getKeys(false)) {
                 try {
-                    items.add(new BlacklistItem(itemSection.getStringList(key)));
+                    results.add(new BlacklistItem(resultSection.getStringList(key)));
                 } catch (Exception e) {
-                    FastCraft.err("Invalid blacklist item for " + key + ": " + e.getMessage());
+                    FastCraft.err("Invalid blacklist result for " + key + ": " + e.getMessage());
+                }
+            }
+        }
+
+        // Load ingredients
+        ConfigurationSection ingredientSection = config.getConfigurationSection("items");
+        if (ingredientSection != null) {
+            for (String key : ingredientSection.getKeys(false)) {
+                try {
+                    ingredients.add(new BlacklistItem(ingredientSection.getStringList(key)));
+                } catch (Exception e) {
+                    FastCraft.err("Invalid blacklist ingredient for " + key + ": " + e.getMessage());
                 }
             }
         }
@@ -103,10 +118,19 @@ public class BlacklistConfig extends ConfigExternal {
             } else {
                 resultsLoop:
                 for (ItemStack is : recipe.getResults()) {
-                    for (BlacklistItem item : items) {
-                        if (!item.matchesItem(is)) continue;
+                    for (BlacklistItem bli : results) {
+                        if (!bli.matchesItem(is)) continue;
                         matched = true;
                         break resultsLoop;
+                    }
+                }
+
+                ingredientsLoop:
+                for (Ingredient ing : recipe.getIngredients().keySet()) {
+                    for (BlacklistItem bli : ingredients) {
+                        if (!bli.matchesItem(ing.toItemStack(1))) continue;
+                        matched = true;
+                        break ingredientsLoop;
                     }
                 }
             }
