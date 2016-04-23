@@ -35,15 +35,15 @@ public class LanguageConfig extends ConfigExternal {
     @SuppressWarnings("deprecation")
     public void load() {
         String language = FastCraft.config().getLanguage();
-        resPath = "lang/" + language + ".yml";
+        String langFile = "lang/" + language + ".yml";
 
         // Set internal and external configs
-        if (FastCraft.getInstance().getResource(resPath) == null) {
+        if (FastCraft.getInstance().getResource(langFile) == null) {
             // If a resource for this language doesn't exist
             setInternalConfig("lang/EN.yml");
-            setExternalConfig(resPath);
+            setExternalConfig(langFile);
         } else {
-            setInternalConfig(resPath);
+            setInternalConfig(langFile);
             setExternalConfig(null);
         }
 
