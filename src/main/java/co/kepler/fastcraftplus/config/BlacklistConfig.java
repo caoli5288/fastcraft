@@ -9,10 +9,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Manages the blacklist configuration.
@@ -21,6 +18,7 @@ public class BlacklistConfig extends ConfigExternal {
     private static final int HASH_RADIX = 24;
     private static final int HASH_LENGTH = 7;
 
+    private static final Map<Integer, Boolean> recipesAllowed = new HashMap<>();
     private static final Set<Integer> hashes = new HashSet<>();
     private List<BlacklistItem> items = new ArrayList<>();
 
@@ -35,11 +33,15 @@ public class BlacklistConfig extends ConfigExternal {
     public void load() {
         super.load();
 
+        // Clear collections
+        recipesAllowed.clear();
+        hashes.clear();
+        items.clear();
+
         // Get blacklist/whitelist type
         isBlacklist = !config.getBoolean("use-as-whitelist");
 
         // Load hashes
-        hashes.clear();
         ConfigurationSection hashSection = config.getConfigurationSection("hashes");
         if (hashSection != null) {
             for (String key : hashSection.getKeys(false)) {
@@ -52,7 +54,6 @@ public class BlacklistConfig extends ConfigExternal {
         }
 
         // Load items
-        items.clear();
         ConfigurationSection itemSection = config.getConfigurationSection("items");
         if (itemSection != null) {
             for (String key : itemSection.getKeys(false)) {
@@ -94,21 +95,24 @@ public class BlacklistConfig extends ConfigExternal {
      * @return Returns true if the recipe can be shown.
      */
     public boolean isAllowed(FastRecipe recipe) {
-        boolean matched = false;
-        if (!hashes.contains(recipe.hashCode())) {
-            matched = true;
-        } else {
-            resultsLoop:
-            for (ItemStack is : recipe.getResults()) {
-                for (BlacklistItem item : items) {
-                    if (item.matchesItem(is)) {
+        int hash = recipe.hashCode();
+        if (!recipesAllowed.containsKey(hash)) {
+            boolean matched = false;
+            if (!hashes.contains(hash)) {
+                matched = true;
+            } else {
+                resultsLoop:
+                for (ItemStack is : recipe.getResults()) {
+                    for (BlacklistItem item : items) {
+                        if (!item.matchesItem(is)) continue;
                         matched = true;
                         break resultsLoop;
                     }
                 }
             }
+            recipesAllowed.put(hash, matched == isBlacklist);
         }
-        return matched != isBlacklist;
+        return recipesAllowed.get(hash);
     }
 
     /**

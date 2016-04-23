@@ -16,7 +16,12 @@ public class LayoutRecipesItems extends LayoutRecipes {
     public LayoutRecipesItems(GUIFastCraft gui) {
         super(gui);
 
-        allRecipes = new ArrayList<>(FastCraft.recipeManager().getRecipes(gui.getPlayer()));
+        allRecipes = new ArrayList<>();
+        for (FastRecipe recipe : FastCraft.recipeManager().getRecipes(gui.getPlayer())) {
+            if (FastCraft.blacklist().isAllowed(recipe)) {
+                allRecipes.add(recipe);
+            }
+        }
         Collections.sort(allRecipes);
     }
 
