@@ -51,9 +51,7 @@ public class GUIButtonRecipe extends GUIButton {
         Map<Ingredient, Integer> ingredients = recipe.getIngredients();
 
         // Set the display name of the item
-        if (!meta.hasDisplayName()) {
-            meta.setDisplayName(lang.gui_itemName(item));
-        }
+        meta.setDisplayName(lang.gui_itemName(item));
 
         // Add ingredients and amounts to the lore
         lore.addFirst(lang.gui_ingredients_label());

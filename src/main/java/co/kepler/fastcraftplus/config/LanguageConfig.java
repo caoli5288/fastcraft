@@ -180,7 +180,8 @@ public class LanguageConfig extends ConfigExternal {
     }
 
     public String gui_itemName(ItemStack item) {
-        return getNullable("gui.item-name", "name", BukkitUtil.getItemName(item));
+        String name = getNullable("gui.item-name", "name", BukkitUtil.getItemName(item));
+        return name != null ? name : item.getItemMeta().getDisplayName();
     }
 
     public List<String> gui_hashcode(FastRecipe recipe) {
