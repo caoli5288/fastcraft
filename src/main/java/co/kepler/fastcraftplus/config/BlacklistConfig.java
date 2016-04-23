@@ -98,7 +98,7 @@ public class BlacklistConfig extends ConfigExternal {
         int hash = recipe.hashCode();
         if (!recipesAllowed.containsKey(hash)) {
             boolean matched = false;
-            if (!hashes.contains(hash)) {
+            if (hashes.contains(hash)) {
                 matched = true;
             } else {
                 resultsLoop:
@@ -110,7 +110,7 @@ public class BlacklistConfig extends ConfigExternal {
                     }
                 }
             }
-            recipesAllowed.put(hash, matched == isBlacklist);
+            recipesAllowed.put(hash, matched != isBlacklist);
         }
         return recipesAllowed.get(hash);
     }
@@ -175,9 +175,9 @@ public class BlacklistConfig extends ConfigExternal {
          */
         @SuppressWarnings("deprecation")
         public boolean matchesItem(ItemStack item) {
-            if (!item.getType().equals(type)) return false;
+            if (!type.equals(item.getType())) return false;
             if (data != null && item.getData().getData() != data) return false;
-            return metadata == null || item.getItemMeta().equals(metadata);
+            return metadata == null || metadata.equals(item.getItemMeta());
         }
     }
 }
