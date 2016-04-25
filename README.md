@@ -1,4 +1,6 @@
 # Commands
+Required parameters have &lt;angle brackets&gt;. Optional parameters have [square brackets].
+
 |Command|Aliases|Usage|Description|
 |---|---|---|---|
 |/fastcraft|/fc|/fc &lt;craft&#124;toggle&gt;|FastCraft+ commands.|
