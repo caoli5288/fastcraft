@@ -1,9 +1,10 @@
-package co.kepler.fastcraftplus.craftgui;
+package co.kepler.fastcraftplus.craftgui.buttons;
 
 import co.kepler.fastcraftplus.FastCraft;
 import co.kepler.fastcraftplus.api.gui.GUIButton;
 import co.kepler.fastcraftplus.api.gui.Layout;
 import co.kepler.fastcraftplus.config.LanguageConfig;
+import co.kepler.fastcraftplus.craftgui.GUIFastCraft;
 import co.kepler.fastcraftplus.recipes.FastRecipe;
 import co.kepler.fastcraftplus.recipes.Ingredient;
 import org.bukkit.event.inventory.ClickType;

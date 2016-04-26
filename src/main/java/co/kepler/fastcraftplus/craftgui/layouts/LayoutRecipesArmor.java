@@ -1,4 +1,6 @@
-package co.kepler.fastcraftplus.craftgui;
+package co.kepler.fastcraftplus.craftgui.layouts;
+
+import co.kepler.fastcraftplus.craftgui.GUIFastCraft;
 
 /**
  * A recipes layout that shows dyed armor crafting recipes.
