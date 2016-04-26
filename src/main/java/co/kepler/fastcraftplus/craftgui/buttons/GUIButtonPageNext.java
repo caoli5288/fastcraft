@@ -5,6 +5,7 @@ import co.kepler.fastcraftplus.api.gui.GUI;
 import co.kepler.fastcraftplus.api.gui.GUIButtonAbstract;
 import co.kepler.fastcraftplus.api.gui.GUIItemBuilder;
 import co.kepler.fastcraftplus.api.gui.LayoutPaged;
+import co.kepler.fastcraftplus.craftgui.layouts.LayoutFastCraft;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
@@ -13,14 +14,15 @@ import org.bukkit.inventory.ItemStack;
  * A button that goes to the previous page in a paged layout.
  */
 public class GUIButtonPageNext extends GUIButtonAbstract {
-    private final LayoutPaged layout;
+    private final LayoutFastCraft layout;
 
-    public GUIButtonPageNext(LayoutPaged layout) {
+    public GUIButtonPageNext(LayoutFastCraft layout) {
         this.layout = layout;
     }
 
     @Override
     public ItemStack getItem() {
+        LayoutPaged layout = this.layout.getTopLayout();
         int next = layout.getPage() + 1, count = layout.getPageCount(), page = layout.getPage();
 
         return new GUIItemBuilder(Material.ARROW)
@@ -32,12 +34,12 @@ public class GUIButtonPageNext extends GUIButtonAbstract {
 
     @Override
     public boolean isVisible() {
-        return !layout.isPageLast();
+        return !layout.getTopLayout().isPageLast();
     }
 
     @Override
     public boolean onClick(GUI gui, InventoryClickEvent invEvent) {
-        layout.nextPage();
+        layout.getTopLayout().nextPage();
         gui.updateLayout();
         return true;
     }

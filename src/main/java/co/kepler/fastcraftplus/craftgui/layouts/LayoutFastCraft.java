@@ -1,5 +1,6 @@
 package co.kepler.fastcraftplus.craftgui.layouts;
 
+import co.kepler.fastcraftplus.api.gui.GUIButtonAbstract;
 import co.kepler.fastcraftplus.api.gui.Layout;
 import co.kepler.fastcraftplus.api.gui.LayoutMulti;
 import co.kepler.fastcraftplus.craftgui.GUIFastCraft;
@@ -11,10 +12,9 @@ public class LayoutFastCraft extends LayoutMulti {
     private static final int NAV_BUFFER = 1;
 
     private final GUIFastCraft gui;
-    private final LayoutRecipes recipesLayout;
 
-    public LayoutFastCraft(GUIFastCraft gui) {
-        super(new LayoutRecipesItems(gui), new Layout(), gui.getHeight() - 1 - NAV_BUFFER);
+    public LayoutFastCraft(GUIFastCraft gui, LayoutRecipes recipesLayout) {
+        super(recipesLayout, new Layout(), gui.getHeight() - 1 - NAV_BUFFER);
         this.gui = gui;
     }
 
@@ -22,5 +22,36 @@ public class LayoutFastCraft extends LayoutMulti {
     public void setHeight(int height) {
         super.setHeight(height);
         setTopLayoutHeight(height - 2);
+    }
+
+    @Override
+    public void setTopLayout(Layout layout) {
+        assert layout instanceof LayoutRecipes : "Layout must be a recipes layout";
+        super.setTopLayout(layout);
+    }
+
+    @Override
+    public LayoutRecipes getTopLayout() {
+        return (LayoutRecipes) super.getTopLayout();
+    }
+
+    /**
+     * Set a button in the GUI's toolbar.
+     *
+     * @param col    The column to put the button in.
+     * @param button The button to add to the toolbar.
+     */
+    public void setToolbarButton(int col, GUIButtonAbstract button) {
+        getBottomLayout().setButton(NAV_BUFFER, col, button);
+    }
+
+    /**
+     * Get a button from the GUI's toolbar.
+     *
+     * @param col The column to get the button from.
+     * @return Returns the toolbar button in the specified column.
+     */
+    public GUIButtonAbstract getToolbarButton(int col) {
+        return getBottomLayout().getButton(NAV_BUFFER, col);
     }
 }

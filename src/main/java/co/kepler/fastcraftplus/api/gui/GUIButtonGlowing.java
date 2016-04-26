@@ -21,16 +21,6 @@ public class GUIButtonGlowing extends GUIButton {
     }
 
     /**
-     * Create a new glowing GUIButton that copies another.
-     *
-     * @param copy The button that this new button will be based off of.
-     */
-    public GUIButtonGlowing(GUIButton copy) {
-        super(copy);
-        setupItems();
-    }
-
-    /**
      * Create the normal and glowing items.
      */
     private void setupItems() {

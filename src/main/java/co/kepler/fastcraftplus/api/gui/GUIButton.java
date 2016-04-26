@@ -15,10 +15,16 @@ public class GUIButton extends GUIButtonAbstract {
     private ClickAction clickAction = null;
 
     /**
-     * Create a new GUIButton with a null ItemStack
+     * Create a new GUIButton.
+     *
+     * @param item        The item representing the button.
+     * @param visible     Whether the button is visible in the interface.
+     * @param clickAction The button's click action.
      */
-    protected GUIButton() {
-        item = null;
+    public GUIButton(ItemStack item, boolean visible, ClickAction clickAction) {
+        this.item = item;
+        this.visible = visible;
+        this.clickAction = clickAction;
     }
 
     /**
@@ -28,16 +34,6 @@ public class GUIButton extends GUIButtonAbstract {
      */
     public GUIButton(ItemStack item) {
         this.item = item;
-    }
-
-    /**
-     * Create a new GUIButton that copies another.
-     *
-     * @param copy The button that this new button will be based off of.
-     */
-    public GUIButton(GUIButton copy) {
-        item = new ItemStack(copy.getItem());
-        clickAction = copy.clickAction;
     }
 
     @Override
@@ -95,7 +91,7 @@ public class GUIButton extends GUIButtonAbstract {
         /**
          * Info about a button click that can be used in the ClickAction.
          */
-        public class Click {
+        class Click {
             public final InventoryClickEvent event;
             GUIButton button;
 

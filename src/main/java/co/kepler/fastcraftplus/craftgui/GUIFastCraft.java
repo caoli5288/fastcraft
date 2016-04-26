@@ -92,7 +92,7 @@ public class GUIFastCraft extends GUI {
 
     @Override
     public void updateLayout() {
-        craftLayout.updateRecipes();
+        craftLayout.getTopLayout().updateRecipes();
         super.updateLayout();
     }
 

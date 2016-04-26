@@ -49,4 +49,38 @@ public abstract class GUIButtonAbstract {
      * @return Returns true if the button was clicked successfully.
      */
     public abstract boolean onClick(GUI gui, InventoryClickEvent invEvent);
+
+    public GUIButtonAbstract copy() {
+        return new GUIButtonCopy(this);
+    }
+
+    /**
+     * A copy of a button.
+     */
+    private class GUIButtonCopy extends GUIButtonAbstract {
+        private final GUIButtonAbstract button;
+        private final ItemStack item;
+        private final boolean visible;
+
+        public GUIButtonCopy(GUIButtonAbstract copy) {
+            this.button = copy;
+            item = copy.getItem();
+            visible = copy.isVisible();
+        }
+
+        @Override
+        public ItemStack getItem() {
+            return item.clone();
+        }
+
+        @Override
+        public boolean isVisible() {
+            return visible;
+        }
+
+        @Override
+        public boolean onClick(GUI gui, InventoryClickEvent invEvent) {
+            return button.onClick(gui, invEvent);
+        }
+    }
 }
