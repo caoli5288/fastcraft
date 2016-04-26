@@ -1,6 +1,7 @@
 package co.kepler.fastcraftplus.craftgui.buttons;
 
 import co.kepler.fastcraftplus.FastCraft;
+import co.kepler.fastcraftplus.api.gui.GUI;
 import co.kepler.fastcraftplus.api.gui.GUIButtonAbstract;
 import co.kepler.fastcraftplus.api.gui.GUIItemBuilder;
 import co.kepler.fastcraftplus.api.gui.LayoutPaged;
@@ -35,8 +36,9 @@ public class GUIButtonPagePrev extends GUIButtonAbstract {
     }
 
     @Override
-    public boolean onClick(InventoryClickEvent invEvent) {
+    public boolean onClick(GUI gui, InventoryClickEvent invEvent) {
         layout.prevPage();
+        gui.updateLayout();
         return true;
     }
 }

@@ -11,7 +11,7 @@ public class LayoutFastCraft extends LayoutMulti {
     private static final int NAV_BUFFER = 1;
 
     private final GUIFastCraft gui;
-    private final Layout
+    private final LayoutRecipes recipesLayout;
 
     public LayoutFastCraft(GUIFastCraft gui) {
         super(new LayoutRecipesItems(gui), new Layout(), gui.getHeight() - 1 - NAV_BUFFER);

@@ -67,7 +67,7 @@ public class GUIButton extends GUIButtonAbstract {
     }
 
     @Override
-    public boolean onClick(InventoryClickEvent invEvent) {
+    public boolean onClick(GUI gui, InventoryClickEvent invEvent) {
         return clickAction != null && clickAction.onClick(new ClickAction.Click(this, invEvent));
     }
 

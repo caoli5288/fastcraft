@@ -44,8 +44,9 @@ public abstract class GUIButtonAbstract {
     /**
      * Called when the button is clicked.
      *
+     * @param gui      The clicked GUI.
      * @param invEvent The inventory event triggered by the click.
      * @return Returns true if the button was clicked successfully.
      */
-    public abstract boolean onClick(InventoryClickEvent invEvent);
+    public abstract boolean onClick(GUI gui, InventoryClickEvent invEvent);
 }
