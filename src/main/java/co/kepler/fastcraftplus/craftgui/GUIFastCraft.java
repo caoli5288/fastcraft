@@ -103,17 +103,6 @@ public class GUIFastCraft extends GUI {
             }
         });
 
-        // Create Crafting Multiplier button
-        btnCraftingMultiplier = new GUIButton(new GUIItemBuilder(Material.ANVIL)
-                .setDisplayName(FastCraft.lang().gui_toolbar_multiplier_title(1)) // TODO
-                .setLore(FastCraft.lang().gui_toolbar_multiplier_description(1)) // TODO
-                .setLore(NOT_YET_IMPLEMENTED).build());
-        btnCraftingMultiplier.setClickAction(new GUIButton.ClickAction() {
-            public boolean onClick(GUIButton.Click info) {
-                return btnCraftingMultiplierClick(info);
-            }
-        });
-
         // Create Workbench button
         btnWorkbench = new GUIButton(new GUIItemBuilder(Material.WORKBENCH)
                 .setDisplayName(FastCraft.lang().gui_toolbar_workbench_title())
