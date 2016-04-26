@@ -2,7 +2,7 @@ package co.kepler.fastcraftplus.craftgui.buttons;
 
 import co.kepler.fastcraftplus.FastCraft;
 import co.kepler.fastcraftplus.api.gui.GUI;
-import co.kepler.fastcraftplus.api.gui.GUIButtonAbstract;
+import co.kepler.fastcraftplus.api.gui.GUIButton;
 import co.kepler.fastcraftplus.api.gui.GUIItemBuilder;
 import co.kepler.fastcraftplus.craftgui.GUIFastCraft;
 import org.bukkit.Location;
@@ -15,7 +15,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 /**
  * A button that refreshes the recipes in the FastCraft+ interface.
  */
-public class GUIButtonWorkbench extends GUIButtonAbstract {
+public class GUIButtonWorkbench extends GUIButton {
     private final GUIFastCraft gui;
     private final ItemStack item;
 

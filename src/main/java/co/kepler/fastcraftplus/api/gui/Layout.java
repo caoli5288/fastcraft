@@ -7,7 +7,7 @@ import java.util.Map;
  * Holds buttons and their locations.
  */
 public class Layout {
-    protected Map<Integer, GUIButtonAbstract> buttons;
+    protected Map<Integer, GUIButton> buttons;
     private int height;
 
     /**
@@ -46,7 +46,7 @@ public class Layout {
      * @param slot The inventory slot to get the button from.
      * @return Returns the button in the specified inventory slot.
      */
-    public GUIButtonAbstract getButton(int slot) {
+    public GUIButton getButton(int slot) {
         assert slot >= 0 : "Slot (" + slot + ") must not be negative";
         return buttons.get(slot);
     }
@@ -58,7 +58,7 @@ public class Layout {
      * @param col The column to get the button from.
      * @return Returns the button in the specified row and column.
      */
-    public GUIButtonAbstract getButton(int row, int col) {
+    public GUIButton getButton(int row, int col) {
         return getButton(getSlot(row, col));
     }
 
@@ -68,7 +68,7 @@ public class Layout {
      * @param button The button to add.
      * @param slot   The slot index of the button.
      */
-    public void setButton(int slot, GUIButtonAbstract button) {
+    public void setButton(int slot, GUIButton button) {
         assert slot >= 0 : "Slot (" + slot + ") must not be negative";
         if (button == null) {
             buttons.remove(slot);
@@ -84,7 +84,7 @@ public class Layout {
      * @param row    The row of the button.
      * @param col    The column of the button.
      */
-    public void setButton(int row, int col, GUIButtonAbstract button) {
+    public void setButton(int row, int col, GUIButton button) {
         setButton(getSlot(row, col), button);
     }
 

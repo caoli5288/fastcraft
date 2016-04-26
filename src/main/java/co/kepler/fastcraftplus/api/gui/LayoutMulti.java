@@ -121,13 +121,13 @@ public class LayoutMulti extends Layout {
     }
 
     @Override
-    public GUIButtonAbstract getButton(int slot) {
+    public GUIButton getButton(int slot) {
         LayoutSlot ls = getLayoutSlot(slot);
         return ls.layout.getButton(ls.slot);
     }
 
     @Override
-    public void setButton(int slot, GUIButtonAbstract button) {
+    public void setButton(int slot, GUIButton button) {
         LayoutSlot ls = getLayoutSlot(slot);
         ls.layout.setButton(ls.slot, button);
     }

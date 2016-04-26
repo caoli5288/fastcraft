@@ -8,7 +8,7 @@ public class LayoutPaged extends Layout {
     private int maxSlotIndex = 0;
 
     @Override
-    public void setButton(int slot, GUIButtonAbstract button) {
+    public void setButton(int slot, GUIButton button) {
         super.setButton(slot, button);
         // Keep track of the index of the last button, so the last page can be known.
         if (button == null) {
@@ -92,7 +92,7 @@ public class LayoutPaged extends Layout {
     }
 
     @Override
-    public GUIButtonAbstract getButton(int slot) {
+    public GUIButton getButton(int slot) {
         int[] rawSlotPos = getSlotPos(slot);
         slot += getButtonsPerPage() * page;
         return super.getButton(slot);

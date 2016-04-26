@@ -7,98 +7,80 @@ import org.bukkit.inventory.ItemStack;
 /**
  * A button for the GUI that players can interact with.
  */
-public class GUIButton extends GUIButtonAbstract {
-    private static Sound DEFAULT_CLICK_SOUND = null;
+public abstract class GUIButton {
+    public static final Sound DEFAULT_CLICK_SOUND;
 
-    private ItemStack item;
-    private boolean visible = true;
-    private ClickAction clickAction = null;
+    static {
+        Sound clickSound;
+        try {
+            clickSound = Sound.valueOf("UI_BUTTON_CLICK"); // 1.9
+        } catch (IllegalArgumentException e) {
+            clickSound = Sound.valueOf("CLICK"); // 1.8 and earlier
+        }
+        DEFAULT_CLICK_SOUND = clickSound;
+    }
 
     /**
-     * Create a new GUIButton.
+     * Get the item that represents this button.
      *
-     * @param item        The item representing the button.
-     * @param visible     Whether the button is visible in the interface.
-     * @param clickAction The button's click action.
+     * @return Returns the item that represents this button.
      */
-    public GUIButton(ItemStack item, boolean visible, ClickAction clickAction) {
-        this.item = item;
-        this.visible = visible;
-        this.clickAction = clickAction;
-    }
+    public abstract ItemStack getItem();
 
     /**
-     * Create a new GUIButton from an ItemStack.
+     * See if this button is visible in the GUI.
      *
-     * @param item The item that represents the button.
+     * @return Returns true if the button should be visible in the GUI.
      */
-    public GUIButton(ItemStack item) {
-        this.item = item;
-    }
+    public abstract boolean isVisible();
 
-    @Override
-    public ItemStack getItem() {
-        return item;
+    /**
+     * Get the sound to be played when the button is clicked.
+     */
+    public Sound getClickSound() {
+        return DEFAULT_CLICK_SOUND;
     }
 
     /**
-     * Set the item that represents this button.
-     */
-    protected void setItem(ItemStack item) {
-        this.item = item;
-    }
-
-    @Override
-    public boolean isVisible() {
-        return visible;
-    }
-
-    /**
-     * Set the visibility of the button.
+     * Called when the button is clicked.
      *
-     * @param visible Returns true if the button is visible.
+     * @param gui      The clicked GUI.
+     * @param invEvent The inventory event triggered by the click.
+     * @return Returns true if the button was clicked successfully.
      */
-    public void setVisible(boolean visible) {
-        this.visible = visible;
-    }
+    public abstract boolean onClick(GUI gui, InventoryClickEvent invEvent);
 
-    @Override
-    public boolean onClick(GUI gui, InventoryClickEvent invEvent) {
-        return clickAction != null && clickAction.onClick(new ClickAction.Click(this, invEvent));
-    }
-
-    /**
-     * Set the action to be run on a button click. (Lambda friendly)
-     *
-     * @param clickAction The click action to be run when the button is clicked.
-     */
-    public void setClickAction(ClickAction clickAction) {
-        this.clickAction = clickAction;
+    public GUIButton copy() {
+        return new GUIButtonCopy(this);
     }
 
     /**
-     * Contains code to be run when a button is clicked.
+     * A copy of a button.
      */
-    public interface ClickAction {
-        /**
-         * Called when the button is clicked in the GUI.
-         *
-         * @param clickInfo The information about the button click.
-         * @return Return true if the button's click noise should be played.
-         */
-        boolean onClick(Click clickInfo);
+    private class GUIButtonCopy extends GUIButton {
+        private final GUIButton button;
+        private final ItemStack item;
+        private final boolean visible;
 
-        /**
-         * Info about a button click that can be used in the ClickAction.
-         */
-        class Click {
-            public final InventoryClickEvent event;
-            GUIButton button;
+        public GUIButtonCopy(GUIButton copy) {
+            this.button = copy;
+            item = copy.getItem();
+            visible = copy.isVisible();
+        }
 
-            public Click(GUIButton button, InventoryClickEvent event) {
-                this.button = button;
-                this.event = event;
-            }
+        @Override
+        public ItemStack getItem() {
+            return item.clone();
+        }
+
+        @Override
+        public boolean isVisible() {
+            return visible;
+        }
+
+        @Override
+        public boolean onClick(GUI gui, InventoryClickEvent invEvent) {
+            return button.onClick(gui, invEvent);
         }
     }
 }

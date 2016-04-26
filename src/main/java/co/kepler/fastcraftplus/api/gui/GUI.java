@@ -28,7 +28,7 @@ public class GUI implements InventoryHolder {
     private static boolean listenersRegistered = false;
 
     private final int height;
-    private final Map<Integer, GUIButtonAbstract> buttons;
+    private final Map<Integer, GUIButton> buttons;
 
     private Layout layout = null;
     private Inventory inv;
@@ -134,7 +134,7 @@ public class GUI implements InventoryHolder {
         buttons.clear();
         int invSize = inv.getSize();
         for (int i = 0; i < invSize; i++) {
-            GUIButtonAbstract button = layout.getButton(i);
+            GUIButton button = layout.getButton(i);
             if (button == null || !button.isVisible()) continue;
             inv.setItem(i, button.getItem());
             buttons.put(i, button.copy());
@@ -197,7 +197,7 @@ public class GUI implements InventoryHolder {
                 e.setCancelled(true);
 
                 // See if a button was clicked, and if it's visible, process the click.
-                GUIButtonAbstract button = gui.layout.getButton(e.getSlot());
+                GUIButton button = gui.layout.getButton(e.getSlot());
                 if (button != null && button.isVisible()) {
                     // Play the button's click sound, and call the button's onClick() method.
                     if (button.onClick(gui, e) && e.getWhoClicked() instanceof Player) {

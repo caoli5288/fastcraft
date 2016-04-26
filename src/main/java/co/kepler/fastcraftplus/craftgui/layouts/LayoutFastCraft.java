@@ -1,6 +1,6 @@
 package co.kepler.fastcraftplus.craftgui.layouts;
 
-import co.kepler.fastcraftplus.api.gui.GUIButtonAbstract;
+import co.kepler.fastcraftplus.api.gui.GUIButton;
 import co.kepler.fastcraftplus.api.gui.Layout;
 import co.kepler.fastcraftplus.api.gui.LayoutMulti;
 import co.kepler.fastcraftplus.craftgui.GUIFastCraft;
@@ -41,7 +41,7 @@ public class LayoutFastCraft extends LayoutMulti {
      * @param col    The column to put the button in.
      * @param button The button to add to the toolbar.
      */
-    public void setToolbarButton(int col, GUIButtonAbstract button) {
+    public void setToolbarButton(int col, GUIButton button) {
         getBottomLayout().setButton(NAV_BUFFER, col, button);
     }
 
@@ -51,7 +51,7 @@ public class LayoutFastCraft extends LayoutMulti {
      * @param col The column to get the button from.
      * @return Returns the toolbar button in the specified column.
      */
-    public GUIButtonAbstract getToolbarButton(int col) {
+    public GUIButton getToolbarButton(int col) {
         return getBottomLayout().getButton(NAV_BUFFER, col);
     }
 }
