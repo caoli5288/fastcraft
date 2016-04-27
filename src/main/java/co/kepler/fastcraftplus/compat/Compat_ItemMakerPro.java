@@ -3,13 +3,12 @@ package co.kepler.fastcraftplus.compat;
 import co.kepler.fastcraftplus.recipes.FastRecipe;
 import co.kepler.fastcraftplus.recipes.Ingredient;
 import co.kepler.fastcraftplus.recipes.RecipeUtil;
-import com.kirelcodes.ItemMaker.API.RecipeGetter;
-import com.kirelcodes.ItemMaker.Recipes.Perfect.PerfectShapedRecipe;
-import com.kirelcodes.ItemMaker.Recipes.Perfect.PerfectShapelessRecipe;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.*;
 
 /**
@@ -19,6 +18,8 @@ import java.util.*;
  */
 public class Compat_ItemMakerPro extends Compat {
     private final Map<Integer, FastRecipe> recipes = new HashMap<>();
+
+    private RecipeGetter recipeGetter;
 
     /**
      * Create a new compatibility instance for Item Maker Pro.
@@ -31,6 +32,12 @@ public class Compat_ItemMakerPro extends Compat {
 
     @Override
     public boolean init() {
+        try {
+            recipeGetter = new RecipeGetter();
+        } catch (ClassNotFoundException | NoSuchMethodException e) {
+            e.printStackTrace();
+            return false;
+        }
         return true;
     }
 
@@ -44,7 +51,7 @@ public class Compat_ItemMakerPro extends Compat {
         Set<FastRecipe> recipes = new HashSet<>();
 
         // Get PerfectShapedRecipes
-        for (PerfectShapedRecipe recipe : RecipeGetter.getShapedRecipes()) {
+        for (PerfectShapedRecipe recipe : recipeGetter.getShapedRecipes()) {
             if (recipe == null) continue;
             if (player == null || !recipe.hasPermission() || player.hasPermission(recipe.getPermission())) {
                 // If player is null, or if player has permission to craft
@@ -53,7 +60,7 @@ public class Compat_ItemMakerPro extends Compat {
         }
 
         // Get PerfectShapelessRecipes
-        for (PerfectShapelessRecipe recipe : RecipeGetter.getShapelessRecipe()) {
+        for (PerfectShapelessRecipe recipe : recipeGetter.getShapelessRecipe()) {
             if (recipe == null) continue;
             if (player == null || !recipe.hasPermission() || player.hasPermission(recipe.getPermission())) {
                 // If player is null, or if player has permission to craft
@@ -190,6 +197,154 @@ public class Compat_ItemMakerPro extends Compat {
         @Override
         protected List<ItemStack> getResultsInternal() {
             return results;
+        }
+    }
+
+    private class RecipeGetter {
+        private final Method
+                methodGetShapedRecipes,
+                methodGetShapelessRecipe,
+                methodShapedGetRecipe,
+                methodShapedHasPermission,
+                methodShapedGetPermission,
+                methodShapedGetItems,
+                methodShapedGetResult,
+                methodShapelessGetRecipe,
+                methodShapelessHasPermission,
+                methodShapelessGetPermission,
+                methodShapelessGetItems,
+                methodShapelessGetResult;
+
+        public RecipeGetter() throws ClassNotFoundException, NoSuchMethodException {
+            Class<?> classRecipeGetter = Class.forName("com.kirelcodes.ItemMaker.API.RecipeGetter");
+            methodGetShapedRecipes = classRecipeGetter.getMethod("getShapedRecipes");
+            methodGetShapelessRecipe = classRecipeGetter.getMethod("getShapelessRecipe");
+
+            Class<?> classShaped = Class.forName("com.kirelcodes.ItemMaker.Recipes.Perfect.PerfectShapedRecipe");
+            methodShapedGetRecipe = classShaped.getMethod("getRecipe");
+            methodShapedHasPermission = classShaped.getMethod("hasPermission");
+            methodShapedGetPermission = classShaped.getMethod("getPermission");
+            methodShapedGetItems = classShaped.getMethod("getItems");
+            methodShapedGetResult = classShaped.getMethod("getResult");
+
+            Class<?> classShapeless = Class.forName("com.kirelcodes.ItemMaker.Recipes.Perfect.PerfectShapelessRecipe");
+            methodShapelessGetRecipe = classShapeless.getMethod("getRecipe");
+            methodShapelessHasPermission = classShapeless.getMethod("hasPermission");
+            methodShapelessGetPermission = classShapeless.getMethod("getPermission");
+            methodShapelessGetItems = classShapeless.getMethod("getItems");
+            methodShapelessGetResult = classShapeless.getMethod("getResult");
+        }
+
+        @SuppressWarnings("unchecked")
+        public List<PerfectShapedRecipe> getShapedRecipes() {
+            List<PerfectShapedRecipe> result = new ArrayList<>();
+            try {
+                for (Object recipe : (List<Object>) methodGetShapedRecipes.invoke(null)) {
+                    result.add(new PerfectShapedRecipe(
+                            (Recipe) methodShapedGetRecipe.invoke(recipe),
+                            (boolean) methodShapedHasPermission.invoke(recipe),
+                            (String) methodShapedGetPermission.invoke(recipe),
+                            (ItemStack[][]) methodShapedGetItems.invoke(recipe),
+                            (ItemStack) methodShapedGetResult.invoke(recipe)
+                    ));
+                }
+            } catch (IllegalAccessException | InvocationTargetException | ClassCastException e) {
+                e.printStackTrace();
+            }
+            return result;
+        }
+
+        @SuppressWarnings("unchecked")
+        public List<PerfectShapelessRecipe> getShapelessRecipe() {
+            List<PerfectShapelessRecipe> result = new ArrayList<>();
+            try {
+                for (Object recipe : (List<Object>) methodGetShapelessRecipe.invoke(null)) {
+                    result.add(new PerfectShapelessRecipe(
+                            (Recipe) methodShapelessGetRecipe.invoke(recipe),
+                            (boolean) methodShapelessHasPermission.invoke(recipe),
+                            (String) methodShapelessGetPermission.invoke(recipe),
+                            (List<ItemStack>) methodShapelessGetItems.invoke(recipe),
+                            (ItemStack) methodShapelessGetResult.invoke(recipe)
+                    ));
+                }
+            } catch (IllegalAccessException | InvocationTargetException | ClassCastException e) {
+                e.printStackTrace();
+            }
+            return result;
+        }
+    }
+
+    private class PerfectShapedRecipe {
+        private final Recipe recipe;
+        private final boolean hasPermission;
+        private final String permission;
+        private final ItemStack[][] items;
+        private final ItemStack result;
+
+        public PerfectShapedRecipe(Recipe recipe, boolean hasPermission, String permission,
+                                   ItemStack[][] items, ItemStack result) {
+            this.recipe = recipe;
+            this.hasPermission = hasPermission;
+            this.permission = permission;
+            this.items = items;
+            this.result = result;
+        }
+
+        public Recipe getRecipe() {
+            return recipe;
+        }
+
+        public boolean hasPermission() {
+            return hasPermission;
+        }
+
+        public String getPermission() {
+            return permission;
+        }
+
+        public ItemStack[][] getItems() {
+            return items;
+        }
+
+        public ItemStack getResult() {
+            return result;
+        }
+    }
+
+    private class PerfectShapelessRecipe {
+        private final Recipe recipe;
+        private final boolean hasPermission;
+        private final String permission;
+        private final List<ItemStack> items;
+        private final ItemStack result;
+
+        public PerfectShapelessRecipe(Recipe recipe, boolean hasPermission, String permission,
+                                      List<ItemStack> items, ItemStack result) {
+            this.recipe = recipe;
+            this.hasPermission = hasPermission;
+            this.permission = permission;
+            this.items = items;
+            this.result = result;
+        }
+
+        public Recipe getRecipe() {
+            return recipe;
+        }
+
+        public boolean hasPermission() {
+            return hasPermission;
+        }
+
+        public String getPermission() {
+            return permission;
+        }
+
+        public List<ItemStack> getItems() {
+            return items;
+        }
+
+        public ItemStack getResult() {
+            return result;
         }
     }
 }

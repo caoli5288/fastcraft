@@ -1,6 +1,7 @@
-package co.kepler.fastcraftplus.craftgui;
+package co.kepler.fastcraftplus.craftgui.layouts;
 
 import co.kepler.fastcraftplus.FastCraft;
+import co.kepler.fastcraftplus.craftgui.GUIFastCraft;
 import co.kepler.fastcraftplus.recipes.FastRecipe;
 
 import java.util.ArrayList;

@@ -1,8 +1,12 @@
 package co.kepler.fastcraftplus.craftgui;
 
 import co.kepler.fastcraftplus.FastCraft;
-import co.kepler.fastcraftplus.api.gui.*;
-import org.bukkit.*;
+import co.kepler.fastcraftplus.api.gui.GUI;
+import co.kepler.fastcraftplus.craftgui.layouts.LayoutFastCraft;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
@@ -16,9 +20,6 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryPickupItemEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.LeatherArmorMeta;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -37,15 +38,6 @@ public class GUIFastCraft extends GUI {
     private final Location location;
     private final boolean showHashes;
 
-    private final GUIButton btnPagePrev;
-    private final GUIButton btnPageNext;
-    private final GUIButton btnRefresh;
-    private final GUIButton btnCraftingMultiplier;
-    private final GUIButton btnWorkbench;
-    private final GUIButtonGlowing btnTabCrafting;
-    private final GUIButtonGlowing btnTabArmor;
-    private final GUIButtonGlowing btnTabFireworks;
-
     /**
      * Create a new instance of a FastCraft GUI.
      *
@@ -59,115 +51,8 @@ public class GUIFastCraft extends GUI {
         this.location = location;
         this.showHashes = showHashes;
 
-        craftLayout = new LayoutFastCraft(this);
+        craftLayout = LayoutManager.getLayoutManager().getNewLayout(this);
         setLayout(craftLayout);
-
-        // Create Previous Page button
-        btnPagePrev = new GUIButton(new GUIItemBuilder(Material.ARROW)
-                .setDisplayName(FastCraft.lang().gui_toolbar_pagePrev_title())
-                .setLore(FastCraft.lang().gui_toolbar_pagePrev_description(
-                        craftLayout.getCurRecipesLayout().getPage() - 1,
-                        craftLayout.getCurRecipesLayout().getPageCount(),
-                        craftLayout.getCurRecipesLayout().getPage()
-                )).setHideInfo(true).build());
-        btnPagePrev.setClickAction(new GUIButton.ClickAction() {
-            public boolean onClick(GUIButton.Click info) {
-                return btnPagePrevClick(info);
-            }
-        });
-
-        // Create Next Page button
-        btnPageNext = new GUIButton(new GUIItemBuilder(Material.ARROW)
-                .setDisplayName(FastCraft.lang().gui_toolbar_pageNext_title())
-                .setLore(FastCraft.lang().gui_toolbar_pageNext_description(
-                        craftLayout.getCurRecipesLayout().getPage() + 1,
-                        craftLayout.getCurRecipesLayout().getPageCount(),
-                        craftLayout.getCurRecipesLayout().getPage()
-                )).setHideInfo(true).build());
-        btnPageNext.setClickAction(new GUIButton.ClickAction() {
-            public boolean onClick(GUIButton.Click info) {
-                return btnPageNextClick(info);
-            }
-        });
-
-        // Create Refresh button
-        btnRefresh = new GUIButton(new GUIItemBuilder(Material.NETHER_STAR)
-                .setDisplayName(FastCraft.lang().gui_toolbar_refresh_title())
-                .setLore(FastCraft.lang().gui_toolbar_refresh_description())
-                .setHideInfo(true).build());
-        btnRefresh.setClickAction(new GUIButton.ClickAction() {
-            public boolean onClick(GUIButton.Click info) {
-                return btnRefreshClick(info);
-            }
-        });
-
-        // Create Crafting Multiplier button
-        btnCraftingMultiplier = new GUIButton(new GUIItemBuilder(Material.ANVIL)
-                .setDisplayName(FastCraft.lang().gui_toolbar_multiplier_title(1)) // TODO
-                .setLore(FastCraft.lang().gui_toolbar_multiplier_description(1)) // TODO
-                .setLore(NOT_YET_IMPLEMENTED).build());
-        btnCraftingMultiplier.setClickAction(new GUIButton.ClickAction() {
-            public boolean onClick(GUIButton.Click info) {
-                return btnCraftingMultiplierClick(info);
-            }
-        });
-
-        // Create Workbench button
-        btnWorkbench = new GUIButton(new GUIItemBuilder(Material.WORKBENCH)
-                .setDisplayName(FastCraft.lang().gui_toolbar_workbench_title())
-                .setLore(FastCraft.lang().gui_toolbar_workbench_description()).build());
-        btnWorkbench.setClickAction(new GUIButton.ClickAction() {
-            public boolean onClick(GUIButton.Click info) {
-                return btnWorkbenchClick(info);
-            }
-        });
-
-        // Create Crafting button
-        btnTabCrafting = new GUIButtonGlowing(new GUIItemBuilder(Material.STICK)
-                .setDisplayName(FastCraft.lang().gui_toolbar_craftItems_title())
-                .setLore(FastCraft.lang().gui_toolbar_craftItems_description())
-                .setHideInfo(true).build());
-        btnTabCrafting.setClickAction(new GUIButton.ClickAction() {
-            public boolean onClick(GUIButton.Click info) {
-                return btnTabCraftingClick(info);
-            }
-        });
-        btnTabCrafting.setGlowing(true);
-
-        // Create armor button
-        ItemStack coloredChestplate = new GUIItemBuilder(Material.LEATHER_CHESTPLATE)
-                .setDisplayName(FastCraft.lang().gui_toolbar_craftArmor_title())
-                .setLore(FastCraft.lang().gui_toolbar_craftArmor_description())
-                .setLore(NOT_YET_IMPLEMENTED)
-                .setHideInfo(true).build();
-        LeatherArmorMeta chestplateMeta = (LeatherArmorMeta) coloredChestplate.getItemMeta();
-        chestplateMeta.setColor(Color.fromRGB(0x4C72C5));
-        coloredChestplate.setItemMeta(chestplateMeta);
-        btnTabArmor = new GUIButtonGlowing(coloredChestplate);
-        btnTabArmor.setClickAction(new GUIButton.ClickAction() {
-            public boolean onClick(GUIButton.Click info) {
-                return btnTabArmorClick(info);
-            }
-        });
-
-        // Create Fireworks button
-        btnTabFireworks = new GUIButtonGlowing(new GUIItemBuilder(Material.FIREWORK)
-                .setDisplayName(FastCraft.lang().gui_toolbar_craftFireworks_title())
-                .setLore(FastCraft.lang().gui_toolbar_craftFireworks_description())
-                .setLore(NOT_YET_IMPLEMENTED)
-                .setHideInfo(true).build());
-        btnTabFireworks.setClickAction(new GUIButton.ClickAction() {
-            public boolean onClick(GUIButton.Click info) {
-                return btnTabFireworksClick(info);
-            }
-        });
-
-        // Add buttons to the navbar
-        Layout navbar = craftLayout.getLayoutNavbar();
-        navbar.setButton(1, 0, btnPagePrev);
-        navbar.setButton(1, 8, btnPageNext);
-        navbar.setButton(1, 4, btnWorkbench);
-        navbar.setButton(1, 5, btnRefresh);
 
         // Update the GUI's layout
         updateLayout();
@@ -207,10 +92,7 @@ public class GUIFastCraft extends GUI {
 
     @Override
     public void updateLayout() {
-        LayoutRecipes curRecipesLayout = craftLayout.getCurRecipesLayout();
-        curRecipesLayout.updateRecipes();
-        btnPagePrev.setVisible(!curRecipesLayout.isPageFirst());
-        btnPageNext.setVisible(!curRecipesLayout.isPageLast());
+        craftLayout.getTopLayout().updateRecipes();
         super.updateLayout();
     }
 
@@ -239,67 +121,6 @@ public class GUIFastCraft extends GUI {
      */
     public boolean showHashes() {
         return showHashes;
-    }
-
-    /**
-     * Show a tab in the GUI.
-     *
-     * @param tab The tab to show.
-     */
-    private void showTab(CraftingTab tab) {
-        btnTabCrafting.setGlowing(tab == CraftingTab.CRAFTING);
-        btnTabArmor.setGlowing(tab == CraftingTab.ARMOR);
-        btnTabFireworks.setGlowing(tab == CraftingTab.FIREWORKS);
-
-        craftLayout.showLayout(tab);
-        updateLayout();
-    }
-
-
-    private boolean btnPagePrevClick(GUIButton.Click info) {
-        craftLayout.getCurRecipesLayout().prevPage();
-        updateLayout();
-        return true;
-    }
-
-    private boolean btnPageNextClick(GUIButton.Click info) {
-        craftLayout.getCurRecipesLayout().nextPage();
-        updateLayout();
-        return true;
-    }
-
-    private boolean btnRefreshClick(GUIButton.Click info) {
-        craftLayout.getCurRecipesLayout().clearButtons();
-        updateLayout();
-        return true;
-    }
-
-    private boolean btnCraftingMultiplierClick(GUIButton.Click info) {
-        return false; // TODO
-    }
-
-    private boolean btnWorkbenchClick(final GUIButton.Click info) {
-        new BukkitRunnable() {
-            public void run() {
-                info.event.getWhoClicked().openWorkbench(location, location == null);
-            }
-        }.runTask(FastCraft.getInstance());
-        return true;
-    }
-
-    private boolean btnTabCraftingClick(GUIButton.Click info) {
-        showTab(CraftingTab.CRAFTING);
-        return true;
-    }
-
-    private boolean btnTabArmorClick(GUIButton.Click info) {
-        showTab(CraftingTab.ARMOR);
-        return true;
-    }
-
-    private boolean btnTabFireworksClick(GUIButton.Click info) {
-        showTab(CraftingTab.FIREWORKS);
-        return true;
     }
 
     private void inventoryChange() {

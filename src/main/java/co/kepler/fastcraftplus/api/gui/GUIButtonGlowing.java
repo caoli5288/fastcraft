@@ -5,7 +5,7 @@ import org.bukkit.inventory.ItemStack;
 /**
  * A GUIButton with togglable glowing.
  */
-public class GUIButtonGlowing extends GUIButton {
+public class GUIButtonGlowing extends GUIButtonBasic {
     private ItemStack normalItem;
     private ItemStack glowingItem;
     private boolean glowing = false;
@@ -17,16 +17,6 @@ public class GUIButtonGlowing extends GUIButton {
      */
     public GUIButtonGlowing(ItemStack item) {
         super(item);
-        setupItems();
-    }
-
-    /**
-     * Create a new glowing GUIButton that copies another.
-     *
-     * @param copy The button that this new button will be based off of.
-     */
-    public GUIButtonGlowing(GUIButton copy) {
-        super(copy);
         setupItems();
     }
 

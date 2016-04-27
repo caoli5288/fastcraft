@@ -1,9 +1,10 @@
-package co.kepler.fastcraftplus.craftgui;
+package co.kepler.fastcraftplus.craftgui.buttons;
 
 import co.kepler.fastcraftplus.FastCraft;
+import co.kepler.fastcraftplus.api.gui.GUI;
 import co.kepler.fastcraftplus.api.gui.GUIButton;
-import co.kepler.fastcraftplus.api.gui.Layout;
 import co.kepler.fastcraftplus.config.LanguageConfig;
+import co.kepler.fastcraftplus.craftgui.GUIFastCraft;
 import co.kepler.fastcraftplus.recipes.FastRecipe;
 import co.kepler.fastcraftplus.recipes.Ingredient;
 import org.bukkit.event.inventory.ClickType;
@@ -34,7 +35,6 @@ public class GUIButtonRecipe extends GUIButton {
      * @param recipe The recipe that this button will craft.
      */
     public GUIButtonRecipe(GUIFastCraft gui, FastRecipe recipe) {
-        super();
         this.gui = gui;
         this.recipe = recipe;
     }
@@ -87,16 +87,6 @@ public class GUIButtonRecipe extends GUIButton {
     }
 
     /**
-     * Unsupported
-     *
-     * @param clickAction The click action to be run when the button is clicked.
-     */
-    @Override
-    public void setClickAction(ClickAction clickAction) {
-        throw new UnsupportedOperationException();
-    }
-
-    /**
      * See if the button is visible.
      *
      * @return Returns true if the player's inventory has the necessary items to craft this recipe.
@@ -107,28 +97,12 @@ public class GUIButtonRecipe extends GUIButton {
         return recipe.removeIngredients(contents);
     }
 
-    /**
-     * Unsupported
-     *
-     * @param visible Returns true if the button is visible.
-     */
     @Override
-    public void setVisible(boolean visible) {
-        throw new UnsupportedOperationException();
-    }
-
-    /**
-     * Crafts the recipe associated with this button using the player's items.
-     *
-     * @param layout   The layout in which the button was clicked.
-     * @param invEvent The inventory event triggered by the click.
-     */
-    @Override
-    public boolean onClick(Layout layout, InventoryClickEvent invEvent) {
+    public boolean onClick(GUI gui, InventoryClickEvent invEvent) {
         if (ignoreClicks.contains(invEvent.getClick())) return false;
 
         // Craft the items, and return if unsuccessful
-        Set<ItemStack> results = recipe.craft(gui);
+        Set<ItemStack> results = recipe.craft(this.gui);
         if (results == null) {
             gui.updateLayout();
             return false;
@@ -145,7 +119,7 @@ public class GUIButtonRecipe extends GUIButton {
             break;
         default:
             // Add to inventory. Drop rest on ground if not enough space.
-            Inventory inv = gui.getPlayer().getInventory();
+            Inventory inv = this.gui.getPlayer().getInventory();
             ItemStack[] resultsArr = new ItemStack[results.size()];
             for (ItemStack is : inv.addItem(results.toArray(resultsArr)).values()) {
                 invEvent.getView().setItem(InventoryView.OUTSIDE, is);

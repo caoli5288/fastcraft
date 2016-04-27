@@ -1,6 +1,8 @@
-package co.kepler.fastcraftplus.craftgui;
+package co.kepler.fastcraftplus.craftgui.layouts;
 
 import co.kepler.fastcraftplus.api.gui.LayoutPaged;
+import co.kepler.fastcraftplus.craftgui.GUIFastCraft;
+import co.kepler.fastcraftplus.craftgui.buttons.GUIButtonRecipe;
 import co.kepler.fastcraftplus.recipes.FastRecipe;
 import org.bukkit.inventory.ItemStack;
 
