@@ -64,3 +64,4 @@ commands:
 
   fastcraft.blacklist.*:
     description: Exemption from all blacklist items
+    default: false

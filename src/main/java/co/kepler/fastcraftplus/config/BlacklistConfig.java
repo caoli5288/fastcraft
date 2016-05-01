@@ -125,7 +125,7 @@ public class BlacklistConfig extends ConfigExternal {
      * @return Returns a hashcode string.
      */
     public static String getHashStr(int hash) {
-        String hashStr = Long.toString(0xFFFFFFFFL & hash, HASH_RADIX);
+        String hashStr = Long.toString(0xFFFFFFFFL & hash, HASH_RADIX); // Unsigned int to String
         return StringUtils.leftPad(hashStr.toUpperCase(), HASH_LENGTH, '0');
     }
 
@@ -142,10 +142,12 @@ public class BlacklistConfig extends ConfigExternal {
             // Collect permissions required for this recipe to be shown
             List<String> permStrings = new ArrayList<>();
 
+            // Get blacklist hash permissions
             if (hashes.containsKey(hash)) {
                 permStrings.add(hashes.get(hash));
             }
 
+            // Get blacklist result permissions
             for (ItemStack is : recipe.getResults()) {
                 for (BlacklistItem bli : results.keySet()) {
                     if (!bli.matchesItem(is)) continue;
@@ -153,6 +155,7 @@ public class BlacklistConfig extends ConfigExternal {
                 }
             }
 
+            // Get blacklist ingredient permissions
             for (Ingredient ing : recipe.getIngredients().keySet()) {
                 for (BlacklistItem bli : ingredients.keySet()) {
                     if (!bli.matchesItem(ing.toItemStack(1))) continue;
@@ -160,10 +163,15 @@ public class BlacklistConfig extends ConfigExternal {
                 }
             }
 
+            // Get permissions, or register them if they don't exist
             List<Permission> perms = new ArrayList<>();
             for (String permString : permStrings) {
-                Permission perm = new Permission(permString, PermissionDefault.FALSE);
-                perm.addParent(Permissions.BLACKLIST_ALL, true);
+                Permission perm = Bukkit.getPluginManager().getPermission(permString);
+                if (perm == null) {
+                    perm = new Permission(permString, PermissionDefault.FALSE);
+                    Bukkit.getPluginManager().addPermission(perm);
+                    perm.addParent(Permissions.BLACKLIST_ALL, true);
+                }
                 perms.add(perm);
             }
             recipePerms.put(hash, perms);
