@@ -7,22 +7,32 @@ import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Manages the blacklist configuration.
  */
 public class BlacklistConfig extends ConfigExternal {
+    private static final String PERM = "fastcraft.blacklist.";
+    private static final String PERM_HASH = PERM + "hash.";
+    private static final String PERM_RESULT = PERM + "result.";
+    private static final String PERM_INGREDIENT = PERM + "ingredient.";
+
     private static final int HASH_RADIX = 24;
     private static final int HASH_LENGTH = 7;
 
-    private static final Map<Integer, Boolean> recipesAllowed = new HashMap<>();
-    private static final Set<Integer> hashes = new HashSet<>();
-    private List<BlacklistItem> results = new ArrayList<>();
-    private List<BlacklistItem> ingredients = new ArrayList<>();
+    private static final Map<Integer, List<String>> recipePerms = new HashMap<>(); // <hash, permissions>
+
+    private static final Map<Integer, String> hashes = new HashMap<>(); // <hash, perm>
+    private Map<BlacklistItem, String> results = new HashMap<>(); // <item, perm>
+    private Map<BlacklistItem, String> ingredients = new HashMap<>(); // <item, perm>
 
     private boolean isBlacklist;
 
@@ -36,7 +46,7 @@ public class BlacklistConfig extends ConfigExternal {
         super.load();
 
         // Clear collections
-        recipesAllowed.clear();
+        recipePerms.clear();
         hashes.clear();
         results.clear();
         ingredients.clear();
@@ -49,7 +59,7 @@ public class BlacklistConfig extends ConfigExternal {
         if (hashSection != null) {
             for (String key : hashSection.getKeys(false)) {
                 try {
-                    hashes.add(getHashInt(hashSection.getString(key)));
+                    hashes.put(getHashInt(hashSection.getString(key)), PERM_HASH + key);
                 } catch (NumberFormatException e) {
                     FastCraft.err("Invalid blacklist hashcode for " + key + ": " + e.getMessage());
                 }
@@ -61,7 +71,7 @@ public class BlacklistConfig extends ConfigExternal {
         if (resultSection != null) {
             for (String key : resultSection.getKeys(false)) {
                 try {
-                    results.add(new BlacklistItem(resultSection.getStringList(key)));
+                    results.put(new BlacklistItem(resultSection.getStringList(key)), PERM_RESULT + key);
                 } catch (Exception e) {
                     FastCraft.err("Invalid blacklist result for " + key + ": " + e.getMessage());
                 }
@@ -73,7 +83,7 @@ public class BlacklistConfig extends ConfigExternal {
         if (ingredientSection != null) {
             for (String key : ingredientSection.getKeys(false)) {
                 try {
-                    ingredients.add(new BlacklistItem(ingredientSection.getStringList(key)));
+                    ingredients.put(new BlacklistItem(ingredientSection.getStringList(key)), PERM_INGREDIENT + key);
                 } catch (Exception e) {
                     FastCraft.err("Invalid blacklist ingredient for " + key + ": " + e.getMessage());
                 }
@@ -107,36 +117,51 @@ public class BlacklistConfig extends ConfigExternal {
      * See if this recipe can be shown in the FastCraft+ interface.
      *
      * @param recipe The recipe to check.
+     * @param player The player using the recipe.
      * @return Returns true if the recipe can be shown.
      */
-    public boolean isAllowed(FastRecipe recipe) {
+    public boolean isAllowed(FastRecipe recipe, Player player) {
         int hash = recipe.hashCode();
-        if (!recipesAllowed.containsKey(hash)) {
-            boolean matched = false;
-            if (hashes.contains(hash)) {
-                matched = true;
-            } else {
-                resultsLoop:
-                for (ItemStack is : recipe.getResults()) {
-                    for (BlacklistItem bli : results) {
-                        if (!bli.matchesItem(is)) continue;
-                        matched = true;
-                        break resultsLoop;
-                    }
-                }
+        if (!recipePerms.containsKey(hash)) {
+            // Collect permissions required for this recipe to be shown
+            List<String> perms = new ArrayList<>();
 
-                ingredientsLoop:
-                for (Ingredient ing : recipe.getIngredients().keySet()) {
-                    for (BlacklistItem bli : ingredients) {
-                        if (!bli.matchesItem(ing.toItemStack(1))) continue;
-                        matched = true;
-                        break ingredientsLoop;
-                    }
+            if (hashes.containsKey(hash)) {
+                perms.add(hashes.get(hash));
+            }
+
+            for (ItemStack is : recipe.getResults()) {
+                for (BlacklistItem bli : results.keySet()) {
+                    if (!bli.matchesItem(is)) continue;
+                    perms.add(results.get(bli));
                 }
             }
-            recipesAllowed.put(hash, matched != isBlacklist);
+
+            for (Ingredient ing : recipe.getIngredients().keySet()) {
+                for (BlacklistItem bli : ingredients.keySet()) {
+                    if (!bli.matchesItem(ing.toItemStack(1))) continue;
+                    perms.add(ingredients.get(bli));
+                }
+            }
+
+            recipePerms.put(hash, perms);
         }
-        return recipesAllowed.get(hash);
+
+        // See if the player has all the required permissions
+        boolean hasPerms = true;
+        for (String perm : recipePerms.get(hash)) {
+            if (!player.hasPermission(perm)) {
+                hasPerms = false;
+                break;
+            }
+        }
+
+        // Return whether the recipe should be shown to the player
+        if (isBlacklist) {
+            return hasPerms;
+        } else {
+            return !hasPerms;
+        }
     }
 
     /**
