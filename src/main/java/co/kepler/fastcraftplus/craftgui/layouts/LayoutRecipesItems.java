@@ -19,7 +19,7 @@ public class LayoutRecipesItems extends LayoutRecipes {
 
         allRecipes = new ArrayList<>();
         for (FastRecipe recipe : FastCraft.recipeManager().getRecipes(gui.getPlayer())) {
-            if (FastCraft.blacklist().isAllowed(recipe)) {
+            if (FastCraft.blacklist().isAllowed(recipe, gui.getPlayer())) {
                 allRecipes.add(recipe);
             }
         }

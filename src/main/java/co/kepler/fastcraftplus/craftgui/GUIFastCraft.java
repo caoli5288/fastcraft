@@ -2,6 +2,7 @@ package co.kepler.fastcraftplus.craftgui;
 
 import co.kepler.fastcraftplus.FastCraft;
 import co.kepler.fastcraftplus.api.gui.GUI;
+import co.kepler.fastcraftplus.api.gui.Layout;
 import co.kepler.fastcraftplus.craftgui.layouts.LayoutFastCraft;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -33,7 +34,6 @@ public class GUIFastCraft extends GUI {
 
     private static Map<Object, GUIFastCraft> guis = new HashMap<>(); // <Location or UUID, GUIFastCraft>
 
-    private final LayoutFastCraft craftLayout;
     private final Player player;
     private final Location location;
     private final boolean showHashes;
@@ -51,8 +51,7 @@ public class GUIFastCraft extends GUI {
         this.location = location;
         this.showHashes = showHashes;
 
-        craftLayout = LayoutManager.getLayoutManager().getNewLayout(this);
-        setLayout(craftLayout);
+        setLayout(LayoutManager.getLayoutManager().getNewLayout(this));
 
         // Update the GUI's layout
         updateLayout();
@@ -91,8 +90,19 @@ public class GUIFastCraft extends GUI {
     }
 
     @Override
+    public LayoutFastCraft getLayout() {
+        return (LayoutFastCraft) super.getLayout();
+    }
+
+    @Override
+    public void setLayout(Layout layout) {
+        assert layout instanceof LayoutFastCraft : "Parameter layout must be an instance of LayoutFastCraft";
+        super.setLayout(layout);
+    }
+
+    @Override
     public void updateLayout() {
-        craftLayout.getTopLayout().updateRecipes();
+        getLayout().getTopLayout().updateRecipes();
         super.updateLayout();
     }
 

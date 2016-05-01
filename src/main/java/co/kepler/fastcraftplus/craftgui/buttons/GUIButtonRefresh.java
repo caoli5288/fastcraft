@@ -4,7 +4,7 @@ import co.kepler.fastcraftplus.FastCraft;
 import co.kepler.fastcraftplus.api.gui.GUI;
 import co.kepler.fastcraftplus.api.gui.GUIButton;
 import co.kepler.fastcraftplus.api.gui.GUIItemBuilder;
-import co.kepler.fastcraftplus.api.gui.Layout;
+import co.kepler.fastcraftplus.craftgui.layouts.LayoutFastCraft;
 import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
@@ -13,10 +13,10 @@ import org.bukkit.inventory.ItemStack;
  * A button that refreshes the recipes in the FastCraft+ interface.
  */
 public class GUIButtonRefresh extends GUIButton {
-    private final Layout layout;
+    private final LayoutFastCraft layout;
     private final ItemStack item;
 
-    public GUIButtonRefresh(Layout layout) {
+    public GUIButtonRefresh(LayoutFastCraft layout) {
         this.layout = layout;
         item = new GUIItemBuilder(Material.NETHER_STAR)
                 .setDisplayName(FastCraft.lang().gui_toolbar_refresh_title())
@@ -37,7 +37,7 @@ public class GUIButtonRefresh extends GUIButton {
 
     @Override
     public boolean onClick(GUI gui, InventoryClickEvent invEvent) {
-        layout.clearButtons();
+        layout.getTopLayout().clearButtons();
         gui.updateLayout();
         return true;
     }

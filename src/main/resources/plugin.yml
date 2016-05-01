@@ -26,15 +26,6 @@ commands:
     usage: /<command>
     aliases: [cr, workbench, wb]
 
-permissions:
-  fastcraft.*:
-    description: All FastCraft+ permissions
-    default: op
-    children:
-      fastcraft.use: true
-      fastcraft.command.*: true
-      fastcraft.admin.*: true
-
   fastcraft.use:
     description: Permission to use FastCraft+ for crafting
     default: true
