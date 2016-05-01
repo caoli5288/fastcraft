@@ -1,7 +1,7 @@
 package co.kepler.fastcraftplus.commands;
 
 import co.kepler.fastcraftplus.FastCraft;
-import co.kepler.fastcraftplus.Permission;
+import co.kepler.fastcraftplus.Permissions;
 import co.kepler.fastcraftplus.craftgui.PlayerManager;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -25,8 +25,8 @@ public class CmdToggle extends SimpleCommand {
         if (args.length > 2 || (args.length > 0 && !TOGGLE_TYPE.contains(args[0]))) {
             sender.sendMessage(FastCraft.lang().commands_usage(USAGE));
             return true;
-        } else if (!sender.hasPermission(Permission.COMMAND_TOGGLE)) {
-            sender.sendMessage(FastCraft.lang().commands_noPerm(Permission.COMMAND_TOGGLE));
+        } else if (!sender.hasPermission(Permissions.COMMAND_TOGGLE)) {
+            sender.sendMessage(FastCraft.lang().commands_noPerm(Permissions.COMMAND_TOGGLE));
         }
 
         String toggleType = args.length > 0 ? args[0] : TOGGLE;
@@ -62,8 +62,8 @@ public class CmdToggle extends SimpleCommand {
         // Send message to toggling player
         if (togglePlayerName != null) {
             // If toggling another player
-            if (!sender.hasPermission(Permission.COMMAND_TOGGLE_OTHER)) {
-                sender.sendMessage(FastCraft.lang().commands_noPerm(Permission.COMMAND_TOGGLE_OTHER));
+            if (!sender.hasPermission(Permissions.COMMAND_TOGGLE_OTHER)) {
+                sender.sendMessage(FastCraft.lang().commands_noPerm(Permissions.COMMAND_TOGGLE_OTHER));
                 return true;
             }
             String name = togglePlayer.getName();

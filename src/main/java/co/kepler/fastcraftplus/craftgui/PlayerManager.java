@@ -2,7 +2,7 @@ package co.kepler.fastcraftplus.craftgui;
 
 import co.kepler.fastcraftplus.BukkitUtil;
 import co.kepler.fastcraftplus.FastCraft;
-import co.kepler.fastcraftplus.Permission;
+import co.kepler.fastcraftplus.Permissions;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -36,7 +36,7 @@ public class PlayerManager implements Listener {
 
         // See if the player has permission to open a FastCraft+ interface
         Player player = e.getPlayer();
-        if (!player.hasPermission(Permission.USE)) return;
+        if (!player.hasPermission(Permissions.USE)) return;
 
         // If the player has FastCraft+ enabled
         if (!Prefs.getPrefs(player).isFastCraftEnabled()) return;

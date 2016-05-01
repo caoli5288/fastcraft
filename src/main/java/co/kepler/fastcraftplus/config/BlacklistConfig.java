@@ -1,6 +1,7 @@
 package co.kepler.fastcraftplus.config;
 
 import co.kepler.fastcraftplus.FastCraft;
+import co.kepler.fastcraftplus.Permissions;
 import co.kepler.fastcraftplus.recipes.FastRecipe;
 import co.kepler.fastcraftplus.recipes.Ingredient;
 import org.apache.commons.lang.StringUtils;
@@ -10,6 +11,8 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.permissions.Permission;
+import org.bukkit.permissions.PermissionDefault;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,7 +31,7 @@ public class BlacklistConfig extends ConfigExternal {
     private static final int HASH_RADIX = 24;
     private static final int HASH_LENGTH = 7;
 
-    private static final Map<Integer, List<String>> recipePerms = new HashMap<>(); // <hash, permissions>
+    private static final Map<Integer, List<Permission>> recipePerms = new HashMap<>(); // <hash, permissions>
 
     private static final Map<Integer, String> hashes = new HashMap<>(); // <hash, perm>
     private Map<BlacklistItem, String> results = new HashMap<>(); // <item, perm>
@@ -45,6 +48,13 @@ public class BlacklistConfig extends ConfigExternal {
     public void load() {
         super.load();
 
+        // Unload permissions
+        for (List<Permission> perms : recipePerms.values()) {
+            for (Permission perm : perms) {
+                Bukkit.getPluginManager().removePermission(perm);
+            }
+        }
+
         // Clear collections
         recipePerms.clear();
         hashes.clear();
@@ -56,7 +66,9 @@ public class BlacklistConfig extends ConfigExternal {
 
         // Load hashes
         ConfigurationSection hashSection = config.getConfigurationSection("hashes");
-        if (hashSection != null) {
+        if (hashSection == null) {
+            FastCraft.err("Missing 'hashes' section in recipes.yml");
+        } else {
             for (String key : hashSection.getKeys(false)) {
                 try {
                     hashes.put(getHashInt(hashSection.getString(key)), PERM_HASH + key);
@@ -68,7 +80,9 @@ public class BlacklistConfig extends ConfigExternal {
 
         // Load results
         ConfigurationSection resultSection = config.getConfigurationSection("results");
-        if (resultSection != null) {
+        if (resultSection == null) {
+            FastCraft.err("Missing 'results' section in recipes.yml");
+        } else {
             for (String key : resultSection.getKeys(false)) {
                 try {
                     results.put(new BlacklistItem(resultSection.getStringList(key)), PERM_RESULT + key);
@@ -79,8 +93,10 @@ public class BlacklistConfig extends ConfigExternal {
         }
 
         // Load ingredients
-        ConfigurationSection ingredientSection = config.getConfigurationSection("items");
-        if (ingredientSection != null) {
+        ConfigurationSection ingredientSection = config.getConfigurationSection("ingredients");
+        if (ingredientSection == null) {
+            FastCraft.err("Missing 'ingredients' section in recipes.yml");
+        } else {
             for (String key : ingredientSection.getKeys(false)) {
                 try {
                     ingredients.put(new BlacklistItem(ingredientSection.getStringList(key)), PERM_INGREDIENT + key);
@@ -124,32 +140,38 @@ public class BlacklistConfig extends ConfigExternal {
         int hash = recipe.hashCode();
         if (!recipePerms.containsKey(hash)) {
             // Collect permissions required for this recipe to be shown
-            List<String> perms = new ArrayList<>();
+            List<String> permStrings = new ArrayList<>();
 
             if (hashes.containsKey(hash)) {
-                perms.add(hashes.get(hash));
+                permStrings.add(hashes.get(hash));
             }
 
             for (ItemStack is : recipe.getResults()) {
                 for (BlacklistItem bli : results.keySet()) {
                     if (!bli.matchesItem(is)) continue;
-                    perms.add(results.get(bli));
+                    permStrings.add(results.get(bli));
                 }
             }
 
             for (Ingredient ing : recipe.getIngredients().keySet()) {
                 for (BlacklistItem bli : ingredients.keySet()) {
                     if (!bli.matchesItem(ing.toItemStack(1))) continue;
-                    perms.add(ingredients.get(bli));
+                    permStrings.add(ingredients.get(bli));
                 }
             }
 
+            List<Permission> perms = new ArrayList<>();
+            for (String permString : permStrings) {
+                Permission perm = new Permission(permString, PermissionDefault.FALSE);
+                perm.addParent(Permissions.BLACKLIST_ALL, true);
+                perms.add(perm);
+            }
             recipePerms.put(hash, perms);
         }
 
         // See if the player has all the required permissions
         boolean hasPerms = true;
-        for (String perm : recipePerms.get(hash)) {
+        for (Permission perm : recipePerms.get(hash)) {
             if (!player.hasPermission(perm)) {
                 hasPerms = false;
                 break;

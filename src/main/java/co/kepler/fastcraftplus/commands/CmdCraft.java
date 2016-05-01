@@ -1,7 +1,7 @@
 package co.kepler.fastcraftplus.commands;
 
 import co.kepler.fastcraftplus.FastCraft;
-import co.kepler.fastcraftplus.Permission;
+import co.kepler.fastcraftplus.Permissions;
 import co.kepler.fastcraftplus.craftgui.GUIFastCraft;
 import co.kepler.fastcraftplus.craftgui.PlayerManager;
 import org.bukkit.command.CommandSender;
@@ -25,8 +25,8 @@ public class CmdCraft extends SimpleCommand {
             sender.sendMessage(FastCraft.lang().commands_playerOnly());
         } else if (args.length > 1) {
             sender.sendMessage(FastCraft.lang().commands_usage(USAGE));
-        } else if (!sender.hasPermission(Permission.COMMAND_CRAFT)) {
-            sender.sendMessage(FastCraft.lang().commands_noPerm(Permission.COMMAND_CRAFT));
+        } else if (!sender.hasPermission(Permissions.COMMAND_CRAFT)) {
+            sender.sendMessage(FastCraft.lang().commands_noPerm(Permissions.COMMAND_CRAFT));
         } else if (args.length > 0) {
             open((Player) sender, args[0]);
         } else {
@@ -47,7 +47,7 @@ public class CmdCraft extends SimpleCommand {
      */
     private void open(Player player) {
         if (PlayerManager.Prefs.getPrefs(player).isFastCraftEnabled()
-                || !player.hasPermission(Permission.USE)) {
+                || !player.hasPermission(Permissions.USE)) {
             new GUIFastCraft(player, null, false).show();
         } else {
             player.openWorkbench(null, true);
@@ -65,8 +65,8 @@ public class CmdCraft extends SimpleCommand {
             player.sendMessage(FastCraft.lang().commands_usage(USAGE));
         } else if (type.equals(WORKBENCH)) {
             player.openWorkbench(null, true);
-        } else if (!player.hasPermission(Permission.USE)) {
-            player.sendMessage(FastCraft.lang().commands_noPerm(Permission.USE));
+        } else if (!player.hasPermission(Permissions.USE)) {
+            player.sendMessage(FastCraft.lang().commands_noPerm(Permissions.USE));
         } else {
             new GUIFastCraft(player, null, type.equals(HASH)).show();
         }

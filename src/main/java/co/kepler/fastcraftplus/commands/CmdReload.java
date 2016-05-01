@@ -1,7 +1,7 @@
 package co.kepler.fastcraftplus.commands;
 
 import co.kepler.fastcraftplus.FastCraft;
-import co.kepler.fastcraftplus.Permission;
+import co.kepler.fastcraftplus.Permissions;
 import org.bukkit.command.CommandSender;
 
 import java.util.List;
@@ -16,8 +16,8 @@ public class CmdReload extends SimpleCommand {
     public boolean onCommand(CommandSender sender, String[] args) {
         if (args.length != 0) {
             sender.sendMessage(FastCraft.lang().commands_usage(USAGE));
-        } else if (!sender.hasPermission(Permission.ADMIN_RELOAD)) {
-            sender.sendMessage(FastCraft.lang().commands_noPerm(Permission.ADMIN_RELOAD));
+        } else if (!sender.hasPermission(Permissions.ADMIN_RELOAD)) {
+            sender.sendMessage(FastCraft.lang().commands_noPerm(Permissions.ADMIN_RELOAD));
         } else {
             FastCraft.getInstance().reload();
             sender.sendMessage(FastCraft.lang().commands_fastcraftadmin_reload_output());
