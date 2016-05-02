@@ -38,6 +38,8 @@ public class GUIFastCraft extends GUI {
     private final Location location;
     private final boolean showHashes;
 
+    private int multiplier = 1;
+
     /**
      * Create a new instance of a FastCraft GUI.
      *
@@ -122,6 +124,24 @@ public class GUIFastCraft extends GUI {
      */
     public Location getLocation() {
         return location;
+    }
+
+    /**
+     * Get the multiplier for recipes in the interface.
+     *
+     * @return Returns the multiplier.
+     */
+    public int getMultiplier() {
+        return multiplier;
+    }
+
+    /**
+     * Set them multiplier for recipes in the interface.
+     *
+     * @param multiplier The new multiplier.
+     */
+    public void setMultiplier(int multiplier) {
+        this.multiplier = multiplier;
     }
 
     /**

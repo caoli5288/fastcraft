@@ -221,7 +221,7 @@ public class RecipeUtil {
         inv.setResult(recipe.getResult());
 
         CraftItemEvent event = new CraftItemEvent(recipe, inv.getView(player),
-                InventoryType.SlotType.RESULT, 0, ClickType.UNKNOWN, InventoryAction.UNKNOWN);
+                InventoryType.SlotType.RESULT, 0, ClickType.SHIFT_LEFT, InventoryAction.UNKNOWN);
 
         Bukkit.getPluginManager().callEvent(event);
         return !event.isCancelled() && event.getResult() != Event.Result.DENY;

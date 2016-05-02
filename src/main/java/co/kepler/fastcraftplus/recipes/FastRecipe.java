@@ -41,13 +41,14 @@ public abstract class FastRecipe implements Comparable<FastRecipe> {
      *
      * @return Returns the matrix of items, or null if this recipe cannot be crafted in a crafting table.
      */
-    public final ItemStack[] getMatrix() {
+    public final ItemStack[] getMatrix(int multiplier) {
         ItemStack[] result = getMatrixInternal();
         if (result == null) return null;
         result = result.clone();
         for (int i = 0; i < result.length; i++) {
             if (result[i] == null) continue;
             result[i] = result[i].clone();
+            result[i].setAmount(result[i].getAmount() * multiplier);
         }
         return result;
     }
@@ -154,11 +155,12 @@ public abstract class FastRecipe implements Comparable<FastRecipe> {
      * @param items The items to remove the ingredients from.
      * @return Returns true if the inventory had the necessary ingredients.
      */
-    public boolean removeIngredients(ItemStack[] items) {
+    public boolean removeIngredients(ItemStack[] items, int multiplier) {
         // Clone the items in the player's inventory
         for (int i = 0; i < items.length; i++) {
             if (items[i] == null) continue;
             items[i] = items[i].clone();
+            items[i].setAmount(items[i].getAmount() * multiplier);
         }
 
         // Add ingredients. Those that can use any data go at the end.
@@ -189,15 +191,15 @@ public abstract class FastRecipe implements Comparable<FastRecipe> {
      * @param gui The gui this recipe is being crafted in.
      * @return Returns true if the ingredients were removed from the player's inventory.
      */
-    public Set<ItemStack> craft(GUIFastCraft gui) {
+    public Set<ItemStack> craft(GUIFastCraft gui, int multiplier) {
         Player player = gui.getPlayer();
         ItemStack[] contents = player.getInventory().getContents();
 
         // Remove items, and return false if unable to craft
-        if (!removeIngredients(contents)) return null;
+        if (!removeIngredients(contents, multiplier)) return null;
 
         // Attempt to craft in a crafting grid.
-        ItemStack[] matrix = getMatrix();
+        ItemStack[] matrix = getMatrix(multiplier);
         Recipe recipe = getRecipe();
         if (matrix != null && recipe != null) {
             if (!RecipeUtil.callCraftItemEvent(player, recipe, matrix, getDisplayResult(), gui.getLocation())) {

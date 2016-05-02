@@ -201,9 +201,8 @@ public class LanguageConfig extends ConfigExternal {
         return get("gui.results.label");
     }
 
-    public String gui_results_item(ItemStack is) {
-        String itemName = BukkitUtil.getItemName(is);
-        return get("gui.results.item", "amount", s(is.getAmount()), "item", itemName);
+    public String gui_results_item(int amount, String itemName) {
+        return get("gui.results.item", "amount", s(amount), "item", itemName);
     }
 
     public String gui_toolbar_pagePrev_title() {

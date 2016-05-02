@@ -89,7 +89,7 @@ public class CustomShapelessRecipe extends CustomRecipe {
         }
 
         // Make sure all ingredients exist, and that there aren't extra items
-        if (!removeIngredients(matrix)) return false;
+        if (!removeIngredients(matrix, 1)) return false;
         for (ItemStack is : matrix) {
             if (is != null) return false;
         }

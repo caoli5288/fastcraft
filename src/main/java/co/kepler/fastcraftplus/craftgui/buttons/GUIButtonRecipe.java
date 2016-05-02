@@ -1,5 +1,6 @@
 package co.kepler.fastcraftplus.craftgui.buttons;
 
+import co.kepler.fastcraftplus.BukkitUtil;
 import co.kepler.fastcraftplus.FastCraft;
 import co.kepler.fastcraftplus.api.gui.GUI;
 import co.kepler.fastcraftplus.api.gui.GUIButton;
@@ -42,9 +43,11 @@ public class GUIButtonRecipe extends GUIButton {
     @Override
     public ItemStack getItem() {
         LanguageConfig lang = FastCraft.lang();
+        int mult = gui.getMultiplier();
 
         // Add the ingredients to the lore of the item
         ItemStack item = recipe.getDisplayResult().clone();
+        item.setAmount(item.getAmount() * mult);
         List<ItemStack> results = recipe.getResults();
         ItemMeta meta = item.getItemMeta();
         LinkedList<String> lore = new LinkedList<>();
@@ -56,7 +59,7 @@ public class GUIButtonRecipe extends GUIButton {
         // Add ingredients and amounts to the lore
         lore.addFirst(lang.gui_ingredients_label());
         for (Ingredient i : ingredients.keySet()) {
-            lore.addLast(lang.gui_ingredients_item(ingredients.get(i), i.getName()));
+            lore.addLast(lang.gui_ingredients_item(ingredients.get(i) * mult, i.getName()));
         }
 
         // Add results and amounts to the lore if more than one result
@@ -64,7 +67,7 @@ public class GUIButtonRecipe extends GUIButton {
             lore.addLast("");
             lore.add(lang.gui_results_label());
             for (ItemStack is : results) {
-                lore.addLast(lang.gui_results_item(is));
+                lore.addLast(lang.gui_results_item(is.getAmount() * mult, BukkitUtil.getItemName(is)));
             }
         }
 
@@ -94,7 +97,7 @@ public class GUIButtonRecipe extends GUIButton {
     @Override
     public boolean isVisible() {
         ItemStack[] contents = gui.getPlayer().getInventory().getContents();
-        return recipe.removeIngredients(contents);
+        return recipe.removeIngredients(contents, gui.getMultiplier());
     }
 
     @Override
@@ -102,7 +105,7 @@ public class GUIButtonRecipe extends GUIButton {
         if (ignoreClicks.contains(invEvent.getClick())) return false;
 
         // Craft the items, and return if unsuccessful
-        Set<ItemStack> results = recipe.craft(this.gui);
+        Set<ItemStack> results = recipe.craft(this.gui, this.gui.getMultiplier());
         if (results == null) {
             gui.updateLayout();
             return false;
