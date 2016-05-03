@@ -53,8 +53,12 @@ public class PlayerManager implements Listener {
 
         private YamlConfiguration conf = new YamlConfiguration();
 
-        private static File getPrefsFile(UUID uuid) {
-            return new File(FastCraft.getInstance().getDataFolder(), "preferences/" + uuid + ".yml");
+        private static File getPrefsFile(UUID uuid) throws IOException {
+            File playerFile = new File(FastCraft.getInstance().getDataFolder(), "preferences/" + uuid + ".yml");
+            File parentDir = playerFile.getParentFile();
+            if (parentDir.mkdirs()) FastCraft.log("Created directory: " + parentDir);
+            playerFile.createNewFile();
+            return playerFile;
         }
 
         public static Prefs getPrefs(Player player) {
@@ -64,13 +68,6 @@ public class PlayerManager implements Listener {
             Prefs result = new Prefs();
             try {
                 File playerFile = getPrefsFile(uuid);
-                File parentDir = playerFile.getParentFile();
-                if (parentDir.mkdirs()) {
-                    FastCraft.log("Created directory: " + parentDir);
-                }
-                if (playerFile.createNewFile()) {
-                    FastCraft.log("Created preferences file for " + player.getName());
-                }
                 BukkitUtil.loadConfiguration(new FileInputStream(playerFile), result.conf);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -82,8 +79,12 @@ public class PlayerManager implements Listener {
 
         public static void saveAllPrefs() {
             for (UUID uuid : prefs.keySet()) {
-                File prefsFile = getPrefsFile(uuid);
-                BukkitUtil.saveConfiguration(prefs.get(uuid).conf, prefsFile);
+                try {
+                    File prefsFile = getPrefsFile(uuid);
+                    BukkitUtil.saveConfiguration(prefs.get(uuid).conf, prefsFile);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
 
