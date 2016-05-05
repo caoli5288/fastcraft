@@ -84,15 +84,6 @@ commands:
 # d: Oorspronkelijke voorwerp naam.
 # nummer: Naam voor specifieke voorwerp data.
 items:
-#  'minecraft:diamond': 'Diamant'
-#  'minecraft:planks':
-#    d: 'Houten Planken'
-#    0: 'Eikenhouten Planken'
-#    1: 'Sparrenhouten Planken'
-#    2: 'Berkenhouten Planken'
-#    3: 'Oerwoudhouten Planken'
-#    4: 'Acaciahouten Planken'
-#    5: 'Donkere Eikenhouten Planken'
   'minecraft:log':
     d: 'Hout'
     0: 'Eikenhout'

@@ -86,15 +86,6 @@ commands:
 # weitere Metadatenangabe erfolgt ist.
 # number: Name /Zahl) der spezifischen Metadatei
 items:
-#  'minecraft:diamond': 'Diamant'
-#  'minecraft:planks':
-#    d: 'Holzbretter'
-#    0: 'Eichenholzbretter'
-#    1: 'Fichtenholzbretter'
-#    2: 'Birkenholzbretter'
-#    3: 'Tropenholzbretter'
-#    4: 'Akazienholzbretter'
-#    5: 'Schwarzeichenholzbretter'
   'minecraft:log':
     d: 'Holz'
     0: 'Eichenholz'
