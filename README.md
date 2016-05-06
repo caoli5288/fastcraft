@@ -115,8 +115,8 @@ Required parameters have &lt;angle brackets&gt;. Optional parameters have [squar
     </td>
     <td>
       Bypasses entries in the blacklist config. This permission will have<br>
-      different functionality, depending on whether the blacklist is being<br>
-      used as a whitelist or a blacklist:<br>
+      different functionality, depending on whether blacklist.yml is being<br>
+      used as a blacklist or a whitelist:<br>
       <b>Blacklist</b>: Allow a player to craft certain blacklisted recipes.<br>
       <b>Whitelist</b>: Disallow a player from crafting whitelisted recipes.
     </td>
