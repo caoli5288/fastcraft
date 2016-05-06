@@ -5,7 +5,7 @@ Required parameters have &lt;angle brackets&gt;. Optional parameters have [squar
   <tr>
     <th>Command</th>
     <th>Aliases</th>
-    <th>Usage</th>
+    <th width=260px>Usage</th>
     <th>Description</th>
   </tr>
   <tr>
@@ -58,7 +58,7 @@ Required parameters have &lt;angle brackets&gt;. Optional parameters have [squar
 <table>
   <tr>
     <th>Default</th>
-    <th>Permission</th>
+    <th width=290px>Permission</th>
     <th>Use</th>
   </tr>
   <tr>
@@ -114,8 +114,8 @@ Required parameters have &lt;angle brackets&gt;. Optional parameters have [squar
       fastcraft.blacklist.ingredient.&lt;entry&gt;<br>
     </td>
     <td>
-      Bypasses entries in the blacklist config. This permission will have<br>
-      different functionality, depending on whether blacklist.yml is being<br>
+      Bypasses entries in the blacklist config. This permission will have
+      different functionality, depending on whether blacklist.yml is being
       used as a blacklist or a whitelist:<br>
       <b>Blacklist</b>: Allow a player to craft certain blacklisted recipes.<br>
       <b>Whitelist</b>: Disallow a player from crafting whitelisted recipes.
