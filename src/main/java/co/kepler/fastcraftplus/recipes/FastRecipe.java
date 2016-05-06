@@ -160,7 +160,7 @@ public abstract class FastRecipe implements Comparable<FastRecipe> {
         for (int i = 0; i < items.length; i++) {
             if (items[i] == null) continue;
             items[i] = items[i].clone();
-            items[i].setAmount(items[i].getAmount() * multiplier);
+            items[i].setAmount(items[i].getAmount());
         }
 
         // Add ingredients. Those that can use any data go at the end.
@@ -176,7 +176,7 @@ public abstract class FastRecipe implements Comparable<FastRecipe> {
 
         // Remove ingredients.
         for (Ingredient i : toRemove) {
-            if (!i.removeIngredients(items, ingredients.get(i))) {
+            if (!i.removeIngredients(items, ingredients.get(i) * multiplier)) {
                 // If unable to remove all of this ingredient
                 return false;
             }

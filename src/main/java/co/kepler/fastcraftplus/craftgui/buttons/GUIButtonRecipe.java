@@ -101,11 +101,11 @@ public class GUIButtonRecipe extends GUIButton {
     }
 
     @Override
-    public boolean onClick(GUI gui, InventoryClickEvent invEvent) {
+    public boolean onClick(GUI g, InventoryClickEvent invEvent) {
         if (ignoreClicks.contains(invEvent.getClick())) return false;
 
         // Craft the items, and return if unsuccessful
-        Set<ItemStack> results = recipe.craft(this.gui, this.gui.getMultiplier());
+        Set<ItemStack> results = recipe.craft(gui, gui.getMultiplier());
         if (results == null) {
             gui.updateLayout();
             return false;

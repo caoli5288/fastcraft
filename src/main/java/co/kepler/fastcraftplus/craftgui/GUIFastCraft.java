@@ -38,14 +38,13 @@ public class GUIFastCraft extends GUI {
     private final Location location;
     private final boolean showHashes;
 
-    private int multiplier = 1;
+    private int multiplier = 2;
 
     /**
      * Create a new instance of a FastCraft GUI.
      *
      * @param player The player who will be shown this GUI.
      */
-    @SuppressWarnings("all")
     public GUIFastCraft(final Player player, Location location, boolean showHashes) {
         super(FastCraft.lang().gui_title(), 6);
 
