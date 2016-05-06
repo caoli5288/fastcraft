@@ -33,6 +33,7 @@ public class PlayerManager implements Listener {
         if (e.isCancelled()) return;
         if (e.getAction() != Action.RIGHT_CLICK_BLOCK) return;
         if (e.getClickedBlock().getType() != Material.WORKBENCH) return;
+        if (e.getPlayer().isSneaking()) return;
 
         // See if the player has permission to open a FastCraft+ interface
         Player player = e.getPlayer();
