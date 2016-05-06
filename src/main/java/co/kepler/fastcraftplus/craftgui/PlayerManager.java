@@ -58,7 +58,7 @@ public class PlayerManager implements Listener {
             File playerFile = new File(FastCraft.getInstance().getDataFolder(), "preferences/" + uuid + ".yml");
             File parentDir = playerFile.getParentFile();
             if (parentDir.mkdirs()) FastCraft.log("Created directory: " + parentDir);
-            playerFile.createNewFile();
+            if (playerFile.createNewFile()) FastCraft.log("Created player file: " + playerFile);
             return playerFile;
         }
 
