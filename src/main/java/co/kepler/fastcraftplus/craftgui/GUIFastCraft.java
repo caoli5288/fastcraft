@@ -5,7 +5,6 @@ import co.kepler.fastcraftplus.api.gui.GUI;
 import co.kepler.fastcraftplus.api.gui.Layout;
 import co.kepler.fastcraftplus.craftgui.layouts.LayoutFastCraft;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -29,16 +28,13 @@ import java.util.Map;
  * The FastCraft crafting GUI.
  */
 public class GUIFastCraft extends GUI {
-    private static final ChatColor BUTTON_NAME_COLOR = ChatColor.GREEN;
-    private static final String NOT_YET_IMPLEMENTED = ChatColor.RED + "Not Yet Implemented";
-
     private static Map<Object, GUIFastCraft> guis = new HashMap<>(); // <Location or UUID, GUIFastCraft>
 
     private final Player player;
     private final Location location;
     private final boolean showHashes;
 
-    private int multiplier = 2;
+    private int multiplier = 16;
 
     /**
      * Create a new instance of a FastCraft GUI.

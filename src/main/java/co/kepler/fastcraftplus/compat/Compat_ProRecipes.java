@@ -12,7 +12,7 @@ import java.util.*;
 
 /**
  * Recipe compatibility for ProRecipes.
- * <p/>
+ * <p>
  * Plugin: https://www.spigotmc.org/resources/9039/
  * API: https://www.spigotmc.org/wiki/prorecipes-recipeapi/
  */

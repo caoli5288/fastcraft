@@ -34,8 +34,8 @@ public class BlacklistConfig extends ConfigExternal {
     private static final Map<Integer, List<Permission>> recipePerms = new HashMap<>(); // <hash, permissions>
 
     private static final Map<Integer, String> hashes = new HashMap<>(); // <hash, perm>
-    private Map<BlacklistItem, String> results = new HashMap<>(); // <item, perm>
-    private Map<BlacklistItem, String> ingredients = new HashMap<>(); // <item, perm>
+    private final Map<BlacklistItem, String> results = new HashMap<>(); // <item, perm>
+    private final Map<BlacklistItem, String> ingredients = new HashMap<>(); // <item, perm>
 
     private boolean isBlacklist;
 
@@ -114,7 +114,7 @@ public class BlacklistConfig extends ConfigExternal {
      * @return Returns a hashcode int.
      * @throws NumberFormatException Thrown when the hashcode string is invalid.
      */
-    public static int getHashInt(String hash) throws NumberFormatException {
+    private static int getHashInt(String hash) throws NumberFormatException {
         return (int) Long.parseLong(hash, HASH_RADIX);
     }
 
@@ -221,7 +221,7 @@ public class BlacklistConfig extends ConfigExternal {
             // Get the item's data
             String dataStr;
             if (item.size() > 1 && !"ANY".equalsIgnoreCase(dataStr = item.get(1))) {
-                // If there is a data paramer, and it isn't ANY
+                // If there is a data parameter, and it isn't ANY
                 try {
                     data = Byte.parseByte(dataStr);
                 } catch (NumberFormatException e) {
