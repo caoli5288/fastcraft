@@ -34,7 +34,7 @@ public class GUIFastCraft extends GUI {
     private final Location location;
     private final boolean showHashes;
 
-    private int multiplier = 16;
+    private int multiplier = 1;
 
     /**
      * Create a new instance of a FastCraft GUI.
