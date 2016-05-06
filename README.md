@@ -1,23 +1,122 @@
 # Commands
 Required parameters have &lt;angle brackets&gt;. Optional parameters have [square brackets].
 
-|Command|Aliases|Usage|Description|
-|---|---|---|---|
-|/fastcraft|/fc|/fc &lt;craft&#124;toggle&gt;|FastCraft+ commands.|
-|/fc toggle||/fc toggle [on&#124;off&#124;toggle] [player]|Enable or disable the FastCraft+ interface.|
-|/fc craft|/craft<br>/cr<br>/workbench<br>/wb|/fc craft [workbench&#124;fastcraft]|Open the FastCraft+ interface, or a workbench.|
-|/fastcraftadmin|/fcadmin<br>/fca|/fca &lt;reload&#124;debug&gt;|FastCraft+ admin commands.|
-|/fca reload||/fca reload|Reload FastCraft+ configurations.|
-|/fca debug||/fca debug|Output debug info. Should be used when reporting issues.|
+<table>
+  <tr>
+    <th>Command</th>
+    <th>Aliases</th>
+    <th>Usage</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>/fastcraft</td>
+    <td>/fc</td>
+    <td>/fc &lt;craft|toggle&gt;</td>
+    <td>FastCraft+ commands.</td>
+  </tr>
+  <tr>
+    <td>/fc toggle</td>
+    <td></td>
+    <td>/fc toggle [on|off|toggle] [player]</td>
+    <td>Enable or disable the FastCraft+ interface.</td>
+  </tr>
+  <tr>
+    <td>/fc craft</td>
+    <td>
+      /craft<br>
+      /cr<br>
+      /workbench<br>
+      /wb
+    </td>
+    <td>/craft [workbench|fastcraft]</td>
+    <td>Open the FastCraft+ interface, or a workbench.</td>
+  </tr>
+  <tr>
+    <td>/fastcraftadmin</td>
+    <td>
+      /fcadmin<br>
+      /fca
+    </td>
+    <td>/fca &lt;reload|debug&gt;</td>
+    <td>FastCraft+ admin commands.</td>
+  </tr>
+  <tr>
+    <td>/fca reload</td>
+    <td></td>
+    <td>/fca reload</td>
+    <td>Reload FastCraft+ config files.</td>
+  </tr>
+  <tr>
+    <td>/fca debug</td>
+    <td></td>
+    <td>/fca debug</td>
+    <td>Output debug info. Should be used when reporting issues. Can only be used from the console.</td>
+  </tr>
+</table>
 
 # Permissions
-|Default|Permission|Use|
-|---|---|---|
-|op|fastcraft.*|All FastCraft+ permissions|
-|true|fastcraft.use|Permission to use FastCraft+ for crafting|
-|false|fastcraft.command.*|Permission to use all non-admin commands|
-|true|fastcraft.command.toggle|/fastcraft toggle [on/off/toggle]|
-|op|fastcraft.command.toggle.other|/fastcraft toggle [on/off/toggle] [player]|
-|false|fastcraft.command.craft|/fastcraft craft|
-|op|fastcraft.admin.*|Permission to use all admin commands|
-|op|fastcraft.admin.reload|/fastcraftadmin reload|
+<table>
+  <tr>
+    <th>Default</th>
+    <th>Permission</th>
+    <th>Use</th>
+  </tr>
+  <tr>
+    <td>op</td>
+    <td>fastcraft.*</td>
+    <td>All FastCraft+ permissions</td>
+  </tr>
+  <tr>
+    <td>true</td>
+    <td>fastcraft.use</td>
+    <td>Permission to use FastCraft+ for crafting</td>
+  </tr>
+  <tr>
+    <td>false</td>
+    <td>fastcraft.command.*</td>
+    <td>Permission to use all non-admin commands</td>
+  </tr>
+  <tr>
+    <td>true</td>
+    <td>fastcraft.command.toggle</td>
+    <td>/fastcraft toggle [on|off|toggle]</td>
+  </tr>
+  <tr>
+    <td>op</td>
+    <td>fastcraft.command.toggle.other</td>
+    <td>/fastcraft toggle [on|off|toggle] [player]</td>
+  </tr>
+  <tr>
+    <td>false</td>
+    <td>fastcraft.command.craft</td>
+    <td>/fastcraft craft</td>
+  </tr>
+  <tr>
+    <td>op</td>
+    <td>fastcraft.admin.*</td>
+    <td>Permission to use all admin commands</td>
+  </tr>
+  <tr>
+    <td>op</td>
+    <td>fastcraft.admin.reload</td>
+    <td>/fastcraftadmin reload</td>
+  </tr>
+  <tr>
+    <td>false</td>
+    <td>fastcraft.blacklist.*</td>
+    <td>All blacklist permissions.</td>
+  </tr>
+  <tr>
+    <td>false</td>
+    <td>
+      fastcraft.blacklist.hash.&lt;entry&gt;<br>
+      fastcraft.blacklist.result.&lt;entry&gt;<br>
+      fastcraft.blacklist.ingredient.&lt;entry&gt;<br>
+    </td>
+    <td>
+      Bypasses entries in the blacklist config.<br>
+      <b>Blacklist</b>: Allow a player to craft certain blacklisted recipes.<br>
+      <b>Whitelist</b>: Disallow a player from crafting whitelisted recipes.
+    </td>
+  </tr>
+</table>
