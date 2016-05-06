@@ -79,12 +79,12 @@ Required parameters have &lt;angle brackets&gt;. Optional parameters have [squar
   <tr>
     <td>true</td>
     <td>fastcraft.command.toggle</td>
-    <td>/fastcraft toggle [on|off|toggle]</td>
+    <td>Use the toggle command</td>
   </tr>
   <tr>
     <td>op</td>
     <td>fastcraft.command.toggle.other</td>
-    <td>/fastcraft toggle [on|off|toggle] [player]</td>
+    <td>Use the toggle command on another player</td>
   </tr>
   <tr>
     <td>false</td>
@@ -117,7 +117,7 @@ Required parameters have &lt;angle brackets&gt;. Optional parameters have [squar
       Bypasses entries in the blacklist config. This permission will have
       different functionality, depending on whether blacklist.yml is being
       used as a blacklist or a whitelist:<br>
-      <b>Blacklist</b>: Allow a player to craft certain blacklisted recipes.<br>
+      <b>Blacklist</b>: Allow a player to craft blacklisted recipes.<br>
       <b>Whitelist</b>: Disallow a player from crafting whitelisted recipes.
     </td>
   </tr>
