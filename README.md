@@ -1,7 +1,7 @@
 # Commands
 Required parameters have &lt;angle brackets&gt;. Optional parameters have [square brackets].
 
-<table>
+<table width=100%>
   <tr>
     <th>Command</th>
     <th>Aliases</th>
@@ -55,16 +55,11 @@ Required parameters have &lt;angle brackets&gt;. Optional parameters have [squar
 </table>
 
 # Permissions
-<table>
+<table width=100%>
   <tr>
     <th>Default</th>
     <th width=290px>Permission</th>
     <th>Use</th>
-  </tr>
-  <tr>
-    <td>op</td>
-    <td>fastcraft.*</td>
-    <td>All FastCraft+ permissions</td>
   </tr>
   <tr>
     <td>true</td>

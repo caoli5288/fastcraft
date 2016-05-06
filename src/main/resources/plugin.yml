@@ -26,6 +26,7 @@ commands:
     usage: /<command>
     aliases: [cr, workbench, wb]
 
+permissions:
   fastcraft.use:
     description: Permission to use FastCraft+ for crafting
     default: true
