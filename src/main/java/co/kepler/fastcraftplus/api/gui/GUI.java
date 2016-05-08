@@ -13,6 +13,7 @@ import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.InventoryView;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -234,10 +235,14 @@ public class GUI implements InventoryHolder {
         }
 
         @EventHandler(priority = EventPriority.LOWEST)
-        public void onInventoryClose(InventoryCloseEvent e) {
-            GUI gui = getGUI(e.getView());
+        public void onInventoryClose(final InventoryCloseEvent e) {
+            final GUI gui = getGUI(e.getView());
             if (gui != null) {
-                gui.onClose(e.getPlayer());
+                new BukkitRunnable() {
+                    public void run() {
+                        gui.onClose(e.getPlayer());
+                    }
+                }.runTask(FastCraft.getInstance());
             }
         }
     }
