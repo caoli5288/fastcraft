@@ -136,8 +136,9 @@ public class GUI implements InventoryHolder {
         for (int i = 0; i < invSize; i++) {
             GUIButton button = layout.getButton(i);
             if (button == null || !button.isVisible()) continue;
-            inv.setItem(i, button.getItem());
-            buttons.put(i, button.copy());
+            GUIButton buttonCopy = button.copy();
+            inv.setItem(i, buttonCopy.getItem());
+            buttons.put(i, buttonCopy);
         }
         for (HumanEntity e : inv.getViewers()) {
             if (e instanceof Player) {
