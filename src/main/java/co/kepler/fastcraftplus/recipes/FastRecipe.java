@@ -66,7 +66,9 @@ public abstract class FastRecipe implements Comparable<FastRecipe> {
      * @return Returns the ingredients required to craft this recipe.
      */
     public final Map<Ingredient, Integer> getIngredients() {
-        return new HashMap<>(getIngredientsInternal());
+        HashMap<Ingredient, Integer> result = new HashMap<>(getIngredientsInternal());
+        result.remove(null);
+        return result;
     }
 
     /**
@@ -114,7 +116,6 @@ public abstract class FastRecipe implements Comparable<FastRecipe> {
         // Count the number of buckets to be returned
         int buckets = 0;
         for (Ingredient i : getIngredients().keySet()) {
-            if (i == null) continue;
             switch (i.getMaterial()) {
             case LAVA_BUCKET:
             case MILK_BUCKET:
