@@ -27,6 +27,9 @@ public class BlacklistConfig extends ConfigExternal {
     private static final String PERM_HASH = PERM + "hash.";
     private static final String PERM_RESULT = PERM + "result.";
     private static final String PERM_INGREDIENT = PERM + "ingredient.";
+    private static final String SECT_HASHES = "hashes";
+    private static final String SECT_RESULTS = "results";
+    private static final String SECT_INGREDIENTS = "ingredients";
 
     private static final int HASH_RADIX = 24;
     private static final int HASH_LENGTH = 7;
@@ -65,10 +68,8 @@ public class BlacklistConfig extends ConfigExternal {
         isBlacklist = !config.getBoolean("use-as-whitelist");
 
         // Load hashes
-        ConfigurationSection hashSection = config.getConfigurationSection("hashes");
-        if (hashSection == null) {
-            FastCraft.err("Missing 'hashes' section in recipes.yml");
-        } else {
+        ConfigurationSection hashSection = config.getConfigurationSection(SECT_HASHES);
+        if (hashSection != null) {
             for (String key : hashSection.getKeys(false)) {
                 try {
                     hashes.put(getHashInt(hashSection.getString(key)), PERM_HASH + key);
@@ -79,10 +80,8 @@ public class BlacklistConfig extends ConfigExternal {
         }
 
         // Load results
-        ConfigurationSection resultSection = config.getConfigurationSection("results");
-        if (resultSection == null) {
-            FastCraft.err("Missing 'results' section in recipes.yml");
-        } else {
+        ConfigurationSection resultSection = config.getConfigurationSection(SECT_RESULTS);
+        if (resultSection != null) {
             for (String key : resultSection.getKeys(false)) {
                 try {
                     results.put(new BlacklistItem(resultSection.getStringList(key)), PERM_RESULT + key);
@@ -93,10 +92,8 @@ public class BlacklistConfig extends ConfigExternal {
         }
 
         // Load ingredients
-        ConfigurationSection ingredientSection = config.getConfigurationSection("ingredients");
-        if (ingredientSection == null) {
-            FastCraft.err("Missing 'ingredients' section in recipes.yml");
-        } else {
+        ConfigurationSection ingredientSection = config.getConfigurationSection(SECT_INGREDIENTS);
+        if (ingredientSection != null){
             for (String key : ingredientSection.getKeys(false)) {
                 try {
                     ingredients.put(new BlacklistItem(ingredientSection.getStringList(key)), PERM_INGREDIENT + key);
