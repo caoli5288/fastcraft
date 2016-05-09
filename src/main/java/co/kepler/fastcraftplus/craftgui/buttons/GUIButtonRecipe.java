@@ -96,6 +96,9 @@ public class GUIButtonRecipe extends GUIButton {
      */
     @Override
     public boolean isVisible() {
+        int amount = recipe.getDisplayResult().getAmount() * gui.getMultiplier();
+        if (amount > 64) return false; // TODO Maybe make the limit 127
+
         ItemStack[] contents = gui.getPlayer().getInventory().getContents();
         return recipe.removeIngredients(contents, gui.getMultiplier());
     }
