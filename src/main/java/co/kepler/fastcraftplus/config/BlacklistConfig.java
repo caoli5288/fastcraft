@@ -27,6 +27,7 @@ public class BlacklistConfig extends ConfigExternal {
     private static final String PERM_HASH = PERM + "hash.";
     private static final String PERM_RESULT = PERM + "result.";
     private static final String PERM_INGREDIENT = PERM + "ingredient.";
+
     private static final String SECT_HASHES = "hashes";
     private static final String SECT_RESULTS = "results";
     private static final String SECT_INGREDIENTS = "ingredients";

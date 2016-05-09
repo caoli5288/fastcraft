@@ -50,36 +50,40 @@ public class GUIButtonRecipe extends GUIButton {
         item.setAmount(item.getAmount() * mult);
         List<ItemStack> results = recipe.getResults();
         ItemMeta meta = item.getItemMeta();
-        LinkedList<String> lore = new LinkedList<>();
         Map<Ingredient, Integer> ingredients = recipe.getIngredients();
 
         // Set the display name of the item
         meta.setDisplayName(lang.gui_itemName(item));
 
+        // Get the lore
+        List<String> lore = meta.getLore();
+        if (lore == null) lore = new ArrayList<>();
+
+
         // Add ingredients and amounts to the lore
-        lore.addFirst(lang.gui_ingredients_label());
+        lore.add(0, lang.gui_ingredients_label());
         for (Ingredient i : ingredients.keySet()) {
-            lore.addLast(lang.gui_ingredients_item(ingredients.get(i) * mult, i.getName()));
+            lore.add(lang.gui_ingredients_item(ingredients.get(i) * mult, i.getName()));
         }
 
         // Add results and amounts to the lore if more than one result
         if (results.size() > 1) {
-            lore.addLast("");
+            lore.add(null);
             lore.add(lang.gui_results_label());
             for (ItemStack is : results) {
-                lore.addLast(lang.gui_results_item(is.getAmount() * mult, BukkitUtil.getItemName(is)));
+                lore.add(lang.gui_results_item(is.getAmount() * mult, BukkitUtil.getItemName(is)));
             }
         }
 
         // Add the hashcode to the lore
         if (gui.showHashes()) {
-            lore.addLast("");
+            lore.add(null);
             lore.addAll(lang.gui_hashcode(recipe));
         }
 
         // If the item has a lore already, or has enchants, add an empty line
         if ((meta.getLore() != null && !meta.getLore().isEmpty()) || meta.hasEnchants()) {
-            lore.addFirst("");
+            lore.add(0, null);
             lore.addAll(0, meta.getLore());
         }
         meta.setLore(lore);
