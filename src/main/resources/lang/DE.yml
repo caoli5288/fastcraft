@@ -28,7 +28,7 @@ gui:
       - '&bblaetter auf Seite <prev>/<total>'
 
     page-next:
-      title: '&anachste Seite'
+      title: '&anaechste Seite'
       description: # Variablen: prev, total, cur
       - '&bblaetter auf Seite <next>/<total>'
 
@@ -69,6 +69,7 @@ commands:
   no-perm: '&cDu hast nicht die benoetigte Berechtigung fuer diesen Befehl: <perm>' # Variables: perm
   player-only: '&cDu musst ein Spieler sein um diesen Befehl benutzen zu koennen.'
   console-only: '&cDieser Befehl kann nur von der Konsole ausgefuehrt werden.'
+  unknown-player: '&cUnbekannter Spieler: <player>' # Variables: player
 
   fastcraft toggle:
     output:
@@ -199,7 +200,7 @@ items:
     14: 'Oranger Farbstoff'
     15: 'Knochenmehl'
   'minecraft:chorus_fruit': 'Chorusfrucht'
-  'minecraft:chorus_fruit_popped': 'Geplatze Chorusfrucht'
+  'minecraft:chorus_fruit_popped': 'Geplatzte Chorusfrucht'
   'minecraft:blaze_rod': 'Lohenrute'
   'minecraft:prismarine_shared': 'Prismarinscherben'
   'minecraft:prismarine_crystals': 'Prismarinkristalle'
@@ -236,7 +237,6 @@ items:
   'minecraft:clay': 'Ton'
   'minecraft:clay_ball': 'Ton'
   'minecraft:brick': 'Ziegel'
-  'minecraft:clay_ball': 'Ton'
   'minecraft:book': 'Buch'
   'minecraft:leather': 'Leder'
   'minecraft:glowstone_dust': 'Glowstonestaub'
@@ -245,7 +245,6 @@ items:
   'minecraft:melon': 'Melone'
   'minecraft:wheat': 'Weizen'
   'minecraft:slime_ball': 'Schleimball'
-  'minecraft:clay_ball': 'Ton'
   'minecraft:lapis_block': 'Lapislazuliblock'
   'minecraft:gold_block': 'Goldblock'
   'minecraft:iron_block': 'Eisenblock'
