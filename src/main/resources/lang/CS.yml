@@ -35,27 +35,29 @@ gui:
     craft-items:
       title: '&aVyroba predmetu'
       description:
-      - '&bVyrabenÃ­ predmnetu'
+      - '&bVyrabeni­ predmnetu'
 
     craft-armor:
-      title: '&aVyroba obarveneho brnenÃ­'
+      title: '&aVyroba obarveneho brneni­'
       description:
-      - '&bVyrabenÃ­ obarveneho brnenÃ­'
+      - '&bVyrabeni­ obarveneho brneni­'
 
     craft-fireworks:
-      title: '&aVyrabenÃ­ raket'
+      title: '&aVyrabeni­ raket'
       description:
-      - '&bVyrabenÃ­ raket a jejich naplnÃ­'
+      - '&bVyrabenÃ­ raket a jejich naplni­'
 
     refresh:
-      title: '&aZnovu nacist'
+      title: '&aZnovunacist'
       description:
-      - '&bZnovu zobrazit dotupne predmety'
+      - '&bZnovu nacte predmety v menu.'
 
     multiplier:
-      title: '&aVyrabecÃ­ nasobic (<mult>x)' # Variables: mult
+      title: '&aVyrabeci nasobic (<mult>x)' # Variables: mult
       description: # Variables: mult
-      - '&bVytvarej vÃ­ce predmetu najedou'
+      - '&bLeve/prave kliknuti zvysuje/snizuje nasobic'
+      - '&bShift klik zvyuje nasobic o 1'
+      - '&bKliknuti kolecka vyresetuje nasobic na 1'
 
     workbench:
       title: '&aPracovni stul'
