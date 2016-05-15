@@ -51,17 +51,20 @@ gui:
     refresh:
       title: '&aRefresh'
       description:
-      - '&bRe-sort items'
+      - '&bRefresh the FastCraft+ interface'
 
     multiplier:
       title: '&aCrafting Multiplier (<mult>x)' # Variables: mult
       description: # Variables: mult
-      - '&bCraft more than once at a time'
+      - '&bLeft/right click to increase/decrease'
+      - '&bShift click to increment by 1'
+      - '&bMiddle click to reset to 1x'
 
     workbench:
       title: '&aCrafting Grid'
       description:
       - '&bOpen a 3x3 crafting grid'
+      - '&bUse &a/fc toggle&b to disable FastCraft+'
 
 commands:
   usage: '&cCommand usage: <usage>' # Variables: usage

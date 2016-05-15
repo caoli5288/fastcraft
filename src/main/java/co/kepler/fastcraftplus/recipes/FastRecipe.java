@@ -110,8 +110,8 @@ public abstract class FastRecipe implements Comparable<FastRecipe> {
      *
      * @return Returns the results of this recipe.
      */
-    public Set<ItemStack> getByproducts() {
-        Set<ItemStack> result = new HashSet<>();
+    public List<ItemStack> getByproducts() {
+        List<ItemStack> result = new ArrayList<>();
 
         // Count the number of buckets to be returned
         int buckets = 0;
@@ -143,8 +143,8 @@ public abstract class FastRecipe implements Comparable<FastRecipe> {
      *
      * @return Returns this recipe's results.
      */
-    public final Set<ItemStack> getAllResults() {
-        Set<ItemStack> items = new HashSet<>();
+    public final List<ItemStack> getAllResults() {
+        List<ItemStack> items = new ArrayList<>();
         items.addAll(getResults());
         items.addAll(getByproducts());
         return items;
@@ -192,7 +192,7 @@ public abstract class FastRecipe implements Comparable<FastRecipe> {
      * @param gui The gui this recipe is being crafted in.
      * @return Returns true if the ingredients were removed from the player's inventory.
      */
-    public Set<ItemStack> craft(GUIFastCraft gui, int multiplier) {
+    public List<ItemStack> craft(GUIFastCraft gui, int multiplier) {
         Player player = gui.getPlayer();
         ItemStack[] contents = player.getInventory().getContents();
 
@@ -218,7 +218,13 @@ public abstract class FastRecipe implements Comparable<FastRecipe> {
         }
 
         // Return this recipe's results
-        return getAllResults();
+        List<ItemStack> results = new ArrayList<>();
+        for (ItemStack is : getAllResults()) {
+            ItemStack toAdd = is.clone();
+            toAdd.setAmount(toAdd.getAmount() * multiplier);
+            results.add(toAdd);
+        }
+        return results;
     }
 
     @Override

@@ -112,7 +112,7 @@ public class GUIButtonRecipe extends GUIButton {
         if (ignoreClicks.contains(invEvent.getClick())) return false;
 
         // Craft the items, and return if unsuccessful
-        Set<ItemStack> results = recipe.craft(gui, gui.getMultiplier());
+        List<ItemStack> results = recipe.craft(gui, gui.getMultiplier());
         if (results == null) {
             gui.updateLayout();
             return false;
