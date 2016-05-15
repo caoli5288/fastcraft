@@ -2,6 +2,8 @@ name: FastCraftPlus
 author: Kepler_
 version: ${project.version}
 
+prefix: FastCraft+
+
 description: Improved crafting in Minecraft.
 
 main: co.kepler.fastcraftplus.FastCraft

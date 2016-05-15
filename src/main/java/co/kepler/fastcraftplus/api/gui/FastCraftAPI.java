@@ -14,7 +14,7 @@ public class FastCraftAPI {
      * @param inv The inventory to check.
      * @return Returns true if the inventory is a GUI.
      */
-    public boolean isFastCraftGUI(Inventory inv) {
+    public static boolean isFastCraftGUI(Inventory inv) {
         return inv.getHolder() instanceof GUI;
     }
 
@@ -24,7 +24,7 @@ public class FastCraftAPI {
      *
      * @return Returns the FastCraft+ layout manager.
      */
-    public LayoutManager getLayoutManager() {
+    public static LayoutManager getLayoutManager() {
         return LayoutManager.getLayoutManager();
     }
 
@@ -32,7 +32,7 @@ public class FastCraftAPI {
      * Set the layout manager used by FastCraft+ interfaces. The layout manager
      * controls the layout of buttons in the GUI.
      */
-    public void setLayoutManager(LayoutManager layoutManager) {
+    public static void setLayoutManager(LayoutManager layoutManager) {
         LayoutManager.setLayoutManager(layoutManager);
     }
 }
