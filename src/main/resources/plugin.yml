@@ -31,7 +31,7 @@ commands:
 permissions:
   fastcraft.use:
     description: Permission to use FastCraft+ for crafting
-    default: true
+    default: false
 
   fastcraft.command.*:
     description: All non-admin FastCraft+ commands
@@ -43,7 +43,7 @@ permissions:
 
   fastcraft.command.toggle:
     description: Permission for a player to enable/disable FastCraft+
-    default: true
+    default: false
     children:
       fastcraft.toggle.other: false
 

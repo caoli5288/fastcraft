@@ -41,6 +41,16 @@
 #  - 'p'
 #  result: [1, 'minecraft:diamond_sword', 0, '{display:{Name:"Thick Sword"}}']
 #
+#wooden_pants:
+#  type: shaped
+#  ingredients:
+#    p: ['minecraft:planks', ANY]
+#  shape:
+#  - 'ppp'
+#  - 'p p'
+#  - 'p p'
+#  result: [1, 'minecraft:diamond_sword', 0, '{display:{Name:"Thick Sword"}}']
+#
 #fish_stew:
 #  type: shapeless
 #  ingredients:
