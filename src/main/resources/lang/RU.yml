@@ -13,7 +13,7 @@ gui:
   item-name: # Variables: name
 
   hashcode: # Variables: hash
-  - '&7Hashcode:'
+  - '&7Хеш:'
   - '&7 <hash>'
 
   ingredients:
@@ -45,16 +45,18 @@ gui:
       title: '&aСоздание фейерверков'
       description:
       - '&bСоздание фейерверков, ракет и звёзд'
-
+      
     refresh:
       title: '&aОбновить'
       description:
-      - '&bПересортировать предметы'
+      - '&bОбновить интерфейс FastCraft+'
 
     multiplier:
-      title: '&aСоздание вещей (<mult>x)' # Variables: mult
+      title: '&aСоздание нескольких вещей (<mult>x)' # Variables: mult
       description: # Variables: mult
-      - '&bСоздать больше одной веши за один раз'
+      - '&bПравый/левый клик для увеличения/уменьшения'
+      - '&bНажми Shift для увеличения на 1'
+      - '&bНажми на колёсико мыши для сброса до 1'
 
     workbench:
       title: '&aСтандартный верстак'
