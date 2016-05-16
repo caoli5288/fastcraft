@@ -50,12 +50,14 @@ gui:
     refresh:
       title: '&aVervers'
       description:
-      - '&bHersorteer voorwerpen'
+      - '&bVervers de FastCraft+ interface'
 
     multiplier:
-      title: '&aVermenigvulder (<mult>x)' # Variabelen: mult
+      title: '&aCrafting Multiplier (<mult>x)' # Variables: mult
       description: # Variables: mult
-      - '&bMaak meerdere voorwerpen in één keer'
+      - '&bLinker/rechter muisklik om te toenemen/afnemen'
+      - '&bShift klik om toe te nemen met 1'
+      - '&bMiddrl muisklik om te resetten naar 1x'
 
     workbench:
       title: '&aWerkbank'
