@@ -28,7 +28,7 @@ gui:
       - '&bblaetter auf Seite <prev>/<total>'
 
     page-next:
-      title: '&anaechste Seite'
+      title: '&anachste Seite'
       description: # Variablen: prev, total, cur
       - '&bblaetter auf Seite <next>/<total>'
 
@@ -56,13 +56,15 @@ gui:
     multiplier:
       title: '&aHerstellungsmuliplikator (<mult>x)' # Variablen: mult
       description:
-      - '&bstellt mehr als einen Gegenstand'
-      - '&bauf einmal her'
+      - '&bLinks/Rechtsklicken zum erhöhen/vermindern'
+      - '&bSHIFT-klicken im um 1 zu erhöhen'
+      - '&bMittelklick um auf 1x zurückzusetzen'
 
     workbench:
       title: '&aWerkbank'
       description:
       - '&boeffnet die normale 3x3 Werkbank'
+      - '&bbenutze /fc toggle zum aktivieren/deaktivieren von FastCraft+'
 
 commands:
   usage: '&cNutzes des Befehl: <usage>' # Variablen: usage
@@ -200,7 +202,7 @@ items:
     14: 'Oranger Farbstoff'
     15: 'Knochenmehl'
   'minecraft:chorus_fruit': 'Chorusfrucht'
-  'minecraft:chorus_fruit_popped': 'Geplatzte Chorusfrucht'
+  'minecraft:chorus_fruit_popped': 'Geplatze Chorusfrucht'
   'minecraft:blaze_rod': 'Lohenrute'
   'minecraft:prismarine_shared': 'Prismarinscherben'
   'minecraft:prismarine_crystals': 'Prismarinkristalle'
@@ -237,6 +239,7 @@ items:
   'minecraft:clay': 'Ton'
   'minecraft:clay_ball': 'Ton'
   'minecraft:brick': 'Ziegel'
+  'minecraft:clay_ball': 'Ton'
   'minecraft:book': 'Buch'
   'minecraft:leather': 'Leder'
   'minecraft:glowstone_dust': 'Glowstonestaub'
@@ -245,6 +248,7 @@ items:
   'minecraft:melon': 'Melone'
   'minecraft:wheat': 'Weizen'
   'minecraft:slime_ball': 'Schleimball'
+  'minecraft:clay_ball': 'Ton'
   'minecraft:lapis_block': 'Lapislazuliblock'
   'minecraft:gold_block': 'Goldblock'
   'minecraft:iron_block': 'Eisenblock'
