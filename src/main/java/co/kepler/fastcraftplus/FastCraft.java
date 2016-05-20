@@ -6,12 +6,14 @@ import co.kepler.fastcraftplus.compat.RecipeCompatManager;
 import co.kepler.fastcraftplus.config.*;
 import co.kepler.fastcraftplus.craftgui.GUIFastCraft;
 import co.kepler.fastcraftplus.craftgui.PlayerManager;
+import co.kepler.fastcraftplus.metrics.MetricsLite;
 import co.kepler.fastcraftplus.recipes.CraftingListener;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,6 +56,14 @@ public class FastCraft extends JavaPlugin {
 
         // Register commands
         new CommandManager().registerCommands();
+
+        // Load metrics
+        try {
+            MetricsLite metrics = new MetricsLite(this);
+            metrics.start();
+        } catch (IOException e) {
+            getLogger().warning("Unable to start metrics");
+        }
     }
 
     @Override

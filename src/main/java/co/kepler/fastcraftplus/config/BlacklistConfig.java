@@ -94,7 +94,7 @@ public class BlacklistConfig extends ConfigExternal {
 
         // Load ingredients
         ConfigurationSection ingredientSection = config.getConfigurationSection(SECT_INGREDIENTS);
-        if (ingredientSection != null){
+        if (ingredientSection != null) {
             for (String key : ingredientSection.getKeys(false)) {
                 try {
                     ingredients.put(new BlacklistItem(ingredientSection.getStringList(key)), PERM_INGREDIENT + key);
