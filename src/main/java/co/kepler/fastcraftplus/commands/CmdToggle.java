@@ -27,6 +27,7 @@ public class CmdToggle extends SimpleCommand {
             return true;
         } else if (!sender.hasPermission(Permissions.COMMAND_TOGGLE)) {
             sender.sendMessage(FastCraft.lang().commands_noPerm(Permissions.COMMAND_TOGGLE));
+            return true;
         }
 
         String toggleType = args.length > 0 ? args[0] : TOGGLE;
