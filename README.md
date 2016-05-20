@@ -73,6 +73,11 @@ Required parameters have &lt;angle brackets&gt;. Optional parameters have [squar
   </tr>
   <tr>
     <td>false</td>
+    <td>fastcraft.command.craft</td>
+    <td>/fastcraft craft</td>
+  </tr>
+  <tr>
+    <td>false</td>
     <td>fastcraft.command.toggle</td>
     <td>Use the toggle command</td>
   </tr>
@@ -80,11 +85,6 @@ Required parameters have &lt;angle brackets&gt;. Optional parameters have [squar
     <td>op</td>
     <td>fastcraft.command.toggle.other</td>
     <td>Use the toggle command on another player</td>
-  </tr>
-  <tr>
-    <td>false</td>
-    <td>fastcraft.command.craft</td>
-    <td>/fastcraft craft</td>
   </tr>
   <tr>
     <td>op</td>
