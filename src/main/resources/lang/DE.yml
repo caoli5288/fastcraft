@@ -1,12 +1,12 @@
 # Translated into German by CloudeLecaw (https://www.spigotmc.org/members/cloudelecaw.34292/)
 #
-# Benutzt Sonderzeichen (&) Fuer Farb-, und Formatierungskodes. Informationen ueber Formatierungskodes:
+# Benutzt Sonderzeichen (&) Für Farb-, und Formatierungskodes. Informationen über Formatierungskodes:
 # http://minecraft.gamepedia.com/Formatting_codes
 
 gui:
   title: 'FastCraft+'
 
-  # Lasse es leer um die Gegenstandsnamen nicht zu veraendern.
+  # Lasse es leer um die Gegenstandsnamen nicht zu verändern.
   item-name: # Variablen: Name
 
   hashcode: # Variablen: hash
@@ -25,66 +25,66 @@ gui:
     page-prev:
       title: '&avorherige Seite'
       description: # Variablen: prev, total, cur
-      - '&bblaetter auf Seite <prev>/<total>'
+      - '&bblätter auf Seite <prev>/<total>'
 
     page-next:
       title: '&anachste Seite'
       description: # Variablen: prev, total, cur
-      - '&bblaetter auf Seite <next>/<total>'
+      - '&bblätter auf Seite <next>/<total>'
 
     craft-items:
       title: '&aHerstellen'
       description:
-      - '&bHerstellung von Gegenstaenden'
+      - '&bHerstellung von Gegenständen'
 
     craft-armor:
-      title: '&afarbige Ruestung'
+      title: '&afarbige Rüstung'
       description:
-      - '&bHerstellung von farbiger Lederruestung'
+      - '&bHerstellung farbiger Lederrüstung'
 
     craft-fireworks:
       title: '&aFeuerwerk'
       description:
-      - '&bHerstellung von Feuerwerksraketen'
+      - '&bHerstellung von Feuerwerk'
       - '&bund Feuerwerkssternen'
 
     refresh:
       title: '&aaktualisieren'
       description:
-      - '&bNeusoritierung der herstellbaren Gegenstaende'
+      - '&bNeusoritierung der Gegenstände'
 
     multiplier:
-      title: '&aHerstellungsmuliplikator (<mult>x)' # Variablen: mult
+      title: '&aMuliplikator (<mult>x)' # Variablen: mult
       description:
-      - '&bLinks/Rechtsklicken zum erhöhen/vermindern'
-      - '&bSHIFT-klicken im um 1 zu erhöhen'
-      - '&bMittelklick um auf 1x zurückzusetzen'
+      - '&bLinks/Rechtsklick - erhöhen/vermindern'
+      - '&bSHIFT-klick - um 1 erhöhen'
+      - '&bMittelklick - auf 1x zurückzusetzen'
 
     workbench:
       title: '&aWerkbank'
       description:
-      - '&boeffnet die normale 3x3 Werkbank'
-      - '&bbenutze /fc toggle zum aktivieren/deaktivieren von FastCraft+'
+      - '&bnormale 3x3 Werkbank'
+      - '&b/fc toggle zum deaktivieren.'
 
 commands:
   usage: '&cNutzes des Befehl: <usage>' # Variablen: usage
-  no-perm: '&cDu hast nicht die benoetigte Berechtigung fuer diesen Befehl: <perm>' # Variables: perm
-  player-only: '&cDu musst ein Spieler sein um diesen Befehl benutzen zu koennen.'
-  console-only: '&cDieser Befehl kann nur von der Konsole ausgefuehrt werden.'
+  no-perm: '&cDu hast nicht die benötigte Berechtigung für diesen Befehl: <perm>' # Variables: perm
+  player-only: '&cDu musst ein Spieler sein um diesen Befehl benutzen zu können.'
+  console-only: '&cDieser Befehl kann nur von der Konsole ausgeführt werden.'
   unknown-player: '&cUnbekannter Spieler: <player>' # Variables: player
 
   fastcraft toggle:
     output:
       on-self:   '&aDas Interface von FastCraft+ wurde aktiviert.'
       off-self:  '&aDas Interface von FastCraft+ wurde deaktiviert.'
-      on-other:  '&aDas Interface von FastCraft+ wurde fuer <player> aktiviert.' # Variablen: player
-      off-other: '&aDas Interface von FastCraft+ wurde fuer <player> deaktiviert.' # Variablen: player
+      on-other:  '&aDas Interface von FastCraft+ wurde für <player> aktiviert.' # Variablen: player
+      off-other: '&aDas Interface von FastCraft+ wurde für <player> deaktiviert.' # Variablen: player
 
   fastcraftadmin reload:
     output: '&aDie FastCraft+ Konfigurationsdatein wurden neugeladen.'
 
-# Die loakisierten Namen der Gegenstaende.
-# d: urspruenglicher Gegenstandsname -> wird immer verwendet wenn keine
+# Die loakisierten Namen der Gegenstände.
+# d: ursprünglicher Gegenstandsname -> wird immer verwendet wenn keine
 # weitere Metadatenangabe erfolgt ist.
 # number: Name /Zahl) der spezifischen Metadatei
 items:
@@ -131,16 +131,16 @@ items:
   'minecraft:chest': 'Truhe'
   'minecraft:wool':
     d: 'Wolle'
-    0: 'Weisse Wolle'
+    0: 'Weiße Wolle'
     1: 'Orange Wolle'
     2: 'Magenta Wolle'
     3: 'Hellblaue Wolle'
     4: 'Gelbe Wolle'
-    5: 'Hellgruene Wolle'
+    5: 'Hellgrüne Wolle'
     6: 'Rosa Wolle'
     7: 'Graue Wolle'
     8: 'Hellgraue Wolle'
-    9: 'Tuerkiese Wolle'
+    9: 'Türkiese Wolle'
     10: 'Violette Wolle'
     11: 'Blaue Wolle'
     12: 'Braune Wolle'
@@ -149,53 +149,53 @@ items:
     15: 'Schwarze Wolle'
   'minecraft:stained_glass':
     d: 'Farbiges Glas'
-    0: 'Weisses Glas'
+    0: 'Weißes Glas'
     1: 'Oranges Glas'
     2: 'Magenta Glas'
     3: 'Hellblaues Glas'
     4: 'Gelbes Glas'
-    5: 'Hellgruenes Glas'
+    5: 'Hellgrünes Glas'
     6: 'Rosa Glas'
     7: 'Graues Glas'
     8: 'Hellgraues Glas'
-    9: 'Tuerkieses Glas'
+    9: 'Türkieses Glas'
     10: 'Violettes Glas'
     11: 'Blaues Glas'
     12: 'Braunes Glas'
-    13: 'Gruenea Glas'
+    13: 'Grünes Glas'
     14: 'Rotes Glas'
     15: 'Schwarzes Glas'
   'minecraft:stained_glass_pane':
     d: 'Farbiges Glas'
-    0: 'Weisses Glas'
+    0: 'Weißes Glas'
     1: 'Oranges Glas'
     2: 'Magenta Glas'
     3: 'Hellblaues Glas'
     4: 'Gelbes Glas'
-    5: 'Hellgruenes Glas'
+    5: 'Hellgrünes Glas'
     6: 'Rosa Glas'
     7: 'Graues Glas'
     8: 'Hellgraues Glas'
-    9: 'Tuerkieses Glas'
+    9: 'Türkieses Glas'
     10: 'Violettes Glas'
     11: 'Blaues Glas'
     12: 'Braunes Glas'
-    13: 'Gruenea Glas'
+    13: 'Grünes Glas'
     14: 'Rotes Glas'
     15: 'Schwarzes Glas'
   'minecraft:dye':
     d: 'Farbstoff'
     0: 'Tintenbeutel'
     1: 'Roter Farbstoff'
-    2: 'Kaktusgruen'
+    2: 'Kaktusgrün'
     3: 'Kakaobohnen'
     4: 'Lapislazuli'
     5: 'Violetter Farbstoff'
-    6: 'Tuerkieser Farbstoff'
+    6: 'Türkieser Farbstoff'
     7: 'Hellgrauer Farbstoff'
     8: 'Grauer Farbstoff'
     9: 'Rosa Farbstoff'
-    10: 'Hellgruener Farbstoff'
+    10: 'Hellgrüner Farbstoff'
     11: 'Gelber Farbstoff'
     12: 'Hellblauer Farbstoff'
     13: 'Magenta Farbstoff'
@@ -243,7 +243,7 @@ items:
   'minecraft:book': 'Buch'
   'minecraft:leather': 'Leder'
   'minecraft:glowstone_dust': 'Glowstonestaub'
-  'minecraft:pumpkin': 'Kuerbis'
+  'minecraft:pumpkin': 'Kürbis'
   'minecraft:torch': 'Fackel'
   'minecraft:melon': 'Melone'
   'minecraft:wheat': 'Weizen'
@@ -265,10 +265,10 @@ items:
   'minecraft:sugar': 'Zucker'
   'minecraft:brown_mushroom': 'Pilz'
   'minecraft:red_mushroom': 'Pilz'
-  'minecraft:bowl': 'Schuessel'
+  'minecraft:bowl': 'Schüssel'
   'minecraft:spider_eye': 'Spinnenauge'
   'minecraft:fermented_spider_eye': 'Fermentiertes Spinnenauge'
-  'minecraft:ghast_taer': 'Ghasttraene'
+  'minecraft:ghast_taer': 'Ghastträne'
   'minecraft:string': 'Faden'
   'minecraft:snowball': 'Schneeball'
   'minecraft:vine': 'Ranken'
@@ -294,7 +294,7 @@ items:
   'minecraft:cooked_rabbit': 'Gebratenes Kaninchen'
   'minecraft:baked_potato': 'Ofenkartoffel'
   'minecraft:beetroot': 'Rote Bete'
-  'minecraft:Bone': 'Knochen'
+  'minecraft:bone': 'Knochen'
   'minecraft:red_flower':
     d: 'Blumen'
     0: 'Mohn'
@@ -303,7 +303,7 @@ items:
     3: 'Porzellansternchen'
     4: 'Rote Tulpe'
     5: 'Orange Tulpe'
-    6: 'Weisse Tulpe'
+    6: 'Weiße Tulpe'
     7: 'Rosa Tulpe'
     8: 'Margeritte'
   'minecraft:double_plant':
@@ -311,10 +311,10 @@ items:
     0: 'Sonnenblume'
     1: 'Flieder'
     2: 'Hohes Gras'
-    3: 'Grosser Farn'
+    3: 'Großer Farn'
     4: 'Rosenstrauch'
     5: 'Pfingstrose'
-  'minecraft:yellow_flower': 'Loewenzahn'
+  'minecraft:yellow_flower': 'Löwenzahn'
   'minecraft:gold_nugget': 'Goldklumpen'
   'minecraft:firework_charge': 'Feuerwerksstern'
   'minecraft:fire_charge': 'Feucherkugel'
@@ -326,20 +326,20 @@ items:
     d: 'Farbiges Banner'
     0: 'Schwarzes Banner'
     1: 'Rotes Banner'
-    2: 'Gruenea Banner'
+    2: 'Grünea Banner'
     3: 'Braunes Banner'
     4: 'Blaues Banner'
     5: 'Violettes Banner'
-    6: 'Tuerkieses Banner'
+    6: 'Türkieses Banner'
     7: 'Hellgraues Banner'
     8: 'Graues Banner'
     9: 'Rosa Banner'
-    10: 'Hellgruenes Banner'
+    10: 'Hellgrünes Banner'
     11: 'Gelbes Banner'
     12: 'Hellblaues Banner'
     13: 'Magenta Banner'
     14: 'Oranges Banner'
-    15: 'Weisses Banner'
+    15: 'Weißes Banner'
   'minecraft:ribbit_hide': 'Kaninchenfell'
   'minecraft:written_book': 'Beschriebenes Buch'
   'minecraft:writable_book': 'Buch und Feder'
@@ -347,8 +347,8 @@ items:
   'minecraft:shears': 'Schere'
   'minecraft:skull':
     d: 'Kopf'
-    0: 'Skelettschaedel'
-    1: 'Witherskelettschaedel'
+    0: 'Skelettschädel'
+    1: 'Witherskelettschädel'
     2: 'Zombiekopf'
     3: 'Spielerkopf'
     4: 'Creeperkopf'
