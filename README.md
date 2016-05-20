@@ -62,7 +62,7 @@ Required parameters have &lt;angle brackets&gt;. Optional parameters have [squar
     <th>Use</th>
   </tr>
   <tr>
-    <td>true</td>
+    <td>false</td>
     <td>fastcraft.use</td>
     <td>Permission to use FastCraft+ for crafting</td>
   </tr>
@@ -72,7 +72,7 @@ Required parameters have &lt;angle brackets&gt;. Optional parameters have [squar
     <td>Permission to use all non-admin commands</td>
   </tr>
   <tr>
-    <td>true</td>
+    <td>false</td>
     <td>fastcraft.command.toggle</td>
     <td>Use the toggle command</td>
   </tr>
