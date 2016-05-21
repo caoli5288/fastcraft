@@ -298,11 +298,11 @@ public class LanguageConfig extends ConfigExternal {
     }
 
     public String commands_fastcraft_toggle_output_on_other(String player) {
-        return get("commands.fastcraft toggle.output.on-other");
+        return get("commands.fastcraft toggle.output.on-other", "player", player);
     }
 
     public String commands_fastcraft_toggle_output_off_other(String player) {
-        return get("commands.fastcraft toggle.output.off-other");
+        return get("commands.fastcraft toggle.output.off-other", "player", player);
     }
 
     public String commands_fastcraftadmin_reload_output() {

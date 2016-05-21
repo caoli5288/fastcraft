@@ -1,7 +1,8 @@
 # language          If the language specified does not exist, a new language file will be added to the
 #                   lang folder in the FastCraftPlus plugin directory.
 #                   Available languages:
-#                   English (EN), Deutsch (DE), Русский язык (RU), Čeština (CS), Türkçe (TR), Nederlands (NL)
+#                   English (EN), Deutsch (DE), Русский язык (RU), Čeština (CS),
+#                   Türkçe (TR), Nederlands (NL), 简体中文 (CN)
 #
 # default-enabled   Whether FastCraft+ is enabled for players by default.
 
