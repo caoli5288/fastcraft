@@ -47,7 +47,7 @@ public class CmdCraft extends SimpleCommand {
      */
     private void open(Player player) {
         if (PlayerManager.Prefs.getPrefs(player).isFastCraftEnabled()
-                || !player.hasPermission(Permissions.USE)) {
+                && player.hasPermission(Permissions.USE)) {
             new GUIFastCraft(player, null, false).show();
         } else {
             player.openWorkbench(null, true);
