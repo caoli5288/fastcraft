@@ -84,7 +84,7 @@ public abstract class ConfigExternal extends Config {
 
         // Read in header from internal config
         stream = FastCraft.getInstance().getResource(resPath);
-        reader = new BufferedReader(new InputStreamReader(stream));
+        reader = new BufferedReader(new InputStreamReader(stream, ENCODING));
         while ((curLine = reader.readLine()) != null && curLine.startsWith("#")) {
             newFileStr.append(curLine).append('\n');
         }
@@ -93,7 +93,7 @@ public abstract class ConfigExternal extends Config {
 
         // Read in config values from external config
         stream = new FileInputStream(configFile);
-        reader = new BufferedReader(new InputStreamReader(stream));
+        reader = new BufferedReader(new InputStreamReader(stream, ENCODING));
         curLine = reader.readLine();
         while (curLine != null && curLine.startsWith("#")) curLine = reader.readLine(); // Skip header comments
         while (curLine != null && curLine.matches("\\s*")) curLine = reader.readLine(); // Skip empty lines
@@ -104,7 +104,8 @@ public abstract class ConfigExternal extends Config {
         reader.close();
 
         // Write the file
-        FileWriter writer = new FileWriter(configFile);
+        FileOutputStream outputStream = new FileOutputStream(configFile);
+        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream, ENCODING));
         writer.write(newFileStr.toString());
         writer.close();
     }

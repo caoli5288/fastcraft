@@ -1,5 +1,6 @@
 package co.kepler.fastcraftplus;
 
+import co.kepler.fastcraftplus.config.Config;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -16,8 +17,6 @@ import java.lang.reflect.Method;
  * Utility class for Bukkit.
  */
 public class BukkitUtil {
-    private static final String CONFIG_CHARSET = "UTF-8";
-
     private static boolean canGetNativeItemNames = false;
     private static Method methodAsNMSCopy, methodNMSGetName;
 
@@ -71,7 +70,7 @@ public class BukkitUtil {
      */
     public static void loadConfiguration(InputStream stream, YamlConfiguration config) {
         try {
-            Reader reader = new InputStreamReader(stream, CONFIG_CHARSET);
+            Reader reader = new InputStreamReader(stream, Config.ENCODING);
             BufferedReader bufferedReader = new BufferedReader(reader);
             StringBuilder sb = new StringBuilder();
 
@@ -108,7 +107,7 @@ public class BukkitUtil {
     public static void saveConfiguration(YamlConfiguration config, File file) {
         try {
             OutputStream stream = new FileOutputStream(file);
-            Writer writer = new OutputStreamWriter(stream, CONFIG_CHARSET);
+            Writer writer = new OutputStreamWriter(stream, Config.ENCODING);
             writer.write(config.saveToString());
             writer.close();
         } catch (IOException e) {
