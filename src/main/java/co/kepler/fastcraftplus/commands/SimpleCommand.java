@@ -1,9 +1,12 @@
 package co.kepler.fastcraftplus.commands;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -57,5 +60,14 @@ public abstract class SimpleCommand {
             }
         }
         return matches;
+    }
+
+    protected List<String> tabMatchPlayer(String arg) {
+        List<String> names = new ArrayList<>();
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            names.add(p.getName());
+        }
+        Collections.sort(names, String.CASE_INSENSITIVE_ORDER);
+        return tabMatch(arg, names);
     }
 }

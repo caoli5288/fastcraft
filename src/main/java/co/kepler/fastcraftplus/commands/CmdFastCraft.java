@@ -3,6 +3,7 @@ package co.kepler.fastcraftplus.commands;
 import co.kepler.fastcraftplus.FastCraft;
 import org.bukkit.command.CommandSender;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -10,6 +11,8 @@ import java.util.List;
  */
 public class CmdFastCraft extends SimpleCommand {
     private static final String USAGE = "/fastcraft <craft|toggle>";
+    private static final String CRAFT = "craft", TOGGLE = "toggle";
+    private static final List<String> ARGS = Arrays.asList(CRAFT, TOGGLE);
 
     private final SimpleCommand cmdCraft = new CmdCraft();
     private final SimpleCommand cmdToggle = new CmdToggle();
@@ -18,9 +21,9 @@ public class CmdFastCraft extends SimpleCommand {
     public boolean onCommand(CommandSender sender, String[] args) {
         if (args.length > 0) {
             switch (args[0].toLowerCase()) {
-            case "craft":
+            case CRAFT:
                 return cmdCraft.onCommand(sender, popFirst(args));
-            case "toggle":
+            case TOGGLE:
                 return cmdToggle.onCommand(sender, popFirst(args));
             }
         }
@@ -30,6 +33,15 @@ public class CmdFastCraft extends SimpleCommand {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, String[] args) {
-        return null; // TODO
+        if (args.length > 0) {
+            switch (args[0].toLowerCase()) {
+            case CRAFT:
+                return cmdCraft.onTabComplete(sender, popFirst(args));
+            case TOGGLE:
+                return cmdToggle.onTabComplete(sender, popFirst(args));
+            }
+            return null;
+        }
+        return tabMatch(args[0], ARGS);
     }
 }

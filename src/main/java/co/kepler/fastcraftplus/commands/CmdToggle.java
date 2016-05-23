@@ -89,6 +89,11 @@ public class CmdToggle extends SimpleCommand {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, String[] args) {
+        if (args.length == 1) {
+            return tabMatch(args[0], TOGGLE_TYPE);
+        } else if (args.length == 2) {
+            return tabMatchPlayer(args[1]);
+        }
         return null;
     }
 

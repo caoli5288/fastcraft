@@ -3,6 +3,7 @@ package co.kepler.fastcraftplus.commands;
 import co.kepler.fastcraftplus.FastCraft;
 import org.bukkit.command.CommandSender;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -10,6 +11,8 @@ import java.util.List;
  */
 public class CmdFastCraftAdmin extends SimpleCommand {
     private static final String USAGE = "/fastcraftadmin <reload|debug>";
+    private static final String RELOAD = "reload", DEBUG = "debug";
+    private static final List<String> ARGS = Arrays.asList(RELOAD, DEBUG);
 
     private final SimpleCommand cmdReload = new CmdReload();
     private final SimpleCommand cmdDebug = new CmdDebug();
@@ -30,6 +33,15 @@ public class CmdFastCraftAdmin extends SimpleCommand {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, String[] args) {
-        return null; // TODO
+        if (args.length > 0) {
+            switch (args[0].toLowerCase()) {
+            case RELOAD:
+                return cmdReload.onTabComplete(sender, popFirst(args));
+            case DEBUG:
+                return cmdDebug.onTabComplete(sender, popFirst(args));
+            }
+            return null;
+        }
+        return tabMatch(args[0], ARGS);
     }
 }

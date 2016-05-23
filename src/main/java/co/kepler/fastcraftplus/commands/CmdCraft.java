@@ -16,7 +16,7 @@ import java.util.List;
 public class CmdCraft extends SimpleCommand {
     private static final String USAGE = "/fastcraft craft [workbench|fastcraft]";
     private static final String WORKBENCH = "workbench", FASTCRAFT = "fastcraft", HASH = "fastcraft*";
-    private static final List<String> types = Arrays.asList(WORKBENCH, FASTCRAFT);
+    private static final List<String> TYPES = Arrays.asList(WORKBENCH, FASTCRAFT);
 
     @Override
     public boolean onCommand(CommandSender sender, String[] args) {
@@ -37,7 +37,8 @@ public class CmdCraft extends SimpleCommand {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, String[] args) {
-        return null;
+        if (args.length != 1) return null;
+        return tabMatch(args[0], TYPES);
     }
 
     /**
@@ -61,7 +62,7 @@ public class CmdCraft extends SimpleCommand {
      * @param type   The type of inventory to open.
      */
     private void open(Player player, String type) {
-        if (!types.contains(type) && !type.equals(HASH)) {
+        if (!TYPES.contains(type) && !type.equals(HASH)) {
             player.sendMessage(FastCraft.lang().commands_usage(USAGE));
         } else if (type.equals(WORKBENCH)) {
             player.openWorkbench(null, true);
