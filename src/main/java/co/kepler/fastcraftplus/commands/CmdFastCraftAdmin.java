@@ -33,7 +33,7 @@ public class CmdFastCraftAdmin extends SimpleCommand {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, String[] args) {
-        if (args.length > 0) {
+        if (args.length > 1) {
             switch (args[0].toLowerCase()) {
             case RELOAD:
                 return cmdReload.onTabComplete(sender, popFirst(args));

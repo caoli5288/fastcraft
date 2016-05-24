@@ -33,7 +33,7 @@ public class CmdFastCraft extends SimpleCommand {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, String[] args) {
-        if (args.length > 0) {
+        if (args.length > 1) {
             switch (args[0].toLowerCase()) {
             case CRAFT:
                 return cmdCraft.onTabComplete(sender, popFirst(args));
