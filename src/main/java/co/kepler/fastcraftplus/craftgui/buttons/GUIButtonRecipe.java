@@ -57,11 +57,17 @@ public class GUIButtonRecipe extends GUIButton {
 
         // Get the lore
         List<String> lore = meta.getLore();
-        if (lore == null) lore = new ArrayList<>();
+        if (lore == null) {
+            lore = new ArrayList<>();
+        }
 
+        // Add a blank line if the item has a lore/enchants
+        if (!lore.isEmpty() || meta.hasEnchants()) {
+            lore.add(null);
+        }
 
         // Add ingredients and amounts to the lore
-        lore.add(0, lang.gui_ingredients_label());
+        lore.add(lang.gui_ingredients_label());
         for (Ingredient i : ingredients.keySet()) {
             lore.add(lang.gui_ingredients_item(ingredients.get(i) * mult, i.getName()));
         }
@@ -81,11 +87,7 @@ public class GUIButtonRecipe extends GUIButton {
             lore.addAll(lang.gui_hashcode(recipe));
         }
 
-        // If the item has a lore already, or has enchants, add an empty line
-        if ((meta.getLore() != null && !meta.getLore().isEmpty()) || meta.hasEnchants()) {
-            lore.add(0, null);
-            lore.addAll(0, meta.getLore());
-        }
+        // Set the new lore
         meta.setLore(lore);
         item.setItemMeta(meta);
 
