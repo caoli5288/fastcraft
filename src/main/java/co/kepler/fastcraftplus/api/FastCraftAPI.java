@@ -1,5 +1,6 @@
-package co.kepler.fastcraftplus.api.gui;
+package co.kepler.fastcraftplus.api;
 
+import co.kepler.fastcraftplus.api.gui.GUI;
 import co.kepler.fastcraftplus.craftgui.LayoutManager;
 import org.bukkit.inventory.Inventory;
 
