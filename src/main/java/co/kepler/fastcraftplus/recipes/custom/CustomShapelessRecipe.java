@@ -29,15 +29,6 @@ public class CustomShapelessRecipe extends CustomRecipe {
         this.results = Collections.singletonList(result);
         this.ingredients = ingredients;
 
-        // Check that there aren't too many ingredients.
-        int totalIngredients = 0;
-        for (int i : ingredients.values()) {
-            totalIngredients += i;
-        }
-        if (totalIngredients > 9) {
-            throw new RecipesConfig.RecipeException("Recipes can have at most 9 ingredients");
-        }
-
         // Create Recipe
         matrix = new ItemStack[9];
         int matIndex = 0;
