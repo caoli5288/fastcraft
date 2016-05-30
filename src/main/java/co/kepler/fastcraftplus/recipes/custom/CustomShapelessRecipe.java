@@ -7,7 +7,6 @@ import org.bukkit.inventory.ShapelessRecipe;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
 /**
  * A shapeless recipe than supports ingredients with metadata.
@@ -15,7 +14,7 @@ import java.util.Map;
 public class CustomShapelessRecipe extends CustomRecipe {
     private final List<ItemStack> results;
     private final ShapelessRecipe recipe;
-    private final Map<Ingredient, Integer> ingredients;
+    private final List<Ingredient> ingredients;
     private final ItemStack[] matrix;
 
     /**
@@ -25,23 +24,35 @@ public class CustomShapelessRecipe extends CustomRecipe {
      * @param ingredients The ingredients of the recipe.
      * @throws RecipesConfig.RecipeException Thrown if the recipe is misconfigured.
      */
-    public CustomShapelessRecipe(ItemStack result, Map<Ingredient, Integer> ingredients) throws RecipesConfig.RecipeException {
+    public CustomShapelessRecipe(ItemStack result, List<Ingredient> ingredients) throws RecipesConfig.RecipeException {
         this.results = Collections.singletonList(result);
         this.ingredients = ingredients;
 
-        // Create Recipe
-        matrix = new ItemStack[9];
-        int matIndex = 0;
-        recipe = new ShapelessRecipe(result);
-        for (Ingredient ingredient : ingredients.keySet()) {
-            int amount = ingredients.get(ingredient);
-            recipe.addIngredient(amount, ingredient.getMaterialData());
+        // Count the number of ingredients required
+        int ingredientCount = 0;
+        for (Ingredient ing : ingredients) {
+            ingredientCount += ing.getAmount();
+            if (ingredientCount > 9) break;
+        }
 
-            // Add items to matrix
-            ItemStack matItem = ingredient.toItemStack(1);
-            for (int i = 0; i < amount; i++) {
-                matrix[matIndex++] = matItem;
+
+        // Create Recipe if few enough ingredients
+        if (ingredientCount <= 9) {
+            matrix = new ItemStack[9];
+            int matIndex = 0;
+            recipe = new ShapelessRecipe(result);
+            for (Ingredient ingredient : ingredients) {
+                recipe.addIngredient(ingredient.getMaterialData());
+
+                // Add items to matrix
+                ItemStack matItem = ingredient.clone(1);
+                for (int i = 0; i < ingredient.getAmount(); i++) {
+                    matrix[matIndex++] = matItem;
+                }
             }
+        } else {
+            recipe = null;
+            matrix = null;
         }
     }
 
@@ -56,7 +67,7 @@ public class CustomShapelessRecipe extends CustomRecipe {
     }
 
     @Override
-    protected Map<Ingredient, Integer> getIngredientsInternal() {
+    protected List<Ingredient> getIngredientsInternal() {
         return ingredients;
     }
 

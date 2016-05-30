@@ -75,7 +75,7 @@ public class CustomShapedRecipe extends CustomRecipe {
             for (int col = 0; col < chars.length; col++) {
                 Ingredient ingredient = ingredientsMap.get(chars[col]);
                 if (ingredient == null) continue;
-                matrix[row * 3 + col] = ingredient.toItemStack(1);
+                matrix[row * 3 + col] = ingredient.clone();
             }
         }
     }
@@ -117,8 +117,8 @@ public class CustomShapedRecipe extends CustomRecipe {
         // Compare the shape to the matrices
         for (int dx = 0; dx <= 3 - cols; dx++) {
             for (int dy = 0; dy <= 3 - rows; dy++) {
-                if (matchesMatrix(matrix, dx, dy)) return true;
-                if (matchesMatrix(matrixFlip, dx, dy)) return true;
+                if (matchesMatrixOffset(matrix, dx, dy)) return true;
+                if (matchesMatrixOffset(matrixFlip, dx, dy)) return true;
             }
         }
         return false;
@@ -132,7 +132,7 @@ public class CustomShapedRecipe extends CustomRecipe {
      * @param dy     The y offset of this recipe in the grid.
      * @return Returns true if the matrix matches this recipe.
      */
-    private boolean matchesMatrix(ItemStack[] matrix, int dx, int dy) {
+    private boolean matchesMatrixOffset(ItemStack[] matrix, int dx, int dy) {
         // Compare ingredients with items in the matrix
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 3; col++) {
@@ -146,7 +146,7 @@ public class CustomShapedRecipe extends CustomRecipe {
                     if (ingredient == null) {
                         if (item != null) return false;
                     } else {
-                        if (!ingredient.matchesItem(item)) return false;
+                        return matchesMatrixSlot(item, ingredient);
                     }
                 }
             }
@@ -154,5 +154,17 @@ public class CustomShapedRecipe extends CustomRecipe {
 
         // None of the ingredients didn't match
         return true;
+    }
+
+    /**
+     * Compare an item in the matrix to an ingredient.
+     *
+     * @param matrixItem The matrix item to compare.
+     * @param ingredient The ingredient to compare.
+     * @return Returns true if the items are the same, and if there is enough of the item.
+     */
+    private boolean matchesMatrixSlot(ItemStack matrixItem, Ingredient ingredient) {
+        if (!ingredient.isSimilar(matrixItem)) return false;
+        return matrixItem.getAmount() >= ingredient.getAmount();
     }
 }
