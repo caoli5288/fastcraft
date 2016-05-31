@@ -38,6 +38,7 @@ public class Compat_FastCraftPlus extends Compat {
         Set<FastRecipe> recipes = new HashSet<>();
         recipes.addAll(FastCraft.recipes().getRecipes());
         for (CustomRecipe r : FastCraft.recipes().getRecipes()) {
+            if (r.getRecipe() == null) continue;
             getManager().addHandledRecipe(RecipeUtil.hashRecipe(r.getRecipe()));
         }
         return recipes;
