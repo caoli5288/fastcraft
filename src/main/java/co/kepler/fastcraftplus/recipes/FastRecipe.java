@@ -185,7 +185,7 @@ public abstract class FastRecipe implements Comparable<FastRecipe> {
 
         // Remove ingredients.
         for (Ingredient i : toRemove) {
-            if (!i.removeIngredients(items, i.getAmount() * multiplier)) {
+            if (!i.removeIngredients(items, multiplier)) {
                 // If unable to remove all of this ingredient
                 return false;
             }
