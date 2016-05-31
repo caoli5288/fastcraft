@@ -154,9 +154,9 @@ public class BlacklistConfig extends ConfigExternal {
             }
 
             // Get blacklist ingredient permissions
-            for (Ingredient ing : recipe.getIngredients().keySet()) {
+            for (Ingredient ing : recipe.getIngredients()) {
                 for (BlacklistItem bli : ingredients.keySet()) {
-                    if (!bli.matchesItem(ing.toItemStack(1))) continue;
+                    if (!bli.matchesItem(ing)) continue;
                     permStrings.add(ingredients.get(bli));
                 }
             }

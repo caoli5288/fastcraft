@@ -93,7 +93,7 @@ public class RecipesConfig extends ConfigExternal {
      */
     private CustomRecipe getShapedRecipe(ConfigurationSection conf) throws RecipeException {
         // Create the recipe object
-        ItemStack result = getItemStack(conf.getStringList("result"));
+        ItemStack result = getIngredient(conf.getStringList("result"));
 
         // Add ingredients to map
         Map<Character, Ingredient> ingredients = new HashMap<>();
@@ -119,16 +119,13 @@ public class RecipesConfig extends ConfigExternal {
      */
     private CustomRecipe getShapelessRecipe(ConfigurationSection conf) throws RecipeException {
         // Create the recipe object
-        ItemStack result = getItemStack(conf.getStringList("result"));
+        ItemStack result = getIngredient(conf.getStringList("result"));
 
         // Add ingredients
-        Map<Ingredient, Integer> ingredients = new HashMap<>();
+        List<Ingredient> ingredients = new ArrayList<>();
         ConfigurationSection ingredientSection = conf.getConfigurationSection("ingredients");
         for (String key : ingredientSection.getKeys(false)) {
-            ItemStack item = getItemStack(ingredientSection.getStringList(key));
-            Ingredient ingredient = new Ingredient(item);
-            Integer amount = ingredients.get(ingredient);
-            ingredients.put(ingredient, (amount == null ? 0 : amount) + item.getAmount());
+            ingredients.add(getIngredient(ingredientSection.getStringList(key)));
         }
 
         // Return the created recipe
@@ -144,20 +141,29 @@ public class RecipesConfig extends ConfigExternal {
      */
     @SuppressWarnings("deprecation")
     private Ingredient getIngredient(List<String> item) throws RecipeException {
-        if (item.isEmpty() || item.size() > 3) throw new RecipeException("Item must have 1, 2, or 3 parameters");
+        if (item.size() < 2 || item.size() > 4) throw new RecipeException("Item must have 2, 3, or 4 parameters");
+
+        // Get the item's amount
+        String amountStr = item.get(0);
+        int amount;
+        try {
+            amount = Integer.parseInt(item.get(0));
+        } catch (NumberFormatException e) {
+            throw new RecipeException("Invalid item amount: '" + amountStr + "'");
+        }
 
         // Get the item's material
-        String typeStr = item.get(0);
+        String typeStr = item.get(1);
         Material type = Bukkit.getUnsafe().getMaterialFromInternalName(typeStr);
         if (type == Material.AIR) throw new RecipeException("Unknown material: '" + typeStr + "'");
 
         // Create the resulting item
-        ItemStack result = new ItemStack(type);
+        ItemStack result = new ItemStack(type, amount);
 
         // Get the item's data
         byte data = 0;
-        if (item.size() >= 2) {
-            String dataStr = item.get(1);
+        if (item.size() >= 3) {
+            String dataStr = item.get(2);
             if (dataStr.equalsIgnoreCase("ANY")) {
                 data = -1;
             } else {
@@ -173,39 +179,13 @@ public class RecipesConfig extends ConfigExternal {
         }
 
         // Get the item's metadata
-        if (item.size() >= 3) {
-            String metaStr = item.get(2);
+        if (item.size() >= 4) {
+            String metaStr = item.get(3);
             Bukkit.getUnsafe().modifyItemStack(result, metaStr);
         }
 
         // Return the ingredient
         return new Ingredient(result);
-    }
-
-    /**
-     * Get an ItemStack with an amount from a List of Strings in the config.
-     *
-     * @param item The List of Strings, with an amount, representing the Item.
-     * @return Returns an ItemStack.
-     * @throws RecipeException Throws an exception if the item is improperly configured.
-     */
-    private ItemStack getItemStack(List<String> item) throws RecipeException {
-        if (item.size() < 2) {
-            throw new RecipeException("Item with amount have at least two elements");
-        }
-
-        // Parse the item amount
-        String amountStr = item.get(0);
-        int amount;
-        try {
-            amount = Integer.parseInt(item.get(0));
-        } catch (NumberFormatException e) {
-            throw new RecipeException("Invalid item amount: '" + amountStr + "'");
-        }
-
-        // Create the item, and return it
-        item.remove(0);
-        return getIngredient(item).toItemStack(amount);
     }
 
     /**

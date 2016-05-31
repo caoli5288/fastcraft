@@ -12,6 +12,32 @@ import java.util.*;
  * A recipe that will be used by the FastCraft+ user interface.
  */
 public abstract class FastRecipe implements Comparable<FastRecipe> {
+    private Map<Ingredient, Integer> ingredients = new HashMap<>();
+
+    /**
+     * Add an ingredient to the FastRecipe.
+     *
+     * @param ingredient The ingredient to add.
+     */
+    protected void addIngredient(Ingredient ingredient) {
+        Ingredient key = ingredient.clone(0);
+        Integer amount = ingredients.get(key);
+        amount = (amount == null ? 0 : amount) + 1;
+        ingredients.put(key, amount);
+    }
+
+    /**
+     * Get the ingredients required to craft this recipe.
+     *
+     * @return Returns the ingredients required to craft this recipe.
+     */
+    public final List<Ingredient> getIngredients() {
+        List<Ingredient> result = new ArrayList<>();
+        for (Ingredient ingredient : ingredients.keySet()) {
+            result.add(ingredient.clone(ingredients.get(ingredient)));
+        }
+        return result;
+    }
 
     /**
      * Get the un-cloned Recipe associated with this FastRecipe, or null if none exists.
@@ -50,24 +76,6 @@ public abstract class FastRecipe implements Comparable<FastRecipe> {
             result[i] = result[i].clone();
             result[i].setAmount(result[i].getAmount() * multiplier);
         }
-        return result;
-    }
-
-    /**
-     * Get the un-cloned ingredients required to craft this recipe.
-     *
-     * @return Returns the ingredients required to craft this recipe.
-     */
-    protected abstract Map<Ingredient, Integer> getIngredientsInternal();
-
-    /**
-     * Get the ingredients required to craft this recipe.
-     *
-     * @return Returns the ingredients required to craft this recipe.
-     */
-    public final Map<Ingredient, Integer> getIngredients() {
-        HashMap<Ingredient, Integer> result = new HashMap<>(getIngredientsInternal());
-        result.remove(null);
         return result;
     }
 
@@ -115,12 +123,12 @@ public abstract class FastRecipe implements Comparable<FastRecipe> {
 
         // Count the number of buckets to be returned
         int buckets = 0;
-        for (Ingredient i : getIngredients().keySet()) {
+        for (Ingredient i : getIngredients()) {
             switch (i.getMaterial()) {
             case LAVA_BUCKET:
             case MILK_BUCKET:
             case WATER_BUCKET:
-                buckets += getIngredients().get(i);
+                buckets += i.getAmount();
             }
         }
 
@@ -166,8 +174,8 @@ public abstract class FastRecipe implements Comparable<FastRecipe> {
 
         // Add ingredients. Those that can use any data go at the end.
         LinkedList<Ingredient> toRemove = new LinkedList<>();
-        Map<Ingredient, Integer> ingredients = getIngredients();
-        for (Ingredient i : ingredients.keySet()) {
+        List<Ingredient> ingredients = getIngredients();
+        for (Ingredient i : ingredients) {
             if (i.anyData()) {
                 toRemove.addLast(i);
             } else {
@@ -177,7 +185,7 @@ public abstract class FastRecipe implements Comparable<FastRecipe> {
 
         // Remove ingredients.
         for (Ingredient i : toRemove) {
-            if (!i.removeIngredients(items, ingredients.get(i) * multiplier)) {
+            if (!i.removeIngredients(items, i.getAmount() * multiplier)) {
                 // If unable to remove all of this ingredient
                 return false;
             }

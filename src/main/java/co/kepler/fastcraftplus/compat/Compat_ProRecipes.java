@@ -92,16 +92,13 @@ public class Compat_ProRecipes extends Compat {
     }
 
     public static class FastRecipeCompat extends FastRecipe {
-        private final Map<Ingredient, Integer> ingredients = new HashMap<>();
         private final List<ItemStack> results = new ArrayList<>();
 
         public FastRecipeCompat(RecipeAPI.RecipeContainer recipe) {
             Collections.addAll(results, recipe.getResult());
             for (ItemStack is : recipe.getIngredients()) {
                 if (is == null) continue;
-                Ingredient ingredient = new Ingredient(is);
-                Integer amount = ingredients.get(ingredient);
-                ingredients.put(ingredient, (amount == null ? 0 : amount) + is.getAmount());
+                addIngredient(new Ingredient(is));
             }
         }
 
@@ -113,11 +110,6 @@ public class Compat_ProRecipes extends Compat {
         @Override
         protected ItemStack[] getMatrixInternal() {
             return null;
-        }
-
-        @Override
-        protected Map<Ingredient, Integer> getIngredientsInternal() {
-            return ingredients;
         }
 
         @Override

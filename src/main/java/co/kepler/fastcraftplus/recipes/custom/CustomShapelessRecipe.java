@@ -14,7 +14,6 @@ import java.util.List;
 public class CustomShapelessRecipe extends CustomRecipe {
     private final List<ItemStack> results;
     private final ShapelessRecipe recipe;
-    private final List<Ingredient> ingredients;
     private final ItemStack[] matrix;
 
     /**
@@ -26,11 +25,11 @@ public class CustomShapelessRecipe extends CustomRecipe {
      */
     public CustomShapelessRecipe(ItemStack result, List<Ingredient> ingredients) throws RecipesConfig.RecipeException {
         this.results = Collections.singletonList(result);
-        this.ingredients = ingredients;
 
         // Count the number of ingredients required
         int ingredientCount = 0;
         for (Ingredient ing : ingredients) {
+            addIngredient(ing);
             ingredientCount += ing.getAmount();
             if (ingredientCount > 9) break;
         }
@@ -64,11 +63,6 @@ public class CustomShapelessRecipe extends CustomRecipe {
     @Override
     protected ShapelessRecipe getRecipeInternal() {
         return recipe;
-    }
-
-    @Override
-    protected List<Ingredient> getIngredientsInternal() {
-        return ingredients;
     }
 
     @Override

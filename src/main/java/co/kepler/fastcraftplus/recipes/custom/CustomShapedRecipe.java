@@ -7,7 +7,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -15,7 +14,6 @@ import java.util.Map;
  * A shaped recipe than supports ingredients with metadata.
  */
 public class CustomShapedRecipe extends CustomRecipe {
-    private final HashMap<Ingredient, Integer> ingredients;
     private final List<ItemStack> results;
     private final Ingredient[][] ingredientGrid;
     private final int rows, cols;
@@ -49,14 +47,10 @@ public class CustomShapedRecipe extends CustomRecipe {
         }
 
         // Copy ingredients to the matrix
-        ingredients = new HashMap<>();
         ingredientGrid = new Ingredient[rows][cols];
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {
-                Ingredient ingredient = ingredientsMap.get(shape.get(row).charAt(col));
-                Integer curAmount = ingredients.get(ingredient);
-                ingredients.put(ingredient, (curAmount == null ? 0 : curAmount) + 1);
-                ingredientGrid[row][col] = ingredient;
+                ingredientGrid[row][col] = ingredientsMap.get(shape.get(row).charAt(col));
             }
         }
 
@@ -88,11 +82,6 @@ public class CustomShapedRecipe extends CustomRecipe {
     @Override
     protected ShapedRecipe getRecipeInternal() {
         return recipe;
-    }
-
-    @Override
-    protected Map<Ingredient, Integer> getIngredientsInternal() {
-        return ingredients;
     }
 
     @Override

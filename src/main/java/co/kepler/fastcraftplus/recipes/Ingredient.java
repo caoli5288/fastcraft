@@ -63,8 +63,8 @@ public class Ingredient extends ItemStack {
      * @param items  The items to remove the ingredients from.
      * @return Returns true if the ingredients were all removed.
      */
-    public boolean removeIngredients(ItemStack[] items) {
-        int amount = getAmount();
+    public boolean removeIngredients(ItemStack[] items, int multiplier) {
+        int amount = getAmount() * multiplier;
         for (int i = items.length - 1; i >= 0 && amount > 0; i--) {
             ItemStack is = items[i];
             if (!isSimilar(is)) continue;

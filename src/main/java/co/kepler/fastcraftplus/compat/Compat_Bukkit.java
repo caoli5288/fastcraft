@@ -100,7 +100,6 @@ public class Compat_Bukkit extends Compat {
      * Adapter class for Bukkit recipes.
      */
     public static class FastRecipeCompat extends FastRecipe {
-        private final Map<Ingredient, Integer> ingredients = new HashMap<>();
         private final List<ItemStack> result;
         private final Recipe recipe;
         private final ItemStack[] matrix;
@@ -127,18 +126,14 @@ public class Compat_Bukkit extends Compat {
                     for (char c : row.toCharArray()) {
                         ItemStack item = sr.getIngredientMap().get(c);
                         if (item == null) continue;
-                        Ingredient ingredient = new Ingredient(item);
-                        Integer amount = ingredients.get(ingredient);
-                        ingredients.put(ingredient, (amount == null ? 0 : amount) + 1);
+                        addIngredient(new Ingredient(item));
                     }
                 }
             } else {
                 // Get ingredients from ShapelessRecipe
                 ShapelessRecipe sr = (ShapelessRecipe) recipe;
                 for (ItemStack item : sr.getIngredientList()) {
-                    Ingredient ingredient = new Ingredient(item);
-                    Integer amount = ingredients.get(ingredient);
-                    ingredients.put(ingredient, (amount == null ? 0 : amount) + item.getAmount());
+                    addIngredient(new Ingredient(item));
                 }
             }
         }
@@ -151,11 +146,6 @@ public class Compat_Bukkit extends Compat {
         @Override
         protected ItemStack[] getMatrixInternal() {
             return matrix;
-        }
-
-        @Override
-        protected Map<Ingredient, Integer> getIngredientsInternal() {
-            return ingredients;
         }
 
         @Override

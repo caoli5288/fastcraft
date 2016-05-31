@@ -122,7 +122,6 @@ public class Compat_ItemMakerPro extends Compat {
     }
 
     public static class FastRecipeCompat extends FastRecipe {
-        private final Map<Ingredient, Integer> ingredients = new HashMap<>();
         private final List<ItemStack> results;
         private final Recipe recipe;
         private final ItemStack[] matrix;
@@ -139,9 +138,7 @@ public class Compat_ItemMakerPro extends Compat {
                 if (curRow.length > 3) matrix = null;
                 for (int col = 0; col < items[row].length; col++) {
                     ItemStack is = items[row][col];
-                    Ingredient ingredient = new Ingredient(is);
-                    Integer amount = ingredients.get(ingredient);
-                    ingredients.put(ingredient, (amount == null ? 0 : amount) + is.getAmount());
+                    addIngredient(new Ingredient(is));
                     if (matrix != null) {
                         matrix[row * 3 + col] = is;
                     }
@@ -158,21 +155,19 @@ public class Compat_ItemMakerPro extends Compat {
 
             // Add ingredients
             for (ItemStack is : recipe.getItems()) {
-                Ingredient ingredient = new Ingredient(is);
-                Integer amount = ingredients.get(ingredient);
-                ingredients.put(ingredient, (amount == null ? 0 : amount) + is.getAmount());
+                addIngredient(new Ingredient(is));
             }
 
             // Fill matrix
             ItemStack[] matrix = new ItemStack[9];
             int matIndex = 0;
-            for (Ingredient ingredient : ingredients.keySet()) {
+            for (Ingredient ingredient : getIngredients()) {
                 if (matIndex >= matrix.length) {
                     matrix = null;
                     break;
                 }
-                ItemStack curItem = ingredient.toItemStack(1);
-                for (int i = 0; i < ingredients.get(ingredient); i++) {
+                ItemStack curItem = ingredient.clone(1);
+                for (int i = 0; i < ingredient.getAmount(); i++) {
                     matrix[matIndex++] = curItem;
                 }
             }
@@ -187,11 +182,6 @@ public class Compat_ItemMakerPro extends Compat {
         @Override
         protected ItemStack[] getMatrixInternal() {
             return matrix;
-        }
-
-        @Override
-        protected Map<Ingredient, Integer> getIngredientsInternal() {
-            return ingredients;
         }
 
         @Override
