@@ -136,8 +136,8 @@ public class CustomShapedRecipe extends CustomRecipe {
                     Ingredient ingredient = ingredientGrid[row - dy][col - dx];
                     if (ingredient == null) {
                         if (item != null) return false;
-                    } else {
-                        return matchesMatrixSlot(item, ingredient);
+                    } else if (!matchesMatrixSlot(item, ingredient)){
+                        return false;
                     }
                 }
             }
