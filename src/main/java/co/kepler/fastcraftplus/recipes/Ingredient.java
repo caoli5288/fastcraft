@@ -1,7 +1,6 @@
 package co.kepler.fastcraftplus.recipes;
 
 import co.kepler.fastcraftplus.BukkitUtil;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.MaterialData;
@@ -99,10 +98,11 @@ public class Ingredient extends ItemStack {
      */
     @SuppressWarnings("deprecation")
     public boolean matchesItem(ItemStack is) {
-        if (is == null) return false;
-        else if (getType() != is.getType()) return false;
-        else if (!anyData() && getData().getData() != is.getData().getData()) return false;
-        else if (hasItemMeta() != is.hasItemMeta()) return false;
-        return !hasItemMeta() || Bukkit.getItemFactory().equals(getItemMeta(), is.getItemMeta());
+        ItemStack compare = this;
+        if (anyData()) {
+            compare = super.clone();
+            compare.getData().setData(is.getData().getData());
+        }
+        return compare.isSimilar(is);
     }
 }

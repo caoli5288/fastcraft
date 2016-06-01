@@ -32,7 +32,7 @@ public class CustomShapedRecipe extends CustomRecipe {
                               List<String> shape) throws RecipesConfig.RecipeException {
         this.results = Collections.singletonList(result);
 
-        // Get the number of rows and columns oin the shape.
+        // Get the number of rows and columns in the shape.
         rows = shape.size();
         if (rows < 1 || rows > 3)
             throw new RecipesConfig.RecipeException("The recipe's shape height must be between 1 and 3");
@@ -155,7 +155,7 @@ public class CustomShapedRecipe extends CustomRecipe {
      * @return Returns true if the items are the same, and if there is enough of the item.
      */
     private boolean matchesMatrixSlot(ItemStack matrixItem, Ingredient ingredient) {
-        if (!ingredient.isSimilar(matrixItem)) return false;
+        if (!ingredient.matchesItem(matrixItem)) return false;
         return matrixItem.getAmount() >= ingredient.getAmount();
     }
 }
