@@ -20,6 +20,7 @@ public abstract class FastRecipe implements Comparable<FastRecipe> {
      * @param ingredient The ingredient to add.
      */
     protected void addIngredient(Ingredient ingredient) {
+        if (ingredient == null) return;
         Ingredient key = ingredient.clone(0);
         Integer amount = ingredients.get(key);
         amount = (amount == null ? 0 : amount) + 1;

@@ -32,13 +32,13 @@ public class CustomShapedRecipe extends CustomRecipe {
                               List<String> shape) throws RecipesConfig.RecipeException {
         this.results = Collections.singletonList(result);
 
-        // Get the number of rows and columns in the shape.
+        // Get the number of rows and columns oin the shape.
         rows = shape.size();
         if (rows < 1 || rows > 3)
-            throw new RecipesConfig.RecipeException("The recipe's shape height must be from 1 to 3");
+            throw new RecipesConfig.RecipeException("The recipe's shape height must be between 1 and 3");
         cols = shape.get(0).length();
         if (cols < 1 || cols > 3)
-            throw new RecipesConfig.RecipeException("The recipe's shape width must be from 1 to 3");
+            throw new RecipesConfig.RecipeException("The recipe's shape width must be between 1 and 3");
 
         // Ensure all rows are the same width
         for (String s : shape) {
@@ -50,7 +50,9 @@ public class CustomShapedRecipe extends CustomRecipe {
         ingredientGrid = new Ingredient[rows][cols];
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {
-                ingredientGrid[row][col] = ingredientsMap.get(shape.get(row).charAt(col));
+                Ingredient ingredient = ingredientsMap.get(shape.get(row).charAt(col));
+                ingredientGrid[row][col] = ingredient;
+                addIngredient(ingredient);
             }
         }
 

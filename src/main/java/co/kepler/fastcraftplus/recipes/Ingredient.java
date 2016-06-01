@@ -1,6 +1,7 @@
 package co.kepler.fastcraftplus.recipes;
 
 import co.kepler.fastcraftplus.BukkitUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.MaterialData;
@@ -60,7 +61,7 @@ public class Ingredient extends ItemStack {
     /**
      * Remove this ingredient from an inventory.
      *
-     * @param items  The items to remove the ingredients from.
+     * @param items The items to remove the ingredients from.
      * @return Returns true if the ingredients were all removed.
      */
     public boolean removeIngredients(ItemStack[] items, int multiplier) {
@@ -88,5 +89,20 @@ public class Ingredient extends ItemStack {
         Ingredient result = clone();
         result.setAmount(amount);
         return result;
+    }
+
+    /**
+     * See if an ItemStack matches this ingredient.
+     *
+     * @param is The ItemStack to compare.
+     * @return Returns true if the ItemStack can be used as this ingredient.
+     */
+    @SuppressWarnings("deprecation")
+    public boolean matchesItem(ItemStack is) {
+        if (is == null) return false;
+        else if (getType() != is.getType()) return false;
+        else if (!anyData() && getData().getData() != is.getData().getData()) return false;
+        else if (hasItemMeta() != is.hasItemMeta()) return false;
+        return !hasItemMeta() || Bukkit.getItemFactory().equals(getItemMeta(), is.getItemMeta());
     }
 }

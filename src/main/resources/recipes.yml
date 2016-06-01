@@ -30,7 +30,7 @@
 #thick_sword:
 #  type: shaped
 #  ingredients:
-#    p: [1, 'minecraft:planks', ANY, '{display:{Name:"Thick Stick"}}']
+#    p: [4, 'minecraft:planks', ANY, '{display:{Name:"Thick Stick"}}']
 #    d: [1, 'minecraft:diamond_block']
 #  shape:
 #  - 'd'
@@ -46,7 +46,7 @@
 #  - 'ppp'
 #  - 'p p'
 #  - 'p p'
-#  result: [1, 'minecraft:diamond_sword', 0, '{display:{Name:"Thick Sword"}}']
+#  result: [1, 'minecraft:leather_leggings', 0, '{display:{Name:"Wooden Pants"}}']
 #
 #fish_stew:
 #  type: shapeless
