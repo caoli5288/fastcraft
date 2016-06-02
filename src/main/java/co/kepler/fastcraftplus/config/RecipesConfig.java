@@ -175,7 +175,7 @@ public class RecipesConfig extends ConfigExternal {
             }
         }
         if (data != 0) {
-            result.setData(type.getNewData(data));
+            result.setDurability(data);
         }
 
         // Get the item's metadata
