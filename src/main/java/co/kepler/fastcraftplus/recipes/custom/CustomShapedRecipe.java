@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public class CustomShapedRecipe extends CustomRecipe {
     private final List<ItemStack> results;
-    private final Ingredient[][] ingredientGrid;
+    private final Ingredient[][] ingredientGrid; // [row][col]
     private final int rows, cols;
     private final ShapedRecipe recipe;
     private final ItemStack[] matrix;
@@ -93,6 +93,33 @@ public class CustomShapedRecipe extends CustomRecipe {
 
     @Override
     public boolean matchesMatrix(ItemStack[] matrix) {
+        return getMatrixOffset(matrix) != null;
+    }
+
+    @Override
+    public boolean removeFromMatrix(ItemStack[] matrix) {
+        Offset offset = getMatrixOffset(matrix);
+        if (offset == null) return false;
+
+        // Remove ingredients
+        for (int x = 0; x < cols; x++) {
+            for (int y = 0; y < rows; y++) {
+                Ingredient ing = ingredientGrid[y][x];
+                if (ing == null) continue;
+                ItemStack item = matrix[offset.getIndex(x, y)];
+                item.setAmount(item.getAmount() - ing.getAmount());
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Get the offset of the matrix.
+     *
+     * @param matrix The matrix.
+     * @return Returns the matrix offset, or null if it doesn't match.
+     */
+    private Offset getMatrixOffset(ItemStack[] matrix) {
         // Flip the matrix, so flipped recipes can be matched
         ItemStack[] matrixFlip = new ItemStack[matrix.length];
         for (int x = 0; x < 3; x++) {
@@ -108,11 +135,15 @@ public class CustomShapedRecipe extends CustomRecipe {
         // Compare the shape to the matrices
         for (int dx = 0; dx <= 3 - cols; dx++) {
             for (int dy = 0; dy <= 3 - rows; dy++) {
-                if (matchesMatrixOffset(matrix, dx, dy)) return true;
-                if (matchesMatrixOffset(matrixFlip, dx, dy)) return true;
+                if (matchesMatrixOffset(matrix, dx, dy))
+                    return new Offset(dx, dy, false);
+                if (matchesMatrixOffset(matrixFlip, dx, dy))
+                    return new Offset(dx, dy, true);
             }
         }
-        return false;
+
+        // Doesn't match matrix
+        return null;
     }
 
     /**
@@ -157,5 +188,33 @@ public class CustomShapedRecipe extends CustomRecipe {
     private boolean matchesMatrixSlot(ItemStack matrixItem, Ingredient ingredient) {
         if (!ingredient.matchesItem(matrixItem)) return false;
         return matrixItem.getAmount() >= ingredient.getAmount();
+    }
+
+    /**
+     * Stores the offset of a matrix.
+     */
+    private static class Offset {
+        public final int dx, dy;
+        public final boolean mirrored;
+
+        public Offset(int dx, int dy, boolean mirrored) {
+            this.dx = dx;
+            this.dy = dy;
+            this.mirrored = mirrored;
+        }
+
+        /**
+         * Get the matrix index for this offset.
+         *
+         * @param xRaw The raw x-value.
+         * @param yRaw The raw y-value.
+         * @return Returns the index in the matrix.
+         */
+        public int getIndex(int xRaw, int yRaw) {
+            if (mirrored) xRaw = 2 - xRaw;
+            xRaw += dx;
+            yRaw += dy;
+            return 3 * yRaw + xRaw;
+        }
     }
 }

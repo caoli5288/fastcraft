@@ -15,4 +15,12 @@ public abstract class CustomRecipe extends FastRecipe {
      * @return Returns true if this recipe matches the matrix.
      */
     public abstract boolean matchesMatrix(ItemStack[] matrix);
+
+    /**
+     * Remove items from a crafting matrix.
+     *
+     * @param matrix The matrix to remove items from.
+     * @return Returns true if able to remove items from matrix.
+     */
+    public abstract boolean removeFromMatrix(ItemStack[] matrix);
 }
