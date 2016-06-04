@@ -2,11 +2,14 @@ package co.kepler.fastcraftplus.recipes.custom;
 
 import co.kepler.fastcraftplus.config.RecipesConfig;
 import co.kepler.fastcraftplus.recipes.Ingredient;
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapelessRecipe;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A shapeless recipe than supports ingredients with metadata.
@@ -72,25 +75,50 @@ public class CustomShapelessRecipe extends CustomRecipe {
 
     @Override
     public boolean matchesMatrix(ItemStack[] matrix) {
-        // Clone matrix, and set all items in matrix to null, or set amount to 1
-        matrix = matrix.clone();
+        // List items in the matrix
+        Map<ItemStack, Integer> matrixItems = new HashMap<>();
+        for (ItemStack is : matrix) {
+            if (is == null || is.getType() == Material.AIR) continue;
+            ItemStack key = is.clone();
+            key.setAmount(1);
+            Integer amount = matrixItems.get(key);
+            amount = (amount == null ? 0 : amount) + is.getAmount();
+            matrixItems.put(key, amount);
+        }
+
+        // Remove ingredients from matrixItems
+        for (Ingredient ing : getIngredients()) {
+            ItemStack key = ing.clone();
+            key.setAmount(1);
+            Integer amount = matrixItems.get(key);
+            amount = (amount == null ? 0 : amount) - ing.getAmount();
+            if (amount < 0) return false;
+            matrixItems.put(key, amount);
+        }
+
+        // Make sure there are no ingredients in matrixItems
+        for (Integer i : matrixItems.values()) {
+            if (i != null && i != 0) return false;
+        }
+
+        // Matches matrix
+        return true;
+    }
+
+    @Override
+    public boolean removeFromMatrix(ItemStack[] matrix) {
+        if (!matchesMatrix(matrix)) return false;
+
+        // Remove items from matrix
         for (int i = 0; i < matrix.length; i++) {
-            if (matrix[i] == null) continue;
-            if (matrix[i].getAmount() <= 0) {
-                matrix[i] = null;
+            ItemStack is = matrix[i];
+            if (is == null || is.getType() == Material.AIR) continue;
+            if (is.getAmount() <= 1) {
+                matrix[i] = new ItemStack(Material.AIR);
             } else {
-                matrix[i] = matrix[i].clone();
-                matrix[i].setAmount(1);
+                is.setAmount(is.getAmount() - 1);
             }
         }
-
-        // Make sure all ingredients exist, and that there aren't extra items
-        if (!removeIngredients(matrix, 1)) return false;
-        for (ItemStack is : matrix) {
-            if (is != null) return false;
-        }
-
-        // Matches the matrix
         return true;
     }
 }
