@@ -79,7 +79,9 @@ public class Ingredient extends ItemStack {
      */
     @SuppressWarnings("deprecation")
     public boolean matchesItem(ItemStack is) {
-        if (is == null) return getType() == Material.AIR;
+        if (is == null || is.getType() == Material.AIR)
+            return getType() == Material.AIR;
+
         ItemStack compare = this;
         if (anyData()) {
             compare = super.clone();
