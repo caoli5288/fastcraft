@@ -85,7 +85,7 @@ public class Ingredient extends ItemStack {
         ItemStack compare = this;
         if (anyData()) {
             compare = super.clone();
-            compare.getData().setData(is.getData().getData());
+            compare.setDurability(is.getDurability());
         }
         return compare.isSimilar(is);
     }
