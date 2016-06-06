@@ -3,7 +3,6 @@ package co.kepler.fastcraftplus.recipes;
 import co.kepler.fastcraftplus.BukkitUtil;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.MaterialData;
 
 /**
  * An ingredient to an item recipe.
@@ -28,24 +27,6 @@ public class Ingredient extends ItemStack {
     @SuppressWarnings("deprecation")
     public boolean anyData() {
         return getData().getData() == ANY_DATA;
-    }
-
-    /**
-     * Get the material data of this ingredient.
-     *
-     * @return Returns the material data of this ingredient.
-     */
-    public MaterialData getMaterialData() {
-        return getData().clone();
-    }
-
-    /**
-     * Get the material type of this ingredient.
-     *
-     * @return Returns the material type of this item.
-     */
-    public Material getMaterial() {
-        return getData().getItemType();
     }
 
     /**
@@ -98,7 +79,7 @@ public class Ingredient extends ItemStack {
      */
     @SuppressWarnings("deprecation")
     public boolean matchesItem(ItemStack is) {
-        if (is == null) return false;
+        if (is == null) return getType() == Material.AIR;
         ItemStack compare = this;
         if (anyData()) {
             compare = super.clone();

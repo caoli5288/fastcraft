@@ -44,7 +44,7 @@ public class CustomShapelessRecipe extends CustomRecipe {
             int matIndex = 0;
             recipe = new ShapelessRecipe(result);
             for (Ingredient ingredient : ingredients) {
-                recipe.addIngredient(ingredient.getMaterialData());
+                recipe.addIngredient(ingredient.getData());
 
                 // Add items to matrix
                 ItemStack matItem = ingredient.clone(1);

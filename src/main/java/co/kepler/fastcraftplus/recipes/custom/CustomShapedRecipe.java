@@ -61,7 +61,7 @@ public class CustomShapedRecipe extends CustomRecipe {
         String[] shapeArr = new String[shape.size()];
         recipe.shape(shape.toArray(shapeArr));
         for (Character key : ingredientsMap.keySet()) {
-            recipe.setIngredient(key, ingredientsMap.get(key).getMaterialData());
+            recipe.setIngredient(key, ingredientsMap.get(key).getData());
         }
 
         // Create matrix

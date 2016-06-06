@@ -125,7 +125,7 @@ public abstract class FastRecipe implements Comparable<FastRecipe> {
         // Count the number of buckets to be returned
         int buckets = 0;
         for (Ingredient i : getIngredients()) {
-            switch (i.getMaterial()) {
+            switch (i.getType()) {
             case LAVA_BUCKET:
             case MILK_BUCKET:
             case WATER_BUCKET:
