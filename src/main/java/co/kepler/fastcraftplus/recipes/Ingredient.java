@@ -98,6 +98,7 @@ public class Ingredient extends ItemStack {
      */
     @SuppressWarnings("deprecation")
     public boolean matchesItem(ItemStack is) {
+        if (is == null) return false;
         ItemStack compare = this;
         if (anyData()) {
             compare = super.clone();
