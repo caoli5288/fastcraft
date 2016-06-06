@@ -120,25 +120,28 @@ public class CustomShapedRecipe extends CustomRecipe {
      * @return Returns the matrix offset, or null if it doesn't match.
      */
     private Offset getMatrixOffset(ItemStack[] matrix) {
+        int size = (int) Math.sqrt(matrix.length);
+        if (rows > size || cols > size) return null;
+
         // Flip the matrix, so flipped recipes can be matched
         ItemStack[] matrixFlip = new ItemStack[matrix.length];
-        for (int x = 0; x < 3; x++) {
-            for (int y = 0; y < 3; y++) {
-                ItemStack curItem = matrix[x + (y * 3)];
+        for (int x = 0; x < size; x++) {
+            for (int y = 0; y < size; y++) {
+                ItemStack curItem = matrix[x + (y * size)];
                 if (curItem != null && curItem.getType() == Material.AIR) {
-                    matrix[x + (y * 3)] = null;
+                    matrix[x + (y * size)] = null;
                 }
-                matrixFlip[(2 - x) + (y * 3)] = matrix[x + (y * 3)];
+                matrixFlip[(size - 1 - x) + (y * size)] = matrix[x + (y * size)];
             }
         }
 
         // Compare the shape to the matrices
-        for (int dx = 0; dx <= 3 - cols; dx++) {
-            for (int dy = 0; dy <= 3 - rows; dy++) {
+        for (int dx = 0; dx <= size - cols; dx++) {
+            for (int dy = 0; dy <= size - rows; dy++) {
                 if (matchesMatrixOffset(matrix, dx, dy))
-                    return new Offset(dx, dy, false);
+                    return new Offset(size, dx, dy, false);
                 if (matchesMatrixOffset(matrixFlip, dx, dy))
-                    return new Offset(dx, dy, true);
+                    return new Offset(size, dx, dy, true);
             }
         }
 
@@ -156,9 +159,10 @@ public class CustomShapedRecipe extends CustomRecipe {
      */
     private boolean matchesMatrixOffset(ItemStack[] matrix, int dx, int dy) {
         // Compare ingredients with items in the matrix
-        for (int row = 0; row < 3; row++) {
-            for (int col = 0; col < 3; col++) {
-                ItemStack item = matrix[row * 3 + col];
+        int size = (int) Math.sqrt(matrix.length);
+        for (int row = 0; row < size; row++) {
+            for (int col = 0; col < size; col++) {
+                ItemStack item = matrix[row * size + col];
                 if (row < dy || col < dx || row >= dy + rows || col >= dx + cols) {
                     // If outside the current recipe
                     if (item != null && item.getType() != Material.AIR) return false;
@@ -194,10 +198,11 @@ public class CustomShapedRecipe extends CustomRecipe {
      * Stores the offset of a matrix.
      */
     private static class Offset {
-        public final int dx, dy;
+        public final int size, dx, dy;
         public final boolean mirrored;
 
-        public Offset(int dx, int dy, boolean mirrored) {
+        public Offset(int size, int dx, int dy, boolean mirrored) {
+            this.size = size;
             this.dx = dx;
             this.dy = dy;
             this.mirrored = mirrored;
@@ -211,10 +216,10 @@ public class CustomShapedRecipe extends CustomRecipe {
          * @return Returns the index in the matrix.
          */
         public int getIndex(int xRaw, int yRaw) {
-            if (mirrored) xRaw = 2 - xRaw;
+            if (mirrored) xRaw = size - 1 - xRaw;
             xRaw += dx;
             yRaw += dy;
-            return 3 * yRaw + xRaw;
+            return size * yRaw + xRaw;
         }
     }
 }
