@@ -7,9 +7,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapelessRecipe;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * A shapeless recipe than supports ingredients with metadata.
@@ -75,34 +73,16 @@ public class CustomShapelessRecipe extends CustomRecipe {
 
     @Override
     public boolean matchesMatrix(ItemStack[] matrix) {
-        // List items in the matrix
-        Map<ItemStack, Integer> matrixItems = new HashMap<>();
-        for (ItemStack is : matrix) {
-            if (is == null || is.getType() == Material.AIR) continue;
-            ItemStack key = is.clone();
-            key.setAmount(1);
-            Integer amount = matrixItems.get(key);
-            amount = (amount == null ? 0 : amount) + is.getAmount();
-            matrixItems.put(key, amount);
+        // Copy matrix, leaving 1 of each item
+        ItemStack[] copy = new ItemStack[matrix.length];
+        for (int i = 0; i < copy.length; i++) {
+            if (matrix[i] == null || matrix[i].getAmount() < 1) continue;
+            copy[i] = matrix[i].clone();
+            copy[i].setAmount(1);
         }
 
-        // Remove ingredients from matrixItems
-        for (Ingredient ing : getIngredients()) {
-            ItemStack key = ing.clone();
-            key.setAmount(1);
-            Integer amount = matrixItems.get(key);
-            amount = (amount == null ? 0 : amount) - ing.getAmount();
-            if (amount < 0) return false;
-            matrixItems.put(key, amount);
-        }
-
-        // Make sure there are no ingredients in matrixItems
-        for (Integer i : matrixItems.values()) {
-            if (i != null && i != 0) return false;
-        }
-
-        // Matches matrix
-        return true;
+        // See if the matrix contains all the ingredients
+        return removeIngredients(matrix, 1);
     }
 
     @Override
