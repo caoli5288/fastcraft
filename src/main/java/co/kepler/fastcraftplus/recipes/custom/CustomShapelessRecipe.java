@@ -35,7 +35,6 @@ public class CustomShapelessRecipe extends CustomRecipe {
             if (ingredientCount > 9) break;
         }
 
-
         // Create Recipe if few enough ingredients
         if (ingredientCount <= 9) {
             matrix = new ItemStack[9];
