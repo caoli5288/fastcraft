@@ -310,8 +310,8 @@ public class RecipeUtil {
 
         @Override
         public boolean equals(Object o) {
-            if (!(o instanceof Recipe)) return false;
-            return areEqual(recipe, (Recipe) o);
+            if (!(o instanceof ComparableRecipe)) return false;
+            return areEqual(recipe, ((ComparableRecipe) o).recipe);
         }
 
         @Override
