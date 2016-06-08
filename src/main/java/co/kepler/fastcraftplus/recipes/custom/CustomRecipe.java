@@ -1,6 +1,7 @@
 package co.kepler.fastcraftplus.recipes.custom;
 
 import co.kepler.fastcraftplus.recipes.FastRecipe;
+import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.inventory.ItemStack;
 
 /**
@@ -17,10 +18,9 @@ public abstract class CustomRecipe extends FastRecipe {
     public abstract boolean matchesMatrix(ItemStack[] matrix);
 
     /**
-     * Remove items from a crafting matrix.
+     * Remove ingredients from a crafting matrix for a CraftItemEvent.
      *
-     * @param matrix The matrix to remove items from.
-     * @return Returns true if able to remove items from matrix.
+     * @param event The CraftItemEvent removing ingredients.
      */
-    public abstract boolean removeFromMatrix(ItemStack[] matrix);
+    public abstract void removeFromMatrix(CraftItemEvent event);
 }

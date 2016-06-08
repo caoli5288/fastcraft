@@ -2,7 +2,7 @@ package co.kepler.fastcraftplus.recipes.custom;
 
 import co.kepler.fastcraftplus.config.RecipesConfig;
 import co.kepler.fastcraftplus.recipes.Ingredient;
-import org.bukkit.Material;
+import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapelessRecipe;
 
@@ -85,19 +85,7 @@ public class CustomShapelessRecipe extends CustomRecipe {
     }
 
     @Override
-    public boolean removeFromMatrix(ItemStack[] matrix) {
-        if (!matchesMatrix(matrix)) return false;
-
-        // Remove items from matrix
-        for (int i = 0; i < matrix.length; i++) {
-            ItemStack is = matrix[i];
-            if (is == null || is.getType() == Material.AIR) continue;
-            if (is.getAmount() <= 1) {
-                matrix[i] = new ItemStack(Material.AIR);
-            } else {
-                is.setAmount(is.getAmount() - 1);
-            }
-        }
-        return true;
+    public void removeFromMatrix(CraftItemEvent event) {
+        // Leave matrix as-is.
     }
 }

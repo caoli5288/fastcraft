@@ -3,6 +3,7 @@ package co.kepler.fastcraftplus.recipes.custom;
 import co.kepler.fastcraftplus.config.RecipesConfig;
 import co.kepler.fastcraftplus.recipes.Ingredient;
 import org.bukkit.Material;
+import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 
@@ -97,20 +98,37 @@ public class CustomShapedRecipe extends CustomRecipe {
     }
 
     @Override
-    public boolean removeFromMatrix(ItemStack[] matrix) {
+    public void removeFromMatrix(CraftItemEvent event) {
+        ItemStack[] matrix = event.getInventory().getMatrix();
         Offset offset = getMatrixOffset(matrix);
-        if (offset == null) return false;
+        if (offset == null) return;
 
-        // Remove ingredients
-        for (int x = 0; x < cols; x++) {
-            for (int y = 0; y < rows; y++) {
-                Ingredient ing = ingredientGrid[y][x];
-                if (ing == null) continue;
-                ItemStack item = matrix[offset.getIndex(x, y)];
-                item.setAmount(item.getAmount() - ing.getAmount());
+        int craftAmount = 1;
+        if (event.isShiftClick()) {
+            // Find out how many items will be crafted from shift-clicking
+            double amount = Double.POSITIVE_INFINITY;
+            for (int row = 0; row < rows; row++) {
+                for (int col = 0; col < cols; col++) {
+                    ItemStack matItem = matrix[offset.getIndex(col, row)];
+                    if (matItem == null) continue;
+                    int curAmount = matItem.getAmount() / ingredientGrid[row][col].getAmount();
+                    amount = Math.min(amount, curAmount);
+                }
+            }
+            craftAmount = (int) amount;
+        }
+
+        // Remove items, leaving ingredients to craft proper amount
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
+                Ingredient ingredient = ingredientGrid[row][col];
+                if (ingredient == null) continue;
+                ItemStack item = matrix[offset.getIndex(col, row)];
+                int ingAmount = ingredient.getAmount();
+                int remove = craftAmount * (ingAmount - 1);
+                item.setAmount(item.getAmount() - remove);
             }
         }
-        return true;
     }
 
     /**

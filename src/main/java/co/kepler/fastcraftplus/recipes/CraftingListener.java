@@ -48,8 +48,28 @@ public class CraftingListener implements Listener {
         }.runTask(FastCraft.getInstance());
     }
 
-    @EventHandler
-    public void onCraftItem(CraftItemEvent e) {
+    /**
+     * Cancels the craft event if it's a custom recipe that can't be crafted.
+     *
+     * @param e The CraftItemEvent.
+     */
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onCraftItemPre(CraftItemEvent e) {
+        if (e.isCancelled());
+        CustomRecipe recipe = FastCraft.recipes().getRecipe(e.getRecipe());
+        if (recipe == null) return;
+        e.setCancelled(!recipe.matchesMatrix(e.getInventory().getMatrix()));
+    }
 
+    /**
+     * Removes ingredients from the inventory
+     * @param e
+     */
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onCraftItemPost(CraftItemEvent e) {
+        onCraftItemPre(e);
+        if (e.isCancelled()) return;
+        CustomRecipe recipe = FastCraft.recipes().getRecipe(e.getRecipe());
+        recipe.removeFromMatrix(e);
     }
 }
