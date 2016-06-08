@@ -294,4 +294,29 @@ public class RecipeUtil {
         }
         return null;
     }
+
+    public static ComparableRecipe comparable(Recipe recipe) {
+        return new ComparableRecipe(recipe);
+    }
+
+    public static class ComparableRecipe {
+        public final Recipe recipe;
+        private final int hash;
+
+        public ComparableRecipe(Recipe base) {
+            recipe = base;
+            hash = hashRecipe(recipe);
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (!(o instanceof Recipe)) return false;
+            return areEqual(recipe, (Recipe) o);
+        }
+
+        @Override
+        public int hashCode() {
+            return hash;
+        }
+    }
 }

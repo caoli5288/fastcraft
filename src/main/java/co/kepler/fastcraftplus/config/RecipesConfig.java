@@ -19,6 +19,7 @@ import java.util.*;
  */
 public class RecipesConfig extends ConfigExternal {
     private static final List<CustomRecipe> recipes = new ArrayList<>();
+    private static final Map<RecipeUtil.ComparableRecipe, CustomRecipe> recipeMap = new HashMap<>();
 
     public RecipesConfig() {
         super(true, false);
@@ -42,11 +43,15 @@ public class RecipesConfig extends ConfigExternal {
 
         // Load recipes
         recipes.clear();
+        recipeMap.clear();
         for (String key : config.getKeys(false)) {
             try {
-                CustomRecipe customRecipe = getRecipe(config.getConfigurationSection(key));
+                CustomRecipe customRecipe = getConfigRecipe(config.getConfigurationSection(key));
                 recipes.add(customRecipe);
                 Bukkit.addRecipe(customRecipe.getRecipe());
+                if (customRecipe.getRecipe() != null) {
+                    recipeMap.put(RecipeUtil.comparable(customRecipe.getRecipe()), customRecipe);
+                }
                 FastCraft.log("Loaded recipe: " + key);
             } catch (RecipeException e) {
                 FastCraft.err("Error loading recipe '" + key + "': " + e.getMessage());
@@ -64,22 +69,32 @@ public class RecipesConfig extends ConfigExternal {
     }
 
     /**
+     * Get a CustomRecipe given a Bukkit Recipe.
+     *
+     * @param recipe The Bukkit Recipe.
+     * @return Returns a CustomRecipe.
+     */
+    public CustomRecipe getRecipe(Recipe recipe) {
+        return recipeMap.get(RecipeUtil.comparable(recipe));
+    }
+
+    /**
      * Get a recipe from a configuration section.
      *
      * @param conf The configuration section containing the recipe.
      * @return Returns a recipe.
      * @throws RecipeException Thrown if the recipe is improperly configured.
      */
-    private CustomRecipe getRecipe(ConfigurationSection conf) throws RecipeException {
+    private CustomRecipe getConfigRecipe(ConfigurationSection conf) throws RecipeException {
         String type = conf.getString("type");
         if (type == null) {
             throw new RecipeException("Recipe type cannot be null");
         }
         switch (type.toLowerCase()) {
         case "shaped":
-            return getShapedRecipe(conf);
+            return getConfigShapedRecipe(conf);
         case "shapeless":
-            return getShapelessRecipe(conf);
+            return getConfigShapelessRecipe(conf);
         }
         throw new RecipeException("Invalid recipe type for : '" + type + "'");
     }
@@ -91,7 +106,7 @@ public class RecipesConfig extends ConfigExternal {
      * @return Returns a shaped recipe.
      * @throws RecipeException Thrown if the recipe is improperly configured.
      */
-    private CustomRecipe getShapedRecipe(ConfigurationSection conf) throws RecipeException {
+    private CustomRecipe getConfigShapedRecipe(ConfigurationSection conf) throws RecipeException {
         // Create the recipe object
         ItemStack result = getIngredient(conf.getStringList("result"));
 
@@ -117,7 +132,7 @@ public class RecipesConfig extends ConfigExternal {
      * @return Returns a shapeless recipe.
      * @throws RecipeException Thrown if the recipe is improperly configured.
      */
-    private CustomRecipe getShapelessRecipe(ConfigurationSection conf) throws RecipeException {
+    private CustomRecipe getConfigShapelessRecipe(ConfigurationSection conf) throws RecipeException {
         // Create the recipe object
         ItemStack result = getIngredient(conf.getStringList("result"));
 

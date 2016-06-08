@@ -17,15 +17,10 @@ public class CraftingListener implements Listener {
 
     @EventHandler
     public void onPrepareItemCraft(PrepareItemCraftEvent e) {
-        for (CustomRecipe recipe : FastCraft.recipes().getRecipes()) { // TODO Hash for efficiency
-            if (!RecipeUtil.areEqual(recipe.getRecipe(), e.getRecipe())) continue;
-            if (recipe.matchesMatrix(e.getInventory().getMatrix())) {
-                e.getInventory().setResult(recipe.getDisplayResult());
-            } else {
-                e.getInventory().setResult(null);
-            }
-            break;
-        }
+        CustomRecipe recipe = FastCraft.recipes().getRecipe(e.getRecipe());
+        if (recipe == null) return;
+        boolean matches = recipe.matchesMatrix(e.getInventory().getMatrix());
+        e.getInventory().setResult(matches ? recipe.getDisplayResult() : null);
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
@@ -45,13 +40,12 @@ public class CraftingListener implements Listener {
      */
     public void invInteract(InventoryInteractEvent e) {
         final Inventory inv = e.getInventory();
-        if (!e.isCancelled() && inv instanceof CraftingInventory) {
-            new BukkitRunnable() {
-                public void run() {
-                    inv.setItem(1, inv.getItem(1));
-                }
-            }.runTask(FastCraft.getInstance());
-        }
+        if (e.isCancelled() || !(inv instanceof CraftingInventory)) return;
+        new BukkitRunnable() {
+            public void run() {
+                inv.setItem(1, inv.getItem(1)); // Triggers PrepareItemCraftEvent
+            }
+        }.runTask(FastCraft.getInstance());
     }
 
     @EventHandler
