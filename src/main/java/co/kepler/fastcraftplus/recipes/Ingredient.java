@@ -1,6 +1,6 @@
 package co.kepler.fastcraftplus.recipes;
 
-import co.kepler.fastcraftplus.BukkitUtil;
+import co.kepler.fastcraftplus.util.BukkitUtil;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 

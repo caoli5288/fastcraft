@@ -2,7 +2,7 @@ package co.kepler.fastcraftplus.compat;
 
 import co.kepler.fastcraftplus.recipes.FastRecipe;
 import co.kepler.fastcraftplus.recipes.Ingredient;
-import co.kepler.fastcraftplus.recipes.RecipeUtil;
+import co.kepler.fastcraftplus.util.RecipeUtil;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;

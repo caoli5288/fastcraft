@@ -1,5 +1,6 @@
-package co.kepler.fastcraftplus;
+package co.kepler.fastcraftplus.util;
 
+import co.kepler.fastcraftplus.FastCraft;
 import co.kepler.fastcraftplus.config.Config;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.Bukkit;

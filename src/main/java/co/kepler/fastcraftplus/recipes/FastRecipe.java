@@ -1,6 +1,7 @@
 package co.kepler.fastcraftplus.recipes;
 
 import co.kepler.fastcraftplus.craftgui.GUIFastCraft;
+import co.kepler.fastcraftplus.util.RecipeUtil;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;

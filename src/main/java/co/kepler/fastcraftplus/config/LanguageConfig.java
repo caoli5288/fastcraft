@@ -1,8 +1,8 @@
 package co.kepler.fastcraftplus.config;
 
-import co.kepler.fastcraftplus.BukkitUtil;
 import co.kepler.fastcraftplus.FastCraft;
 import co.kepler.fastcraftplus.recipes.FastRecipe;
+import co.kepler.fastcraftplus.util.BukkitUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;

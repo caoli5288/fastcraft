@@ -1,8 +1,8 @@
 package co.kepler.fastcraftplus.craftgui;
 
-import co.kepler.fastcraftplus.BukkitUtil;
 import co.kepler.fastcraftplus.FastCraft;
 import co.kepler.fastcraftplus.Permissions;
+import co.kepler.fastcraftplus.util.BukkitUtil;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;

@@ -1,5 +1,6 @@
-package co.kepler.fastcraftplus.recipes;
+package co.kepler.fastcraftplus.util;
 
+import co.kepler.fastcraftplus.recipes.CraftingInvWrapper;
 import com.google.common.collect.ImmutableMap;
 import org.bukkit.Achievement;
 import org.bukkit.Bukkit;
