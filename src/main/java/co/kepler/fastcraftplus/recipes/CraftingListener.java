@@ -2,6 +2,7 @@ package co.kepler.fastcraftplus.recipes;
 
 import co.kepler.fastcraftplus.FastCraft;
 import co.kepler.fastcraftplus.recipes.custom.CustomRecipe;
+import co.kepler.fastcraftplus.util.InvUtil;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -55,7 +56,13 @@ public class CraftingListener implements Listener {
      */
     @EventHandler(priority = EventPriority.LOWEST)
     public void onCraftItemPre(CraftItemEvent e) {
-        if (e.isCancelled()) ;
+        if (e.isCancelled()) return;
+
+        if (InvUtil.shouldCancelCraftEvent(e)) {
+            e.setCancelled(true);
+            return;
+        }
+
         CustomRecipe recipe = FastCraft.recipes().getRecipe(e.getRecipe());
         if (recipe == null) return;
         e.setCancelled(!recipe.matchesMatrix(e.getInventory().getMatrix()));
@@ -71,6 +78,7 @@ public class CraftingListener implements Listener {
         onCraftItemPre(e);
         if (e.isCancelled()) return;
         CustomRecipe recipe = FastCraft.recipes().getRecipe(e.getRecipe());
+        if (recipe == null) return;
         recipe.removeFromMatrix(e);
     }
 }
