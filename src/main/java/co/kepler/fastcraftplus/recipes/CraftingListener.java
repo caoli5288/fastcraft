@@ -55,15 +55,16 @@ public class CraftingListener implements Listener {
      */
     @EventHandler(priority = EventPriority.LOWEST)
     public void onCraftItemPre(CraftItemEvent e) {
-        if (e.isCancelled());
+        if (e.isCancelled()) ;
         CustomRecipe recipe = FastCraft.recipes().getRecipe(e.getRecipe());
         if (recipe == null) return;
         e.setCancelled(!recipe.matchesMatrix(e.getInventory().getMatrix()));
     }
 
     /**
-     * Removes ingredients from the inventory
-     * @param e
+     * Removes ingredients from the inventory.
+     *
+     * @param e The CraftItemEvent.
      */
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onCraftItemPost(CraftItemEvent e) {

@@ -102,11 +102,12 @@ public class CustomShapedRecipe extends CustomRecipe {
         ItemStack[] matrix = event.getInventory().getMatrix();
         Offset offset = getMatrixOffset(matrix);
         if (offset == null) {
+            // Unable to craft with ingredients in matrix
             event.setCancelled(true);
             return;
         }
 
-        // If there aren't ingredients with amount > 1, let Bukkit handle item removal.
+        // If there aren't ingredients with amount > 1, let Bukkit handle item removal
         boolean multiIngredients = false;
         for (Ingredient i : getIngredients())
             if (multiIngredients = i.getAmount() > 1) break;
