@@ -81,14 +81,13 @@ public class InvUtil {
         case SHIFT_RIGHT:
         case SHIFT_LEFT:
             return !canAddItem(bottom, result);
-        case MIDDLE:
-            break;
         case NUMBER_KEY:
             // Target slot must be empty
             ItemStack item = bottom.getContents()[e.getHotbarButton()];
             return item != null && item.getType() != Material.AIR;
         case DOUBLE_CLICK:
             return true;
+        case MIDDLE:
         case DROP:
         case CONTROL_DROP:
         case CREATIVE:
