@@ -101,31 +101,29 @@ public class CustomShapedRecipe extends CustomRecipe {
     public void removeFromMatrix(CraftItemEvent event) {
         ItemStack[] matrix = event.getInventory().getMatrix();
         Offset offset = getMatrixOffset(matrix);
-        if (offset == null) return;
-
-        int craftAmount = 1;
-        if (event.isShiftClick()) {
-            // Find out how many items will be crafted from shift-clicking
-            double amount = Double.POSITIVE_INFINITY;
-            for (int row = 0; row < rows; row++) {
-                for (int col = 0; col < cols; col++) {
-                    ItemStack matItem = matrix[offset.getIndex(col, row)];
-                    if (matItem == null) continue;
-                    int curAmount = matItem.getAmount() / ingredientGrid[row][col].getAmount();
-                    amount = Math.min(amount, curAmount);
-                }
-            }
-            craftAmount = (int) amount;
+        if (offset == null) {
+            event.setCancelled(true);
+            return;
         }
 
-        // Remove items, leaving ingredients to craft proper amount
+        // If there aren't ingredients with amount > 1, let Bukkit handle item removal.
+        boolean multiIngredients = false;
+        for (Ingredient i : getIngredients())
+            if (multiIngredients = i.getAmount() > 1) break;
+        if (!multiIngredients) return;
+
+        // Don't handle shift-clicks for recipes with ingredients that have amount > 1
+        if (event.isShiftClick()) {
+            event.setCancelled(true);
+            return; // TODO Add support for shift-clicking
+        }
+
+        // Remove items from matrix
         for (int row = 0; row < rows; row++) {
             for (int col = 0; col < cols; col++) {
-                Ingredient ingredient = ingredientGrid[row][col];
-                if (ingredient == null) continue;
                 ItemStack item = matrix[offset.getIndex(col, row)];
-                int ingAmount = ingredient.getAmount();
-                int remove = craftAmount * (ingAmount - 1);
+                if (item == null) continue;
+                int remove = ingredientGrid[row][col].getAmount() - 1;
                 item.setAmount(item.getAmount() - remove);
             }
         }
