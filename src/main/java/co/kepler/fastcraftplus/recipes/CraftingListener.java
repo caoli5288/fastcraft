@@ -66,6 +66,7 @@ public class CraftingListener implements Listener {
         CustomRecipe recipe = FastCraft.recipes().getRecipe(e.getRecipe());
         if (recipe == null) return;
         e.setCancelled(!recipe.matchesMatrix(e.getInventory().getMatrix()));
+        return;
     }
 
     /**

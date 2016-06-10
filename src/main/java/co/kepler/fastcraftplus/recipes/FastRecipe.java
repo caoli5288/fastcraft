@@ -24,7 +24,7 @@ public abstract class FastRecipe implements Comparable<FastRecipe> {
         if (ingredient == null) return;
         Ingredient key = ingredient.clone(0);
         Integer amount = ingredients.get(key);
-        amount = (amount == null ? 0 : amount) + 1;
+        amount = (amount == null ? 0 : amount) + ingredient.getAmount();
         ingredients.put(key, amount);
     }
 
@@ -213,7 +213,7 @@ public abstract class FastRecipe implements Comparable<FastRecipe> {
         ItemStack[] matrix = getMatrix(multiplier);
         Recipe recipe = getRecipe();
         if (matrix != null && recipe != null) {
-            if (!RecipeUtil.callCraftItemEvent(player, recipe, matrix, getDisplayResult(), gui.getLocation())) {
+            if (!RecipeUtil.callCraftItemEvent(player, recipe, matrix, gui.getLocation())) {
                 // If crafting cancelled
                 return null;
             }

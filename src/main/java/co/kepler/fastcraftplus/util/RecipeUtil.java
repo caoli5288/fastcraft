@@ -212,17 +212,18 @@ public class RecipeUtil {
      *
      * @return Returns false if the event was cancelled.
      */
-    public static boolean callCraftItemEvent(Player player, Recipe recipe, ItemStack[] matrix,
-                                             ItemStack result, Location location) {
+    public static boolean callCraftItemEvent(Player player, Recipe recipe, ItemStack[] matrix, Location location) {
         assert player != null : "Player must not be null";
         assert recipe != null : "Recipe must not be null";
         assert matrix != null : "Matrix must not be null";
 
         CraftingInvWrapper inv = new CraftingInvWrapper(player, location);
         inv.setResult(recipe.getResult());
+        inv.setRecipe(recipe);
+        inv.setMatrix(matrix);
 
         CraftItemEvent event = new CraftItemEvent(recipe, inv.getView(player),
-                InventoryType.SlotType.RESULT, 0, ClickType.SHIFT_LEFT, InventoryAction.UNKNOWN);
+                InventoryType.SlotType.RESULT, 0, ClickType.UNKNOWN, InventoryAction.UNKNOWN);
 
         Bukkit.getPluginManager().callEvent(event);
         return !event.isCancelled() && event.getResult() != Event.Result.DENY;
