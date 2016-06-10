@@ -41,7 +41,7 @@
 #wooden_pants:
 #  type: shaped
 #  ingredients:
-#    p: [1, 'minecraft:planks', ANY]
+#    p: [1, 'minecraft:planks']
 #  shape:
 #  - 'ppp'
 #  - 'p p'
