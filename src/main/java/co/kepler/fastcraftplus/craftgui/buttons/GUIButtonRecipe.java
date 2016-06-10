@@ -142,6 +142,4 @@ public class GUIButtonRecipe extends GUIButton {
         gui.updateLayout();
         return true;
     }
-
-
 }

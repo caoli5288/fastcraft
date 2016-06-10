@@ -176,8 +176,7 @@ public abstract class FastRecipe implements Comparable<FastRecipe> {
 
         // Add ingredients. Those that can use any data go at the end.
         LinkedList<Ingredient> toRemove = new LinkedList<>();
-        List<Ingredient> ingredients = getIngredients();
-        for (Ingredient i : ingredients) {
+        for (Ingredient i : getIngredients()) {
             if (i.anyData()) {
                 toRemove.addLast(i);
             } else {
@@ -200,7 +199,7 @@ public abstract class FastRecipe implements Comparable<FastRecipe> {
      * Craft this FastRecipe.
      *
      * @param gui The gui this recipe is being crafted in.
-     * @return Returns true if the ingredients were removed from the player's inventory.
+     * @return Returns the results of this recipe, or null if unable to craft.
      */
     public List<ItemStack> craft(GUIFastCraft gui, int multiplier) {
         Player player = gui.getPlayer();
