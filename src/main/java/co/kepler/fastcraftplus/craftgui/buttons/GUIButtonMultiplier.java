@@ -13,12 +13,18 @@ import org.bukkit.inventory.meta.ItemMeta;
  * Controls the GUI's multiplier.
  */
 public class GUIButtonMultiplier extends GUIButton {
-    private static final int MAX_MULTIPLIER = 64;
-
     private final GUIFastCraft gui;
+    private final int[] multOrder;
+    private final int min, max;
+
+    private int multIndex = 0;
 
     public GUIButtonMultiplier(GUIFastCraft gui) {
         this.gui = gui;
+
+        multOrder = FastCraft.config().getToolbar_multiplierOrder();
+        min = multOrder[0];
+        max = multOrder[multOrder.length - 1];
     }
 
     @Override
@@ -48,29 +54,41 @@ public class GUIButtonMultiplier extends GUIButton {
         if (inventoryClickEvent.getClick().isCreativeAction()) {
             // If middle click, reset to 1
             mult = 1;
-        } if (inventoryClickEvent.isShiftClick()) {
+        }
+        if (inventoryClickEvent.isShiftClick()) {
             // If shift click, increment by 1
-            if (inventoryClickEvent.isLeftClick()) {
-                mult++;
-            } else {
-                mult--;
-            }
+            mult += inventoryClickEvent.isLeftClick() ? 1 : -1;
         } else {
             // If normal click, increment to the next power of 2
-            double pow = Math.log(mult) / Math.log(2);
+            int newMult;
             if (inventoryClickEvent.isLeftClick()) {
-                pow = Math.floor(++pow);
-            } else if (inventoryClickEvent.isRightClick()) {
-                pow = Math.ceil(--pow);
+                // Increase
+                newMult = min;
+                for (int m : multOrder) {
+                    if (m > mult) {
+                        newMult = m;
+                        break;
+                    }
+                }
+            } else {
+                // Decrease
+                newMult = max;
+                for (int i = multOrder.length - 1; i >= 0; i--) {
+                    int m = multOrder[i];
+                    if (m < mult) {
+                        newMult = m;
+                        break;
+                    }
+                }
             }
-            mult = (int) Math.floor(Math.pow(2, pow));
+            mult = newMult;
         }
 
         // Set new multiplier
-        if (mult < 1) {
-            mult = MAX_MULTIPLIER;
-        } else if (mult > MAX_MULTIPLIER) {
-            mult = 1;
+        if (mult < min) {
+            mult = max;
+        } else if (mult > max) {
+            mult = min;
         }
         this.gui.setMultiplier(mult);
         this.gui.updateLayout();

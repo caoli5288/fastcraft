@@ -1,5 +1,7 @@
 package co.kepler.fastcraftplus.craftgui;
 
+import co.kepler.fastcraftplus.FastCraft;
+import co.kepler.fastcraftplus.config.PluginConfig;
 import co.kepler.fastcraftplus.craftgui.buttons.*;
 import co.kepler.fastcraftplus.craftgui.layouts.LayoutFastCraft;
 import co.kepler.fastcraftplus.craftgui.layouts.LayoutRecipesItems;
@@ -19,13 +21,15 @@ public class LayoutManager {
     }
 
     public LayoutFastCraft getNewLayout(GUIFastCraft gui) {
-        LayoutFastCraft layout = new LayoutFastCraft(gui, new LayoutRecipesItems(gui));
+        PluginConfig config = FastCraft.config();
+        int toolGap = config.getToolbar_gap() ? 1 : 0;
+        LayoutFastCraft layout = new LayoutFastCraft(gui, new LayoutRecipesItems(gui), toolGap);
 
-        layout.setToolbarButton(0, new GUIButtonPagePrev(layout));
-        layout.setToolbarButton(3, new GUIButtonMultiplier(gui));
-        layout.setToolbarButton(4, new GUIButtonWorkbench(gui));
-        layout.setToolbarButton(5, new GUIButtonRefresh(layout));
-        layout.setToolbarButton(8, new GUIButtonPageNext(layout));
+        layout.setToolbarButton(config.getToolbar_layout_pagePrev(), new GUIButtonPagePrev(layout));
+        layout.setToolbarButton(config.getToolbar_layout_pageNext(), new GUIButtonPageNext(layout));
+        layout.setToolbarButton(config.getToolbar_layout_multiplier(), new GUIButtonMultiplier(gui));
+        layout.setToolbarButton(config.getToolbar_layout_workbench(), new GUIButtonWorkbench(gui));
+        layout.setToolbarButton(config.getToolbar_layout_refresh(), new GUIButtonRefresh(layout));
 
         return layout;
     }
