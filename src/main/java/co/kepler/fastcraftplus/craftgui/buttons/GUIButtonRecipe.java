@@ -73,7 +73,8 @@ public class GUIButtonRecipe extends GUIButton {
         }
 
         // Add results and amounts to the lore if more than one result
-        if (results.size() > 1) {
+        if (results.size() > 1 || item.getAmount() > 64) {
+            if (item.getAmount() > 64) item.setAmount(0);
             lore.add(null);
             lore.add(lang.gui_results_label());
             for (ItemStack is : results) {
@@ -87,11 +88,9 @@ public class GUIButtonRecipe extends GUIButton {
             lore.addAll(lang.gui_hashcode(recipe));
         }
 
-        // Set the new lore
+        // Set the new lore, and return the item
         meta.setLore(lore);
         item.setItemMeta(meta);
-
-        // Return the item
         return item;
     }
 
@@ -103,7 +102,6 @@ public class GUIButtonRecipe extends GUIButton {
     @Override
     public boolean isVisible() {
         int amount = recipe.getDisplayResult().getAmount() * gui.getMultiplier();
-        if (amount > 64) return false; // TODO Maybe make the limit 127
 
         ItemStack[] contents = gui.getPlayer().getInventory().getContents();
         return recipe.removeIngredients(contents, gui.getMultiplier());
