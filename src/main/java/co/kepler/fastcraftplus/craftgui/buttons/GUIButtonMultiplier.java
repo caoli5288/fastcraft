@@ -31,7 +31,7 @@ public class GUIButtonMultiplier extends GUIButton {
     public ItemStack getItem() {
         int mult = gui.getMultiplier();
         ItemStack result = new ItemStack(Material.ANVIL, mult);
-        if (mult > 64) result.setAmount(0);
+        if (mult > 64) result.setAmount(-1);
 
         // Set display name and lore
         ItemMeta meta = result.getItemMeta();

@@ -74,7 +74,7 @@ public class GUIButtonRecipe extends GUIButton {
 
         // Add results and amounts to the lore if more than one result
         if (results.size() > 1 || item.getAmount() > 64) {
-            if (item.getAmount() > 64) item.setAmount(0);
+            if (item.getAmount() > 64) item.setAmount(-1);
             lore.add(null);
             lore.add(lang.gui_results_label());
             for (ItemStack is : results) {
