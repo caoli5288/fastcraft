@@ -229,9 +229,9 @@ public abstract class FastRecipe implements Comparable<FastRecipe> {
         // Return this recipe's results
         List<ItemStack> results = new ArrayList<>();
         for (ItemStack is : getAllResults()) {
-            ItemStack toAdd = is.clone();
-            toAdd.setAmount(toAdd.getAmount() * multiplier);
-            results.add(toAdd);
+            for (int i = 0; i < multiplier; i++) {
+                results.add(is.clone());
+            }
         }
         return results;
     }
