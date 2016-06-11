@@ -4,7 +4,6 @@ import co.kepler.fastcraftplus.api.gui.LayoutPaged;
 import co.kepler.fastcraftplus.craftgui.GUIFastCraft;
 import co.kepler.fastcraftplus.craftgui.buttons.GUIButtonRecipe;
 import co.kepler.fastcraftplus.recipes.FastRecipe;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,13 +33,14 @@ public abstract class LayoutRecipes extends LayoutPaged {
     protected void addRecipes(List<FastRecipe> recipes) {
         for (FastRecipe r : recipes) {
             // If the button is already in the gui, or if it can't be crafted, continue.
-            ItemStack[] contents = gui.getPlayer().getInventory().getContents();
-            if (activeRecipes.contains(r) || !r.removeIngredients(contents, gui.getMultiplier())) continue;
+            if (activeRecipes.contains(r)) continue;
 
-            // Create the button, and add it to the GUI.
+            // Create the button, and add it to the GUI if it can be crafted.
             GUIButtonRecipe button = new GUIButtonRecipe(gui, r);
-            setButton(activeRecipes.size(), button);
-            activeRecipes.add(r);
+            if (button.isVisible()) {
+                setButton(activeRecipes.size(), button);
+                activeRecipes.add(r);
+            }
         }
     }
 
