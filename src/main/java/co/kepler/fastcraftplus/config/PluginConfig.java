@@ -45,23 +45,23 @@ public class PluginConfig extends ConfigExternal {
     }
 
     public int getToolbar_layout_pagePrev() {
-        return config.getInt("toolbar.layout.page-prev", -1);
+        return config.getInt("toolbar.layout.page-prev");
     }
 
     public int getToolbar_layout_pageNext() {
-        return config.getInt("toolbar.layout.page-next", -1);
+        return config.getInt("toolbar.layout.page-next");
     }
 
     public int getToolbar_layout_multiplier() {
-        return config.getInt("toolbar.layout.multiplier", -1);
+        return config.getInt("toolbar.layout.multiplier");
     }
 
     public int getToolbar_layout_workbench() {
-        return config.getInt("toolbar.layout.workbench", -1);
+        return config.getInt("toolbar.layout.workbench");
     }
 
     public int getToolbar_layout_refresh() {
-        return config.getInt("toolbar.layout.refresh", -1);
+        return config.getInt("toolbar.layout.refresh");
     }
 
     public int[] getToolbar_multiplierOrder() {
