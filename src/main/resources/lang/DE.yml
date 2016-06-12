@@ -1,4 +1,6 @@
 # Translated into German by CloudeLecaw (https://www.spigotmc.org/members/cloudelecaw.34292/)
+# Wenn eure Übersetung der Datei offizell zu FastCraft+ hinzugefügt werden soll
+# könnte ihr Kepler_ auf spigotmc.org anschreiben. Bitte keine bereits vorhanden Übersetungen posten.
 #
 # Benutzt Sonderzeichen (&) Für Farb-, und Formatierungskodes. Informationen über Formatierungskodes:
 # http://minecraft.gamepedia.com/Formatting_codes
@@ -54,7 +56,7 @@ gui:
       - '&bNeusoritierung der Gegenstände'
 
     multiplier:
-      title: '&aMuliplikator (<mult>x)' # Variablen: mult
+      title: '&aMultiplikator (<mult>x)' # Variablen: mult
       description:
       - '&bLinks/Rechtsklick - erhöhen/vermindern'
       - '&bSHIFT-klick - um 1 erhöhen'
@@ -127,6 +129,7 @@ items:
   'minecraft:gravel': 'Kies'
   'minecraft:stone_slab2': 'Rote Sandsteinstufe'
   'minecraft:purpur_slab': 'Purpurstufe'
+  'minecraft:purpur_block': 'Purpurblock'
   'minecraft:stick': 'Stock'
   'minecraft:chest': 'Truhe'
   'minecraft:wool':
@@ -140,7 +143,7 @@ items:
     6: 'Rosa Wolle'
     7: 'Graue Wolle'
     8: 'Hellgraue Wolle'
-    9: 'Türkiese Wolle'
+    9: 'Türkise Wolle'
     10: 'Violette Wolle'
     11: 'Blaue Wolle'
     12: 'Braune Wolle'
@@ -158,7 +161,7 @@ items:
     6: 'Rosa Glas'
     7: 'Graues Glas'
     8: 'Hellgraues Glas'
-    9: 'Türkieses Glas'
+    9: 'Türkises Glas'
     10: 'Violettes Glas'
     11: 'Blaues Glas'
     12: 'Braunes Glas'
@@ -176,7 +179,7 @@ items:
     6: 'Rosa Glas'
     7: 'Graues Glas'
     8: 'Hellgraues Glas'
-    9: 'Türkieses Glas'
+    9: 'Türkises Glas'
     10: 'Violettes Glas'
     11: 'Blaues Glas'
     12: 'Braunes Glas'
@@ -191,7 +194,7 @@ items:
     3: 'Kakaobohnen'
     4: 'Lapislazuli'
     5: 'Violetter Farbstoff'
-    6: 'Türkieser Farbstoff'
+    6: 'Türkiser Farbstoff'
     7: 'Hellgrauer Farbstoff'
     8: 'Grauer Farbstoff'
     9: 'Rosa Farbstoff'
@@ -204,9 +207,10 @@ items:
   'minecraft:chorus_fruit': 'Chorusfrucht'
   'minecraft:chorus_fruit_popped': 'Geplatze Chorusfrucht'
   'minecraft:blaze_rod': 'Lohenrute'
-  'minecraft:prismarine_shared': 'Prismarinscherben'
+  'minecraft:prismarine_shard': 'Prismarinscherbe'
   'minecraft:prismarine_crystals': 'Prismarinkristalle'
-  'minecraft:quarz': 'Netherquarz'
+  'minecraft:quartz': 'Netherquarz'
+  'minecraft:quartz_block': 'Quarzblock'
   'minecraft:redstone_torch': 'Redstone-Fackel'
   'minecraft:wooden_slab':
     d: 'Holzbstufe'
@@ -227,15 +231,15 @@ items:
     0: 'Steinstufe'
     1: 'Sandsteinstufe'
     7: 'Quarzstufe'
-  'minecraft:Coal':
+  'minecraft:coal':
     d: 'Kohle'
     0: 'Kohle'
     1: 'Holzkohle'
   'minecraft:bow': 'Bogen'
   'minecraft:feather': 'Feder'
-  'minecraft:flint': 'Feucherstein'
+  'minecraft:flint': 'Feuerstein'
   'minecraft:gunpowder': 'Schwarzpulver'
-  'minecraft:hardend_clay': 'Gebrannter Ton'
+  'minecraft:hardened_clay': 'Gebrannter Ton'
   'minecraft:clay': 'Ton'
   'minecraft:clay_ball': 'Ton'
   'minecraft:brick': 'Ziegel'
@@ -330,7 +334,7 @@ items:
     3: 'Braunes Banner'
     4: 'Blaues Banner'
     5: 'Violettes Banner'
-    6: 'Türkieses Banner'
+    6: 'Türkises Banner'
     7: 'Hellgraues Banner'
     8: 'Graues Banner'
     9: 'Rosa Banner'
@@ -353,3 +357,9 @@ items:
     3: 'Spielerkopf'
     4: 'Creeperkopf'
     5: 'Drachenkopf'
+  'minecraft:nether_wart': 'Netherwarze'
+  'minecraft:end_stone': 'Endstein'
+  'minecraft:stonebrick': 'Steinziegel'
+  'minecraft:stone_pressure_plate': 'Steindruckplatte'
+  'minecraft:rabbit_hide': 'Kaninchenfell'
+  'minecraft:magma_cream': 'Magmacreme'
