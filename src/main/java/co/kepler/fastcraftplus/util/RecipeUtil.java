@@ -26,7 +26,8 @@ public class RecipeUtil {
             315219687, 313670400, // Dyed leather armor
             434711233, 432506854, // Banners
             461434721, // Book cloning
-            408495308 // Fireworks
+            408495308, // Fireworks
+            1717467320 // Tipped arrows
     ));
 
     // Achievements associated with different items
