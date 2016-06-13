@@ -1,7 +1,7 @@
 #Setup
 - Add this plugin's _FastCraftPlus.jar_ file to your server's _plugins_ directory.
 - Assign this plugin's permissions. (Permissions are listed below)
-- Configuration files will be generated for FastCraft+ after starting the server.
+- Start the server to generate configuration files in the /plugins/FastCraftPlus/ directory.
 - Edit the configuration files, and run the command _/fcadmin reload_ to reload the configs.
 
 #Commands
