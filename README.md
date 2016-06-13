@@ -1,4 +1,10 @@
-# Commands
+#Setup
+- Add this plugin's _FastCraftPlus.jar_ file to your server's _plugins_ directory.
+- Assign this plugin's permissions. (Permissions are listed below)
+- Configuration files will be generated for FastCraft+ after starting the server.
+- Edit the configuration files, and run the command _/fcadmin reload_ to reload the configs.
+
+#Commands
 Required parameters have &lt;angle brackets&gt;. Optional parameters have [square brackets].
 
 <table width=100%>
@@ -54,7 +60,7 @@ Required parameters have &lt;angle brackets&gt;. Optional parameters have [squar
   </tr>
 </table>
 
-# Permissions
+#Permissions
 <table width=100%>
   <tr>
     <th>Default</th>
