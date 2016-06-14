@@ -1,43 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Used by FastCraft+ to fetch stable updates. Stable should be false until it is known to be bug-free -->
+
+<!--
+    Used by FastCraft+ to fetch stable updates.
+    Stability should be "?" for new releases, then "true" or "false" later on.
+    Multiple <change> tags can be listed.
+-->
+
 <releases>
-    <release version="0.24.1" stable="true">https://github.com/BenWoodworth/FastCraftPlus/releases/download/v0.24.1/FastCraftPlus.jar</release>
-    <release version="0.24"   stable="true">https://github.com/BenWoodworth/FastCraftPlus/releases/download/v0.24/FastCraftPlus.jar</release>
-    <release version="0.23"   stable="true">https://github.com/BenWoodworth/FastCraftPlus/releases/download/v0.23/FastCraftPlus.jar</release>
-    <release version="0.22.2" stable="true">https://github.com/BenWoodworth/FastCraftPlus/releases/download/v0.22.2/FastCraftPlus.jar</release>
-    <release version="0.22.1" stable="true">https://github.com/BenWoodworth/FastCraftPlus/releases/download/v0.22.1/FastCraftPlus.jar</release>
-    <release version="0.22"   stable="true">https://github.com/BenWoodworth/FastCraftPlus/releases/download/v0.22/FastCraftPlus.jar</release>
-    <release version="0.21.3" stable="true">https://github.com/BenWoodworth/FastCraftPlus/releases/download/v0.21.3/FastCraftPlus.jar</release>
-    <release version="0.21.2" stable="true">https://github.com/BenWoodworth/FastCraftPlus/releases/download/v0.21.2/FastCraftPlus.jar</release>
-    <release version="0.21.1" stable="true">https://github.com/BenWoodworth/FastCraftPlus/releases/download/v0.21.1/FastCraftPlus.jar</release>
-    <release version="0.21"   stable="true">https://github.com/BenWoodworth/FastCraftPlus/releases/download/v0.21/FastCraftPlus.jar</release>
-    <release version="0.20.5" stable="true">https://github.com/BenWoodworth/FastCraftPlus/releases/download/v0.20.5/FastCraftPlus.jar</release>
-    <release version="0.20.4" stable="true">https://github.com/BenWoodworth/FastCraftPlus/releases/download/v0.20.4/FastCraftPlus.jar</release>
-    <release version="0.20.3" stable="true">https://github.com/BenWoodworth/FastCraftPlus/releases/download/v0.20.3/FastCraftPlus.jar</release>
-    <release version="0.20.2" stable="true">https://github.com/BenWoodworth/FastCraftPlus/releases/download/v0.20.2/FastCraftPlus.jar</release>
-    <release version="0.20.1" stable="true">https://github.com/BenWoodworth/FastCraftPlus/releases/download/v0.20.1/FastCraftPlus.jar</release>
-    <release version="0.20"   stable="true">https://github.com/BenWoodworth/FastCraftPlus/releases/download/v0.20/FastCraftPlus.jar</release>
-    <release version="0.19.4" stable="true">https://github.com/BenWoodworth/FastCraftPlus/releases/download/v0.19.4/FastCraftPlus.jar</release>
-    <release version="0.19.3" stable="true">https://github.com/BenWoodworth/FastCraftPlus/releases/download/v0.19.3/FastCraftPlus.jar</release>
-    <release version="0.19.2" stable="true">https://github.com/BenWoodworth/FastCraftPlus/releases/download/v0.19.2/FastCraftPlus.jar</release>
-    <release version="0.19.1" stable="true">https://github.com/BenWoodworth/FastCraftPlus/releases/download/v0.19.1/FastCraftPlus.jar</release>
-    <release version="0.19"   stable="true">https://github.com/BenWoodworth/FastCraftPlus/releases/download/v0.19/FastCraftPlus.jar</release>
-    <release version="0.18"   stable="true">https://github.com/BenWoodworth/FastCraftPlus/releases/download/v0.18/FastCraftPlus.jar</release>
-    <release version="0.17"   stable="true">https://github.com/BenWoodworth/FastCraftPlus/releases/download/v0.17/FastCraftPlus.jar</release>
-    <release version="0.16"   stable="true">https://github.com/BenWoodworth/FastCraftPlus/releases/download/v0.16/FastCraftPlus.jar</release>
-    <release version="0.15"   stable="true">https://github.com/BenWoodworth/FastCraftPlus/releases/download/v0.15/FastCraftPlus.jar</release>
-    <release version="0.14"   stable="true">https://github.com/BenWoodworth/FastCraftPlus/releases/download/v0.14/FastCraftPlus.jar</release>
-    <release version="0.13"   stable="true">https://github.com/BenWoodworth/FastCraftPlus/releases/download/v0.13/FastCraftPlus.jar</release>
-    <release version="0.12"   stable="true">https://github.com/BenWoodworth/FastCraftPlus/releases/download/v0.12/FastCraftPlus.jar</release>
-    <release version="0.11"   stable="true">https://github.com/BenWoodworth/FastCraftPlus/releases/download/v0.11/FastCraftPlus.jar</release>
-    <release version="0.10"   stable="true">https://github.com/BenWoodworth/FastCraftPlus/releases/download/v0.10/FastCraftPlus.jar</release>
-    <release version="0.9"    stable="true">https://github.com/BenWoodworth/FastCraftPlus/releases/download/v0.9/FastCraftPlus.jar</release>
-    <release version="0.8"    stable="true">https://github.com/BenWoodworth/FastCraftPlus/releases/download/v0.8/FastCraftPlus.jar</release>
-    <release version="0.7"    stable="true">https://github.com/BenWoodworth/FastCraftPlus/releases/download/v0.7/FastCraftPlus.jar</release>
-    <release version="0.6"    stable="true">https://github.com/BenWoodworth/FastCraftPlus/releases/download/v0.6/FastCraftPlus.jar</release>
-    <release version="0.5"    stable="true">https://github.com/BenWoodworth/FastCraftPlus/releases/download/v0.5/FastCraftPlus.jar</release>
-    <release version="0.4"    stable="true">https://github.com/BenWoodworth/FastCraftPlus/releases/download/v0.4/FastCraftPlus.jar</release>
-    <release version="0.3"    stable="true">https://github.com/BenWoodworth/FastCraftPlus/releases/download/v0.3/FastCraftPlus.jar</release>
-    <release version="0.2"    stable="true">https://github.com/BenWoodworth/FastCraftPlus/releases/download/v0.2/FastCraftPlus.jar</release>
-    <release version="0.1"    stable="true">https://github.com/BenWoodworth/FastCraftPlus/releases/download/v0.1/FastCraftPlus.jar</release>
+    <release version="0.25" stable="?" url="https://github.com/BenWoodworth/FastCraftPlus/releases/download/v0.25/FastCraftPlus.jar">
+        <change>Added automatic updating.</change>
+    </release>
 </releases>
