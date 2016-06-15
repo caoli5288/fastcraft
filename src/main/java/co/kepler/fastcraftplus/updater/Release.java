@@ -19,12 +19,12 @@ public class Release {
             "https://raw.githubusercontent.com/BenWoodworth/FastCraftPlus/master/releases.xml";
 
     public final Version version;
-    public final boolean stable;
+    public final Stability stability;
     public final URL url;
 
-    public Release(Version version, boolean stable, URL url) {
+    public Release(Version version, Stability stability, URL url) {
         this.version = version;
-        this.stable = stable;
+        this.stability = stability;
         this.url = url;
     }
 
@@ -34,18 +34,26 @@ public class Release {
      * @return Returns a list of releases, or null if unable to do so.
      */
     public static List<Release> fetchReleases() {
-        List<Release> releases = new ArrayList<>();
-
-        DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-        Document doc = builder.parse(new URL(RELEASES_URL).openStream());
-        NodeList releaseNodes = doc.getElementsByTagName("releases");
-        for (int i = 0; i < releaseNodes.getLength(); i++) {
-            Node relNode = releaseNodes.item(i);
-            NamedNodeMap attributes = relNode.getAttributes();
-            Version version = new Version(attributes.getNamedItem("version").getNodeValue());
-            boolean stable = attributes.getNamedItem("stable").getNodeValue().equalsIgnoreCase("true");
-            URL url = new URL(relNode.getNodeValue());
-            releases.add(new Release(version, stable, url));
+        try {
+            List<Release> releases = new ArrayList<>();
+            DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+            Document doc = builder.parse(new URL(RELEASES_URL).openStream());
+            NodeList releaseNodes = doc.getElementsByTagName("releases");
+            for (int i = 0; i < releaseNodes.getLength(); i++) {
+                try {
+                    Node relNode = releaseNodes.item(i);
+                    NamedNodeMap attributes = relNode.getAttributes();
+                    Version version = new Version(attributes.getNamedItem("version").getNodeValue());
+                    Stability stable = Stability.fromString(attributes.getNamedItem("stability").getNodeValue());
+                    URL url = new URL(relNode.getNodeValue());
+                    releases.add(new Release(version, stable, url));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            return releases;
+        } catch (Exception e) {
+            return null;
         }
     }
 
@@ -64,6 +72,21 @@ public class Release {
             if (major != version.major) return major - version.major;
             if (minor != version.minor) return minor - version.minor;
             return patch - version.patch;
+        }
+    }
+
+    public enum Stability {
+        STABLE, UNSTABLE, UNKNOWN;
+
+        public static Stability fromString(String stable) {
+            switch (stable.toLowerCase()) {
+            case "true":
+                return STABLE;
+            case "false":
+                return UNSTABLE;
+            default:
+                return UNKNOWN;
+            }
         }
     }
 }

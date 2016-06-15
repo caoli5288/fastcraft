@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!--
-    Used by FastCraft+ to fetch stable updates.
+    Used by FastCraft+ to fetch stability updates.
     Stability should be "?" for new releases, then "true" or "false" later on.
     Multiple <change> tags can be listed.
 -->
 
 <releases>
-    <release version="0.25" stable="?" url="https://github.com/BenWoodworth/FastCraftPlus/releases/download/v0.25/FastCraftPlus.jar">
+    <release version="0.25" stability="?" url="https://github.com/BenWoodworth/FastCraftPlus/releases/download/v0.25/FastCraftPlus.jar">
         <change>Added automatic updating.</change>
     </release>
 </releases>
