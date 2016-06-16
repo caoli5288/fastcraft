@@ -1,6 +1,7 @@
 package co.kepler.fastcraftplus.api;
 
 import co.kepler.fastcraftplus.api.gui.GUI;
+import co.kepler.fastcraftplus.craftgui.GUIFastCraft;
 import co.kepler.fastcraftplus.craftgui.LayoutManager;
 import org.bukkit.inventory.Inventory;
 
@@ -15,8 +16,18 @@ public class FastCraftAPI {
      * @param inv The inventory to check.
      * @return Returns true if the inventory is a GUI.
      */
-    public static boolean isFastCraftGUI(Inventory inv) {
+    public static boolean isGUI(Inventory inv) {
         return inv.getHolder() instanceof GUI;
+    }
+
+    /**
+     * See if an inventory is a FastCraft+ GUI.
+     *
+     * @param inv The inventory to check.
+     * @return Returns true if the inventory is a FastCraft+ GUI.
+     */
+    public static boolean isFastCraftGUI(Inventory inv) {
+        return inv.getHolder() instanceof GUIFastCraft;
     }
 
     /**
