@@ -48,7 +48,7 @@ public class Ingredient extends ItemStack {
         int amount = getAmount() * multiplier;
         for (int i = items.length - 1; i >= 0 && amount > 0; i--) {
             ItemStack is = items[i];
-            if (!matchesItem(is)) continue;
+            if (is == null || !matchesItem(is)) continue;
             if (amount >= is.getAmount()) {
                 amount -= is.getAmount();
                 items[i] = null;

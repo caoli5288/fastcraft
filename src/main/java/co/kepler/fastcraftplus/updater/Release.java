@@ -73,6 +73,11 @@ public class Release {
             if (minor != version.minor) return minor - version.minor;
             return patch - version.patch;
         }
+
+        @Override
+        public String toString() {
+            return "v" + major + "." + minor + "." + patch;
+        }
     }
 
     public enum Stability {
