@@ -38,14 +38,15 @@ public class Release {
             List<Release> releases = new ArrayList<>();
             DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             Document doc = builder.parse(new URL(RELEASES_URL).openStream());
-            NodeList releaseNodes = doc.getElementsByTagName("releases");
+            NodeList releaseNodes = doc.getDocumentElement().getChildNodes();
             for (int i = 0; i < releaseNodes.getLength(); i++) {
+                Node relNode = releaseNodes.item(i);
+                if (relNode.getNodeType() != Node.ELEMENT_NODE) continue;
                 try {
-                    Node relNode = releaseNodes.item(i);
                     NamedNodeMap attributes = relNode.getAttributes();
                     Version version = new Version(attributes.getNamedItem("version").getNodeValue());
                     Stability stable = Stability.fromString(attributes.getNamedItem("stability").getNodeValue());
-                    URL url = new URL(relNode.getNodeValue());
+                    URL url = new URL(attributes.getNamedItem("url").getNodeValue());
                     releases.add(new Release(version, stable, url));
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -61,7 +62,7 @@ public class Release {
         public final int major, minor, patch;
 
         private Version(String version) {
-            String[] split = version.substring(1).split("\\.");
+            String[] split = version.split("\\.");
             major = Integer.parseInt(split[0]);
             minor = split.length > 1 ? Integer.parseInt(split[1]) : 0;
             patch = split.length > 2 ? Integer.parseInt(split[2]) : 0;

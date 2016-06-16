@@ -8,6 +8,7 @@ import co.kepler.fastcraftplus.craftgui.GUIFastCraft;
 import co.kepler.fastcraftplus.craftgui.PlayerManager;
 import co.kepler.fastcraftplus.metrics.MetricsLite;
 import co.kepler.fastcraftplus.recipes.CraftingListener;
+import co.kepler.fastcraftplus.updater.Release;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.PluginManager;
@@ -34,6 +35,15 @@ public class FastCraft extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        List<Release> releases = Release.fetchReleases();
+        if (releases != null) {
+            for (Release r : Release.fetchReleases()) {
+                System.out.println(r.version + " - " + r.stability + "\n" + r.url + "\n");
+            }
+        } else {
+            System.out.println("Unable to fetch releases");
+        }
+
         instance = this;
 
         // Create and load configurations
