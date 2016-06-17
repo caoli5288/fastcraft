@@ -64,8 +64,6 @@ public class FastCraft extends JavaPlugin {
         } catch (IOException e) {
             getLogger().warning("Unable to start metrics");
         }
-
-        lang().gui_itemName(null);
     }
 
     @Override
