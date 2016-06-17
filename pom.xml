@@ -6,7 +6,7 @@
 
     <groupId>co.kepler.fastcraftplus</groupId>
     <artifactId>fastcraftplus</artifactId>
-    <version>0.24.2</version>
+    <version>0.24.3</version>
 
     <build>
         <plugins>

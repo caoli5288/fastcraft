@@ -180,6 +180,7 @@ public class LanguageConfig extends ConfigExternal {
     }
 
     public String gui_itemName(ItemStack item) {
+        if (item == null) return null;
         String name = getNullable("gui.item-name", "name", BukkitUtil.getItemName(item));
         return name != null ? name : item.getItemMeta().getDisplayName();
     }

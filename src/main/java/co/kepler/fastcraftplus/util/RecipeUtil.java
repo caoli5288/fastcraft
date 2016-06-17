@@ -237,6 +237,7 @@ public class RecipeUtil {
      * @return Returns the generated hashcode.
      */
     public static int hashRecipe(Recipe r) {
+        if (r == null) return 0;
         ItemStack result = r.getResult();
         int hash = result == null ? 0 : result.hashCode();
         if (r instanceof ShapedRecipe) {
