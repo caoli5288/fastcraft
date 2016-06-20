@@ -65,6 +65,10 @@ permissions:
     description: Reload FastCraft+ config files
     default: op
 
+  fastcraft.admin.update:
+    description: Download FastCraft+ updates
+    default: op
+
   fastcraft.blacklist.*:
     description: Exemption from all blacklist items
     default: false
