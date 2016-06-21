@@ -1,6 +1,5 @@
 package co.kepler.fastcraftplus.updater;
 
-import com.google.common.collect.ImmutableList;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -10,6 +9,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -22,13 +22,13 @@ public class Release {
     public final Version version;
     public final Stability stability;
     public final URL url;
-    public final ImmutableList<String> changes;
+    public final List<String> changes;
 
     public Release(Version version, Stability stability, URL url, List<String> changes) {
         this.version = version;
         this.stability = stability;
         this.url = url;
-        this.changes = ImmutableList.copyOf(changes);
+        this.changes = Collections.unmodifiableList(changes);
     }
 
     /**
@@ -61,7 +61,7 @@ public class Release {
                     for (int j = 0; j < changeNodes.getLength(); j++) {
                         Node changeNode = changeNodes.item(j);
                         if (!changeNode.getNodeName().equals("change")) continue;
-                        changes.add(changeNode.getNodeValue());
+                        changes.add(changeNode.getTextContent());
                     }
 
                     releases.add(new Release(version, stable, url, changes));

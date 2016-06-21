@@ -6,7 +6,7 @@ prefix: FastCraft+
 
 description: Improved crafting in Minecraft.
 
-main: co.kepler.fastcraftplus.FastCraft
+main: co.kepler.fastcraftplus.FastCraftPlus
 
 softdepend:
 - ItemMakerPro
