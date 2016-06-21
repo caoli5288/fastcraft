@@ -1,5 +1,6 @@
 package co.kepler.fastcraftplus.updater;
 
+import com.google.common.collect.ImmutableList;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -21,11 +22,13 @@ public class Release {
     public final Version version;
     public final Stability stability;
     public final URL url;
+    public final ImmutableList<String> changes;
 
-    public Release(Version version, Stability stability, URL url) {
+    public Release(Version version, Stability stability, URL url, List<String> changes) {
         this.version = version;
         this.stability = stability;
         this.url = url;
+        this.changes = ImmutableList.copyOf(changes);
     }
 
     /**
@@ -38,16 +41,30 @@ public class Release {
             List<Release> releases = new ArrayList<>();
             DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             Document doc = builder.parse(new URL(RELEASES_URL).openStream());
+
+            // Loop through all releases
             NodeList releaseNodes = doc.getDocumentElement().getChildNodes();
             for (int i = 0; i < releaseNodes.getLength(); i++) {
                 Node relNode = releaseNodes.item(i);
                 if (relNode.getNodeType() != Node.ELEMENT_NODE) continue;
                 try {
                     NamedNodeMap attributes = relNode.getAttributes();
+
+                    // Get release information
                     Version version = new Version(attributes.getNamedItem("version").getNodeValue());
-                    Stability stable = Stability.fromString(attributes.getNamedItem("stability").getNodeValue());
+                    Stability stable = Stability.fromString(attributes.getNamedItem("stable").getNodeValue());
                     URL url = new URL(attributes.getNamedItem("url").getNodeValue());
-                    releases.add(new Release(version, stable, url));
+
+                    // Loop through the list of changes in this release
+                    List<String> changes = new ArrayList<>();
+                    NodeList changeNodes = relNode.getChildNodes();
+                    for (int j = 0; j < changeNodes.getLength(); j++) {
+                        Node changeNode = changeNodes.item(j);
+                        if (!changeNode.getNodeName().equals("change")) continue;
+                        changes.add(changeNode.getNodeValue());
+                    }
+
+                    releases.add(new Release(version, stable, url, changes));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

@@ -15,7 +15,7 @@
 #                                  PATCH: Download bug fix updates. (Example: v1.1.2 -> v1.1.3)
 #                                  STABLE: Download the most recent stable build.
 #                                  NEWEST: Download the most recent build.
-# automatic-updates.interval   How often to check for updates, in hours.
+# automatic-updates.interval   The number of hours between update checks.
 # automatic-updates.commands   List of commands run after downloading an update. (Examples: 'restart' or 'reload')
 
 language: EN

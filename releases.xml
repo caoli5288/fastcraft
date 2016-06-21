@@ -7,7 +7,18 @@
 -->
 
 <releases>
-    <release version="0.25" stability="?" url="https://github.com/BenWoodworth/FastCraftPlus/releases/download/v0.25/FastCraftPlus.jar">
-        <change>Added automatic updating.</change>
+    <release version="1" stable="?" url="https://github.com/BenWoodworth/FastCraftPlus/releases/download/v0.25/FastCraftPlus.jar">
+        <change>A test release</change>
+        <change>Stability is unknown</change>
+    </release>
+
+    <release version="1.2" stable="true" url="https://github.com/BenWoodworth/FastCraftPlus/releases/download/v0.25/FastCraftPlus.jar">
+        <change>A test release</change>
+        <change>Is stable</change>
+    </release>
+
+    <release version="1.2.3" stable="false" url="https://github.com/BenWoodworth/FastCraftPlus/releases/download/v0.25/FastCraftPlus.jar">
+        <change>A test release</change>
+        <change>Is not stable</change>
     </release>
 </releases>
