@@ -1,6 +1,6 @@
 package co.kepler.fastcraftplus.craftgui.layouts;
 
-import co.kepler.fastcraftplus.FastCraft;
+import co.kepler.fastcraftplus.FastCraftPlus;
 import co.kepler.fastcraftplus.craftgui.GUIFastCraft;
 import co.kepler.fastcraftplus.recipes.FastRecipe;
 
@@ -18,8 +18,8 @@ public class LayoutRecipesItems extends LayoutRecipes {
         super(gui);
 
         allRecipes = new ArrayList<>();
-        for (FastRecipe recipe : FastCraft.recipeManager().getRecipes(gui.getPlayer())) {
-            if (FastCraft.blacklist().isAllowed(recipe, gui.getPlayer())) {
+        for (FastRecipe recipe : FastCraftPlus.recipeManager().getRecipes(gui.getPlayer())) {
+            if (FastCraftPlus.blacklist().isAllowed(recipe, gui.getPlayer())) {
                 allRecipes.add(recipe);
             }
         }

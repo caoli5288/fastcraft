@@ -1,6 +1,6 @@
 package co.kepler.fastcraftplus.craftgui.buttons;
 
-import co.kepler.fastcraftplus.FastCraft;
+import co.kepler.fastcraftplus.FastCraftPlus;
 import co.kepler.fastcraftplus.api.gui.GUI;
 import co.kepler.fastcraftplus.api.gui.GUIButton;
 import co.kepler.fastcraftplus.craftgui.GUIFastCraft;
@@ -22,7 +22,7 @@ public class GUIButtonMultiplier extends GUIButton {
     public GUIButtonMultiplier(GUIFastCraft gui) {
         this.gui = gui;
 
-        multOrder = FastCraft.config().getToolbar_multiplierOrder();
+        multOrder = FastCraftPlus.config().getToolbar_multiplierOrder();
         min = multOrder[0];
         max = multOrder[multOrder.length - 1];
     }
@@ -35,8 +35,8 @@ public class GUIButtonMultiplier extends GUIButton {
 
         // Set display name and lore
         ItemMeta meta = result.getItemMeta();
-        meta.setDisplayName(FastCraft.lang().gui_toolbar_multiplier_title(mult));
-        meta.setLore(FastCraft.lang().gui_toolbar_multiplier_description(mult));
+        meta.setDisplayName(FastCraftPlus.lang().gui_toolbar_multiplier_title(mult));
+        meta.setLore(FastCraftPlus.lang().gui_toolbar_multiplier_description(mult));
         result.setItemMeta(meta);
 
         return result;

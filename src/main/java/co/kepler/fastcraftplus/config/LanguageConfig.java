@@ -1,6 +1,6 @@
 package co.kepler.fastcraftplus.config;
 
-import co.kepler.fastcraftplus.FastCraft;
+import co.kepler.fastcraftplus.FastCraftPlus;
 import co.kepler.fastcraftplus.recipes.FastRecipe;
 import co.kepler.fastcraftplus.util.BukkitUtil;
 import org.bukkit.Bukkit;
@@ -34,11 +34,11 @@ public class LanguageConfig extends ConfigExternal {
     @Override
     @SuppressWarnings("deprecation")
     public void load() {
-        String language = FastCraft.config().getLanguage();
+        String language = FastCraftPlus.config().getLanguage();
         String langFile = "lang/" + language + ".yml";
 
         // Set internal and external configs
-        if (FastCraft.getInstance().getResource(langFile) == null) {
+        if (FastCraftPlus.getInstance().getResource(langFile) == null) {
             // If a resource for this language doesn't exist
             setInternalConfig("lang/EN.yml");
             setExternalConfig(langFile);
@@ -58,7 +58,7 @@ public class LanguageConfig extends ConfigExternal {
         for (String item : itemSection.getKeys(false)) {
             Material itemType = Bukkit.getUnsafe().getMaterialFromInternalName(item);
             if (itemType == null) {
-                FastCraft.err("Unknown item type: '" + item + "'");
+                FastCraftPlus.err("Unknown item type: '" + item + "'");
                 continue;
             }
             ItemNames itemName;
@@ -80,14 +80,14 @@ public class LanguageConfig extends ConfigExternal {
                             int num = Integer.parseInt(data);
                             names.put(num, nameSection.getString(data));
                         } catch (NumberFormatException e) {
-                            FastCraft.err("Item data is not 'd' or a number: " + data);
+                            FastCraftPlus.err("Item data is not 'd' or a number: " + data);
                         }
                     }
                 }
                 itemName = new ItemNames(defName, names);
             }
             if (itemName.getDefName() == null) {
-                FastCraft.warning("Language (" + language + ") has missing default (d) for item: '" + item + "'");
+                FastCraftPlus.warning("Language (" + language + ") has missing default (d) for item: '" + item + "'");
             }
             itemNames.put(itemType, itemName);
         }

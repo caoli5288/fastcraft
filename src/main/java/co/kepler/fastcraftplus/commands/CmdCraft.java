@@ -1,6 +1,6 @@
 package co.kepler.fastcraftplus.commands;
 
-import co.kepler.fastcraftplus.FastCraft;
+import co.kepler.fastcraftplus.FastCraftPlus;
 import co.kepler.fastcraftplus.Permissions;
 import co.kepler.fastcraftplus.craftgui.GUIFastCraft;
 import co.kepler.fastcraftplus.craftgui.PlayerManager;
@@ -22,11 +22,11 @@ public class CmdCraft extends SimpleCommand {
     public boolean onCommand(CommandSender sender, String[] args) {
         if (args.length > 0) args[0] = args[0].toLowerCase();
         if (!(sender instanceof Player)) {
-            sender.sendMessage(FastCraft.lang().commands_playerOnly());
+            sender.sendMessage(FastCraftPlus.lang().commands_playerOnly());
         } else if (args.length > 1) {
-            sender.sendMessage(FastCraft.lang().commands_usage(USAGE));
+            sender.sendMessage(FastCraftPlus.lang().commands_usage(USAGE));
         } else if (!sender.hasPermission(Permissions.COMMAND_CRAFT)) {
-            sender.sendMessage(FastCraft.lang().commands_noPerm(Permissions.COMMAND_CRAFT));
+            sender.sendMessage(FastCraftPlus.lang().commands_noPerm(Permissions.COMMAND_CRAFT));
         } else if (args.length > 0) {
             open((Player) sender, args[0]);
         } else {
@@ -63,11 +63,11 @@ public class CmdCraft extends SimpleCommand {
      */
     private void open(Player player, String type) {
         if (!TYPES.contains(type) && !type.equals(HASH)) {
-            player.sendMessage(FastCraft.lang().commands_usage(USAGE));
+            player.sendMessage(FastCraftPlus.lang().commands_usage(USAGE));
         } else if (type.equals(WORKBENCH)) {
             player.openWorkbench(null, true);
         } else if (!player.hasPermission(Permissions.USE)) {
-            player.sendMessage(FastCraft.lang().commands_noPerm(Permissions.USE));
+            player.sendMessage(FastCraftPlus.lang().commands_noPerm(Permissions.USE));
         } else {
             new GUIFastCraft(player, null, type.equals(HASH)).show();
         }

@@ -1,6 +1,6 @@
 package co.kepler.fastcraftplus.config;
 
-import co.kepler.fastcraftplus.FastCraft;
+import co.kepler.fastcraftplus.FastCraftPlus;
 import co.kepler.fastcraftplus.Permissions;
 import co.kepler.fastcraftplus.recipes.FastRecipe;
 import co.kepler.fastcraftplus.recipes.Ingredient;
@@ -75,7 +75,7 @@ public class BlacklistConfig extends ConfigExternal {
                 try {
                     hashes.put(getHashInt(hashSection.getString(key)), PERM_HASH + key);
                 } catch (NumberFormatException e) {
-                    FastCraft.err("Invalid blacklist hashcode for " + key + ": " + e.getMessage());
+                    FastCraftPlus.err("Invalid blacklist hashcode for " + key + ": " + e.getMessage());
                 }
             }
         }
@@ -87,7 +87,7 @@ public class BlacklistConfig extends ConfigExternal {
                 try {
                     results.put(new BlacklistItem(resultSection.getStringList(key)), PERM_RESULT + key);
                 } catch (Exception e) {
-                    FastCraft.err("Invalid blacklist result for " + key + ": " + e.getMessage());
+                    FastCraftPlus.err("Invalid blacklist result for " + key + ": " + e.getMessage());
                 }
             }
         }
@@ -99,7 +99,7 @@ public class BlacklistConfig extends ConfigExternal {
                 try {
                     ingredients.put(new BlacklistItem(ingredientSection.getStringList(key)), PERM_INGREDIENT + key);
                 } catch (Exception e) {
-                    FastCraft.err("Invalid blacklist ingredient for " + key + ": " + e.getMessage());
+                    FastCraftPlus.err("Invalid blacklist ingredient for " + key + ": " + e.getMessage());
                 }
             }
         }

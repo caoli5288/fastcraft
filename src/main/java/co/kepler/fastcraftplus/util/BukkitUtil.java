@@ -1,6 +1,6 @@
 package co.kepler.fastcraftplus.util;
 
-import co.kepler.fastcraftplus.FastCraft;
+import co.kepler.fastcraftplus.FastCraftPlus;
 import co.kepler.fastcraftplus.config.Config;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.Bukkit;
@@ -31,7 +31,7 @@ public class BukkitUtil {
             methodNMSGetName = classItemStack.getMethod("getName");
             canGetNativeItemNames = true;
         } catch (ClassNotFoundException | NoSuchMethodException e) {
-            FastCraft.err("Unable to load native Minecraft item names");
+            FastCraftPlus.err("Unable to load native Minecraft item names");
         }
     }
 
@@ -132,7 +132,7 @@ public class BukkitUtil {
         }
 
         // Try to get the item's name from lang
-        String name = FastCraft.lang().items_name(item);
+        String name = FastCraftPlus.lang().items_name(item);
         if (name != null) return name;
 
         // Try to get the name from NMS

@@ -1,6 +1,6 @@
 package co.kepler.fastcraftplus.commands;
 
-import co.kepler.fastcraftplus.FastCraft;
+import co.kepler.fastcraftplus.FastCraftPlus;
 import co.kepler.fastcraftplus.Permissions;
 import co.kepler.fastcraftplus.craftgui.PlayerManager;
 import org.bukkit.Bukkit;
@@ -23,10 +23,10 @@ public class CmdToggle extends SimpleCommand {
     public boolean onCommand(CommandSender sender, String[] args) {
         if (args.length > 0) args[0] = args[0].toLowerCase();
         if (args.length > 2 || (args.length > 0 && !TOGGLE_TYPE.contains(args[0]))) {
-            sender.sendMessage(FastCraft.lang().commands_usage(USAGE));
+            sender.sendMessage(FastCraftPlus.lang().commands_usage(USAGE));
             return true;
         } else if (!sender.hasPermission(Permissions.COMMAND_TOGGLE)) {
-            sender.sendMessage(FastCraft.lang().commands_noPerm(Permissions.COMMAND_TOGGLE));
+            sender.sendMessage(FastCraftPlus.lang().commands_noPerm(Permissions.COMMAND_TOGGLE));
             return true;
         }
 
@@ -36,14 +36,14 @@ public class CmdToggle extends SimpleCommand {
         Player togglePlayer;
         if (togglePlayerName == null) {
             if (!(sender instanceof Player)) {
-                sender.sendMessage(FastCraft.lang().commands_playerOnly());
+                sender.sendMessage(FastCraftPlus.lang().commands_playerOnly());
                 return true;
             }
             togglePlayer = (Player) sender;
         } else {
             togglePlayer = Bukkit.getPlayer(togglePlayerName);
             if (togglePlayer == null) {
-                sender.sendMessage(FastCraft.lang().commands_unknownPlayer(togglePlayerName));
+                sender.sendMessage(FastCraftPlus.lang().commands_unknownPlayer(togglePlayerName));
                 return true;
             }
             if (togglePlayer == sender) {
@@ -64,22 +64,22 @@ public class CmdToggle extends SimpleCommand {
         if (togglePlayerName != null) {
             // If toggling another player
             if (!sender.hasPermission(Permissions.COMMAND_TOGGLE_OTHER)) {
-                sender.sendMessage(FastCraft.lang().commands_noPerm(Permissions.COMMAND_TOGGLE_OTHER));
+                sender.sendMessage(FastCraftPlus.lang().commands_noPerm(Permissions.COMMAND_TOGGLE_OTHER));
                 return true;
             }
             String name = togglePlayer.getName();
             if (enabled) {
-                togglePlayer.sendMessage(FastCraft.lang().commands_fastcraft_toggle_output_on_other(name));
+                togglePlayer.sendMessage(FastCraftPlus.lang().commands_fastcraft_toggle_output_on_other(name));
             } else {
-                togglePlayer.sendMessage(FastCraft.lang().commands_fastcraft_toggle_output_off_other(name));
+                togglePlayer.sendMessage(FastCraftPlus.lang().commands_fastcraft_toggle_output_off_other(name));
             }
         }
 
         // Send message to toggled player
         if (enabled) {
-            togglePlayer.sendMessage(FastCraft.lang().commands_fastcraft_toggle_output_on_self());
+            togglePlayer.sendMessage(FastCraftPlus.lang().commands_fastcraft_toggle_output_on_self());
         } else {
-            togglePlayer.sendMessage(FastCraft.lang().commands_fastcraft_toggle_output_off_self());
+            togglePlayer.sendMessage(FastCraftPlus.lang().commands_fastcraft_toggle_output_off_self());
         }
 
         // Set player preferences

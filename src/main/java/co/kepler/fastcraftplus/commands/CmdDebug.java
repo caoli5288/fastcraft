@@ -1,6 +1,6 @@
 package co.kepler.fastcraftplus.commands;
 
-import co.kepler.fastcraftplus.FastCraft;
+import co.kepler.fastcraftplus.FastCraftPlus;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
@@ -19,9 +19,9 @@ public class CmdDebug extends SimpleCommand {
     @Override
     public boolean onCommand(CommandSender sender, String[] args) {
         if (args.length != 0) {
-            sender.sendMessage(FastCraft.lang().commands_usage(USAGE));
+            sender.sendMessage(FastCraftPlus.lang().commands_usage(USAGE));
         } else if (!sender.equals(Bukkit.getConsoleSender())) {
-            sender.sendMessage(FastCraft.lang().commands_consoleOnly());
+            sender.sendMessage(FastCraftPlus.lang().commands_consoleOnly());
         } else {
             outputDebug();
         }
@@ -42,7 +42,7 @@ public class CmdDebug extends SimpleCommand {
 
         // Output FastCraft+, Server, and Java versions
         output.append("Versions:\n")
-                .append("  FastCraft+ v").append(FastCraft.getInstance().getDescription().getVersion()).append('\n')
+                .append("  FastCraft+ v").append(FastCraftPlus.getInstance().getDescription().getVersion()).append('\n')
                 .append("  ").append(Bukkit.getVersion()).append('\n')
                 .append("  ").append(Bukkit.getBukkitVersion()).append('\n')
                 .append("  Java ").append(System.getProperty("java.version")).append("\n");
@@ -51,13 +51,13 @@ public class CmdDebug extends SimpleCommand {
         List<Plugin> plugins = getSortedPlugins();
         output.append("Other Plugins (").append(plugins.size() - 1).append("):\n");
         for (Plugin plugin : plugins) {
-            if (plugin.equals(FastCraft.getInstance())) continue; // Don't output FastCraft+ here
+            if (plugin.equals(FastCraftPlus.getInstance())) continue; // Don't output FastCraft+ here
             output.append("  ").append(plugin.getName()).append(" ")
                     .append(plugin.getDescription().getVersion()).append('\n');
         }
 
         output.append("===========================================\n");
-        FastCraft.log(output.toString());
+        FastCraftPlus.log(output.toString());
     }
 
     /**

@@ -1,6 +1,6 @@
 package co.kepler.fastcraftplus.craftgui.buttons;
 
-import co.kepler.fastcraftplus.FastCraft;
+import co.kepler.fastcraftplus.FastCraftPlus;
 import co.kepler.fastcraftplus.api.gui.GUI;
 import co.kepler.fastcraftplus.api.gui.GUIButton;
 import co.kepler.fastcraftplus.api.gui.GUIItemBuilder;
@@ -19,8 +19,8 @@ public class GUIButtonRefresh extends GUIButton {
     public GUIButtonRefresh(LayoutFastCraft layout) {
         this.layout = layout;
         item = new GUIItemBuilder(Material.NETHER_STAR)
-                .setDisplayName(FastCraft.lang().gui_toolbar_refresh_title())
-                .setLore(FastCraft.lang().gui_toolbar_refresh_description())
+                .setDisplayName(FastCraftPlus.lang().gui_toolbar_refresh_title())
+                .setLore(FastCraftPlus.lang().gui_toolbar_refresh_description())
                 .setHideInfo(true)
                 .build();
     }

@@ -1,6 +1,6 @@
 package co.kepler.fastcraftplus.config;
 
-import co.kepler.fastcraftplus.FastCraft;
+import co.kepler.fastcraftplus.FastCraftPlus;
 import co.kepler.fastcraftplus.recipes.Ingredient;
 import co.kepler.fastcraftplus.recipes.custom.CustomRecipe;
 import co.kepler.fastcraftplus.recipes.custom.CustomShapedRecipe;
@@ -52,9 +52,9 @@ public class RecipesConfig extends ConfigExternal {
                 if (customRecipe.getRecipe() != null) {
                     recipeMap.put(RecipeUtil.comparable(customRecipe.getRecipe()), customRecipe);
                 }
-                FastCraft.log("Loaded recipe: " + key);
+                FastCraftPlus.log("Loaded recipe: " + key);
             } catch (RecipeException e) {
-                FastCraft.err("Error loading recipe '" + key + "': " + e.getMessage());
+                FastCraftPlus.err("Error loading recipe '" + key + "': " + e.getMessage());
             }
         }
     }

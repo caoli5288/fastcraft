@@ -1,6 +1,6 @@
 package co.kepler.fastcraftplus.config;
 
-import co.kepler.fastcraftplus.FastCraft;
+import co.kepler.fastcraftplus.FastCraftPlus;
 
 import java.util.Arrays;
 
@@ -28,7 +28,7 @@ public class PluginConfig extends ConfigExternal {
             }
             Arrays.sort(multOrder = newMultOrder);
         } catch (NumberFormatException e) {
-            FastCraft.err("Invalid integer for toolbar.multiplier-order in config.yml: " + e.getMessage());
+            FastCraftPlus.err("Invalid integer for toolbar.multiplier-order in config.yml: " + e.getMessage());
         }
     }
 

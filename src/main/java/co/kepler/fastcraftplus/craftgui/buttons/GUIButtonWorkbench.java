@@ -1,6 +1,6 @@
 package co.kepler.fastcraftplus.craftgui.buttons;
 
-import co.kepler.fastcraftplus.FastCraft;
+import co.kepler.fastcraftplus.FastCraftPlus;
 import co.kepler.fastcraftplus.api.gui.GUI;
 import co.kepler.fastcraftplus.api.gui.GUIButton;
 import co.kepler.fastcraftplus.api.gui.GUIItemBuilder;
@@ -22,8 +22,8 @@ public class GUIButtonWorkbench extends GUIButton {
     public GUIButtonWorkbench(GUIFastCraft gui) {
         this.gui = gui;
         item = new GUIItemBuilder(Material.WORKBENCH)
-                .setDisplayName(FastCraft.lang().gui_toolbar_workbench_title())
-                .setLore(FastCraft.lang().gui_toolbar_workbench_description())
+                .setDisplayName(FastCraftPlus.lang().gui_toolbar_workbench_title())
+                .setLore(FastCraftPlus.lang().gui_toolbar_workbench_description())
                 .setHideInfo(true)
                 .build();
     }
@@ -46,7 +46,7 @@ public class GUIButtonWorkbench extends GUIButton {
             public void run() {
                 clicker.openWorkbench(location, location == null);
             }
-        }.runTask(FastCraft.getInstance());
+        }.runTask(FastCraftPlus.getInstance());
         return true;
     }
 }

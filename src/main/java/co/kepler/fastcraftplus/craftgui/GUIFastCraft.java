@@ -1,6 +1,6 @@
 package co.kepler.fastcraftplus.craftgui;
 
-import co.kepler.fastcraftplus.FastCraft;
+import co.kepler.fastcraftplus.FastCraftPlus;
 import co.kepler.fastcraftplus.api.gui.GUI;
 import co.kepler.fastcraftplus.api.gui.Layout;
 import co.kepler.fastcraftplus.craftgui.layouts.LayoutFastCraft;
@@ -42,7 +42,7 @@ public class GUIFastCraft extends GUI {
      * @param player The player who will be shown this GUI.
      */
     public GUIFastCraft(final Player player, Location location, boolean showHashes) {
-        super(FastCraft.lang().gui_title(), 6);
+        super(FastCraftPlus.lang().gui_title(), 6);
 
         this.player = player;
         this.location = location;
@@ -184,7 +184,7 @@ public class GUIFastCraft extends GUI {
         private void invChange(HumanEntity player) {
             final GUIFastCraft gui = guis.get(player.getUniqueId());
             if (gui != null) {
-                FastCraft fc = FastCraft.getInstance();
+                FastCraftPlus fc = FastCraftPlus.getInstance();
                 Bukkit.getScheduler().scheduleSyncDelayedTask(fc, new Runnable() {
                     public void run() {
                         gui.inventoryChange();

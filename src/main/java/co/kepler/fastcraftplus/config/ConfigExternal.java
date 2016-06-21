@@ -1,6 +1,6 @@
 package co.kepler.fastcraftplus.config;
 
-import co.kepler.fastcraftplus.FastCraft;
+import co.kepler.fastcraftplus.FastCraftPlus;
 import co.kepler.fastcraftplus.util.BukkitUtil;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -32,7 +32,7 @@ public abstract class ConfigExternal extends Config {
      * @param filePath The path of the file within the FastCraft+ plugin directory.
      */
     protected void setExternalConfig(String filePath) {
-        configFile = filePath == null ? null : new File(FastCraft.getInstance().getDataFolder(), filePath);
+        configFile = filePath == null ? null : new File(FastCraftPlus.getInstance().getDataFolder(), filePath);
     }
 
     protected void setConfigs(String path) {
@@ -51,9 +51,9 @@ public abstract class ConfigExternal extends Config {
                 // Save the config header, or save the config if it doesn't exist
                 if (!configFile.exists()) {
                     File parent = configFile.getParentFile();
-                    if (parent.mkdirs()) FastCraft.log("Created directory: " + parent);
-                    Files.copy(FastCraft.getInstance().getResource(resPath), configFile.toPath());
-                    FastCraft.log("Created config: " + configFile.getName());
+                    if (parent.mkdirs()) FastCraftPlus.log("Created directory: " + parent);
+                    Files.copy(FastCraftPlus.getInstance().getResource(resPath), configFile.toPath());
+                    FastCraftPlus.log("Created config: " + configFile.getName());
                 }
 
                 // Load the config
@@ -83,7 +83,7 @@ public abstract class ConfigExternal extends Config {
         String curLine;
 
         // Read in header from internal config
-        stream = FastCraft.getInstance().getResource(resPath);
+        stream = FastCraftPlus.getInstance().getResource(resPath);
         reader = new BufferedReader(new InputStreamReader(stream, ENCODING));
         while ((curLine = reader.readLine()) != null && curLine.startsWith("#")) {
             newFileStr.append(curLine).append('\n');

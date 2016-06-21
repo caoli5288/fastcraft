@@ -1,6 +1,6 @@
 package co.kepler.fastcraftplus.api.gui;
 
-import co.kepler.fastcraftplus.FastCraft;
+import co.kepler.fastcraftplus.FastCraftPlus;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
@@ -49,7 +49,7 @@ public class GUI implements InventoryHolder {
 
         // Register the GUI listeners if they aren't already.
         if (!listenersRegistered) {
-            Bukkit.getPluginManager().registerEvents(new GUIListener(), FastCraft.getInstance());
+            Bukkit.getPluginManager().registerEvents(new GUIListener(), FastCraftPlus.getInstance());
             listenersRegistered = true;
         }
     }
@@ -242,7 +242,7 @@ public class GUI implements InventoryHolder {
                     public void run() {
                         gui.onClose(e.getPlayer());
                     }
-                }.runTask(FastCraft.getInstance());
+                }.runTask(FastCraftPlus.getInstance());
             }
         }
     }

@@ -1,6 +1,6 @@
 package co.kepler.fastcraftplus.craftgui.buttons;
 
-import co.kepler.fastcraftplus.FastCraft;
+import co.kepler.fastcraftplus.FastCraftPlus;
 import co.kepler.fastcraftplus.api.gui.GUI;
 import co.kepler.fastcraftplus.api.gui.GUIButton;
 import co.kepler.fastcraftplus.config.LanguageConfig;
@@ -42,7 +42,7 @@ public class GUIButtonRecipe extends GUIButton {
 
     @Override
     public ItemStack getItem() {
-        LanguageConfig lang = FastCraft.lang();
+        LanguageConfig lang = FastCraftPlus.lang();
         int mult = gui.getMultiplier();
 
         // Add the ingredients to the lore of the item

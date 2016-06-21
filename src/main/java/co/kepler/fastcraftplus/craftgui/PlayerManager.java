@@ -1,6 +1,6 @@
 package co.kepler.fastcraftplus.craftgui;
 
-import co.kepler.fastcraftplus.FastCraft;
+import co.kepler.fastcraftplus.FastCraftPlus;
 import co.kepler.fastcraftplus.Permissions;
 import co.kepler.fastcraftplus.util.BukkitUtil;
 import org.bukkit.Material;
@@ -55,10 +55,10 @@ public class PlayerManager implements Listener {
         private YamlConfiguration conf = new YamlConfiguration();
 
         private static File getPrefsFile(UUID uuid) throws IOException {
-            File playerFile = new File(FastCraft.getInstance().getDataFolder(), "preferences/" + uuid + ".yml");
+            File playerFile = new File(FastCraftPlus.getInstance().getDataFolder(), "preferences/" + uuid + ".yml");
             File parentDir = playerFile.getParentFile();
-            if (parentDir.mkdirs()) FastCraft.log("Created directory: " + parentDir);
-            if (playerFile.createNewFile()) FastCraft.log("Created player file: " + playerFile);
+            if (parentDir.mkdirs()) FastCraftPlus.log("Created directory: " + parentDir);
+            if (playerFile.createNewFile()) FastCraftPlus.log("Created player file: " + playerFile);
             return playerFile;
         }
 
@@ -90,7 +90,7 @@ public class PlayerManager implements Listener {
         }
 
         public boolean isFastCraftEnabled() {
-            return conf.getBoolean(KEY_ENABLED, FastCraft.config().getDefaultEnabled());
+            return conf.getBoolean(KEY_ENABLED, FastCraftPlus.config().getDefaultEnabled());
         }
 
         public void setFastCraftEnabled(boolean enabled) {

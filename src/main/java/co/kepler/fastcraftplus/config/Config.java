@@ -1,6 +1,6 @@
 package co.kepler.fastcraftplus.config;
 
-import co.kepler.fastcraftplus.FastCraft;
+import co.kepler.fastcraftplus.FastCraftPlus;
 import co.kepler.fastcraftplus.util.BukkitUtil;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -23,7 +23,7 @@ public abstract class Config {
     protected void setInternalConfig(String resPath) {
         this.resPath = resPath;
         if (resPath != null) {
-            InputStream resStream = FastCraft.getInstance().getResource(resPath);
+            InputStream resStream = FastCraftPlus.getInstance().getResource(resPath);
             internalConfig = BukkitUtil.loadConfiguration(resStream);
         } else {
             internalConfig = new YamlConfiguration();

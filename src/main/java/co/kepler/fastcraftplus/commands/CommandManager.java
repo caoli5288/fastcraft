@@ -1,6 +1,6 @@
 package co.kepler.fastcraftplus.commands;
 
-import co.kepler.fastcraftplus.FastCraft;
+import co.kepler.fastcraftplus.FastCraftPlus;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -30,7 +30,7 @@ public class CommandManager implements CommandExecutor, TabCompleter {
      * Register this as the command executor for all FastCraft+ commands.
      */
     public void registerCommands() {
-        FastCraft fc = FastCraft.getInstance();
+        FastCraftPlus fc = FastCraftPlus.getInstance();
         for (String command : commandMap.keySet()) {
             fc.getCommand(command).setExecutor(this);
         }

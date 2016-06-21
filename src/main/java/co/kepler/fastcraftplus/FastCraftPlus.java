@@ -20,8 +20,8 @@ import java.util.List;
 /**
  * The main class for FastCraft+
  */
-public class FastCraft extends JavaPlugin {
-    private static FastCraft instance;
+public class FastCraftPlus extends JavaPlugin {
+    private static FastCraftPlus instance;
 
     private List<ConfigExternal> externalConfigs;
     private PluginConfig config;
@@ -101,7 +101,7 @@ public class FastCraft extends JavaPlugin {
      *
      * @return Returns an instance of FastCraft.
      */
-    public static FastCraft getInstance() {
+    public static FastCraftPlus getInstance() {
         return instance;
     }
 

@@ -1,6 +1,6 @@
 package co.kepler.fastcraftplus.craftgui;
 
-import co.kepler.fastcraftplus.FastCraft;
+import co.kepler.fastcraftplus.FastCraftPlus;
 import co.kepler.fastcraftplus.config.PluginConfig;
 import co.kepler.fastcraftplus.craftgui.buttons.*;
 import co.kepler.fastcraftplus.craftgui.layouts.LayoutFastCraft;
@@ -21,7 +21,7 @@ public class LayoutManager {
     }
 
     public LayoutFastCraft getNewLayout(GUIFastCraft gui) {
-        PluginConfig config = FastCraft.config();
+        PluginConfig config = FastCraftPlus.config();
         int toolGap = config.getToolbar_gap() ? 1 : 0;
         LayoutFastCraft layout = new LayoutFastCraft(gui, new LayoutRecipesItems(gui), toolGap);
 

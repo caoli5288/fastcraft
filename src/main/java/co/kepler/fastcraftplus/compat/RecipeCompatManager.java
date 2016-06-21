@@ -1,6 +1,6 @@
 package co.kepler.fastcraftplus.compat;
 
-import co.kepler.fastcraftplus.FastCraft;
+import co.kepler.fastcraftplus.FastCraftPlus;
 import co.kepler.fastcraftplus.recipes.FastRecipe;
 import co.kepler.fastcraftplus.util.RecipeUtil;
 import org.bukkit.Bukkit;
@@ -49,11 +49,11 @@ public class RecipeCompatManager {
                 loadedCompats.add(compat);
                 compat.getRecipes(null);
                 if (plugin != null) {
-                    FastCraft.log("Loaded compatibility: " + plugin.getName());
+                    FastCraftPlus.log("Loaded compatibility: " + plugin.getName());
                 }
             } else {
                 if (plugin != null) {
-                    FastCraft.err("Unable to load compatibility: " + plugin.getName());
+                    FastCraftPlus.err("Unable to load compatibility: " + plugin.getName());
                 }
             }
         } catch (Throwable t) {

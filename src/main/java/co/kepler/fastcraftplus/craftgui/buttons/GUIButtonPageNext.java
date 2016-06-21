@@ -1,6 +1,6 @@
 package co.kepler.fastcraftplus.craftgui.buttons;
 
-import co.kepler.fastcraftplus.FastCraft;
+import co.kepler.fastcraftplus.FastCraftPlus;
 import co.kepler.fastcraftplus.api.gui.GUI;
 import co.kepler.fastcraftplus.api.gui.GUIButton;
 import co.kepler.fastcraftplus.api.gui.GUIItemBuilder;
@@ -26,8 +26,8 @@ public class GUIButtonPageNext extends GUIButton {
         int next = layout.getPage() + 2, count = layout.getPageCount(), page = layout.getPage() + 1;
 
         return new GUIItemBuilder(Material.ARROW)
-                .setDisplayName(FastCraft.lang().gui_toolbar_pageNext_title())
-                .setLore(FastCraft.lang().gui_toolbar_pageNext_description(next, count, page))
+                .setDisplayName(FastCraftPlus.lang().gui_toolbar_pageNext_title())
+                .setLore(FastCraftPlus.lang().gui_toolbar_pageNext_description(next, count, page))
                 .setHideInfo(true)
                 .build();
     }

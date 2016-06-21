@@ -1,6 +1,6 @@
 package co.kepler.fastcraftplus.commands;
 
-import co.kepler.fastcraftplus.FastCraft;
+import co.kepler.fastcraftplus.FastCraftPlus;
 import org.bukkit.command.CommandSender;
 
 import java.util.Arrays;
@@ -27,7 +27,7 @@ public class CmdFastCraft extends SimpleCommand {
                 return cmdToggle.onCommand(sender, popFirst(args));
             }
         }
-        sender.sendMessage(FastCraft.lang().commands_usage(USAGE));
+        sender.sendMessage(FastCraftPlus.lang().commands_usage(USAGE));
         return true;
     }
 

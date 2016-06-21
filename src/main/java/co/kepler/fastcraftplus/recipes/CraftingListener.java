@@ -1,6 +1,6 @@
 package co.kepler.fastcraftplus.recipes;
 
-import co.kepler.fastcraftplus.FastCraft;
+import co.kepler.fastcraftplus.FastCraftPlus;
 import co.kepler.fastcraftplus.recipes.custom.CustomRecipe;
 import co.kepler.fastcraftplus.util.InvUtil;
 import org.bukkit.event.EventHandler;
@@ -18,7 +18,7 @@ public class CraftingListener implements Listener {
 
     @EventHandler
     public void onPrepareItemCraft(PrepareItemCraftEvent e) {
-        CustomRecipe recipe = FastCraft.recipes().getRecipe(e.getRecipe());
+        CustomRecipe recipe = FastCraftPlus.recipes().getRecipe(e.getRecipe());
         if (recipe == null) return;
         boolean matches = recipe.matchesMatrix(e.getInventory().getMatrix());
         e.getInventory().setResult(matches ? recipe.getDisplayResult() : null);
@@ -46,7 +46,7 @@ public class CraftingListener implements Listener {
             public void run() {
                 inv.setItem(1, inv.getItem(1)); // Triggers PrepareItemCraftEvent
             }
-        }.runTask(FastCraft.getInstance());
+        }.runTask(FastCraftPlus.getInstance());
     }
 
     /**
@@ -63,7 +63,7 @@ public class CraftingListener implements Listener {
             return;
         }
 
-        CustomRecipe recipe = FastCraft.recipes().getRecipe(e.getRecipe());
+        CustomRecipe recipe = FastCraftPlus.recipes().getRecipe(e.getRecipe());
         if (recipe == null) return;
         e.setCancelled(!recipe.matchesMatrix(e.getInventory().getMatrix()));
         return;
@@ -78,7 +78,7 @@ public class CraftingListener implements Listener {
     public void onCraftItemPost(CraftItemEvent e) {
         onCraftItemPre(e);
         if (e.isCancelled()) return;
-        CustomRecipe recipe = FastCraft.recipes().getRecipe(e.getRecipe());
+        CustomRecipe recipe = FastCraftPlus.recipes().getRecipe(e.getRecipe());
         if (recipe == null) return;
         recipe.removeFromMatrix(e);
     }
