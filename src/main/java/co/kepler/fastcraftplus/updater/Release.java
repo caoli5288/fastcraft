@@ -13,7 +13,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Created by Ben on 6/14/2016.
+ * Contains information about a FastCraft+ release.
  */
 public class Release {
     private static final String RELEASES_URL =
@@ -90,6 +90,11 @@ public class Release {
             if (major != version.major) return major - version.major;
             if (minor != version.minor) return minor - version.minor;
             return patch - version.patch;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            return o instanceof Version && compareTo((Version) o) == 0;
         }
 
         @Override
