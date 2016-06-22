@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Contains information about a FastCraft+ release.
  */
-public class Release {
+public class Release implements Comparable<Release> {
     private static final String RELEASES_URL =
             "https://raw.githubusercontent.com/BenWoodworth/FastCraftPlus/master/releases.xml";
 
@@ -24,11 +24,24 @@ public class Release {
     public final URL url;
     public final List<String> changes;
 
+    /**
+     * Create a new instance of Release.
+     *
+     * @param version   This release's version.
+     * @param stability The stability of this release.
+     * @param url       The URL to this release's .jar file.
+     * @param changes   The changes from the previous release.
+     */
     public Release(Version version, Stability stability, URL url, List<String> changes) {
         this.version = version;
         this.stability = stability;
         this.url = url;
         this.changes = Collections.unmodifiableList(changes);
+    }
+
+    @Override
+    public int compareTo(Release release) {
+        return version.compareTo(release.version);
     }
 
     /**
@@ -75,6 +88,9 @@ public class Release {
         }
     }
 
+    /**
+     * A release version.
+     */
     public static class Version implements Comparable<Version> {
         public final int major, minor, patch;
 
@@ -103,6 +119,9 @@ public class Release {
         }
     }
 
+    /**
+     * The stability of a release.
+     */
     public enum Stability {
         STABLE, UNSTABLE, UNKNOWN;
 
