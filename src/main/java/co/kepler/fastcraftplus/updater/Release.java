@@ -16,8 +16,7 @@ import java.util.List;
  * Contains information about a FastCraft+ release.
  */
 public class Release implements Comparable<Release> {
-    private static final String RELEASES_URL =
-            "https://raw.githubusercontent.com/BenWoodworth/FastCraftPlus/master/releases.xml";
+    private static final String RELEASES_URL = "http://www.benwoodworth.net/bukkit/fastcraftplus/releases.xml";
 
     public final Version version;
     public final Stability stability;
