@@ -9,45 +9,31 @@ import java.net.URLConnection;
  * Downloads FastCraft+ releases.
  */
 public class ReleaseDownloader {
-    private static final int DOWNLOAD_BUFFER = 1024;
+    private static final int DOWNLOAD_BUFFER = 1024 * 5;
     private static final String JAR_FILENAME = "FastCraftPlus";
 
     private final Release release;
-    private final DownloadListener listener;
-
-    private File downloadedFile;
 
     /**
      * Instantiate a new ReleaseDownloader with a runnable to be executed on download completion.
      *
-     * @param release  The release to download.
-     * @param listener Runnable to be executed
+     * @param release The release to download.
      */
-    public ReleaseDownloader(Release release, DownloadListener listener) {
+    public ReleaseDownloader(Release release) {
         this.release = release;
-        this.listener = listener;
-    }
-
-    /**
-     * Get the downloaded file.
-     *
-     * @return Returns the downloaded file, or null if it hasn't been downloaded.
-     */
-    public File getDownloadedFile() {
-        return downloadedFile;
     }
 
     /**
      * Asynchronously download the release.
      */
-    public void downloadAsync() {
-        new Thread(new DownloadRunnable(this)).start();
+    public void downloadAsync(DownloadListener listener) {
+        new Thread(new DownloadRunnable(this, listener)).start();
     }
 
     /**
      * Download the release.
      */
-    public void download() {
+    public void download(DownloadListener listener) {
         try {
             // Open a URL connection for the release
             URLConnection connection = release.url.openConnection();
@@ -72,7 +58,7 @@ public class ReleaseDownloader {
             int bytes, downloaded = 0;
             while ((bytes = inputStream.read(data)) >= 0) {
                 outputStream.write(data, 0, bytes);
-                listener.onProgressChange((double) (downloaded += bytes) / fileSize);
+                listener.onProgressChange(downloaded += bytes, fileSize);
             }
 
             // Close streams
@@ -80,12 +66,12 @@ public class ReleaseDownloader {
             outputStream.close();
 
             // Notify listener
-            listener.onDownloadComplete(true);
+            listener.onDownloadComplete(updateFile);
         } catch (IOException e) {
             e.printStackTrace();
 
             // Unable to download successfully
-            listener.onDownloadComplete(false);
+            listener.onDownloadComplete(null);
         }
     }
 
@@ -96,15 +82,18 @@ public class ReleaseDownloader {
 
         /**
          * Called when the download completes.
+         *
+         * @param file The downloaded file. Null if unsuccessfully downloaded.
          */
-        void onDownloadComplete(boolean successful);
+        void onDownloadComplete(File file);
 
         /**
          * Called when the download progress changes.
          *
-         * @param progress The download progress, between 0 and 1.
+         * @param downloaded The number of bytes downloaded.
+         * @param total      The total number of bytes.
          */
-        void onProgressChange(double progress);
+        void onProgressChange(int downloaded, int total);
     }
 
     /**
@@ -112,19 +101,21 @@ public class ReleaseDownloader {
      */
     private class DownloadRunnable implements Runnable {
         private final ReleaseDownloader downloader;
+        private final DownloadListener listener;
 
         /**
          * Create a new instance of DownloadRunnable.
          *
          * @param downloader The downloader whose download() method will be run.
          */
-        public DownloadRunnable(ReleaseDownloader downloader) {
+        public DownloadRunnable(ReleaseDownloader downloader, DownloadListener listener) {
             this.downloader = downloader;
+            this.listener = listener;
         }
 
         @Override
         public void run() {
-            downloader.download();
+            downloader.download(listener);
         }
     }
 }
