@@ -40,14 +40,14 @@ public class ReleaseDownloader {
     /**
      * Asynchronously download the release.
      */
-    private void downloadAsync() {
+    public void downloadAsync() {
         new Thread(new DownloadRunnable(this)).start();
     }
 
     /**
      * Download the release.
      */
-    private void download() {
+    public void download() {
         try {
             // Open a URL connection for the release
             URLConnection connection = release.url.openConnection();
