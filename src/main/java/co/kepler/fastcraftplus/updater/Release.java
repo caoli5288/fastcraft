@@ -113,6 +113,14 @@ public class Release implements Comparable<Release> {
         }
 
         @Override
+        public int hashCode() {
+            int result = major;
+            result = result * 31 + minor;
+            result = result * 31 + patch;
+            return result;
+        }
+
+        @Override
         public String toString() {
             return "v" + major + "." + minor + "." + patch;
         }

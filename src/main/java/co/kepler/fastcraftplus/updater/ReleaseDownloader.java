@@ -4,11 +4,15 @@ import org.bukkit.Bukkit;
 
 import java.io.*;
 import java.net.URLConnection;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Downloads FastCraft+ releases.
  */
 public class ReleaseDownloader {
+    private final static Set<Release> downloadedReleases = new HashSet<>();
+
     private static final int DOWNLOAD_BUFFER = 1024 * 5;
     private static final String JAR_FILENAME = "FastCraftPlus";
 
@@ -66,6 +70,7 @@ public class ReleaseDownloader {
             outputStream.close();
 
             // Notify listener
+            downloadedReleases.add(release);
             listener.onDownloadComplete(updateFile);
         } catch (IOException e) {
             e.printStackTrace();
