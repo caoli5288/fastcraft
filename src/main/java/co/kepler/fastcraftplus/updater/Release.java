@@ -11,7 +11,9 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Contains information about a FastCraft+ release.
@@ -20,9 +22,6 @@ public class Release implements Comparable<Release> {
     private static final String RELEASES_URL = "http://www.benwoodworth.net/bukkit/fastcraftplus/releases.xml";
     private static final String JAR_FILENAME = "FastCraftPlus";
     private static final int DOWNLOAD_BUFFER = 1024 * 5;
-
-    private final static Set<Release> downloadedReleases = new HashSet<>();
-
 
     public final Version version;
     public final Stability stability;
@@ -140,7 +139,6 @@ public class Release implements Comparable<Release> {
             outputStream.close();
 
             // Notify listener
-            downloadedReleases.add(this);
             listener.onDownloadComplete(updateFile);
         } catch (IOException e) {
             e.printStackTrace();
@@ -156,7 +154,7 @@ public class Release implements Comparable<Release> {
     public static class Version implements Comparable<Version> {
         public final int major, minor, patch;
 
-        private Version(String version) {
+        public Version(String version) {
             String[] split = version.split("\\.");
             major = Integer.parseInt(split[0]);
             minor = split.length > 1 ? Integer.parseInt(split[1]) : 0;
