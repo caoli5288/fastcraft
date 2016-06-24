@@ -96,8 +96,12 @@ public class Release implements Comparable<Release> {
     /**
      * Asynchronously download the release.
      */
-    public void downloadAsync(DownloadListener listener) {
-        new Thread(new DownloadRunnable(this, listener)).start();
+    public void downloadAsync(final DownloadListener listener) {
+        new Thread(new Runnable() {
+            public void run() {
+                Release.this.download(listener);
+            }
+        }).start();
     }
 
     /**
@@ -222,29 +226,5 @@ public class Release implements Comparable<Release> {
          * @param total      The total number of bytes.
          */
         void onProgressChange(int downloaded, int total);
-    }
-
-    /**
-     * Runnable that calls the download() method of a ReleaseDownloader.
-     */
-    private class DownloadRunnable implements Runnable {
-        private final Release release;
-        private final DownloadListener listener;
-
-        /**
-         * Create a new instance of DownloadRunnable.
-         *
-         * @param release  The downloader whose download() method will be run.
-         * @param listener The download listener.
-         */
-        public DownloadRunnable(Release release, DownloadListener listener) {
-            this.release = release;
-            this.listener = listener;
-        }
-
-        @Override
-        public void run() {
-            release.download(listener);
-        }
     }
 }
