@@ -1,5 +1,6 @@
 package co.kepler.fastcraftplus.updater;
 
+import org.bukkit.Bukkit;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -7,16 +8,21 @@ import org.w3c.dom.NodeList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.*;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.net.URLConnection;
+import java.util.*;
 
 /**
  * Contains information about a FastCraft+ release.
  */
 public class Release implements Comparable<Release> {
     private static final String RELEASES_URL = "http://www.benwoodworth.net/bukkit/fastcraftplus/releases.xml";
+    private static final String JAR_FILENAME = "FastCraftPlus";
+    private static final int DOWNLOAD_BUFFER = 1024 * 5;
+
+    private final static Set<Release> downloadedReleases = new HashSet<>();
+
 
     public final Version version;
     public final Stability stability;
@@ -88,6 +94,59 @@ public class Release implements Comparable<Release> {
     }
 
     /**
+     * Asynchronously download the release.
+     */
+    public void downloadAsync(DownloadListener listener) {
+        new Thread(new DownloadRunnable(this, listener)).start();
+    }
+
+    /**
+     * Download the release.
+     */
+    public void download(DownloadListener listener) {
+        try {
+            // Open a URL connection for the release
+            URLConnection connection = url.openConnection();
+            int fileSize = connection.getContentLength();
+
+            // Get the file for the download
+            File updateFile = new File(Bukkit.getUpdateFolder(), JAR_FILENAME + ".jar");
+            if (updateFile.exists() && !updateFile.delete()) {
+                // If update file exists and unable to delete
+                int curIndex = 1;
+                while (updateFile.exists()) {
+                    updateFile = new File(Bukkit.getUpdateFolder(), JAR_FILENAME + " (" + curIndex++ + ").jar");
+                }
+            }
+
+            // Create the data streams
+            BufferedInputStream inputStream = new BufferedInputStream(connection.getInputStream());
+            BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(updateFile));
+            byte[] data = new byte[DOWNLOAD_BUFFER];
+
+            // Download the file
+            int bytes, downloaded = 0;
+            while ((bytes = inputStream.read(data)) >= 0) {
+                outputStream.write(data, 0, bytes);
+                listener.onProgressChange(downloaded += bytes, fileSize);
+            }
+
+            // Close streams
+            inputStream.close();
+            outputStream.close();
+
+            // Notify listener
+            downloadedReleases.add(this);
+            listener.onDownloadComplete(updateFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+
+            // Unable to download successfully
+            listener.onDownloadComplete(null);
+        }
+    }
+
+    /**
      * A release version.
      */
     public static class Version implements Comparable<Version> {
@@ -141,6 +200,51 @@ public class Release implements Comparable<Release> {
             default:
                 return UNKNOWN;
             }
+        }
+    }
+
+    /**
+     * Called by the ReleaseDownloader when a download completes.
+     */
+    public interface DownloadListener {
+
+        /**
+         * Called when the download completes.
+         *
+         * @param file The downloaded file. Null if unsuccessfully downloaded.
+         */
+        void onDownloadComplete(File file);
+
+        /**
+         * Called when the download progress changes.
+         *
+         * @param downloaded The number of bytes downloaded.
+         * @param total      The total number of bytes.
+         */
+        void onProgressChange(int downloaded, int total);
+    }
+
+    /**
+     * Runnable that calls the download() method of a ReleaseDownloader.
+     */
+    private class DownloadRunnable implements Runnable {
+        private final Release release;
+        private final DownloadListener listener;
+
+        /**
+         * Create a new instance of DownloadRunnable.
+         *
+         * @param release  The downloader whose download() method will be run.
+         * @param listener The download listener.
+         */
+        public DownloadRunnable(Release release, DownloadListener listener) {
+            this.release = release;
+            this.listener = listener;
+        }
+
+        @Override
+        public void run() {
+            release.download(listener);
         }
     }
 }
