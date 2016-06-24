@@ -90,7 +90,7 @@ public class PlayerManager implements Listener {
         }
 
         public boolean isFastCraftEnabled() {
-            return conf.getBoolean(KEY_ENABLED, FastCraftPlus.config().getDefaultEnabled());
+            return conf.getBoolean(KEY_ENABLED, FastCraftPlus.config().defaultEnabled());
         }
 
         public void setFastCraftEnabled(boolean enabled) {

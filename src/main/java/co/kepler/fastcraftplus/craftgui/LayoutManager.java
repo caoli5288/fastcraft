@@ -22,14 +22,14 @@ public class LayoutManager {
 
     public LayoutFastCraft getNewLayout(GUIFastCraft gui) {
         PluginConfig config = FastCraftPlus.config();
-        int toolGap = config.getToolbar_gap() ? 1 : 0;
+        int toolGap = config.toolbar_gap() ? 1 : 0;
         LayoutFastCraft layout = new LayoutFastCraft(gui, new LayoutRecipesItems(gui), toolGap);
 
-        layout.setToolbarButton(config.getToolbar_layout_pagePrev(), new GUIButtonPagePrev(layout));
-        layout.setToolbarButton(config.getToolbar_layout_pageNext(), new GUIButtonPageNext(layout));
-        layout.setToolbarButton(config.getToolbar_layout_multiplier(), new GUIButtonMultiplier(gui));
-        layout.setToolbarButton(config.getToolbar_layout_workbench(), new GUIButtonWorkbench(gui));
-        layout.setToolbarButton(config.getToolbar_layout_refresh(), new GUIButtonRefresh(layout));
+        layout.setToolbarButton(config.toolbar_layout_pagePrev(), new GUIButtonPagePrev(layout));
+        layout.setToolbarButton(config.toolbar_layout_pageNext(), new GUIButtonPageNext(layout));
+        layout.setToolbarButton(config.toolbar_layout_multiplier(), new GUIButtonMultiplier(gui));
+        layout.setToolbarButton(config.toolbar_layout_workbench(), new GUIButtonWorkbench(gui));
+        layout.setToolbarButton(config.toolbar_layout_refresh(), new GUIButtonRefresh(layout));
 
         return layout;
     }

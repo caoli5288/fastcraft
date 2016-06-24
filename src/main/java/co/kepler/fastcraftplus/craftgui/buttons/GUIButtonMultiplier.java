@@ -22,7 +22,7 @@ public class GUIButtonMultiplier extends GUIButton {
     public GUIButtonMultiplier(GUIFastCraft gui) {
         this.gui = gui;
 
-        multOrder = FastCraftPlus.config().getToolbar_multiplierOrder();
+        multOrder = FastCraftPlus.config().toolbar_multiplierOrder();
         min = multOrder[0];
         max = multOrder[multOrder.length - 1];
     }

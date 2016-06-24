@@ -3,6 +3,7 @@ package co.kepler.fastcraftplus.config;
 import co.kepler.fastcraftplus.FastCraftPlus;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * A class for access to the FastCraft+ configuration.
@@ -32,39 +33,51 @@ public class PluginConfig extends ConfigExternal {
         }
     }
 
-    public String getLanguage() {
+    public String language() {
         return config.getString("language");
     }
 
-    public boolean getDefaultEnabled() {
+    public boolean defaultEnabled() {
         return config.getBoolean("default-enabled");
     }
 
-    public boolean getToolbar_gap() {
+    public boolean toolbar_gap() {
         return config.getBoolean("toolbar.gap");
     }
 
-    public int getToolbar_layout_pagePrev() {
+    public int toolbar_layout_pagePrev() {
         return config.getInt("toolbar.layout.page-prev");
     }
 
-    public int getToolbar_layout_pageNext() {
+    public int toolbar_layout_pageNext() {
         return config.getInt("toolbar.layout.page-next");
     }
 
-    public int getToolbar_layout_multiplier() {
+    public int toolbar_layout_multiplier() {
         return config.getInt("toolbar.layout.multiplier");
     }
 
-    public int getToolbar_layout_workbench() {
+    public int toolbar_layout_workbench() {
         return config.getInt("toolbar.layout.workbench");
     }
 
-    public int getToolbar_layout_refresh() {
+    public int toolbar_layout_refresh() {
         return config.getInt("toolbar.layout.refresh");
     }
 
-    public int[] getToolbar_multiplierOrder() {
+    public int[] toolbar_multiplierOrder() {
         return multOrder;
+    }
+
+    public String automaticUpdates_type() {
+        return config.getString("automatic-updates.type");
+    }
+
+    public int automaticUpdates_interval() {
+        return config.getInt("automatic-updates.interval");
+    }
+
+    public List<String> automaticUpdates_commands() {
+        return config.getStringList("automatic-updates.commands");
     }
 }

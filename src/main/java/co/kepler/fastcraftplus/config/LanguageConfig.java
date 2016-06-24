@@ -34,7 +34,7 @@ public class LanguageConfig extends ConfigExternal {
     @Override
     @SuppressWarnings("deprecation")
     public void load() {
-        String language = FastCraftPlus.config().getLanguage();
+        String language = FastCraftPlus.config().language();
         String langFile = "lang/" + language + ".yml";
 
         // Set internal and external configs
