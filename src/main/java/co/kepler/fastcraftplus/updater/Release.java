@@ -11,9 +11,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * Contains information about a FastCraft+ release.
@@ -22,6 +20,8 @@ public class Release implements Comparable<Release> {
     private static final String RELEASES_URL = "http://www.benwoodworth.net/bukkit/fastcraftplus/releases.xml";
     private static final String JAR_FILENAME = "FastCraftPlus";
     private static final int DOWNLOAD_BUFFER = 1024 * 5;
+
+    private static final Set<Version> downloaded = new HashSet<>();
 
     public final Version version;
     public final Stability stability;
@@ -131,7 +131,7 @@ public class Release implements Comparable<Release> {
             int bytes, downloaded = 0;
             while ((bytes = inputStream.read(data)) >= 0) {
                 outputStream.write(data, 0, bytes);
-                listener.onProgressChange(downloaded += bytes, fileSize);
+                listener.onProgressChange(this, downloaded += bytes, fileSize);
             }
 
             // Close streams
@@ -139,12 +139,12 @@ public class Release implements Comparable<Release> {
             outputStream.close();
 
             // Notify listener
-            listener.onDownloadComplete(updateFile);
+            listener.onDownloadComplete(this, updateFile);
         } catch (IOException e) {
             e.printStackTrace();
 
             // Unable to download successfully
-            listener.onDownloadComplete(null);
+            listener.onDownloadComplete(this, null);
         }
     }
 
@@ -215,7 +215,7 @@ public class Release implements Comparable<Release> {
          *
          * @param file The downloaded file. Null if unsuccessfully downloaded.
          */
-        void onDownloadComplete(File file);
+        void onDownloadComplete(Release release, File file);
 
         /**
          * Called when the download progress changes.
@@ -223,6 +223,6 @@ public class Release implements Comparable<Release> {
          * @param downloaded The number of bytes downloaded.
          * @param total      The total number of bytes.
          */
-        void onProgressChange(int downloaded, int total);
+        void onProgressChange(Release release, int downloaded, int total);
     }
 }

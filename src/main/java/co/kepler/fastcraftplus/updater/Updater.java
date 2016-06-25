@@ -2,6 +2,7 @@ package co.kepler.fastcraftplus.updater;
 
 import co.kepler.fastcraftplus.FastCraftPlus;
 
+import java.io.File;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -28,7 +29,7 @@ public class Updater {
             List<Release> releases = Release.fetchReleases();
             if (releases == null) return;
             Collections.sort(releases);
-            for (Iterator<Release> iter = releases.iterator(); iter.hasNext();) {
+            for (Iterator<Release> iter = releases.iterator(); iter.hasNext(); ) {
                 if (!updateType.canUpdate(iter.next())) iter.remove();
             }
 
@@ -36,7 +37,22 @@ public class Updater {
             if (releases.isEmpty()) return;
             Release release = releases.get(0);
 
-            // TODO Download release
+            // Download release
+            release.download(new AutoDownloadListener());
+        }
+    }
+
+    private class AutoDownloadListener implements Release.DownloadListener {
+
+        @Override
+        public void onDownloadComplete(Release release, File file) {
+            System.out.println("Finished downloading FastCraft+ " + release);
+        }
+
+        @Override
+        public void onProgressChange(Release release, int downloaded, int total) {
+            double percent = (int) (downloaded * 1000) / 10.;
+            System.out.println("Downloading FastCraft+ update:" + percent + "%");
         }
     }
 
