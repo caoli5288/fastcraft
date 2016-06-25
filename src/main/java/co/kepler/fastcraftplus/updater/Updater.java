@@ -27,7 +27,7 @@ public class Updater {
         sched.cancelTask(taskID);
         taskID = -1;
         if (updateType != UpdateType.NONE) {
-            long interval = FastCraftPlus.config().automaticUpdates_interval() * 60 * 60 * 20;
+            long interval = (long) (FastCraftPlus.config().automaticUpdates_interval() * 60 * 20);
             UpdateChecker checker = new UpdateChecker();
             taskID = sched.scheduleSyncRepeatingTask(FastCraftPlus.getInstance(), checker, 1L, interval);
         }
@@ -54,16 +54,20 @@ public class Updater {
     }
 
     private static class AutoDownloadListener implements Release.DownloadListener {
-
         @Override
-        public void onDownloadComplete(Release release, File file) {
-            System.out.println("Finished downloading FastCraft+ " + release);
+        public void onDownloadStart(Release release) {
+            FastCraftPlus.log("Downloading update: " + release);
         }
 
         @Override
         public void onProgressChange(Release release, int downloaded, int total) {
             double percent = (int) (1000. * downloaded / total) / 10.;
-            System.out.println("Downloading FastCraft+ update:" + percent + "%");
+            FastCraftPlus.log("Downloading update: " + percent + "%");
+        }
+
+        @Override
+        public void onDownloadComplete(Release release, File file) {
+            FastCraftPlus.log("Finished downloading update: " + release);
         }
     }
 
@@ -72,7 +76,7 @@ public class Updater {
 
         public boolean canUpdate(Release to) {
             Release.Version vTo = to.version;
-            if (VERSION.compareTo(vTo) <= 0) return false; // Only update to newer versions
+            if (VERSION.compareTo(vTo) >= 0) return false; // Only update to newer versions
 
             switch (this) {
             case NONE:

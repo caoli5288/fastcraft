@@ -79,6 +79,7 @@ public class FastCraftPlus extends JavaPlugin {
         for (ConfigExternal conf : getInstance().externalConfigs) {
             conf.load();
         }
+
         Updater.load();
     }
 

@@ -1,6 +1,6 @@
 package co.kepler.fastcraftplus.updater;
 
-import org.bukkit.Bukkit;
+import co.kepler.fastcraftplus.FastCraftPlus;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -18,8 +18,9 @@ import java.util.*;
  */
 public class Release implements Comparable<Release> {
     private static final String RELEASES_URL = "http://www.benwoodworth.net/bukkit/fastcraftplus/releases.xml";
-    private static final String JAR_FILENAME = "FastCraftPlus";
-    private static final int DOWNLOAD_BUFFER = 1024 * 5;
+    private static final File RELEASES_DIR = new File(FastCraftPlus.getInstance().getDataFolder(), "releases");
+    private static final String JAR_FILENAME = "FastCraftPlus %s.jar";
+    private static final int DOWNLOAD_BUFFER = 1024 * 10;
 
     private static final Set<Version> downloaded = new HashSet<>();
 
@@ -46,6 +47,11 @@ public class Release implements Comparable<Release> {
     @Override
     public int compareTo(Release release) {
         return version.compareTo(release.version);
+    }
+
+    @Override
+    public String toString() {
+        return "FastCraft+ v" + version;
     }
 
     /**
@@ -113,14 +119,9 @@ public class Release implements Comparable<Release> {
             int fileSize = connection.getContentLength();
 
             // Get the file for the download
-            File updateFile = new File(Bukkit.getUpdateFolder(), JAR_FILENAME + ".jar");
-            if (updateFile.exists() && !updateFile.delete()) {
-                // If update file exists and unable to delete
-                int curIndex = 1;
-                while (updateFile.exists()) {
-                    updateFile = new File(Bukkit.getUpdateFolder(), JAR_FILENAME + " (" + curIndex++ + ").jar");
-                }
-            }
+            File updateFile = new File(RELEASES_DIR, String.format(JAR_FILENAME, version));
+            if (updateFile.getParentFile().mkdirs()) FastCraftPlus.log("Created releases directory");
+            if (!updateFile.createNewFile()) return; // Already downloaded
 
             // Create the data streams
             BufferedInputStream inputStream = new BufferedInputStream(connection.getInputStream());
@@ -183,7 +184,7 @@ public class Release implements Comparable<Release> {
 
         @Override
         public String toString() {
-            return "v" + major + "." + minor + "." + patch;
+            return major + "." + minor + (patch == 0 ? "" : "." + patch);
         }
     }
 
@@ -209,20 +210,28 @@ public class Release implements Comparable<Release> {
      * Called by the ReleaseDownloader when a download completes.
      */
     public interface DownloadListener {
-
         /**
-         * Called when the download completes.
+         * Called when the download starts.
          *
-         * @param file The downloaded file. Null if unsuccessfully downloaded.
+         * @param release The release being downloaded.
          */
-        void onDownloadComplete(Release release, File file);
+        void onDownloadStart(Release release);
 
         /**
          * Called when the download progress changes.
          *
+         * @param release The release being downloaded.
          * @param downloaded The number of bytes downloaded.
          * @param total      The total number of bytes.
          */
         void onProgressChange(Release release, int downloaded, int total);
+
+        /**
+         * Called when the download completes.
+         *
+         * @param release The release being downloaded.
+         * @param file The downloaded file. Null if unsuccessfully downloaded.
+         */
+        void onDownloadComplete(Release release, File file);
     }
 }
