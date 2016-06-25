@@ -73,8 +73,8 @@ public class PluginConfig extends ConfigExternal {
         return config.getString("automatic-updates.type");
     }
 
-    public int automaticUpdates_interval() {
-        return config.getInt("automatic-updates.interval");
+    public long automaticUpdates_interval() {
+        return config.getLong("automatic-updates.interval");
     }
 
     public List<String> automaticUpdates_commands() {

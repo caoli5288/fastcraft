@@ -1,6 +1,8 @@
 package co.kepler.fastcraftplus.updater;
 
 import co.kepler.fastcraftplus.FastCraftPlus;
+import org.bukkit.Bukkit;
+import org.bukkit.scheduler.BukkitScheduler;
 
 import java.io.File;
 import java.util.Collections;
@@ -20,9 +22,18 @@ public class Updater {
     public static void load() {
         updateType = UpdateType.fromConfig();
 
+        // Cancel update check task, and start a new one.
+        BukkitScheduler sched = Bukkit.getScheduler();
+        sched.cancelTask(taskID);
+        taskID = -1;
+        if (updateType != UpdateType.NONE) {
+            long interval = FastCraftPlus.config().automaticUpdates_interval() * 60 * 60 * 20;
+            UpdateChecker checker = new UpdateChecker();
+            taskID = sched.scheduleSyncRepeatingTask(FastCraftPlus.getInstance(), checker, 1L, interval);
+        }
     }
 
-    private class UpdateChecker implements Runnable {
+    private static class UpdateChecker implements Runnable {
         @Override
         public void run() {
             // Get release candidates
@@ -42,7 +53,7 @@ public class Updater {
         }
     }
 
-    private class AutoDownloadListener implements Release.DownloadListener {
+    private static class AutoDownloadListener implements Release.DownloadListener {
 
         @Override
         public void onDownloadComplete(Release release, File file) {
@@ -51,7 +62,7 @@ public class Updater {
 
         @Override
         public void onProgressChange(Release release, int downloaded, int total) {
-            double percent = (int) (downloaded * 1000) / 10.;
+            double percent = (int) (1000. * downloaded / total) / 10.;
             System.out.println("Downloading FastCraft+ update:" + percent + "%");
         }
     }
