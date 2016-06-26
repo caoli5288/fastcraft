@@ -13,9 +13,6 @@ import java.util.List;
  * Checks for updates, and downloads them if one's available.
  */
 public class Updater {
-    private static final Release.Version VERSION = new Release.Version(
-            FastCraftPlus.getInstance().getDescription().getVersion());
-
     private static int taskID = -1;
     private static UpdateType updateType;
 
@@ -76,15 +73,16 @@ public class Updater {
 
         public boolean canUpdate(Release to) {
             Release.Version vTo = to.version;
-            if (VERSION.compareTo(vTo) >= 0) return false; // Only update to newer versions
+            Release.Version vFrom = FastCraftPlus.version();
+            if (vFrom.compareTo(vTo) >= 0) return false; // Only update to newer versions
 
             switch (this) {
             case NONE:
                 return false;
             case PATCH:
-                return VERSION.major == vTo.major
-                        && VERSION.minor == vTo.minor
-                        && VERSION.patch < vTo.patch;
+                return vFrom.major == vTo.major
+                        && vFrom.minor == vTo.minor
+                        && vFrom.patch < vTo.patch;
             case STABLE:
                 return to.stability == Release.Stability.STABLE;
             case NEWEST:

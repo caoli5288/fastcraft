@@ -19,7 +19,7 @@ import java.util.*;
 public class Release implements Comparable<Release> {
     private static final String RELEASES_URL = "http://www.benwoodworth.net/bukkit/fastcraftplus/releases.xml";
     private static final File RELEASES_DIR = new File(FastCraftPlus.getInstance().getDataFolder(), "releases");
-    private static final String JAR_FILENAME = "FastCraftPlus %s.jar";
+    private static final String JAR_FILENAME = "FastCraftPlus v%s.jar";
     private static final int DOWNLOAD_BUFFER = 1024 * 10;
 
     private static final Set<Version> downloaded = new HashSet<>();
