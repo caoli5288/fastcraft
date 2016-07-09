@@ -11,7 +11,9 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Contains information about a FastCraft+ release.
@@ -20,9 +22,7 @@ public class Release implements Comparable<Release> {
     private static final String RELEASES_URL = "http://www.benwoodworth.net/bukkit/fastcraftplus/releases.xml";
     private static final File RELEASES_DIR = new File(FastCraftPlus.getInstance().getDataFolder(), "releases");
     private static final String JAR_FILENAME = "FastCraftPlus v%s.jar";
-    private static final int DOWNLOAD_BUFFER = 1024 * 10;
-
-    private static final Set<Version> downloaded = new HashSet<>();
+    private static final int DOWNLOAD_BUFFER = 1024 * 8;
 
     public final Version version;
     public final Stability stability;
@@ -52,6 +52,15 @@ public class Release implements Comparable<Release> {
     @Override
     public String toString() {
         return "FastCraft+ v" + version;
+    }
+
+    /**
+     * Get the release jar file in the FastCraft+ plugin directory.
+     *
+     * @return Returns the release jar file.
+     */
+    public File getReleaseFile() {
+        return new File(RELEASES_DIR, String.format(JAR_FILENAME, version));
     }
 
     /**
@@ -119,17 +128,18 @@ public class Release implements Comparable<Release> {
             int fileSize = connection.getContentLength();
 
             // Get the file for the download
-            File updateFile = new File(RELEASES_DIR, String.format(JAR_FILENAME, version));
-            if (updateFile.getParentFile().mkdirs()) FastCraftPlus.log("Created releases directory");
-            if (!updateFile.createNewFile()) return; // Already downloaded
+            File releaseFile = getReleaseFile();
+            if (releaseFile.getParentFile().mkdirs()) FastCraftPlus.log("Created releases directory");
+            if (!releaseFile.createNewFile()) return; // Already downloaded
 
             // Create the data streams
             BufferedInputStream inputStream = new BufferedInputStream(connection.getInputStream());
-            BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(updateFile));
+            BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(releaseFile));
             byte[] data = new byte[DOWNLOAD_BUFFER];
 
             // Download the file
             int bytes, downloaded = 0;
+            listener.onProgressChange(this, 0, fileSize);
             while ((bytes = inputStream.read(data)) >= 0) {
                 outputStream.write(data, 0, bytes);
                 listener.onProgressChange(this, downloaded += bytes, fileSize);
@@ -140,7 +150,7 @@ public class Release implements Comparable<Release> {
             outputStream.close();
 
             // Notify listener
-            listener.onDownloadComplete(this, updateFile);
+            listener.onDownloadComplete(this, releaseFile);
         } catch (IOException e) {
             e.printStackTrace();
 
