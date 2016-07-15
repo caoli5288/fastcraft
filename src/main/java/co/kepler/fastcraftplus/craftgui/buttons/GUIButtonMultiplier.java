@@ -56,8 +56,7 @@ public class GUIButtonMultiplier extends GUIButton {
         if (inventoryClickEvent.getClick() == ClickType.MIDDLE) {
             // If middle click, reset to 1
             mult = 1;
-        }
-        if (inventoryClickEvent.isShiftClick()) {
+        } else if (inventoryClickEvent.isShiftClick()) {
             // If shift click, increment by 1
             mult += inventoryClickEvent.isLeftClick() ? 1 : -1;
         } else {
@@ -86,7 +85,7 @@ public class GUIButtonMultiplier extends GUIButton {
             mult = newMult;
         }
 
-        // Set new multiplier
+        // Set new multiplier, wrapping around if necessary
         if (mult < min) {
             mult = max;
         } else if (mult > max) {
