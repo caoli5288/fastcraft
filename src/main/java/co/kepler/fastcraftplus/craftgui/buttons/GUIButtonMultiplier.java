@@ -18,8 +18,6 @@ public class GUIButtonMultiplier extends GUIButton {
     private final int[] multOrder;
     private final int min, max;
 
-    private int multIndex = 0;
-
     public GUIButtonMultiplier(GUIFastCraft gui) {
         this.gui = gui;
 
@@ -49,20 +47,20 @@ public class GUIButtonMultiplier extends GUIButton {
     }
 
     @Override
-    public boolean onClick(GUI gui, InventoryClickEvent inventoryClickEvent) {
+    public boolean onClick(GUI gui, InventoryClickEvent e) {
         int mult = this.gui.getMultiplier();
 
         // If left click, increase. Otherwise, decrease.
-        if (inventoryClickEvent.getClick() == ClickType.MIDDLE) {
+        if (e.getClick() == ClickType.MIDDLE) {
             // If middle click, reset to 1
             mult = 1;
-        } else if (inventoryClickEvent.isShiftClick()) {
+        } else if (e.isShiftClick()) {
             // If shift click, increment by 1
-            mult += inventoryClickEvent.isLeftClick() ? 1 : -1;
+            mult += e.isLeftClick() ? 1 : -1;
         } else {
             // If normal click, increment to the next power of 2
             int newMult;
-            if (inventoryClickEvent.isLeftClick()) {
+            if (e.isLeftClick()) {
                 // Increase
                 newMult = min;
                 for (int m : multOrder) {
@@ -86,10 +84,12 @@ public class GUIButtonMultiplier extends GUIButton {
         }
 
         // Set new multiplier, wrapping around if necessary
-        if (mult < min) {
-            mult = max;
-        } else if (mult > max) {
-            mult = min;
+        if (!e.isShiftClick()) {
+            if (mult < min) {
+                mult = max;
+            } else if (mult > max) {
+                mult = min;
+            }
         }
         this.gui.setMultiplier(mult);
         this.gui.updateLayout();
