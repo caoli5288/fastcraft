@@ -7,10 +7,12 @@ import co.kepler.fastcraftplus.recipes.custom.CustomShapedRecipe;
 import co.kepler.fastcraftplus.recipes.custom.CustomShapelessRecipe;
 import co.kepler.fastcraftplus.util.RecipeUtil;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.*;
 
@@ -195,8 +197,31 @@ public class RecipesConfig extends ConfigExternal {
 
         // Get the item's metadata
         if (item.size() >= 4) {
+            // Set metadata
             String metaStr = item.get(3);
             Bukkit.getUnsafe().modifyItemStack(result, metaStr);
+
+            // Display name: Use & for formatting codes
+            ItemMeta meta = result.getItemMeta();
+            if (meta.hasDisplayName()) {
+                String disp = meta.getDisplayName();
+                disp = ChatColor.translateAlternateColorCodes('&', disp);
+                meta.setDisplayName(disp);
+            }
+
+            // Lore: Use & for formatting codes
+            if (meta.hasLore()) {
+                List<String> lore = meta.getLore();
+                for (int i = 0; i < lore.size(); i++) {
+                    String line = lore.get(i);
+                    if (line == null) continue;
+                    line = ChatColor.translateAlternateColorCodes('&', line);
+                    lore.set(i, line);
+                }
+            }
+
+            // Update meta
+            result.setItemMeta(meta);
         }
 
         // Return the ingredient
