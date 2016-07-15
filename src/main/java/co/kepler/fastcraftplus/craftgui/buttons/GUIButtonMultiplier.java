@@ -5,6 +5,7 @@ import co.kepler.fastcraftplus.api.gui.GUI;
 import co.kepler.fastcraftplus.api.gui.GUIButton;
 import co.kepler.fastcraftplus.craftgui.GUIFastCraft;
 import org.bukkit.Material;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -52,7 +53,7 @@ public class GUIButtonMultiplier extends GUIButton {
         int mult = this.gui.getMultiplier();
 
         // If left click, increase. Otherwise, decrease.
-        if (inventoryClickEvent.getClick().isCreativeAction()) {
+        if (inventoryClickEvent.getClick() == ClickType.MIDDLE) {
             // If middle click, reset to 1
             mult = 1;
         }
