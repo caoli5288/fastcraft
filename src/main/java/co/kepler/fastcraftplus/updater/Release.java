@@ -21,7 +21,6 @@ import java.util.List;
  * Contains information about a FastCraft+ release.
  */
 public class Release implements Comparable<Release> {
-    private static final File UPDATE_FILE = new File(Bukkit.getUpdateFolderFile(), "FastCraftPlus.jar");
     private static final String RELEASES_URL = "http://www.benwoodworth.net/bukkit/fastcraftplus/releases.xml";
     private static final File RELEASES_DIR = new File(FastCraftPlus.getInstance().getDataFolder(), "releases");
     private static final String JAR_FILENAME = "FastCraftPlus v%s.jar";
@@ -81,7 +80,9 @@ public class Release implements Comparable<Release> {
      * @throws IOException Thrown if an IOException occurs.
      */
     public void copyToUpdateDir() throws IOException {
-        Files.copy(getReleaseFile(), UPDATE_FILE);
+        String updateDir = Bukkit.getUpdateFolder();
+        String filename = FastCraftPlus.getJarFile().getName();
+        Files.copy(getReleaseFile(), new File(updateDir, filename));
     }
 
     /**

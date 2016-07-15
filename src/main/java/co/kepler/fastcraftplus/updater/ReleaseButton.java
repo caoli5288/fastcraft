@@ -7,12 +7,11 @@ import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by Ben on 6/25/2016.
+ * Provides details about a FastCraft+ release, and when clicked, downloads/installs releases.
  */
 public class ReleaseButton extends GUIButton implements Release.DownloadListener {
     private static final ItemStack
@@ -74,7 +73,7 @@ public class ReleaseButton extends GUIButton implements Release.DownloadListener
     }
 
     @Override
-    public void onDownloadComplete(Release release, File file) {
+    public void onDownloadComplete(Release release) {
         progress = -1;
     }
 }
