@@ -1,6 +1,8 @@
 package co.kepler.fastcraftplus.updater;
 
 import co.kepler.fastcraftplus.FastCraftPlus;
+import com.google.common.io.Files;
+import org.bukkit.Bukkit;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -19,6 +21,7 @@ import java.util.List;
  * Contains information about a FastCraft+ release.
  */
 public class Release implements Comparable<Release> {
+    private static final File UPDATE_FILE = new File(Bukkit.getUpdateFolderFile(), "FastCraftPlus.jar");
     private static final String RELEASES_URL = "http://www.benwoodworth.net/bukkit/fastcraftplus/releases.xml";
     private static final File RELEASES_DIR = new File(FastCraftPlus.getInstance().getDataFolder(), "releases");
     private static final String JAR_FILENAME = "FastCraftPlus v%s.jar";
@@ -61,6 +64,24 @@ public class Release implements Comparable<Release> {
      */
     public File getReleaseFile() {
         return new File(RELEASES_DIR, String.format(JAR_FILENAME, version));
+    }
+
+    /**
+     * See if the release has been downloaded.
+     *
+     * @return Returns true if the release has been downloaded.
+     */
+    public boolean isDownloaded() {
+        return getReleaseFile().exists();
+    }
+
+    /**
+     * Copy the release to the update directory.
+     *
+     * @throws IOException Thrown if an IOException occurs.
+     */
+    public void copyToUpdateDir() throws IOException {
+        Files.copy(getReleaseFile(), UPDATE_FILE);
     }
 
     /**
@@ -123,14 +144,14 @@ public class Release implements Comparable<Release> {
      */
     public void download(DownloadListener listener) {
         try {
-            // Open a URL connection for the release
-            URLConnection connection = url.openConnection();
-            int fileSize = connection.getContentLength();
-
             // Get the file for the download
             File releaseFile = getReleaseFile();
             if (releaseFile.getParentFile().mkdirs()) FastCraftPlus.log("Created releases directory");
-            if (!releaseFile.createNewFile()) return; // Already downloaded
+            if (!releaseFile.createNewFile()) return; // Return if already downloaded
+
+            // Open a URL connection for the release
+            URLConnection connection = url.openConnection();
+            int fileSize = connection.getContentLength();
 
             // Create the data streams
             BufferedInputStream inputStream = new BufferedInputStream(connection.getInputStream());
@@ -150,12 +171,12 @@ public class Release implements Comparable<Release> {
             outputStream.close();
 
             // Notify listener
-            listener.onDownloadComplete(this, releaseFile);
+            listener.onDownloadComplete(this);
         } catch (IOException e) {
             e.printStackTrace();
 
             // Unable to download successfully
-            listener.onDownloadComplete(this, null);
+            listener.onDownloadComplete(this);
         }
     }
 
@@ -240,8 +261,7 @@ public class Release implements Comparable<Release> {
          * Called when the download completes.
          *
          * @param release The release being downloaded.
-         * @param file The downloaded file. Null if unsuccessfully downloaded.
          */
-        void onDownloadComplete(Release release, File file);
+        void onDownloadComplete(Release release);
     }
 }

@@ -1,11 +1,9 @@
 package co.kepler.fastcraftplus.updater;
 
 import co.kepler.fastcraftplus.FastCraftPlus;
-import com.google.common.io.Files;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitScheduler;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Iterator;
@@ -15,8 +13,6 @@ import java.util.List;
  * Checks for updates, and downloads them if one's available.
  */
 public class Updater {
-    private static final File UPDATE_FILE = new File(Bukkit.getUpdateFolderFile(), "FastCraftPlus.jar");
-
     private static int taskID = -1;
     private static UpdateType updateType;
 
@@ -67,18 +63,26 @@ public class Updater {
         }
 
         @Override
-        public void onDownloadComplete(Release release, File file) {
-            FastCraftPlus.log("Finished downloading update: " + release);
-
-            // Copy release to update folder
+        public void onDownloadComplete(Release release) {
             try {
-                Files.copy(file, UPDATE_FILE);
+                FastCraftPlus.log("Finished downloading update. Copying to update directory.");
+                release.copyToUpdateDir();
+
+                List<String> commands = FastCraftPlus.config().automaticUpdates_commands();
+                if (!commands.isEmpty()) {
+                    FastCraftPlus.log("Executing automatic update commands...");
+                    for (String command : commands) {
+                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
+                    }
+                }
+
+                FastCraftPlus.log("Completed update download!");
             } catch (IOException e) {
                 FastCraftPlus.err("Unable to install the update jar.");
             }
         }
     }
-
+ 
     enum UpdateType {
         NONE, PATCH, STABLE, NEWEST;
 
