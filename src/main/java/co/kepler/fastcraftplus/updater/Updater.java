@@ -81,6 +81,11 @@ public class Updater {
                 FastCraftPlus.err("Unable to install the update jar.");
             }
         }
+
+        @Override
+        public void onDownloadFail(Release release) {
+            FastCraftPlus.err("Unable to download release: " + release);
+        }
     }
  
     enum UpdateType {

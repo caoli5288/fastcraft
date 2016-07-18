@@ -76,4 +76,9 @@ public class ReleaseButton extends GUIButton implements Release.DownloadListener
     public void onDownloadComplete(Release release) {
         progress = -1;
     }
+
+    @Override
+    public void onDownloadFail(Release release) {
+        // TODO
+    }
 }

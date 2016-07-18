@@ -144,11 +144,15 @@ public class Release implements Comparable<Release> {
      * Download the release.
      */
     public void download(DownloadListener listener) {
+        File releaseFile = getReleaseFile();
+        listener.onDownloadStart(this);
         try {
             // Get the file for the download
-            File releaseFile = getReleaseFile();
             if (releaseFile.getParentFile().mkdirs()) FastCraftPlus.log("Created releases directory");
-            if (!releaseFile.createNewFile()) return; // Return if already downloaded
+            if (!releaseFile.createNewFile()) {
+                listener.onDownloadComplete(this);
+                return; // Return if already downloaded
+            }
 
             // Open a URL connection for the release
             URLConnection connection = url.openConnection();
@@ -177,7 +181,8 @@ public class Release implements Comparable<Release> {
             e.printStackTrace();
 
             // Unable to download successfully
-            listener.onDownloadComplete(this);
+            releaseFile.delete();
+            listener.onDownloadFail(this);
         }
     }
 
@@ -264,5 +269,12 @@ public class Release implements Comparable<Release> {
          * @param release The release being downloaded.
          */
         void onDownloadComplete(Release release);
+
+        /**
+         * Called when the release failed to download.
+         *
+         * @param release The release that failed to download.
+         */
+        void onDownloadFail(Release release);
     }
 }
