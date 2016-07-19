@@ -46,7 +46,9 @@ public class Updater {
             Release release = releases.get(0);
 
             // Download release
-            release.download(new AutoDownloadListener());
+            if (release.isNewerThanInstalledRelease()) {
+                release.download(new AutoDownloadListener());
+            }
         }
     }
 
@@ -66,7 +68,7 @@ public class Updater {
         public void onDownloadComplete(Release release) {
             try {
                 FastCraftPlus.log("Finished downloading update. Copying to update directory.");
-                release.copyToUpdateDir();
+                release.install();
 
                 List<String> commands = FastCraftPlus.config().automaticUpdates_commands();
                 if (!commands.isEmpty()) {
@@ -78,7 +80,9 @@ public class Updater {
 
                 FastCraftPlus.log("Completed update download!");
             } catch (IOException e) {
-                FastCraftPlus.err("Unable to install the update jar.");
+                FastCraftPlus.err("Unable to install the update jar:");
+                FastCraftPlus.err(e.getMessage());
+
             }
         }
 

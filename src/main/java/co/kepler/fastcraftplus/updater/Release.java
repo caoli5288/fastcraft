@@ -26,6 +26,8 @@ public class Release implements Comparable<Release> {
     private static final String JAR_FILENAME = "FastCraftPlus v%s.jar";
     private static final int DOWNLOAD_BUFFER = 1024 * 8;
 
+    private static Release installedRelease = null;
+
     public final Version version;
     public final Stability stability;
     public final URL url;
@@ -79,10 +81,29 @@ public class Release implements Comparable<Release> {
      *
      * @throws IOException Thrown if an IOException occurs.
      */
-    public void copyToUpdateDir() throws IOException {
-        String updateDir = Bukkit.getUpdateFolder();
+    public void install() throws IOException {
+        File updateDir = Bukkit.getUpdateFolderFile();
         String filename = FastCraftPlus.getJarFile().getName();
         Files.copy(getReleaseFile(), new File(updateDir, filename));
+        installedRelease = this;
+    }
+
+    /**
+     * See which release has been installed to the update directory.
+     *
+     * @return Returns the installed release, or null if none were installed.
+     */
+    public static Release getInstalledRelease() {
+        return installedRelease;
+    }
+
+    /**
+     * See if this release is newer than the installed release.
+     *
+     * @return Returns true if this release is newer.
+     */
+    public boolean isNewerThanInstalledRelease() {
+        return installedRelease == null || compareTo(installedRelease) > 0;
     }
 
     /**
