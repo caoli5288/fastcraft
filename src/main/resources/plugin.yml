@@ -46,10 +46,13 @@ permissions:
     default: false
     children:
       fastcraft.toggle.other: false
+      fastcraft.toggle: true #FastCraft backwards compatibility
 
   fastcraft.command.toggle.other:
     description: Permission to toggle FastCraft+ for another player
     default: op
+    children:
+      fastcraft.toggle.other: true #FastCraft backwards compatibility
 
   fastcraft.command.craft:
     description: Permission to use /fastcraft craft
