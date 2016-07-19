@@ -98,7 +98,9 @@ public abstract class ConfigExternal extends Config {
         while (curLine != null && curLine.startsWith("#")) curLine = reader.readLine(); // Skip header comments
         while (curLine != null && curLine.matches("\\s*")) curLine = reader.readLine(); // Skip empty lines
         while (curLine != null) { // Append the rest of the file
-            newFileStr.append(curLine).append('\n');
+            if (!curLine.startsWith("blank-line"))
+                newFileStr.append(curLine);
+            newFileStr.append('\n');
             curLine = reader.readLine();
         }
         reader.close();

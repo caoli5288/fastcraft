@@ -19,8 +19,10 @@
 # automatic-updates.commands   List of commands run after downloading an update. (Examples: 'restart' or 'reload')
 
 language: EN
+blank-line-a: 0
 
 default-enabled: true
+blank-line-b: 0
 
 toolbar:
   gap: true
@@ -31,6 +33,7 @@ toolbar:
     workbench: 4
     refresh: 5
   multiplier-order: 1, 2, 3, 4, 6, 8, 12, 16, 24, 32, 48, 64
+blank-line-c: 0
 
 automatic-updates:
   type: STABLE

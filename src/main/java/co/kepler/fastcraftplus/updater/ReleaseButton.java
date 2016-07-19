@@ -46,7 +46,7 @@ public class ReleaseButton extends GUIButton implements Release.DownloadListener
             result = stabilityItems.get(release.stability).clone();
         }
 
-        // TODO DisplaynName and Lore
+        // TODO DisplayName and Lore
 
         return result;
     }
