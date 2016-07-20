@@ -15,10 +15,11 @@ import java.util.Map;
  */
 public class ReleaseButton extends GUIButton implements Release.DownloadListener {
     private static final ItemStack
-    ITEM_CURRENT = new ItemStack(Material.GOLD_BLOCK),
-    ITEM_DOWNLOADING = new ItemStack(Material.DIAMOND_AXE);
+            ITEM_CURRENT = new ItemStack(Material.GOLD_BLOCK),
+            ITEM_DOWNLOADING = new ItemStack(Material.DIAMOND_AXE);
 
     private static final Map<Release.Stability, ItemStack> stabilityItems = new HashMap<>();
+
     static {
         stabilityItems.put(Release.Stability.STABLE, new ItemStack(Material.EMERALD_BLOCK));
         stabilityItems.put(Release.Stability.UNSTABLE, new ItemStack(Material.REDSTONE_BLOCK));
@@ -78,7 +79,7 @@ public class ReleaseButton extends GUIButton implements Release.DownloadListener
     }
 
     @Override
-    public void onDownloadFail(Release release) {
+    public void onDownloadFail(Release release, String message) {
         // TODO
     }
 }

@@ -8,11 +8,15 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import javax.xml.bind.DatatypeConverter;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
+import java.security.DigestInputStream;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -31,6 +35,7 @@ public class Release implements Comparable<Release> {
     public final Version version;
     public final Stability stability;
     public final URL url;
+    public final String md5;
     public final List<String> changes;
 
     /**
@@ -39,12 +44,14 @@ public class Release implements Comparable<Release> {
      * @param version   This release's version.
      * @param stability The stability of this release.
      * @param url       The URL to this release's .jar file.
+     * @param md5       This MD5 hash of this release's jar file.
      * @param changes   The changes from the previous release.
      */
-    public Release(Version version, Stability stability, URL url, List<String> changes) {
+    public Release(Version version, Stability stability, URL url, String md5, List<String> changes) {
         this.version = version;
         this.stability = stability;
         this.url = url;
+        this.md5 = md5;
         this.changes = Collections.unmodifiableList(changes);
     }
 
@@ -129,6 +136,7 @@ public class Release implements Comparable<Release> {
                     Version version = new Version(attributes.getNamedItem("version").getNodeValue());
                     Stability stable = Stability.fromString(attributes.getNamedItem("stable").getNodeValue());
                     URL url = new URL(attributes.getNamedItem("url").getNodeValue());
+                    String md5 = attributes.getNamedItem("md5").getNodeValue();
 
                     // Loop through the list of changes in this release
                     List<String> changes = new ArrayList<>();
@@ -139,7 +147,7 @@ public class Release implements Comparable<Release> {
                         changes.add(changeNode.getTextContent());
                     }
 
-                    releases.add(new Release(version, stable, url, changes));
+                    releases.add(new Release(version, stable, url, md5, changes));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -180,7 +188,9 @@ public class Release implements Comparable<Release> {
             int fileSize = connection.getContentLength();
 
             // Create the data streams
-            BufferedInputStream inputStream = new BufferedInputStream(connection.getInputStream());
+            MessageDigest messageDigest = MessageDigest.getInstance("MD5");
+            DigestInputStream digest = new DigestInputStream(connection.getInputStream(), messageDigest);
+            BufferedInputStream inputStream = new BufferedInputStream(digest);
             BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(releaseFile));
             byte[] data = new byte[DOWNLOAD_BUFFER];
 
@@ -193,18 +203,33 @@ public class Release implements Comparable<Release> {
             }
 
             // Close streams
-            inputStream.close();
+            digest.close();
             outputStream.close();
 
+            // Validate hash
+            byte[] md5 = digest.getMessageDigest().digest();
+            String downloadHash = DatatypeConverter.printHexBinary(md5);
+
             // Notify listener
-            listener.onDownloadComplete(this);
+            if (downloadHash.equalsIgnoreCase(this.md5)) {
+                listener.onDownloadComplete(this);
+                return;
+            } else {
+                listener.onDownloadFail(this, "MD5 hash mismatch.");
+            }
+
+            // Notify listener
         } catch (IOException e) {
             e.printStackTrace();
 
             // Unable to download successfully
-            releaseFile.delete();
-            listener.onDownloadFail(this);
+            listener.onDownloadFail(this, e.getMessage());
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
         }
+
+        // Delete file if download unsuccessful
+        releaseFile.delete();
     }
 
     /**
@@ -278,7 +303,7 @@ public class Release implements Comparable<Release> {
         /**
          * Called when the download progress changes.
          *
-         * @param release The release being downloaded.
+         * @param release    The release being downloaded.
          * @param downloaded The number of bytes downloaded.
          * @param total      The total number of bytes.
          */
@@ -295,7 +320,8 @@ public class Release implements Comparable<Release> {
          * Called when the release failed to download.
          *
          * @param release The release that failed to download.
+         * @param message Message with information about the failure.
          */
-        void onDownloadFail(Release release);
+        void onDownloadFail(Release release, String message);
     }
 }

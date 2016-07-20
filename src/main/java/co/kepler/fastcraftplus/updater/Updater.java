@@ -87,11 +87,11 @@ public class Updater {
         }
 
         @Override
-        public void onDownloadFail(Release release) {
-            FastCraftPlus.err("Unable to download release: " + release);
+        public void onDownloadFail(Release release, String message) {
+            FastCraftPlus.err("Failed to download " + release + ": " + message);
         }
     }
- 
+
     enum UpdateType {
         NONE, PATCH, STABLE, NEWEST;
 
