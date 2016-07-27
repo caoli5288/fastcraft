@@ -172,6 +172,11 @@ public class FastCraftPlus extends JavaPlugin {
         instance.getLogger().severe(ChatColor.RED + msg);
     }
 
+    public static void debug(String msg) {
+        if (!config().debug()) return;
+        instance.getLogger().info("[Debug] " + msg);
+    }
+
     /**
      * Log info to the console.
      *

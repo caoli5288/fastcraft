@@ -132,11 +132,22 @@ public class Release implements Comparable<Release> {
                 try {
                     NamedNodeMap attributes = relNode.getAttributes();
 
+                    // Get release information strings
+                    String versionStr = attr(attributes, "version");
+                    String stableStr = attr(attributes, "stable");
+                    String urlStr = attr(attributes, "url");
+                    String md5 = attr(attributes, "md5");
+                    if (versionStr == null || stableStr == null || urlStr == null || md5 == null) {
+                        FastCraftPlus.debug("Unable to fetch release with invalid attributes:");
+                        FastCraftPlus.debug(String.format("version=%1s, stable=%2s, url=%3s, md5=%4s",
+                                versionStr, stableStr, urlStr, md5));
+                        continue;
+                    }
+
                     // Get release information
-                    Version version = new Version(attributes.getNamedItem("version").getNodeValue());
-                    Stability stable = Stability.fromString(attributes.getNamedItem("stable").getNodeValue());
-                    URL url = new URL(attributes.getNamedItem("url").getNodeValue());
-                    String md5 = attributes.getNamedItem("md5").getNodeValue();
+                    Version version = new Version(versionStr);
+                    Stability stable = Stability.fromString(stableStr);
+                    URL url = new URL(urlStr);
 
                     // Loop through the list of changes in this release
                     List<String> changes = new ArrayList<>();
@@ -156,6 +167,20 @@ public class Release implements Comparable<Release> {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    /**
+     * Helpful method to get attribute values.
+     *
+     * @param attributes The attributes map.
+     * @param attribute  The attribute to get the value of.
+     * @return Returns the value of the attribute.
+     */
+    private static String attr(NamedNodeMap attributes, String attribute) {
+        if (attributes == null || attribute == null) return null;
+        Node namedItem = attributes.getNamedItem(attribute);
+        if (namedItem == null) return null;
+        return namedItem.getNodeValue();
     }
 
     /**

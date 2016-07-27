@@ -80,4 +80,8 @@ public class PluginConfig extends ConfigExternal {
     public List<String> automaticUpdates_commands() {
         return config.getStringList("automatic-updates.commands");
     }
+
+    public boolean debug() {
+        return config.getBoolean("debug");
+    }
 }

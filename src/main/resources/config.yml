@@ -17,6 +17,8 @@
 #                                  NEWEST: Download the most recent build.
 # automatic-updates.interval   The number of minutes between update checks.
 # automatic-updates.commands   List of commands run after downloading an update. (Examples: 'restart' or 'reload')
+#
+# debug                        If true, extra messages will be written to the console.
 
 language: EN
 
@@ -40,3 +42,6 @@ automatic-updates:
   interval: 120
   commands:
   - 'say A FastCraft+ update has been successfully downloaded.'
+
+blank-line-d: 0;
+debug: false
