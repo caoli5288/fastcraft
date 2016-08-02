@@ -30,9 +30,7 @@ Required parameters have &lt;angle brackets&gt;. Optional parameters have [squar
     <td>/fc craft</td>
     <td>
       /craft<br>
-      /cr<br>
-      /workbench<br>
-      /wb
+      /workbench
     </td>
     <td>/craft [workbench|fastcraft]</td>
     <td>Open the FastCraft+ interface, or a workbench.</td>
