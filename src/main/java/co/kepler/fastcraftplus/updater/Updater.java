@@ -25,8 +25,11 @@ public class Updater {
         taskID = -1;
         if (updateType != UpdateType.NONE) {
             long interval = (long) (FastCraftPlus.config().automaticUpdates_interval() * 60 * 20);
-            UpdateChecker checker = new UpdateChecker();
-            taskID = sched.scheduleSyncRepeatingTask(FastCraftPlus.getInstance(), checker, 1L, interval);
+            taskID = sched.scheduleSyncRepeatingTask(FastCraftPlus.getInstance(), new Runnable() {
+                public void run() {
+                    new Thread(new UpdateChecker()).start();
+                }
+            }, 1L, interval);
         }
     }
 
