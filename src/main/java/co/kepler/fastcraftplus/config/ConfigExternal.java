@@ -100,8 +100,11 @@ public abstract class ConfigExternal extends Config {
         while (curLine != null) { // Append the rest of the file
             if (curLine.matches("\\$[^:]*:.*")) {
                 String append = curLine.split(":", 2)[1].trim();
-                if (append.matches("(\".*\")|('.*')")) // If surrounded by quotes
+                if (append.matches("(\".*\")|('.*')")) { // If surrounded by quotes
                     append = append.substring(1, append.length() - 1); // ...strip quotes
+                    append = append.replace("''", "'");
+                    append = append.replace("\"\"", "\"");
+                }
                 newFileStr.append(append);
             } else {
                 newFileStr.append(curLine);
