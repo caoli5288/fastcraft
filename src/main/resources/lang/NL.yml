@@ -19,7 +19,7 @@ gui:
 
   results:
     label: '&aResults:'
-    item: '&a <amount>x <item>' # Varibales: amount, item
+    item: '&a <amount>x <item>' # Variabelen: amount, item
 
   toolbar:
     page-prev:
