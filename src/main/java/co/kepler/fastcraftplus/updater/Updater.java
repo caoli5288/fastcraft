@@ -36,19 +36,29 @@ public class Updater {
     private static class UpdateChecker implements Runnable {
         @Override
         public void run() {
+            FastCraftPlus.debug("Checking for updates...");
+
             // Get release candidates
             List<Release> releases = Release.fetchReleases();
-            if (releases == null) return;
+            if (releases == null) {
+                FastCraftPlus.debug("Unable to check releases");
+                return;
+            }
+
+            // Narrow release candidates
             Collections.sort(releases);
             for (Iterator<Release> iter = releases.iterator(); iter.hasNext(); ) {
                 if (!updateType.canUpdate(iter.next())) iter.remove();
             }
 
-            // Get release to download
-            if (releases.isEmpty()) return;
-            Release release = releases.get(0);
+            // See if qualified release exists
+            if (releases.isEmpty()) {
+                FastCraftPlus.debug("No updates found.");
+                return;
+            }
 
             // Download release
+            Release release = releases.get(0);
             if (release.isNewerThanInstalledRelease()) {
                 release.download(new AutoDownloadListener());
             }

@@ -25,7 +25,7 @@ import java.util.List;
  * Contains information about a FastCraft+ release.
  */
 public class Release implements Comparable<Release> {
-    private static final String RELEASES_URL = "http://www.benwoodworth.net/bukkit/fastcraftplus/releases.xml";
+    private static final String RELEASES_URL = "http://fcp-releases.benwoodworth.net/";
     private static final File RELEASES_DIR = new File(FastCraftPlus.getInstance().getDataFolder(), "releases");
     private static final String JAR_FILENAME = "FastCraftPlus v%s.jar";
     private static final int DOWNLOAD_BUFFER = 1024 * 8;

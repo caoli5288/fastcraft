@@ -98,8 +98,17 @@ public abstract class ConfigExternal extends Config {
         while (curLine != null && curLine.startsWith("#")) curLine = reader.readLine(); // Skip header comments
         while (curLine != null && curLine.matches("\\s*")) curLine = reader.readLine(); // Skip empty lines
         while (curLine != null) { // Append the rest of the file
-            if (!curLine.startsWith("blank-line"))
+            if (curLine.matches("\\$[^:]*:.*")) {
+                String append = curLine.split(":", 2)[1].trim();
+                if (append.matches("(\".*\")|('.*')")) { // If surrounded by quotes
+                    append = append.substring(1, append.length() - 1); // ...strip quotes
+                    append = append.replace("''", "'");
+                    append = append.replace("\"\"", "\"");
+                }
+                newFileStr.append(append);
+            } else {
                 newFileStr.append(curLine);
+            }
             newFileStr.append('\n');
             curLine = reader.readLine();
         }
