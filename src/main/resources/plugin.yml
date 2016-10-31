@@ -31,11 +31,11 @@ commands:
 permissions:
   fastcraft.use:
     description: Permission to use FastCraft+ for crafting
-    default: false
+    default: op
 
   fastcraft.command.*:
     description: All non-admin FastCraft+ commands
-    default: false
+    default: op
     children:
       fastcraft.craft: true
       fastcraft.toggle: true
@@ -43,7 +43,7 @@ permissions:
 
   fastcraft.command.toggle:
     description: Permission for a player to enable/disable FastCraft+
-    default: false
+    default: op
     children:
       fastcraft.toggle.other: false
       fastcraft.toggle: true #FastCraft backwards compatibility
@@ -56,7 +56,7 @@ permissions:
 
   fastcraft.command.craft:
     description: Permission to use /fastcraft craft
-    default: false
+    default: op
 
   fastcraft.admin.*:
     description: All FastCraft+ admin permissions
