@@ -32,10 +32,12 @@ public class RecipeUtil {
 
     // Achievements associated with different items
     private static Map<Material, Achievement> craftingAchievements = ImmutableMap.<Material, Achievement>builder()
+            .put(Material.ENCHANTMENT_TABLE, Achievement.ENCHANTMENTS)
             .put(Material.STONE_PICKAXE, Achievement.BUILD_BETTER_PICKAXE)
             .put(Material.WOOD_PICKAXE, Achievement.BUILD_PICKAXE)
             .put(Material.WOOD_SWORD, Achievement.BUILD_SWORD)
             .put(Material.WORKBENCH, Achievement.BUILD_WORKBENCH)
+            .put(Material.BOOKSHELF, Achievement.BOOKCASE)
             .put(Material.WOOD_HOE, Achievement.BUILD_HOE)
             .put(Material.FURNACE, Achievement.BUILD_FURNACE)
             .put(Material.BREAD, Achievement.MAKE_BREAD)
