@@ -91,6 +91,10 @@ public class GUIButtonMultiplier extends GUIButton {
                 mult = min;
             }
         }
+
+        // Don't let multiplier go below 1
+        mult = Math.max(1, mult);
+
         this.gui.setMultiplier(mult);
         this.gui.updateLayout();
 
