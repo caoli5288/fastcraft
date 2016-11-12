@@ -111,14 +111,11 @@ public abstract class FastRecipe implements Comparable<FastRecipe> {
      */
     public ItemStack getDisplayResult() {
         List<ItemStack> results = getResults();
-        if (results.isEmpty())
-            return null;
+
+        if (results.isEmpty()) return null;
 
         ItemStack result = results.get(0);
-        if (result != null)
-            result = result.clone();
-
-        return result;
+        return result == null ? null : result.clone();
     }
 
     /**
