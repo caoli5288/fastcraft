@@ -31,7 +31,7 @@ $d0: ''
 $d1: '# Automatic updater settings'
 $d2: "# type:     NONE:   Don't automatically download updates."
 $d3: '#           PATCH:  Download bug fix updates. (Example: v1.1.2 -> v1.1.3)'
-$d4: '#           STABLE: Download the most recent stable build.'
+$d4: '#           STABLE: Download stable and bug fixing builds.'
 $d5: '#           NEWEST: Download the most recent build.'
 $d7: '# interval: The number of minutes between update checks.'
 $d8: "# commands: Commands run after downloading an update. (Example: 'restart')"

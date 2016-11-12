@@ -121,7 +121,8 @@ public class Updater {
                         && vFrom.minor == vTo.minor
                         && vFrom.patch < vTo.patch;
             case STABLE:
-                return to.stability == Release.Stability.STABLE;
+                return to.stability == Release.Stability.STABLE
+                        || PATCH.canUpdate(to);
             case NEWEST:
             default:
                 return true;
