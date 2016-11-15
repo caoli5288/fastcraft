@@ -4,6 +4,7 @@ import co.kepler.fastcraftplus.recipes.FastRecipe;
 import co.kepler.fastcraftplus.recipes.Ingredient;
 import mc.mcgrizzz.prorecipes.ProRecipes;
 import mc.mcgrizzz.prorecipes.RecipeAPI;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
@@ -56,6 +57,7 @@ public class Compat_ProRecipes extends Compat {
             for (int id = 0; id < count; id++) {
                 // Get the recipe of this type and id
                 RecipeAPI.RecipeContainer recipe = api.getRecipe(type, id);
+                if (allNullOrAir(recipe.getResult())) continue;
                 if (player == null || !recipe.hasPermission() || player.hasPermission(recipe.getPermission())) {
                     // If player has permission to craft
                     FastRecipe fastRecipe = getRecipe(recipe);
@@ -64,6 +66,13 @@ public class Compat_ProRecipes extends Compat {
             }
         }
         return recipes;
+    }
+
+    public boolean allNullOrAir(ItemStack... items) {
+        for (ItemStack is : items)
+            if (is != null && is.getType() != Material.AIR)
+                return false;
+        return true;
     }
 
     public FastRecipe getRecipe(RecipeAPI.RecipeContainer recipe) {
@@ -92,10 +101,15 @@ public class Compat_ProRecipes extends Compat {
     }
 
     public static class FastRecipeCompat extends FastRecipe {
-        private final List<ItemStack> results = new ArrayList<>();
+        private final List<ItemStack> results;
 
         public FastRecipeCompat(RecipeAPI.RecipeContainer recipe) {
-            Collections.addAll(results, recipe.getResult());
+            results = new ArrayList<>(4);
+            for (ItemStack result : recipe.getResult()) {
+                if (result != null && result.getType() != Material.ACACIA_DOOR)
+                    results.add(result);
+            }
+
             for (ItemStack is : recipe.getIngredients()) {
                 if (is == null) continue;
                 addIngredient(new Ingredient(is));
