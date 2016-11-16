@@ -224,6 +224,7 @@ public class RecipeUtil {
         inv.setResult(recipe.getResult());
         inv.setRecipe(recipe);
         inv.setMatrix(matrix);
+        inv.getViewers().add(player);
 
         CraftItemEvent event = new CraftItemEvent(recipe, inv.getView(player),
                 InventoryType.SlotType.RESULT, 0, ClickType.UNKNOWN, InventoryAction.UNKNOWN);

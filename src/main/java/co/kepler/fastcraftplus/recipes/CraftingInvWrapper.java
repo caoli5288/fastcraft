@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
@@ -21,6 +22,7 @@ public class CraftingInvWrapper implements CraftingInventory {
     private final Inventory craftingInv;
     private Recipe recipe;
     private Location location;
+    private List<HumanEntity> viewers = new ArrayList<>();
 
     /**
      * Create a new instance of CraftingInvWrapper.
@@ -275,7 +277,7 @@ public class CraftingInvWrapper implements CraftingInventory {
 
     @Override
     public List<HumanEntity> getViewers() {
-        return craftingInv.getViewers();
+        return viewers;
     }
 
     @Override
