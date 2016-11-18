@@ -23,11 +23,11 @@ public class RecipeUtil {
     // Recipes that should be ignored by FastCraft+
     private static Set<Integer> ignoreRecipeHashes = new HashSet<>(Arrays.asList(
             -1790165977, 434920731, 469091008, // Map cloning
+            1717467320, 2127371409, // Tipped arrows
             315219687, 313670400, // Dyed leather armor
             434711233, 432506854, // Banners
             461434721, // Book cloning
-            408495308, // Fireworks
-            1717467320 // Tipped arrows
+            408495308 // Fireworks
     ));
 
     // Achievements associated with different items

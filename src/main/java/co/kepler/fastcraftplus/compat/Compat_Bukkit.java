@@ -4,6 +4,7 @@ import co.kepler.fastcraftplus.recipes.FastRecipe;
 import co.kepler.fastcraftplus.recipes.Ingredient;
 import co.kepler.fastcraftplus.util.RecipeUtil;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
@@ -44,7 +45,10 @@ public class Compat_Bukkit extends Compat {
         // Loop through the server's recipes
         for (Iterator<Recipe> iter = Bukkit.recipeIterator(); iter.hasNext(); ) {
             FastRecipe recipe = getRecipe(iter.next());
-            if (recipe != null) result.add(recipe);
+            if (recipe == null) continue;
+            if (recipe.getDisplayResult().getType() == Material.AIR) continue;
+            if (recipe.getIngredients().isEmpty()) continue;
+            result.add(recipe);
         }
 
         // Return a set of FastRecipes

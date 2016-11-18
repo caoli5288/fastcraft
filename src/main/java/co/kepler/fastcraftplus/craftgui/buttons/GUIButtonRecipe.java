@@ -49,8 +49,11 @@ public class GUIButtonRecipe extends GUIButton {
         ItemStack item = recipe.getDisplayResult().clone();
         item.setAmount(item.getAmount() * mult);
         List<ItemStack> results = recipe.getResults();
-        ItemMeta meta = item.getItemMeta();
         List<Ingredient> ingredients = recipe.getIngredients();
+
+        // Get the item's metadata
+        ItemMeta meta = item.getItemMeta();
+        if (meta == null) return item;
 
         // Set the display name of the item
         meta.setDisplayName(lang.gui_itemName(item));
