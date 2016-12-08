@@ -1,5 +1,5 @@
-IMPORTANT:
-Fill out the required ■ lines, and remove these top lines.
+IMPORTANT:  
+Fill out the required ■ lines, and remove these top lines.  
 The ■ character should not appear in this issue once filled out.
 
 ## Description
