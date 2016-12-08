@@ -1,12 +1,16 @@
-# Description
-{Summarize the issue here}
+IMPORTANT:
+Fill out the required ■ lines, and remove these top lines.
+The ■ character should not appear in this issue once filled out.
 
-# Debug Output
+## Description
+■ Describe the issue here.
+
+## Debug Output
 <details><summary>Show **/fcadmin debug** output</summary><pre><code>
-{In your server console, run the command "fcadmin debug", and put the output here}
+■ Run the command "fcadmin debug", and copy the output here.
 </code></pre></details>
 
-# Stack Trace
+## Stack Trace
 <details><summary>Show stack trace</summary><pre><code>
-{If there's a stack trace, copy it here. Otherwise, this section can be deleted}
+■ Copy console errors here. If there is none, remove this section entirely.
 </code></pre></details>
