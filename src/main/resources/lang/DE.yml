@@ -326,6 +326,7 @@ items:
   'minecraft:leather_chestplate': 'Lederjacke'
   'minecraft:leather_leggings': 'Lederhose'
   'minecraft:leather_boots': 'Lederstiefel'
+  'minecraft:shulker_shell': 'Schulkerschale'
   'minecraft:banner':
     d: 'Farbiges Banner'
     0: 'Schwarzes Banner'
