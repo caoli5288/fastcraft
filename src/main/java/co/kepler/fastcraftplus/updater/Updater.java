@@ -111,14 +111,20 @@ public class Updater {
         public boolean canUpdate(Release to) {
             Release.Version vTo = to.version;
             Release.Version vFrom = FastCraftPlus.version();
-            if (vFrom.compareTo(vTo) >= 0) return false; // Only update to newer versions
+
+            // Only update to newer versions
+            if (vFrom.compareTo(vTo) >= 0)
+                return false;
+
+            // Only update to same major version
+            if (vFrom.major != vTo.major)
+                return false;
 
             switch (this) {
             case NONE:
                 return false;
             case PATCH:
-                return vFrom.major == vTo.major
-                        && vFrom.minor == vTo.minor
+                return vFrom.minor == vTo.minor
                         && vFrom.patch < vTo.patch;
             case STABLE:
                 return to.stability == Release.Stability.STABLE
