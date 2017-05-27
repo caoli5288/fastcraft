@@ -1,5 +1,5 @@
 group "net.benwoodworth"
-version "0.27"
+version "0.27.1"
 
 def plugin_name = "FastCraftPlus"
 def plugin_author = "Kepler_"
