@@ -3,3 +3,6 @@ target
 testserver
 fastcraftplus.iml
 jars
+
+./build/
+

@@ -1,0 +1,41 @@
+group "net.benwoodworth"
+version "0.26.5"
+
+def plugin_name = "FastCraftPlus"
+def plugin_author = "Kepler_"
+def plugin_description = "Redefines crafting in Minecraft"
+def plugin_version = version
+
+apply plugin: "java"
+
+buildscript {
+    ext {
+        version_bukkit = "1.10.2-R0.1-SNAPSHOT"
+    }
+
+    repositories {
+        mavenCentral()
+        maven { url "https://plugins.gradle.org/m2/" }
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven { url "https://hub.spigotmc.org/nexus/content/repositories/snapshots/" }
+}
+
+dependencies {
+    compile "org.bukkit:bukkit:$version_bukkit"
+    compile files("lib/RecipesAPI.jar")
+}
+
+processResources {
+    from(sourceSets.main.resources.srcDirs) {
+        expand plugin_name: plugin_name,
+                plugin_author: plugin_author,
+                plugin_description: plugin_description,
+                plugin_version: plugin_version
+
+        include "plugin.yml"
+    }
+}

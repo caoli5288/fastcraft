@@ -1,10 +1,10 @@
-name: ${plugin_name}
-author: ${plugin_author}
-version: ${plugin_version}
+name: FastCraft
+author: Kepler_
+version: 0.26.5
 
 prefix: FastCraft+
 
-description: ${plugin_description}
+description: Redefines crafting in Minecraft
 
 main: co.kepler.fastcraftplus.FastCraftPlus
 
