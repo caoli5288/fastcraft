@@ -4,5 +4,6 @@ testserver
 fastcraftplus.iml
 jars
 
+/.gradle/
 /build/
 
