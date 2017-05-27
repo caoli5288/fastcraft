@@ -4,5 +4,5 @@ testserver
 fastcraftplus.iml
 jars
 
-./build/
+/build/
 
