@@ -1,9 +1,6 @@
 .idea
-target
-testserver
-fastcraftplus.iml
-jars
+*.iml
 
-/.gradle/
-/build/
+.gradle/
+build/
 
