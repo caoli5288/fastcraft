@@ -20,6 +20,8 @@ import java.util.Set;
  * Utility methods for recipes.
  */
 public class RecipeUtil {
+    private static boolean achievementsSupported = true;
+
     // Recipes that should be ignored by FastCraft+
     private static Set<Integer> ignoreRecipeHashes = new HashSet<>(Arrays.asList(
             -1790165977, 434920731, 469091008, // Map cloning
@@ -31,6 +33,7 @@ public class RecipeUtil {
     ));
 
     // Achievements associated with different items
+    @SuppressWarnings("deprecation")
     private static Map<Material, Achievement> craftingAchievements = ImmutableMap.<Material, Achievement>builder()
             .put(Material.ENCHANTMENT_TABLE, Achievement.ENCHANTMENTS)
             .put(Material.STONE_PICKAXE, Achievement.BUILD_BETTER_PICKAXE)
@@ -69,12 +72,21 @@ public class RecipeUtil {
      * @param player      The player to award the achievement to.
      * @param craftedItem The item the player crafted.
      */
+    @SuppressWarnings("deprecation")
     public static void awardAchievement(Player player, ItemStack craftedItem) {
-        Achievement a = craftingAchievements.get(craftedItem.getType());
-        if (a == null) return;
-        if (player.hasAchievement(a)) return;
-        if (a.getParent() == null || player.hasAchievement(a.getParent())) {
-            player.awardAchievement(a);
+        if (!achievementsSupported) {
+            return;
+        }
+
+        try {
+            Achievement a = craftingAchievements.get(craftedItem.getType());
+            if (a == null) return;
+            if (player.hasAchievement(a)) return;
+            if (a.getParent() == null || player.hasAchievement(a.getParent())) {
+                player.awardAchievement(a);
+            }
+        } catch (UnsupportedOperationException e) {
+            achievementsSupported = false;
         }
     }
 
