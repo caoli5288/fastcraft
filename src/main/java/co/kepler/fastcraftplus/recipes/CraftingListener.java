@@ -47,12 +47,17 @@ public class CraftingListener implements Listener {
      * @param e The interaction event.
      */
     public void invInteract(InventoryInteractEvent e) {
-        final Inventory inv = e.getInventory();
+        Inventory inv = e.getInventory();
         if (e.isCancelled() || !(inv instanceof CraftingInventory)) return;
+
+        CraftingInventory craftInv = (CraftingInventory) inv;
 
         new BukkitRunnable() {
             public void run() {
-                inv.setItem(1, inv.getItem(1)); // Triggers PrepareItemCraftEvent
+                if (craftInv.getResult() == null) {
+                    craftInv.setResult(new ItemStack(Material.AIR));
+                }
+                craftInv.setItem(1, craftInv.getItem(1)); // Triggers PrepareItemCraftEvent
             }
         }.runTask(FastCraftPlus.getInstance());
     }
