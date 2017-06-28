@@ -63,5 +63,6 @@
 #coal_diamond
 #  type: shapeless
 #  ingredients:
-#    coal: [100, 'minecraft:coal']
+#    coal1: [64, 'minecraft:coal']  # Crafted using two stacks of coal on two
+#    coal2: [64, 'minecraft:coal']  # separate spaces in the crafting grid.
 #  result: [1, 'minecraft:diamond']
