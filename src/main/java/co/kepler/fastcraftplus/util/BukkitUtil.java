@@ -154,6 +154,7 @@ public class BukkitUtil {
     /**
      * ItemFlag replacement for backwards compatibility with old bukkit versions.
      */
+    @SuppressWarnings("unchecked")
     public static class ItemFlag {
         public static Enum
                 HIDE_ATTRIBUTES,

@@ -3,12 +3,14 @@ package co.kepler.fastcraftplus.recipes;
 import co.kepler.fastcraftplus.FastCraftPlus;
 import co.kepler.fastcraftplus.recipes.custom.CustomRecipe;
 import co.kepler.fastcraftplus.util.InvUtil;
+import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.*;
 import org.bukkit.inventory.CraftingInventory;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 /**
@@ -21,7 +23,7 @@ public class CraftingListener implements Listener {
         CustomRecipe recipe = FastCraftPlus.recipes().getRecipe(e.getRecipe());
         if (recipe == null) return;
         boolean matches = recipe.matchesMatrix(e.getInventory().getMatrix());
-        e.getInventory().setResult(matches ? recipe.getDisplayResult() : null);
+        e.getInventory().setResult(matches ? recipe.getDisplayResult() : new ItemStack(Material.AIR));
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
@@ -36,12 +38,15 @@ public class CraftingListener implements Listener {
 
     /**
      * Trigger the PrepareItemCraftEvent in one tick when the crafting grid changes.
+     * This allows FastCraft+ recipes that require more than one item to be re-evaluated
+     * if the shape was already correct.
      *
      * @param e The interaction event.
      */
     public void invInteract(InventoryInteractEvent e) {
         final Inventory inv = e.getInventory();
         if (e.isCancelled() || !(inv instanceof CraftingInventory)) return;
+
         new BukkitRunnable() {
             public void run() {
                 inv.setItem(1, inv.getItem(1)); // Triggers PrepareItemCraftEvent
