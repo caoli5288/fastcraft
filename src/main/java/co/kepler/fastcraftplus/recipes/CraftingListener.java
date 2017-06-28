@@ -21,9 +21,12 @@ public class CraftingListener implements Listener {
     @EventHandler
     public void onPrepareItemCraft(PrepareItemCraftEvent e) {
         CustomRecipe recipe = FastCraftPlus.recipes().getRecipe(e.getRecipe());
-        if (recipe == null) return;
-        boolean matches = recipe.matchesMatrix(e.getInventory().getMatrix());
-        e.getInventory().setResult(matches ? recipe.getDisplayResult() : new ItemStack(Material.AIR));
+        if (recipe != null) {
+            boolean matches = recipe.matchesMatrix(e.getInventory().getMatrix());
+            e.getInventory().setResult(matches
+                    ? recipe.getDisplayResult()
+                    : new ItemStack(Material.AIR));
+        }
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
