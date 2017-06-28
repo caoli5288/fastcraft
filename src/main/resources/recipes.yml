@@ -21,8 +21,10 @@
 #     result: The item that will be crafted from this recipe.
 #
 #   shapeless:
-#     ingredients: The items that are required for this recipe.
-#                  Each ingredient can be labeled anything. It's for your own reference.
+#     ingredients: The items that are required for this recipe. The amount of the ingredient
+#                  specifies the amount of items on a single slot of the crafting grid. Each
+#                  ingredient can be labeled anything, as long as they're unique. The labels
+#                  are for your own reference.
 #     result: The item  that will be crafted from this recipe.
 #
 # -------------------------------- Example Recipes --------------------------------
