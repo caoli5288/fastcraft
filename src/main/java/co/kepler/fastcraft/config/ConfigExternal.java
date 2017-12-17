@@ -74,7 +74,7 @@ public abstract class ConfigExternal extends Config {
     /**
      * Save the comments at the top of the default config to the config file.
      */
-    private void saveHeader() throws IOException {
+    protected void saveHeader() throws IOException {
         if (resPath == null || configFile == null) return;
 
         StringBuilder newFileStr = new StringBuilder();

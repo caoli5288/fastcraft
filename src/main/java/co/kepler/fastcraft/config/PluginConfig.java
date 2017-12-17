@@ -1,6 +1,7 @@
 package co.kepler.fastcraft.config;
 
 import co.kepler.fastcraft.FastCraft;
+import co.kepler.fastcraft.util.BukkitUtil;
 
 import java.util.Arrays;
 import java.util.List;
@@ -32,7 +33,16 @@ public class PluginConfig extends ConfigExternal {
             FastCraft.err("Invalid integer for toolbar.multiplier-order in config.yml: " + e.getMessage());
         }
 
-        config.set("automatic-updates", null);
+        // Remove automatic-updates
+        if (config.getConfigurationSection("automatic-updates") != null) {
+            config.set("automatic-updates", null);
+            try {
+                BukkitUtil.saveConfiguration(config, configFile);
+                saveHeader();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
     }
 
     public String language() {
