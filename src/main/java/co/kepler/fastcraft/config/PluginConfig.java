@@ -31,6 +31,8 @@ public class PluginConfig extends ConfigExternal {
         } catch (NumberFormatException e) {
             FastCraft.err("Invalid integer for toolbar.multiplier-order in config.yml: " + e.getMessage());
         }
+
+        config.set("automatic-updates", null);
     }
 
     public String language() {
