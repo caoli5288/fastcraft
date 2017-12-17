@@ -36,7 +36,7 @@ public class FastCraft extends JavaPlugin {
         instance = this;
 
         // Relocate FastCraftPlus/ directory to FastCraft/
-        relocatePluginDir();
+        relocate();
 
         // Create and load configurations
         externalConfigs = new ArrayList<>();
@@ -192,13 +192,22 @@ public class FastCraft extends JavaPlugin {
     /**
      * Relocate the plugin directory.
      */
-    private void relocatePluginDir() {
+    private void relocate() {
         File fc = new File("plugins/FastCraft");
         File fcp = new File("plugins/FastCraftPlus/");
 
         if (fcp.exists() && !fc.exists()) {
             getLogger().info("Renaming 'plugins/FastCraftPlus' to 'plugins/FastCraft'");
             fcp.renameTo(fc);
+        }
+
+        // Deprecate recipes file
+        File r = new File("plugins/FastCraft/recipes.yml");
+        File r2 = new File("plugins/FastCraft/UNSUPPORTED-recipes.yml");
+        if (r.exists()) {
+            getLogger().info("FastCraft no longer supports custom recipes");
+            getLogger().info("Renaming 'recipes.yml' to 'UNSUPPORTED-recipes.yml'");
+            r.renameTo(r2);
         }
     }
 }
