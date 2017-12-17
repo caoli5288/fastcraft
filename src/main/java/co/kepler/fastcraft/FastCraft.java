@@ -37,6 +37,9 @@ public class FastCraft extends JavaPlugin {
     public void onEnable() {
         instance = this;
 
+        // Relocate FastCraftPlus/ directory to FastCraft/
+        relocatePluginDir();
+
         // Create and load configurations
         externalConfigs = new ArrayList<>();
         externalConfigs.add(config = new PluginConfig());
@@ -197,5 +200,18 @@ public class FastCraft extends JavaPlugin {
      */
     public static File getJarFile() {
         return instance.getFile();
+    }
+
+    /**
+     * Relocate the plugin directory.
+     */
+    private void relocatePluginDir() {
+        File fc = new File("plugins/FastCraft");
+        File fcp = new File("plugins/FastCraftPlus/");
+
+        if (fcp.exists() && !fc.exists()) {
+            getLogger().info("Renaming 'plugins/FastCraftPlus' to 'plugins/FastCraft'");
+            fcp.renameTo(fc);
+        }
     }
 }

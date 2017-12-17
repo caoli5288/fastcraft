@@ -12,14 +12,14 @@ import java.util.Set;
 /**
  * Recipe compatibility class for FastCraft.
  */
-public class Compat_FastCraftPlus extends Compat {
+public class Compat_FastCraft extends Compat {
 
     /**
      * Create a new compatibility instance for FastCraft.
      *
      * @param manager The manager this compatibility is associated with.
      */
-    public Compat_FastCraftPlus(RecipeCompatManager manager) {
+    public Compat_FastCraft(RecipeCompatManager manager) {
         super(manager);
     }
 
