@@ -7,7 +7,6 @@ import co.kepler.fastcraft.config.*;
 import co.kepler.fastcraft.craftgui.GUIFastCraft;
 import co.kepler.fastcraft.craftgui.PlayerManager;
 import co.kepler.fastcraft.metrics.MetricsLite;
-import co.kepler.fastcraft.recipes.CraftingListener;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.PluginManager;
@@ -27,7 +26,6 @@ public class FastCraft extends JavaPlugin {
     private List<ConfigExternal> externalConfigs;
     private PluginConfig config;
     private LanguageConfig lang;
-    private RecipesConfig recipes;
     private BlacklistConfig blacklist;
 
     private RecipeCompatManager recipeCompatManager;
@@ -44,7 +42,6 @@ public class FastCraft extends JavaPlugin {
         externalConfigs = new ArrayList<>();
         externalConfigs.add(config = new PluginConfig());
         externalConfigs.add(lang = new LanguageConfig());
-        externalConfigs.add(recipes = new RecipesConfig());
         externalConfigs.add(blacklist = new BlacklistConfig());
         load();
 
@@ -54,7 +51,6 @@ public class FastCraft extends JavaPlugin {
 
         // Register events
         PluginManager pluginManager = Bukkit.getPluginManager();
-        pluginManager.registerEvents(new CraftingListener(), this);
         pluginManager.registerEvents(new GUIFastCraft.GUIListener(), this);
         pluginManager.registerEvents(playerManager, this);
 
@@ -123,15 +119,6 @@ public class FastCraft extends JavaPlugin {
      */
     public static LanguageConfig lang() {
         return instance.lang;
-    }
-
-    /**
-     * Get the plugin's recipes configuration.
-     *
-     * @return Returns the configuration.
-     */
-    public static RecipesConfig recipes() {
-        return instance.recipes;
     }
 
     /**

@@ -25,7 +25,6 @@ public class RecipeCompatManager {
      */
     public RecipeCompatManager() {
         // Load plugin compatibilities
-        loadCompat(new Compat_FastCraft(this));
         loadCompat(new Compat_ItemMakerPro(this));
         loadCompat(new Compat_ProRecipes(this));
         loadCompat(new Compat_Bukkit(this)); // Must be loaded last
@@ -84,15 +83,7 @@ public class RecipeCompatManager {
         handledRecipeHashes.add(hash);
     }
 
-    public void addHandledRecipe(Recipe recipe) {
-        addHandledRecipe(RecipeUtil.hashRecipe(recipe));
-    }
-
     public boolean isRecipeHandled(int hash) {
         return handledRecipeHashes.contains(hash);
-    }
-
-    public boolean isRecipeHandled(Recipe recipe) {
-        return isRecipeHandled(RecipeUtil.hashRecipe(recipe));
     }
 }
