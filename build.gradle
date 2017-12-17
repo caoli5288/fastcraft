@@ -1,5 +1,5 @@
 group "net.benwoodworth"
-version "2.0"
+version "2.x"
 
 def plugin_name = "FastCraft"
 def plugin_author = "Kepler_"
@@ -11,7 +11,7 @@ apply plugin: "java"
 buildscript {
     ext {
         // version_bukkit = "1.10.2-R0.1-SNAPSHOT"
-        version_bukkit = "1.12-pre5-SNAPSHOT"
+        version_bukkit = "1.12.2-R0.1-SNAPSHOT"
     }
 
     repositories {

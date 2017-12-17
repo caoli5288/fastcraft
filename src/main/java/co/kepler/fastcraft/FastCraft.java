@@ -8,8 +8,6 @@ import co.kepler.fastcraft.craftgui.GUIFastCraft;
 import co.kepler.fastcraft.craftgui.PlayerManager;
 import co.kepler.fastcraft.metrics.MetricsLite;
 import co.kepler.fastcraft.recipes.CraftingListener;
-import co.kepler.fastcraft.updater.Release;
-import co.kepler.fastcraft.updater.Updater;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.PluginManager;
@@ -24,7 +22,6 @@ import java.util.List;
  * The main class for FastCraft
  */
 public class FastCraft extends JavaPlugin {
-    private static Release.Version version;
     private static FastCraft instance;
 
     private List<ConfigExternal> externalConfigs;
@@ -39,7 +36,6 @@ public class FastCraft extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
-        version = new Release.Version(FastCraft.getInstance().getDescription().getVersion());
 
         // Create and load configurations
         externalConfigs = new ArrayList<>();
@@ -81,7 +77,6 @@ public class FastCraft extends JavaPlugin {
      */
     public static void load() {
         for (ConfigExternal conf : getInstance().externalConfigs) conf.load();
-        Updater.load();
     }
 
     /**
@@ -193,15 +188,6 @@ public class FastCraft extends JavaPlugin {
      */
     public static void warning(String msg) {
         instance.getLogger().warning(msg);
-    }
-
-    /**
-     * Get the current FastCraft version.
-     *
-     * @return Returns the current FastCraft version.
-     */
-    public static Release.Version version() {
-        return version;
     }
 
     /**
