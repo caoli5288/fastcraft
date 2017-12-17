@@ -1,15 +1,15 @@
-# This file is used to determine what recipes appear in the FastCraft+ interface.
+# This file is used to determine what recipes appear in the FastCraft interface.
 #
-# use-as-whitelist:     By default, this file will tell FastCraft+ what items to
+# use-as-whitelist:     By default, this file will tell FastCraft what items to
 #                       not show in its interface. If use-as-whitelist is set to
 #                       true, then nothing will show up in the interface, unless
 #                       it is listed in this file.
 #
 #
 # hashes:               This section can be used to disable specific recipes. each
-#                       recipe in the FastCraft+ interface is associated with a
+#                       recipe in the FastCraft interface is associated with a
 #                       hash code, which is what you will use to reference the
-#                       recipe. To see a recipe's hashcode, open the fastcraft+
+#                       recipe. To see a recipe's hashcode, open the FastCraft
 #                       interface with the command "/fc craft fastcraft*". A
 #                       recipe's hashcode will be under its list of ingredients.
 #

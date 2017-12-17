@@ -1,13 +1,13 @@
 # Translated into Turkish by ByBartuzen (https://www.spigotmc.org/members/bybartuzen.129255/)
 #
 # If you translate this file, feel free to PM it to Kepler_ on spigotmc.org
-# if you would like it to be officially added to FastCraft+ officially.
+# if you would like it to be officially added to FastCraft officially.
 #
 # Use ampersands (&) for formatting/color codes. Info about formatting codes:
 # http://minecraft.gamepedia.com/Formatting_codes
 
 gui:
-  title: 'FastCraft+'
+  title: 'FastCraft'
 
   # Leave blank to keep item names unchanged.
   item-name: # Değişkenler: name
@@ -76,13 +76,13 @@ commands:
 
   fastcraft toggle:
     output:
-      on-self:   '&aFastCraft+ üretimi aktif hale getirildi.'
-      off-self:  '&aFastCraft+ üretimi pasif hale getirildi.'
-      on-other:  '&aFastCraft+ <player> için aktif hale getirildi.' # Değişkenler: player
-      off-other: '&aFastCraft+ <player> için pasif hale getirildi.' # Değişkenler: player
+      on-self:   '&aFastCraft üretimi aktif hale getirildi.'
+      off-self:  '&aFastCraft üretimi pasif hale getirildi.'
+      on-other:  '&aFastCraft <player> için aktif hale getirildi.' # Değişkenler: player
+      off-other: '&aFastCraft <player> için pasif hale getirildi.' # Değişkenler: player
 
   fastcraftadmin reload:
-    output: '&aFastCraft+ ayar dosyası yenilendi.'
+    output: '&aFastCraft ayar dosyası yenilendi.'
 
 # The localized names of items.
 # d: Default item name.

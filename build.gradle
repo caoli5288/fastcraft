@@ -1,7 +1,7 @@
 group "net.benwoodworth"
-version "0.27.2"
+version "2.0"
 
-def plugin_name = "FastCraftPlus"
+def plugin_name = "FastCraft"
 def plugin_author = "Kepler_"
 def plugin_description = "Redefines crafting in Minecraft"
 def plugin_version = version

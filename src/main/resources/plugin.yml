@@ -2,11 +2,9 @@ name: ${plugin_name}
 author: ${plugin_author}
 version: ${plugin_version}
 
-prefix: FastCraft+
-
 description: ${plugin_description}
 
-main: co.kepler.fastcraftplus.FastCraftPlus
+main: co.kepler.fastcraft.FastCraft
 
 softdepend:
 - ItemMakerPro
@@ -14,12 +12,12 @@ softdepend:
 
 commands:
   fastcraft:
-    description: FastCraft+ commands
+    description: FastCraft commands
     usage: /<command>
     aliases: [fc]
 
   fastcraftadmin:
-    description: FastCraft+ admin commands
+    description: FastCraft admin commands
     usage: /<command>
     aliases: [fcadmin, fca]
 
@@ -30,11 +28,11 @@ commands:
 
 permissions:
   fastcraft.use:
-    description: Permission to use FastCraft+ for crafting
+    description: Permission to use FastCraft for crafting
     default: op
 
   fastcraft.command.*:
-    description: All non-admin FastCraft+ commands
+    description: All non-admin FastCraft commands
     default: op
     children:
       fastcraft.craft: true
@@ -42,14 +40,14 @@ permissions:
       fastcraft.toggle.other: true
 
   fastcraft.command.toggle:
-    description: Permission for a player to enable/disable FastCraft+
+    description: Permission for a player to enable/disable FastCraft
     default: op
     children:
       fastcraft.toggle.other: false
       fastcraft.toggle: true #FastCraft backwards compatibility
 
   fastcraft.command.toggle.other:
-    description: Permission to toggle FastCraft+ for another player
+    description: Permission to toggle FastCraft for another player
     default: op
     children:
       fastcraft.toggle.other: true #FastCraft backwards compatibility
@@ -59,17 +57,17 @@ permissions:
     default: op
 
   fastcraft.admin.*:
-    description: All FastCraft+ admin permissions
+    description: All FastCraft admin permissions
     default: op
     children:
       fastcraft.admin.reload: true
 
   fastcraft.admin.reload:
-    description: Reload FastCraft+ config files
+    description: Reload FastCraft config files
     default: op
 
   fastcraft.admin.update:
-    description: Download FastCraft+ updates
+    description: Download FastCraft updates
     default: op
 
   fastcraft.blacklist.*:

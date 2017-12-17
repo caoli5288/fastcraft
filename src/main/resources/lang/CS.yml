@@ -4,7 +4,7 @@
 # http://minecraft.gamepedia.com/Formatting_codes
 
 gui:
-  title: 'FastCraft+'
+  title: 'FastCraft'
 
   # Leave blank to keep item names unchanged.
   item-name: # Variables: name
@@ -73,13 +73,13 @@ commands:
 
   fastcraft toggle:
     output:
-      on-self:   '&aFastCraft+ interface zapnut.'
-      off-self:  '&aFastCraft+ interface vypnut.'
-      on-other:  '&aFastCraft+ interface zapnut pro hrace <player>.'  # Variables: player
-      off-other: '&aFastCraft+ interface vypnut pro hrace <player>.' # Variables: player
+      on-self:   '&aFastCraft interface zapnut.'
+      off-self:  '&aFastCraft interface vypnut.'
+      on-other:  '&aFastCraft interface zapnut pro hrace <player>.'  # Variables: player
+      off-other: '&aFastCraft interface vypnut pro hrace <player>.' # Variables: player
 
   fastcraftadmin reload:
-    output: '&aFastCraft+ nastaveni znovu nacteno.'
+    output: '&aFastCraft nastaveni znovu nacteno.'
 
 # The localized names of items.
 # d: Default item name.

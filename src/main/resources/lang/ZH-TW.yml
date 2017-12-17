@@ -3,7 +3,7 @@
 # 繁體中文翻譯 By HappyAreaBean
 # ------------------------------------------------------------------------
 gui:
-  title: 'FastCraft+'
+  title: 'FastCraft'
 
   # Leave blank to keep item names unchanged.
   item-name: # Variables: name
@@ -62,7 +62,7 @@ gui:
       title: '&a合成台'
       description:
       - '&b打開 3x3 合成台'
-      - '&b使用 &a/fc toggle &b 來關閉 FastCraft+'
+      - '&b使用 &a/fc toggle &b 來關閉 FastCraft'
 
 commands:
   usage: '&c正確的使用方式: <usage>' # Variables: usage

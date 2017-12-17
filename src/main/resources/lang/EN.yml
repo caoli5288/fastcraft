@@ -1,11 +1,11 @@
 # If you translate this file, feel free to PM it to Kepler_ on spigotmc.org
-# if you would like it to be officially added to FastCraft+ officially.
+# if you would like it to be officially added to FastCraft officially.
 #
 # Use ampersands (&) for formatting/color codes. Info about formatting codes:
 # http://minecraft.gamepedia.com/Formatting_codes
 
 gui:
-  title: 'FastCraft+'
+  title: 'FastCraft'
 
   # Leave blank to keep item names unchanged.
   item-name: # Variables: name
@@ -51,7 +51,7 @@ gui:
     refresh:
       title: '&aRefresh'
       description:
-      - '&bRefresh the FastCraft+ interface'
+      - '&bRefresh the FastCraft interface'
 
     multiplier:
       title: '&aCrafting Multiplier (<mult>x)' # Variables: mult
@@ -64,7 +64,7 @@ gui:
       title: '&aCrafting Grid'
       description:
       - '&bOpen a 3x3 crafting grid'
-      - '&bUse &a/fc toggle&b to disable FastCraft+'
+      - '&bUse &a/fc toggle&b to disable FastCraft'
 
 commands:
   usage: '&cCommand usage: <usage>' # Variables: usage
@@ -75,13 +75,13 @@ commands:
 
   fastcraft toggle:
     output:
-      on-self:   '&aEnabled FastCraft+ interface.'
-      off-self:  '&aDisabled FastCraft+ interface.'
-      on-other:  '&aEnabled FastCraft+ interface for <player>.'  # Variables: player
-      off-other: '&aDisabled FastCraft+ interface for <player>.' # Variables: player
+      on-self:   '&aEnabled FastCraft interface.'
+      off-self:  '&aDisabled FastCraft interface.'
+      on-other:  '&aEnabled FastCraft interface for <player>.'  # Variables: player
+      off-other: '&aDisabled FastCraft interface for <player>.' # Variables: player
 
   fastcraftadmin reload:
-    output: '&aFastCraft+ config files reloaded.'
+    output: '&aFastCraft config files reloaded.'
 
 # The localized names of items.
 # d: Default item name.

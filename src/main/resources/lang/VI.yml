@@ -4,7 +4,7 @@
 # http://minecraft.gamepedia.com/Formatting_codes
 
 gui:
-  title: 'FastCraft+'
+  title: 'FastCraft'
 
   # Để trống để giữ cho tên mục không thay đổi.
   item-name: # Variables: name
@@ -50,7 +50,7 @@ gui:
     refresh:
       title: '&aLàm mới'
       description:
-      - '&bLàm mới giao diện FastCraft+'
+      - '&bLàm mới giao diện FastCraft'
 
     multiplier:
       title: '&aChế tạo nhiều (<mult>x)' # Variables: mult
@@ -63,7 +63,7 @@ gui:
       title: '&aBàn chế tạo'
       description:
       - '&bMở bàn chế tạo 3x3'
-      - '&bDùng &a/fc toggle&b để tắt FastCraft+'
+      - '&bDùng &a/fc toggle&b để tắt FastCraft'
 
 commands:
   usage: '&cSử dụng lệnh: <usage>' # Variables: usage
@@ -74,13 +74,13 @@ commands:
 
   fastcraft toggle:
     output:
-      on-self:   '&aBật giao diện FastCraft+.'
-      off-self:  '&aTắt giao diện FastCraft+.'
-      on-other:  '&aBật giao diện FastCraft+ cho người chơi <player>.'  # Variables: player
-      off-other: '&aTắt giao diện FastCraft+ cho người chơi <player>.' # Variables: player
+      on-self:   '&aBật giao diện FastCraft.'
+      off-self:  '&aTắt giao diện FastCraft.'
+      on-other:  '&aBật giao diện FastCraft cho người chơi <player>.'  # Variables: player
+      off-other: '&aTắt giao diện FastCraft cho người chơi <player>.' # Variables: player
 
   fastcraftadmin reload:
-    output: '&aTệp tin cấu hình FastCraft+ đã được nạp lại.'
+    output: '&aTệp tin cấu hình FastCraft đã được nạp lại.'
 
 # The localized names of items.
 # d: Default item name.

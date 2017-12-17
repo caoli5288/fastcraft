@@ -1,4 +1,4 @@
-# FastCraft+ [![Build Status](https://travis-ci.org/BenWoodworth/FastCraft.svg?branch=FastCraftv0)](https://travis-ci.org/BenWoodworth/FastCraftPlus)
+# FastCraft [![Build Status](https://travis-ci.org/BenWoodworth/FastCraft.svg?branch=FastCraftv0)](https://travis-ci.org/BenWoodworth/FastCraftPlus)
 
 ## Setup
 - Add this plugin's _FastCraftPlus.jar_ file to your server's _plugins_ directory.
@@ -20,13 +20,13 @@ Required parameters have &lt;angle brackets&gt;. Optional parameters have [squar
     <td>/fastcraft</td>
     <td>/fc</td>
     <td>/fc &lt;craft|toggle&gt;</td>
-    <td>FastCraft+ commands.</td>
+    <td>FastCraft commands.</td>
   </tr>
   <tr>
     <td>/fc toggle</td>
     <td></td>
     <td>/fc toggle [on|off|toggle] [player]</td>
-    <td>Enable or disable the FastCraft+ interface.</td>
+    <td>Enable or disable the FastCraft interface.</td>
   </tr>
   <tr>
     <td>/fc craft</td>
@@ -35,7 +35,7 @@ Required parameters have &lt;angle brackets&gt;. Optional parameters have [squar
       /workbench
     </td>
     <td>/craft [workbench|fastcraft]</td>
-    <td>Open the FastCraft+ interface, or a workbench.</td>
+    <td>Open the FastCraft interface, or a workbench.</td>
   </tr>
   <tr>
     <td>/fastcraftadmin</td>
@@ -44,13 +44,13 @@ Required parameters have &lt;angle brackets&gt;. Optional parameters have [squar
       /fca
     </td>
     <td>/fca &lt;reload|debug&gt;</td>
-    <td>FastCraft+ admin commands.</td>
+    <td>FastCraft admin commands.</td>
   </tr>
   <tr>
     <td>/fca reload</td>
     <td></td>
     <td>/fca reload</td>
-    <td>Reload FastCraft+ config files.</td>
+    <td>Reload FastCraft config files.</td>
   </tr>
   <tr>
     <td>/fca debug</td>
@@ -70,7 +70,7 @@ Required parameters have &lt;angle brackets&gt;. Optional parameters have [squar
   <tr>
     <td>false</td>
     <td>fastcraft.use</td>
-    <td>Permission to use FastCraft+ for crafting</td>
+    <td>Permission to use FastCraft for crafting</td>
   </tr>
   <tr>
     <td>false</td>

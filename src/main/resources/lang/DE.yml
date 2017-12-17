@@ -1,12 +1,12 @@
 # Translated into German by CloudeLecaw (https://www.spigotmc.org/members/cloudelecaw.34292/)
-# Wenn eure Übersetung der Datei offizell zu FastCraft+ hinzugefügt werden soll
+# Wenn eure Übersetung der Datei offizell zu FastCraft hinzugefügt werden soll
 # könnte ihr Kepler_ auf spigotmc.org anschreiben. Bitte keine bereits vorhanden Übersetungen posten.
 #
 # Benutzt Sonderzeichen (&) Für Farb-, und Formatierungskodes. Informationen über Formatierungskodes:
 # http://minecraft.gamepedia.com/Formatting_codes
 
 gui:
-  title: 'FastCraft+'
+  title: 'FastCraft'
 
   # Lasse es leer um die Gegenstandsnamen nicht zu verändern.
   item-name: # Variablen: Name
@@ -77,13 +77,13 @@ commands:
 
   fastcraft toggle:
     output:
-      on-self:   '&aDas Interface von FastCraft+ wurde aktiviert.'
-      off-self:  '&aDas Interface von FastCraft+ wurde deaktiviert.'
-      on-other:  '&aDas Interface von FastCraft+ wurde für <player> aktiviert.' # Variablen: player
-      off-other: '&aDas Interface von FastCraft+ wurde für <player> deaktiviert.' # Variablen: player
+      on-self:   '&aDas Interface von FastCraft wurde aktiviert.'
+      off-self:  '&aDas Interface von FastCraft wurde deaktiviert.'
+      on-other:  '&aDas Interface von FastCraft wurde für <player> aktiviert.' # Variablen: player
+      off-other: '&aDas Interface von FastCraft wurde für <player> deaktiviert.' # Variablen: player
 
   fastcraftadmin reload:
-    output: '&aDie FastCraft+ Konfigurationsdatein wurden neugeladen.'
+    output: '&aDie FastCraft Konfigurationsdatein wurden neugeladen.'
 
 # Die loakisierten Namen der Gegenstände.
 # d: ursprünglicher Gegenstandsname -> wird immer verwendet wenn keine

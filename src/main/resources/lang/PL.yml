@@ -1,13 +1,13 @@
 # Translated into Polish by TheoMarque (https://github.com/TheoMarque)
 #
 # If you translate this file, feel free to PM it to Kepler_ on spigotmc.org
-# if you would like it to be officially added to FastCraft+ officially.
+# if you would like it to be officially added to FastCraft officially.
 #
 # Use ampersands (&) for formatting/color codes. Info about formatting codes:
 # http://minecraft.gamepedia.com/Formatting_codes
 
 gui:
-  title: 'FastCraft+'
+  title: 'FastCraft'
 
   # Leave blank to keep item names unchanged.
   item-name: # Variables: name
@@ -53,7 +53,7 @@ gui:
     refresh:
       title: '&aOdswiez'
       description:
-      - '&bOdswiez interfejs FastCraft+'
+      - '&bOdswiez interfejs FastCraft'
 
     multiplier:
       title: '&aMnoznik tworzenia (<mult>x)' # Variables: mult
@@ -66,7 +66,7 @@ gui:
       title: '&aStol rzemieslniczy'
       description:
       - '&bOtworz zwykly stol rzemieslniczy (3x3)'
-      - '&bUzyj &a/fc toggle&b by wylaczyc FastCraft+'
+      - '&bUzyj &a/fc toggle&b by wylaczyc FastCraft'
 
 commands:
   usage: '&cUzycie polecenia: <usage>' # Variables: usage
@@ -77,13 +77,13 @@ commands:
 
   fastcraft toggle:
     output:
-      on-self:   '&aInterfejs FastCraft+ aktywny.'
-      off-self:  '&aInterfejs FastCraft+ nieaktywny.'
-      on-other:  '&aInterfejs FastCraft+ aktywny dla gracza <player>.'  # Variables: player
-      off-other: '&aInterfejs FastCraft+ nieaktywny dla gracza <player>.' # Variables: player
+      on-self:   '&aInterfejs FastCraft aktywny.'
+      off-self:  '&aInterfejs FastCraft nieaktywny.'
+      on-other:  '&aInterfejs FastCraft aktywny dla gracza <player>.'  # Variables: player
+      off-other: '&aInterfejs FastCraft nieaktywny dla gracza <player>.' # Variables: player
 
   fastcraftadmin reload:
-    output: '&aFastCraft+ - konfiguracja przeladowana.'
+    output: '&aFastCraft - konfiguracja przeladowana.'
 
 # The localized names of items.
 # d: Default item name.

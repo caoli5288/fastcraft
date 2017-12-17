@@ -1,13 +1,13 @@
 # Translated into Russian by RusIK (https://www.spigotmc.org/members/rusik.189845/)
 #
 # If you translate this file, feel free to PM it to Kepler_ on spigotmc.org
-# if you would like it to be officially added to FastCraft+ officially.
+# if you would like it to be officially added to FastCraft officially.
 #
 # Use ampersands (&) for formatting/color codes. Info about formatting codes:
 # http://minecraft.gamepedia.com/Formatting_codes
 
 gui:
-  title: 'FastCraft+'
+  title: 'FastCraft'
 
   # Leave blank to keep item names unchanged.
   item-name: # Variables: name
@@ -49,7 +49,7 @@ gui:
     refresh:
       title: '&aОбновить'
       description:
-      - '&bОбновить интерфейс FastCraft+'
+      - '&bОбновить интерфейс FastCraft'
 
     multiplier:
       title: '&aСоздание нескольких вещей (<mult>x)' # Variables: mult
@@ -70,13 +70,13 @@ commands:
 
   fastcraft toggle:
     output:
-      on-self:   '&aИнтерфейс FastCraft+ включён.'
-      off-self:  '&aИнтерфейс FastCraft+ выключен.'
-      on-other:  '&aИнтерфейс FastCraft+ включён для игрока <player>.'  # Variables: player
-      off-other: '&aИнтерфейс FastCraft+ выключён для игрока <player>.' # Variables: player
+      on-self:   '&aИнтерфейс FastCraft включён.'
+      off-self:  '&aИнтерфейс FastCraft выключен.'
+      on-other:  '&aИнтерфейс FastCraft включён для игрока <player>.'  # Variables: player
+      off-other: '&aИнтерфейс FastCraft выключён для игрока <player>.' # Variables: player
 
   fastcraftadmin reload:
-    output: '&aКонфигурация FastCraft+ перезагружена.'
+    output: '&aКонфигурация FastCraft перезагружена.'
 
 # The localized names of items.
 # d: Default item name.

@@ -4,7 +4,7 @@
 # http://minecraft.gamepedia.com/Formatting_codes
 
 gui:
-  title: 'FastCraft+'
+  title: 'FastCraft'
 
   # Laat leeg om de voorwerpnamen te behouden.
   item-name: # Variabelen: naam
@@ -50,7 +50,7 @@ gui:
     refresh:
       title: '&aVervers'
       description:
-      - '&bVervers de FastCraft+ interface'
+      - '&bVervers de FastCraft interface'
 
     multiplier:
       title: '&aCrafting Multiplier (<mult>x)' # Variables: mult
@@ -73,13 +73,13 @@ commands:
 
   fastcraft toggle:
     output:
-      on-self:   '&aFastCraft+ interface ingeschakeld.'
-      off-self:  '&aFastCraft+ interface uitgeschakeld.'
-      on-other:  '&aFastCraft+ interface ingeschakeld voor <player>.'  # Variabelen: player
-      off-other: '&aFastCraft+ interface uitgeschakeld voor <player>.' # Variabelen: player
+      on-self:   '&aFastCraft interface ingeschakeld.'
+      off-self:  '&aFastCraft interface uitgeschakeld.'
+      on-other:  '&aFastCraft interface ingeschakeld voor <player>.'  # Variabelen: player
+      off-other: '&aFastCraft interface uitgeschakeld voor <player>.' # Variabelen: player
 
   fastcraftadmin reload:
-    output: '&aFastCraft+ configuratie bestanden herladen.'
+    output: '&aFastCraft configuratie bestanden herladen.'
 
 # De gelokaliseerde namen van alle voorwerpen.
 # d: Oorspronkelijke voorwerp naam.
