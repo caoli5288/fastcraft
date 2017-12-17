@@ -1,0 +1,148 @@
+package co.kepler.fastcraft.updater;
+
+import co.kepler.fastcraft.FastCraft;
+import org.bukkit.Bukkit;
+import org.bukkit.scheduler.BukkitScheduler;
+
+import java.io.IOException;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+
+/**
+ * Checks for updates, and downloads them if one's available.
+ */
+public class Updater {
+    private static int taskID = -1;
+    private static UpdateType updateType;
+
+    public static void load() {
+        updateType = UpdateType.fromConfig();
+
+        // Cancel update check task, and start a new one.
+        BukkitScheduler sched = Bukkit.getScheduler();
+        sched.cancelTask(taskID);
+        taskID = -1;
+        if (updateType != UpdateType.NONE) {
+            long interval = (long) (FastCraft.config().automaticUpdates_interval() * 60 * 20);
+            taskID = sched.scheduleSyncRepeatingTask(FastCraft.getInstance(), new Runnable() {
+                public void run() {
+                    new Thread(new UpdateChecker()).start();
+                }
+            }, 1L, interval);
+        }
+    }
+
+    private static class UpdateChecker implements Runnable {
+        @Override
+        public void run() {
+            FastCraft.debug("Checking for updates...");
+
+            // Get release candidates
+            List<Release> releases = Release.fetchReleases();
+            if (releases == null) {
+                FastCraft.debug("Unable to check releases");
+                return;
+            }
+
+            // Narrow release candidates
+            Collections.sort(releases);
+            for (Iterator<Release> iter = releases.iterator(); iter.hasNext(); ) {
+                if (!updateType.canUpdate(iter.next())) iter.remove();
+            }
+
+            // See if qualified release exists
+            if (releases.isEmpty()) {
+                FastCraft.debug("No updates found.");
+                return;
+            }
+
+            // Download release
+            Release release = releases.get(0);
+            if (release.isNewerThanInstalledRelease()) {
+                release.download(new AutoDownloadListener());
+            }
+        }
+    }
+
+    private static class AutoDownloadListener implements Release.DownloadListener {
+        @Override
+        public void onDownloadStart(Release release) {
+            FastCraft.log("Downloading update: " + release);
+        }
+
+        @Override
+        public void onProgressChange(Release release, int downloaded, int total) {
+            // double percent = (int) (1000. * downloaded / total) / 10.;
+            // FastCraft.log("Downloading update: " + percent + "%");
+        }
+
+        @Override
+        public void onDownloadComplete(Release release) {
+            try {
+                FastCraft.log("Finished downloading update. Copying to update directory.");
+                release.install();
+
+                List<String> commands = FastCraft.config().automaticUpdates_commands();
+                if (!commands.isEmpty()) {
+                    FastCraft.log("Executing automatic update commands...");
+                    for (String command : commands) {
+                        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
+                    }
+                }
+
+                FastCraft.log("Completed update download!");
+            } catch (IOException e) {
+                FastCraft.err("Unable to install the update jar:");
+                FastCraft.err(e.getMessage());
+
+            }
+        }
+
+        @Override
+        public void onDownloadFail(Release release, String message) {
+            FastCraft.err("Failed to download " + release + ": " + message);
+        }
+    }
+
+    enum UpdateType {
+        NONE, PATCH, STABLE, NEWEST;
+
+        public boolean canUpdate(Release to) {
+            Release.Version vTo = to.version;
+            Release.Version vFrom = FastCraft.version();
+
+            // Only update to newer versions
+            if (vFrom.compareTo(vTo) >= 0)
+                return false;
+
+            // Only update to same major version
+            if (vFrom.major != vTo.major)
+                return false;
+
+            switch (this) {
+            case NONE:
+                return false;
+            case PATCH:
+                return vFrom.minor == vTo.minor
+                        && vFrom.patch < vTo.patch;
+            case STABLE:
+                return to.stability == Release.Stability.STABLE
+                        || PATCH.canUpdate(to);
+            case NEWEST:
+            default:
+                return true;
+            }
+        }
+
+        public static UpdateType fromConfig() {
+            String type = FastCraft.config().automaticUpdates_type();
+            try {
+                return valueOf(type.toUpperCase());
+            } catch (IllegalArgumentException ignored) {
+                FastCraft.err("Invalid automatic update type: '" + type + "'! Using 'NONE' instead");
+                return NONE;
+            }
+        }
+    }
+}
