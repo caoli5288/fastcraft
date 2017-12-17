@@ -7,7 +7,7 @@ if (env.containsKey('TRAVIS')) {
         version = env['TRAVIS_TAG']
     } else {
         def hash = env['TRAVIS_COMMIT'].substring(0, 7)
-        version = 'dev-$hash'
+        version += "-$hash"
     }
 }
 
@@ -43,11 +43,13 @@ dependencies {
 
 processResources {
     from(sourceSets.main.resources.srcDirs) {
-        expand plugin_name: plugin_name,
+        expand(
+                plugin_name: plugin_name,
                 plugin_author: plugin_author,
                 plugin_description: plugin_description,
                 plugin_version: plugin_version,
                 plugin_website: plugin_website
+        )
 
         include 'plugin.yml'
     }
