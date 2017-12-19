@@ -280,11 +280,22 @@ public class RecipeUtil {
      * @param toClone The recipe to clone.
      * @return Returns the cloned recipe, or null if unable to clone.
      */
+    @SuppressWarnings("deprecation")
     public static Recipe cloneRecipe(Recipe toClone) {
         if (toClone == null) return null;
         if (toClone instanceof ShapedRecipe) {
             ShapedRecipe recipe = (ShapedRecipe) toClone;
-            ShapedRecipe result = new ShapedRecipe(recipe.getResult().clone());
+            ShapedRecipe result;
+
+            try {
+                result = new ShapedRecipe(
+                        ((ShapedRecipe) toClone).getKey(),
+                        recipe.getResult().clone()
+                );
+            } catch (NoSuchMethodError e) {
+                // Fallback
+                result = new ShapedRecipe(recipe.getResult().clone());
+            }
 
             // Copy recipe shape
             String[] shape = recipe.getShape();
