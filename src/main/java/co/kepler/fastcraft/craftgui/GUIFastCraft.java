@@ -193,19 +193,19 @@ public class GUIFastCraft extends GUI {
             }
         }
 
-        @EventHandler(priority = EventPriority.HIGHEST)
+        @EventHandler(priority = EventPriority.MONITOR)
         public void onBlockBreak(BlockBreakEvent e) {
             if (e.isCancelled()) return;
             blockRemoved(e.getBlock());
         }
 
-        @EventHandler(priority = EventPriority.HIGHEST)
+        @EventHandler(priority = EventPriority.MONITOR)
         public void onBlockBurn(BlockBurnEvent e) {
             if (e.isCancelled()) return;
             blockRemoved(e.getBlock());
         }
 
-        @EventHandler(priority = EventPriority.HIGHEST)
+        @EventHandler(priority = EventPriority.MONITOR)
         public void onEntityExplode(EntityExplodeEvent e) {
             if (e.isCancelled()) return;
             for (Block b : e.blockList()) {
