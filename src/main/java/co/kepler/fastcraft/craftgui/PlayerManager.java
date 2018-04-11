@@ -3,6 +3,8 @@ package co.kepler.fastcraft.craftgui;
 import co.kepler.fastcraft.FastCraft;
 import co.kepler.fastcraft.Permissions;
 import co.kepler.fastcraft.util.BukkitUtil;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -44,8 +46,16 @@ public class PlayerManager implements Listener {
         if (!Prefs.getPrefs(player).isFastCraftEnabled()) return;
 
         // Cancel the event, and open the GUI
+        Location loc = e.getClickedBlock().getLocation();
+        Bukkit.getScheduler().runTaskLater(FastCraft.getInstance(), () -> {
+            player.sendBlockChange(loc, Material.AIR, (byte) 0x0);
+            Bukkit.getScheduler().runTaskLater(FastCraft.getInstance(), () -> {
+                new GUIFastCraft(player, e.getClickedBlock().getLocation(), false).show();
+                Bukkit.getScheduler().runTask(FastCraft.getInstance(), () -> player.sendBlockChange(loc, Material.WORKBENCH, (byte) 0x0));
+            }, 5);
+        }, 5);
+
         e.setCancelled(true);
-        new GUIFastCraft(player, e.getClickedBlock().getLocation(), false).show();
     }
 
     public static class Prefs {
