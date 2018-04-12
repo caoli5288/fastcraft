@@ -77,7 +77,6 @@ public class FastCraft extends JavaPlugin {
      */
     public static void unload() {
         GUI.disposeAll();
-        PlayerManager.Prefs.saveAllPrefs();
     }
 
     /**

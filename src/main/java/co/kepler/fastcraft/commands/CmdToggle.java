@@ -52,12 +52,10 @@ public class CmdToggle extends SimpleCommand {
         }
 
         // Toggle enabled
-        PlayerManager.Prefs prefs = PlayerManager.Prefs.getPrefs(togglePlayer);
         boolean enabled = true;
         if (toggleType.equals(OFF)) {
             enabled = false;
         } else if (toggleType.equals(TOGGLE)) {
-            enabled = !prefs.isFastCraftEnabled();
         }
 
         // Send message to toggling player
@@ -83,7 +81,6 @@ public class CmdToggle extends SimpleCommand {
         }
 
         // Set player preferences
-        prefs.setFastCraftEnabled(enabled);
         return true;
     }
 

@@ -3,7 +3,6 @@ package co.kepler.fastcraft.commands;
 import co.kepler.fastcraft.FastCraft;
 import co.kepler.fastcraft.Permissions;
 import co.kepler.fastcraft.craftgui.GUIFastCraft;
-import co.kepler.fastcraft.craftgui.PlayerManager;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -47,8 +46,7 @@ public class CmdCraft extends SimpleCommand {
      * @param player The player opening the inventory.
      */
     private void open(Player player) {
-        if (PlayerManager.Prefs.getPrefs(player).isFastCraftEnabled()
-                && player.hasPermission(Permissions.USE)) {
+        if (player.hasPermission(Permissions.USE)) {
             new GUIFastCraft(player, null, false).show();
         } else {
             player.openWorkbench(null, true);

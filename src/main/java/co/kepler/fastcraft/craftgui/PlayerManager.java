@@ -42,9 +42,6 @@ public class PlayerManager implements Listener {
         Player player = e.getPlayer();
         if (!player.hasPermission(Permissions.USE)) return;
 
-        // If the player has FastCraft enabled
-        if (!Prefs.getPrefs(player).isFastCraftEnabled()) return;
-
         // Cancel the event, and open the GUI
         Location loc = e.getClickedBlock().getLocation();
         Bukkit.getScheduler().runTaskLater(FastCraft.getInstance(), () -> {
@@ -58,54 +55,4 @@ public class PlayerManager implements Listener {
         e.setCancelled(true);
     }
 
-    public static class Prefs {
-        private static final String KEY_ENABLED = "enabled";
-
-        private static Map<UUID, Prefs> prefs = new HashMap<>();
-
-        private YamlConfiguration conf = new YamlConfiguration();
-
-        private static File getPrefsFile(UUID uuid) throws IOException {
-            File playerFile = new File(FastCraft.getInstance().getDataFolder(), "preferences/" + uuid + ".yml");
-            File parentDir = playerFile.getParentFile();
-            if (parentDir.mkdirs()) FastCraft.log("Created directory: " + parentDir);
-            if (playerFile.createNewFile()) FastCraft.log("Created player file: " + playerFile);
-            return playerFile;
-        }
-
-        public static Prefs getPrefs(Player player) {
-            UUID uuid = player.getUniqueId();
-            if (prefs.containsKey(uuid)) return prefs.get(uuid);
-
-            Prefs result = new Prefs();
-            try {
-                File playerFile = getPrefsFile(uuid);
-                BukkitUtil.loadConfiguration(new FileInputStream(playerFile), result.conf);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            prefs.put(uuid, result);
-            return result;
-        }
-
-        public static void saveAllPrefs() {
-            for (UUID uuid : prefs.keySet()) {
-                try {
-                    File prefsFile = getPrefsFile(uuid);
-                    BukkitUtil.saveConfiguration(prefs.get(uuid).conf, prefsFile);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-        public boolean isFastCraftEnabled() {
-            return conf.getBoolean(KEY_ENABLED, FastCraft.config().defaultEnabled());
-        }
-
-        public void setFastCraftEnabled(boolean enabled) {
-            conf.set(KEY_ENABLED, enabled);
-        }
-    }
 }
